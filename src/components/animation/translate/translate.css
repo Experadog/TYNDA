@@ -1,0 +1,126 @@
+/* Анимации для разных направлений */
+@keyframes slideInFromLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(var(--distance));
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOutToLeft {
+    0% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(var(--distance));
+    }
+}
+
+@keyframes slideInFromRight {
+    0% {
+        opacity: 0;
+        transform: translateX(-var(--distance));
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOutToRight {
+    0% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(-var(--distance));
+    }
+}
+
+@keyframes slideInFromTop {
+    0% {
+        opacity: 0;
+        transform: translateY(var(--distance));
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideOutToTop {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(var(--distance));
+    }
+}
+
+@keyframes slideInFromBottom {
+    0% {
+        opacity: 0;
+        transform: translateY(-var(--distance));
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideOutToBottom {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-var(--distance));
+    }
+}
+
+/* Обработчики для направления */
+.translate-in.direction-left {
+    animation-name: slideInFromLeft;
+}
+
+.translate-out.direction-left {
+    animation-name: slideOutToLeft;
+}
+
+.translate-in.direction-right {
+    animation-name: slideInFromRight;
+}
+
+.translate-out.direction-right {
+    animation-name: slideOutToRight;
+}
+
+.translate-in.direction-up {
+    animation-name: slideInFromTop;
+}
+
+.translate-out.direction-up {
+    animation-name: slideOutToTop;
+}
+
+.translate-in.direction-down {
+    animation-name: slideInFromBottom;
+}
+
+.translate-out.direction-down {
+    animation-name: slideOutToBottom;
+}
+
+.translate-in,
+.translate-out {
+    animation-fill-mode: forwards;
+}
