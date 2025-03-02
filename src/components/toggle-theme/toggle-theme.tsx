@@ -1,11 +1,12 @@
 'use client';
 
+import { switchTheme } from '@/common/actions/switch-theme';
 import { Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 
 const ThemeToggle = () => {
-    const { setTheme, resolvedTheme } = useTheme();
+    const { forcedTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
@@ -14,11 +15,12 @@ const ThemeToggle = () => {
 
     if (!mounted) return <div className='w-10 h-10' />;
 
-    const handleSetTheme = () => {
-        setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
+    const handleSetTheme = async () => {
+        const theme = forcedTheme === 'dark' ? 'light' : 'dark';
+        await switchTheme(theme);
     };
 
-    return resolvedTheme === 'dark' ? (
+    return forcedTheme === 'dark' ? (
         <Sun
             className='w-5 h-5 cursor-pointer text-yellow'
             onClick={handleSetTheme}

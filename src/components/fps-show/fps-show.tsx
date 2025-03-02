@@ -13,6 +13,7 @@ const FpsShow: FC<IProps> = ({}) => {
 
         if (now - lastTime >= 1000) {
             setFps(frameCount);
+
             frameCount = 0;
             lastTime = now;
         }

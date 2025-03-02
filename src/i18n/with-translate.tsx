@@ -1,7 +1,8 @@
 'use client';
+import { useLocale } from '@/providers/locale/locale-provider';
 import kg from '@messages/kg.json';
 import ru from '@messages/ru.json';
-import { useLocale } from '@providers';
+
 import { useMemo } from 'react';
 
 const messages = { ru, kg } as const;

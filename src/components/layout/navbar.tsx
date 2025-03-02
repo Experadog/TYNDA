@@ -1,5 +1,6 @@
 import { Link, usePathname } from '@/i18n/routing';
 import { PAGES } from '@/lib';
+import { useUser } from '@/providers/user/user-provider';
 import clsx from 'clsx';
 import { FC, useEffect, useState } from 'react';
 import ThemeToggle from '../toggle-theme/toggle-theme';
@@ -11,6 +12,7 @@ interface IProps {
 const Navbar: FC<IProps> = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const pathname = usePathname();
+    const { user } = useUser();
 
     const links = [
         {
@@ -24,8 +26,8 @@ const Navbar: FC<IProps> = () => {
         },
 
         {
-            path: PAGES.LOGIN,
-            label: 'Войти',
+            path: user ? PAGES.PROFILE : PAGES.LOGIN,
+            label: user ? 'Кабинет' : 'Войти',
         },
     ];
 
@@ -45,9 +47,9 @@ const Navbar: FC<IProps> = () => {
         <header
             className={clsx(
                 'flex items-center justify-center h-16 fixed top-0 w-full transition-all duration-500 px-4 z-50',
-                isScrolled || pathname != PAGES.HOME
+                isScrolled || ![PAGES.HOME, PAGES.LOGIN].includes(pathname as PAGES)
                     ? 'bg-background_2 shadow-lg text-foreground_1'
-                    : 'bg-transparent text-white'
+                    : 'bg-transparent text-white h-20'
             )}
         >
             <Link
@@ -62,11 +64,20 @@ const Navbar: FC<IProps> = () => {
                     <Link
                         key={label}
                         href={path}
-                        className={'uppercase font-black  text-xs text-inherit hover:text-yellow'}
+                        className={
+                            'uppercase font-black  text-xs  hover:text-yellow ' +
+                            clsx(pathname === path ? 'text-yellow' : 'text-inherit')
+                        }
                     >
                         {label}
                     </Link>
                 ))}
+                <Link
+                    href={'http://example.local:3000'}
+                    className={'uppercase font-black  text-xs  hover:text-yellow '}
+                >
+                    soyuz kg
+                </Link>
             </nav>
             <div className='flex items-center gap-3 absolute right-5'>
                 <ThemeToggle />

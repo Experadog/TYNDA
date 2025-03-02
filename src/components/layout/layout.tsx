@@ -2,7 +2,6 @@
 
 import { useViewModel } from '@/i18n';
 import { FC, ReactNode } from 'react';
-import FpsShow from '../fps-show/fps-show';
 import Footer from './footer';
 import Navbar from './navbar';
 
@@ -18,7 +17,7 @@ const Layout: FC<IProps> = ({ children }) => {
             <Navbar viewModel={viewModel.navbar} />
             {children}
             <Footer viewModel={viewModel.footer} />
-            <FpsShow />
+            {/* <FpsShow /> */}
         </main>
     );
 };

@@ -1,4 +1,4 @@
-import { COOKIES } from '@/lib/constants';
+import { COOKIES } from '@/lib/constants/constants';
 
 export async function POST(request: Request) {
     const body = await request.json();
@@ -7,7 +7,7 @@ export async function POST(request: Request) {
 
     headers.append(
         'Set-Cookie',
-        `${COOKIES.NEXT_LOCALE}=${body.locale}; HttpOnly; Path=/; SameSite=Strict; Secure`
+        `${COOKIES.NEXT_LOCALE}=${body.locale}; HttpOnly; Path=/; SameSite=Lax; Secure`
     );
 
     const response = new Response(JSON.stringify({ code: 200 }), { headers });

@@ -21,8 +21,8 @@
         "paths": {
             "@components": ["./src/components"],
             "@messages/*": ["./messages/*"],
-            "@providers": ["./src/providers"],
-            "@navigation": ["./navigation"],
+            "@common": ["./src/common"],
+            "@business-entities": ["./src/business-entities"],
             "@/*": ["./src/*"]
         }
     },

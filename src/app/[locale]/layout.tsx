@@ -1,8 +1,10 @@
 import { Layout } from '@components';
-import { CollectedProviders } from '@providers';
 import type { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
 import { Inter } from 'next/font/google';
+import NextTopLoader from 'nextjs-toploader';
+
+import CollectedProviders from '@/providers/collected-providers';
 import '../globals.css';
 
 const inter = Inter({
@@ -31,6 +33,11 @@ export default async function RootLayout({
             suppressHydrationWarning
         >
             <body className={`${inter.variable} antialiased`}>
+                <NextTopLoader
+                    color='var(--yellow)'
+                    height={3}
+                    showSpinner={false}
+                />
                 <NextIntlClientProvider>
                     <CollectedProviders>
                         <Layout>{children}</Layout>
