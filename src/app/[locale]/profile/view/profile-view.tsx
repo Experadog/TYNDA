@@ -3,9 +3,9 @@
 import { useRouter } from '@/i18n/routing';
 import { PAGES } from '@/lib';
 import { useUser } from '@/providers/user/user-provider';
+import { logout } from '@/services';
 import { Button } from '@components';
 import { FC } from 'react';
-import { logout } from './action';
 
 interface IProps {}
 

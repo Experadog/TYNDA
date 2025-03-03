@@ -15,7 +15,7 @@ const protectedRoutes = [PAGES.PROFILE];
 export default async function middleware(req: NextRequest): Promise<NextResponse> {
     const { pathname } = req.nextUrl;
 
-    // Пропуск маршрутов для Next.js, API, изображений и статических файлов
+    // Пропускаем запросы для статических файлов, API и других исключений
     if (
         pathname.startsWith('/_next') ||
         pathname.includes('/api/') ||
@@ -27,20 +27,21 @@ export default async function middleware(req: NextRequest): Promise<NextResponse
 
     const response = nextIntlMiddleware(req);
 
-    // // Получаем информацию о локализации
+    // Получаем информацию о локализации
     const locales = routing.locales;
     const localeCookie = req.cookies.get(COOKIES.NEXT_LOCALE);
     const pathLocale = pathname.split('/')[1];
     const validLocale = locales.includes(pathLocale);
     const validLocaleCookie = locales.includes(localeCookie?.value || '');
 
-    // Переадресация на правильный язык
+    // Переадресация на правильный язык, если локаль неверная
     if (!validLocale) {
         const url = req.nextUrl.clone();
         url.pathname = `/${validLocaleCookie ? localeCookie?.value : 'ru'}`;
         return NextResponse.redirect(url);
     }
 
+    // Обновляем куку с языком, если она отличается от текущего пути
     if (validLocale && localeCookie?.value !== pathLocale) {
         response.cookies.set(COOKIES.NEXT_LOCALE, pathLocale, {
             path: '/',
@@ -50,6 +51,7 @@ export default async function middleware(req: NextRequest): Promise<NextResponse
         return response;
     }
 
+    // Устанавливаем дефолтную локаль в куку, если кука не установлена или содержит некорректное значение
     if (!localeCookie || !locales.includes(localeCookie.value)) {
         response.cookies.set(COOKIES.NEXT_LOCALE, 'ru', {
             path: '/',
@@ -59,34 +61,23 @@ export default async function middleware(req: NextRequest): Promise<NextResponse
         return response;
     }
 
-    // Защищенные маршруты
+    // Проверка, если это защищенная страница
     const basePath = req.nextUrl.pathname.replace(/^\/(ru|kg)\//, '/') as PAGES;
     const isProtectedRoute = protectedRoutes.includes(basePath);
-    if (isProtectedRoute) {
-        return checkPrivateRoutes(req);
+
+    const sessionCookieValue = req.cookies.get(COOKIES.SESSION)?.value || '';
+    const sessionData = sessionCookieValue ? decryptData(sessionCookieValue) : null;
+
+    if (sessionData && basePath.startsWith('/auth')) {
+        const redirectUrl = new URL(`/${pathLocale}${PAGES.PROFILE}`, req.url);
+        return NextResponse.redirect(redirectUrl);
+    }
+
+    if (isProtectedRoute && !sessionData) {
+        return NextResponse.redirect(new URL(`/${pathLocale}${PAGES.LOGIN}`, req.url));
     }
 
     return response;
-}
-
-async function checkPrivateRoutes(req: NextRequest): Promise<NextResponse> {
-    const sessionCookie = req.cookies.get(COOKIES.SESSION);
-
-    if (!sessionCookie || !sessionCookie.value) {
-        return NextResponse.redirect(new URL('/', req.url));
-    }
-
-    try {
-        const sessionData = decryptData(sessionCookie.value);
-
-        if (!sessionData) {
-            return NextResponse.redirect(new URL('/', req.url));
-        }
-    } catch (error) {
-        return NextResponse.redirect(new URL('/', req.url));
-    }
-
-    return NextResponse.next();
 }
 
 export const config = {

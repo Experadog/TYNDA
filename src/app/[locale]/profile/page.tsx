@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import ProfileView from './profile-view';
+import ProfileView from './view/profile-view';
 
 interface IProps {}
 

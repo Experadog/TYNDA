@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import LoginView from './login-view';
+import LoginView from './view/login-view';
 
 interface IProps {}
 

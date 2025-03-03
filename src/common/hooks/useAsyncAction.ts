@@ -1,10 +1,21 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import { pushToast } from '../toast/push-toast';
+import { ActionMessages } from '../types/messages.types';
+import { CommonResponse } from '../types/responses.types';
 
 type AsyncAction<T, P extends any[] = any[]> = (...args: P) => Promise<T>;
 
-export function useAsyncAction<T, P extends any[] = any[]>(throttleTime: number = 3000) {
+interface UseAsyncActionProps {
+    throttleTime?: number;
+    messages: ActionMessages;
+}
+
+export function useAsyncAction<T extends CommonResponse<any>, P extends any[]>({
+    throttleTime = 3000,
+    messages,
+}: UseAsyncActionProps) {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<Error | null>(null);
     const [lastExecuted, setLastExecuted] = useState<number | null>(null);
@@ -18,14 +29,12 @@ export function useAsyncAction<T, P extends any[] = any[]>(throttleTime: number 
         }
 
         setLastExecuted(now);
-
         setIsLoading(true);
         setError(null);
 
         try {
             isThrottling.current = true;
-            const result = await action(...args);
-            return result;
+            return await pushToast(action(...args), messages);
         } catch (err) {
             setError(err as Error);
             throw err;

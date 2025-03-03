@@ -2,8 +2,8 @@
 import { COOKIES } from '@/lib';
 import { cookies } from 'next/headers';
 import { FC, ReactNode } from 'react';
+import { Toaster } from 'react-hot-toast';
 import { LocaleProvider } from './locale/locale-provider';
-import PushMessageProvider from './message/push-message-provider';
 import RefreshOnExpire from './refresh-token/refresh-on-expire';
 import { ThemeProvider } from './theme/theme-provider';
 import { UserProvider } from './user/user-provider';
@@ -14,7 +14,7 @@ interface IProps {
 
 const CollectedProviders: FC<IProps> = async ({ children }) => {
     const cookieStore = await cookies();
-    const locale = (cookieStore.get('NEXT_LOCALE')?.value || 'ru') as Locale;
+    const locale = (cookieStore.get(COOKIES.NEXT_LOCALE)?.value || 'ru') as Locale;
     const theme = cookieStore.get(COOKIES.THEME)?.value;
     const session = cookieStore.get(COOKIES.SESSION)?.value || '';
 
@@ -25,13 +25,12 @@ const CollectedProviders: FC<IProps> = async ({ children }) => {
             forcedTheme={theme}
             enableSystem
         >
-            <PushMessageProvider>
-                <LocaleProvider locale={locale}>
-                    <UserProvider session={session}>
-                        <RefreshOnExpire initialSession={session}>{children}</RefreshOnExpire>
-                    </UserProvider>
-                </LocaleProvider>
-            </PushMessageProvider>
+            <Toaster position='bottom-right' />
+            <LocaleProvider locale={locale}>
+                <UserProvider session={session}>
+                    <RefreshOnExpire initialSession={session}>{children}</RefreshOnExpire>
+                </UserProvider>
+            </LocaleProvider>
         </ThemeProvider>
     );
 };

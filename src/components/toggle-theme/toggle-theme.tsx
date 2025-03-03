@@ -1,6 +1,6 @@
 'use client';
 
-import { switchTheme } from '@/common/actions/switch-theme';
+import { switchTheme } from '@common';
 import { Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';

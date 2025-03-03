@@ -1,10 +1,11 @@
 export const domain = 'soyuz.kg';
 export const protocol = 'https';
-export const sharedCookieDomain = '.example.local';
+export const sharedCookieDomain = 'localhost';
 
 export const FETCH_API_URL = `${protocol}://${domain}/skgapi/v1`;
-export const LOCAL_API_URL = 'http://sclub.example.local:3000/api';
+export const LOCAL_API_URL = 'http://localhost:3000/api';
 export const CRYPTO_KEY = process.env.NEXT_PUBLIC_CRYPTO_KEY || '';
+export const REFRESH_INTERVAL_GUARD = 20 * 1000;
 
 export enum COOKIES {
     NEXT_LOCALE = 'NEXT_LOCALE',
@@ -28,4 +29,9 @@ export enum URL_ENTITIES {
     REGISTER = '/auth/register',
     PROFILE = '/sys/users/me',
     REFRESH_TOKEN = '/auth/refresh-token',
+}
+
+export enum URL_LOCAL_ENTITIES {
+    CLEAR_SESSION = '/clear-session',
+    REFRESH_SESSION = '/refresh-session',
 }
