@@ -1,12 +1,6 @@
 'use server';
 
-import {
-    COOKIES,
-    encryptData,
-    parseISOStringToDate,
-    sharedCookieConfig,
-    URL_ENTITIES,
-} from '@/lib';
+import { COOKIES, encryptData, isSuccessResponse, parseISOStringToDate, sharedCookieConfig, URL_ENTITIES } from '@/lib';
 import { AXIOS_POST, CommonResponse } from '@common';
 import { cookies } from 'next/headers';
 import { LoginRequestModel, LoginResponseModel } from './authServiceTypes';
@@ -20,13 +14,9 @@ class AuthService {
 
         const cookieStore = await cookies();
 
-        if (response.code === 200) {
+        if (isSuccessResponse(response)) {
             const encryptedSessionData = encryptData(response.data);
-            cookieStore.set(
-                COOKIES.SESSION,
-                encryptedSessionData,
-                sharedCookieConfig(parseISOStringToDate(response.data.refresh_token_expire_time))
-            );
+            cookieStore.set(COOKIES.SESSION, encryptedSessionData, sharedCookieConfig(parseISOStringToDate(response.data.refresh_token_expire_time)));
         }
 
         return response;
@@ -38,7 +28,7 @@ class AuthService {
         });
         const cookieStore = await cookies();
 
-        if (response.code === 200) {
+        if (isSuccessResponse(response)) {
             cookieStore.set(COOKIES.SESSION, '', sharedCookieConfig());
         }
 

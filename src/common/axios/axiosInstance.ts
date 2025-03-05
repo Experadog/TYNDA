@@ -20,10 +20,7 @@ axiosInstance.interceptors.request.use(async (config) => {
     return config;
 });
 
-async function request<T>(
-    method: 'get' | 'post' | 'put' | 'patch' | 'delete',
-    { url, params, data, headers }: RequestOptions
-): Promise<T> {
+async function request<T>(method: 'get' | 'post' | 'put' | 'patch' | 'delete', { url, params, data, headers }: RequestOptions): Promise<T> {
     try {
         const response: AxiosResponse<T> = await axiosInstance.request<T>({
             method,
@@ -38,7 +35,7 @@ async function request<T>(
         console.log('LOGGER:', method.toLocaleUpperCase(), url, response.status);
 
         return response.data;
-    } catch (error: unknown) {
+    } catch (error) {
         console.log(error);
         return {
             code: axios.isAxiosError(error) ? error.response?.status : 500,

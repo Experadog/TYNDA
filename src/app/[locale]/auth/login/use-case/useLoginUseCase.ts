@@ -25,10 +25,8 @@ export const useLoginUseCase = () => {
     const loginAction = createActionFactory<LoginRequestModel, LoginResponseModel>({
         requestAction: login,
         onSuccess: (response) => {
-            if (response?.data) {
-                setUser(response.data.user);
-                router.push(PAGES.PROFILE);
-            }
+            setUser(response.data.user);
+            router.push(PAGES.PROFILE);
         },
     });
 

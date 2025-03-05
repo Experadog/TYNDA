@@ -1,13 +1,7 @@
 import toast from 'react-hot-toast';
+import { ActionMessages } from '../types/messages.types';
 
-export function pushToast<T>(
-    promise: Promise<{ data: T; code: number }>,
-    options: {
-        loading: string;
-        success: string;
-        error: { [key: number]: string };
-    }
-) {
+export function pushToast<T>(promise: Promise<{ data: T; code: number }>, options: ActionMessages) {
     return toast.promise(promise, {
         loading: options.loading,
         success: (res) => {
@@ -18,7 +12,16 @@ export function pushToast<T>(
         },
         error: (error) => {
             const statusCode = parseInt(error.message, 10);
-            return options.error[statusCode] || `Ошибка: ${statusCode}`;
+
+            if (typeof options.error === 'string') {
+                return options.error;
+            }
+
+            if (typeof options.error === 'object' && options.error !== null) {
+                return options.error[statusCode] || `Ошибка: ${statusCode}`;
+            }
+
+            return 'Произошла неизвестная ошибка';
         },
     });
 }

@@ -13,7 +13,7 @@ const ThemeToggle = () => {
         setMounted(true);
     }, []);
 
-    if (!mounted) return <div className='w-10 h-10' />;
+    if (!mounted) return <div className='w-5 h-5' />;
 
     const handleSetTheme = async () => {
         const theme = forcedTheme === 'dark' ? 'light' : 'dark';

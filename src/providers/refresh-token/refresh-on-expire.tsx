@@ -3,6 +3,7 @@
 import { useRouter } from '@/i18n/routing';
 import { decryptData, LOCAL_API_URL, REFRESH_INTERVAL_GUARD, URL_LOCAL_ENTITIES } from '@/lib';
 import { Session } from '@business-entities';
+import { isAxiosError } from 'axios';
 import { FC, ReactNode, useCallback, useEffect, useRef } from 'react';
 import { useUser } from '../user/user-provider';
 
@@ -52,8 +53,7 @@ const RefreshOnExpire: FC<IProps> = ({ children, initialSession }) => {
     }, [router]);
 
     const startRefreshTimer = useCallback(() => {
-        if (!expires.current || !isValidSession || isRefreshing.current || isErrorHandled.current)
-            return;
+        if (!expires.current || !isValidSession || isRefreshing.current || isErrorHandled.current) return;
 
         const sessionExpireDate = new Date(expires.current);
         const now = new Date();
@@ -66,17 +66,12 @@ const RefreshOnExpire: FC<IProps> = ({ children, initialSession }) => {
     const handleRefresh = useCallback(async () => {
         if (isRefreshing.current || !isValidSession || isErrorHandled.current) return;
 
-        if (
-            lastRefreshed.current &&
-            new Date().getTime() - lastRefreshed.current < REFRESH_INTERVAL_GUARD
-        ) {
+        if (lastRefreshed.current && new Date().getTime() - lastRefreshed.current < REFRESH_INTERVAL_GUARD) {
             return;
         }
 
         if (document.readyState !== 'complete') {
-            await new Promise((resolve) =>
-                window.addEventListener('load', resolve, { once: true })
-            );
+            await new Promise((resolve) => window.addEventListener('load', resolve, { once: true }));
         }
 
         if (document.visibilityState !== 'visible') {
@@ -110,7 +105,11 @@ const RefreshOnExpire: FC<IProps> = ({ children, initialSession }) => {
             isErrorHandled.current = false;
             router.refresh();
         } catch (error) {
-            await onError();
+            if (isAxiosError(error) && error.status === 401) {
+                router.refresh();
+            } else {
+                await onError();
+            }
         } finally {
             isRefreshing.current = false;
         }

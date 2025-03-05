@@ -25,7 +25,10 @@ const CollectedProviders: FC<IProps> = async ({ children }) => {
             forcedTheme={theme}
             enableSystem
         >
-            <Toaster position='bottom-right' />
+            <Toaster
+                position='bottom-right'
+                toastOptions={{}}
+            />
             <LocaleProvider locale={locale}>
                 <UserProvider session={session}>
                     <RefreshOnExpire initialSession={session}>{children}</RefreshOnExpire>

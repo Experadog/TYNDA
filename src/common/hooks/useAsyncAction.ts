@@ -12,10 +12,7 @@ interface UseAsyncActionProps {
     messages: ActionMessages;
 }
 
-export function useAsyncAction<T extends CommonResponse<any>, P extends any[]>({
-    throttleTime = 3000,
-    messages,
-}: UseAsyncActionProps) {
+export function useAsyncAction<T extends CommonResponse<any>, P extends any[]>({ throttleTime = 3000, messages }: UseAsyncActionProps) {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<Error | null>(null);
     const [lastExecuted, setLastExecuted] = useState<number | null>(null);

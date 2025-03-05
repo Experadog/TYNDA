@@ -1,13 +1,18 @@
-import { CSSProperties, FC, ReactNode } from 'react';
+'use client';
+
+import clsx from 'clsx';
+import { CSSProperties, FC, ReactNode, useEffect, useRef, useState } from 'react';
+import { ClassNameValue } from 'tailwind-merge';
 import './translate.css';
 
 interface IProps {
     children: ReactNode;
     duration?: number;
     delay?: number;
-    isVisible?: boolean;
+    animateOnce?: boolean;
     direction?: 'left' | 'right' | 'up' | 'down';
     distance?: number;
+    className?: ClassNameValue;
 }
 
 declare module 'react' {
@@ -16,25 +21,47 @@ declare module 'react' {
     }
 }
 
-const Translate: FC<IProps> = ({
-    children,
-    duration = 1,
-    delay = 0,
-    isVisible = true,
-    direction = 'left',
-    distance = 20,
-}) => {
+const Translate: FC<IProps> = ({ children, duration = 1, delay = 0, animateOnce = false, direction = 'left', distance = 20, className }) => {
+    const [isInViewport, setIsInViewport] = useState(animateOnce);
+    const elementRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (!animateOnce) {
+            const observer = new IntersectionObserver(
+                ([entry]) => {
+                    if (entry.isIntersecting) {
+                        setIsInViewport(true);
+                    } else {
+                        setIsInViewport(false);
+                    }
+                },
+                { threshold: 0.1 },
+            );
+
+            if (elementRef.current) {
+                observer.observe(elementRef.current);
+            }
+
+            return () => {
+                if (elementRef.current) {
+                    observer.unobserve(elementRef.current);
+                }
+            };
+        }
+    }, []);
+
     const style: CSSProperties = {
         animationDuration: `${duration}s`,
         animationDelay: `${delay}s`,
         '--distance': `${distance}px`,
     };
 
+    const mergedClassNames = clsx('translate', isInViewport ? 'translate-in' : 'translate-out', `direction-${direction}`, className);
+
     return (
         <div
-            className={`translate ${
-                isVisible ? 'translate-in' : 'translate-out'
-            } direction-${direction}`}
+            ref={elementRef}
+            className={mergedClassNames}
             style={style}
         >
             {children}
