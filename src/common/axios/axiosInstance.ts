@@ -1,8 +1,8 @@
-import { COOKIES, FETCH_API_URL, getTokensFromSession } from '@/lib';
+import { API_URL, COOKIES, getTokensFromSession } from '@/lib';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
 export const axiosInstance: AxiosInstance = axios.create({
-    baseURL: FETCH_API_URL,
+    baseURL: API_URL,
     withCredentials: true,
 });
 

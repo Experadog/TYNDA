@@ -4,7 +4,7 @@ import {
     encryptData,
     parseISOStringToDate,
     REFRESH_INTERVAL_GUARD,
-    sharedCookieDomain,
+    sharedCookieConfig,
     URL_ENTITIES,
 } from '@/lib';
 import { Credentials, Session } from '@business-entities';
@@ -32,10 +32,9 @@ export async function POST() {
     const res = await AXIOS_POST<CommonResponse<Credentials>>({ url: URL_ENTITIES.REFRESH_TOKEN });
 
     if (res.code !== 200) {
-        return new Response(JSON.stringify(encryptData({ code: 401 })), { status: 200 });
+        return new Response(JSON.stringify(encryptData({ code: 200 })), { status: 200 });
     }
 
-    const headers = new Headers();
     const data = res?.data;
 
     const newSession: Session = {
@@ -46,18 +45,14 @@ export async function POST() {
 
     const encryptedNewSession = encryptData(newSession);
 
-    headers.append(
-        'Set-Cookie',
-        `${
-            COOKIES.SESSION
-        }=${encryptedNewSession}; Path=/; SameSite=Lax; Domain=${sharedCookieDomain}; Expires=${parseISOStringToDate(
-            data.refresh_token_expire_time
-        )}`
+    cookieStore.set(
+        COOKIES.SESSION,
+        encryptedNewSession,
+        sharedCookieConfig(parseISOStringToDate(newSession.refresh_token_expire_time))
     );
 
     const response = new Response(JSON.stringify(encryptedNewSession), {
         status: 200,
-        headers,
     });
 
     return response;

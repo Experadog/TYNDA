@@ -1,4 +1,4 @@
-import { useViewModel } from '@/i18n';
+import { useViewModel } from '@/i18n/getTranslate';
 import { Fade, ImgMask } from '@components';
 import { FC } from 'react';
 import RecommendationSearch from './recommendation-search';

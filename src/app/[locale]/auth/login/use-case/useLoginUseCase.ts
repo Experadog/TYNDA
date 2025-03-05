@@ -1,6 +1,6 @@
 'use client';
 
-import { useViewModel } from '@/i18n';
+import { useViewModel } from '@/i18n/getTranslate';
 import { useRouter } from '@/i18n/routing';
 import { PAGES } from '@/lib';
 import { useUser } from '@/providers/user/user-provider';

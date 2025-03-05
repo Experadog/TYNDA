@@ -1,5 +1,5 @@
 import { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies';
-import { sharedCookieDomain } from '../constants/constants';
+import { sharedCookieDomain } from '../config/cookies';
 
 export function sharedCookieConfig(expires?: Date): Partial<ResponseCookie> {
     return {

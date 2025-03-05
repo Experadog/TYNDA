@@ -1,4 +1,9 @@
-export * from './constants/constants';
+// config
+export * from './config/api';
+export * from './config/common';
+export * from './config/cookies';
+export * from './config/pages';
+export * from './config/urls';
 
 // helpers
 export * from './helpers/decryptData';

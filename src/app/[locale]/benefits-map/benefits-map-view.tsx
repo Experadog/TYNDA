@@ -1,6 +1,6 @@
 'use client';
 
-import { useViewModel } from '@/i18n';
+import { useViewModel } from '@/i18n/getTranslate';
 import { FC } from 'react';
 
 interface IProps {}

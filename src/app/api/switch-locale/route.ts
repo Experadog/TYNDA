@@ -1,16 +1,12 @@
-import { COOKIES } from '@/lib/constants/constants';
+import { COOKIES, sharedCookieConfig } from '@/lib';
+import { cookies } from 'next/headers';
 
 export async function POST(request: Request) {
     const body = await request.json();
 
-    const headers = new Headers();
+    const cookieStore = await cookies();
 
-    headers.append(
-        'Set-Cookie',
-        `${COOKIES.NEXT_LOCALE}=${body.locale}; HttpOnly; Path=/; SameSite=Lax; Secure`
-    );
+    cookieStore.set(COOKIES.NEXT_LOCALE, body.locale, sharedCookieConfig());
 
-    const response = new Response(JSON.stringify({ code: 200 }), { headers });
-
-    return response;
+    return new Response(JSON.stringify({ code: 200 }), { status: 200 });
 }

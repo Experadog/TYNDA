@@ -1,5 +1,3 @@
-type Action<TRequest, TResponse> = (values: TRequest) => Promise<TResponse>;
-
 interface ActionFactoryOptions<TRequest, TResponse> {
     requestAction: (values: TRequest) => Promise<TResponse>;
     onSuccess?: (response: TResponse) => void;

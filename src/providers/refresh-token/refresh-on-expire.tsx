@@ -4,6 +4,7 @@ import { useRouter } from '@/i18n/routing';
 import { decryptData, LOCAL_API_URL, REFRESH_INTERVAL_GUARD, URL_LOCAL_ENTITIES } from '@/lib';
 import { Session } from '@business-entities';
 import { FC, ReactNode, useCallback, useEffect, useRef } from 'react';
+import { useUser } from '../user/user-provider';
 
 interface IProps {
     children: ReactNode;
@@ -11,6 +12,7 @@ interface IProps {
 }
 
 const RefreshOnExpire: FC<IProps> = ({ children, initialSession }) => {
+    const { setUser } = useUser();
     const decrypted = decryptData(initialSession) as Session | null;
     const router = useRouter();
 
@@ -44,6 +46,7 @@ const RefreshOnExpire: FC<IProps> = ({ children, initialSession }) => {
             credentials: 'include',
         }).then(() => {
             router.push('/auth/login');
+            setUser(null);
             router.refresh();
         });
     }, [router]);
@@ -106,7 +109,6 @@ const RefreshOnExpire: FC<IProps> = ({ children, initialSession }) => {
             lastRefreshed.current = new Date().getTime();
             isErrorHandled.current = false;
             router.refresh();
-            startRefreshTimer();
         } catch (error) {
             await onError();
         } finally {

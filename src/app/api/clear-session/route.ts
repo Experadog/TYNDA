@@ -1,14 +1,12 @@
 import { COOKIES } from '@/lib';
+import { cookies } from 'next/headers';
 
 export async function POST() {
-    const headers = new Headers();
+    const cookieStore = await cookies();
 
-    headers.append(
-        'Set-Cookie',
-        `${COOKIES.SESSION}=''; HttpOnly; Path=/; SameSite=Lax; Secure; Expires=Thu, 01 Jan 1970 00:00:00 GMT`
-    );
+    cookieStore.delete(COOKIES.SESSION);
 
-    const response = new Response(JSON.stringify({ code: 200 }), { headers, status: 200 });
+    const response = new Response(JSON.stringify({ code: 200 }), { status: 200 });
 
     return response;
 }

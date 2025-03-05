@@ -1,6 +1,6 @@
 'use client';
 
-import { useViewModel } from '@/i18n';
+import { useViewModel } from '@/i18n/getTranslate';
 import { FC, ReactNode } from 'react';
 import Footer from './footer';
 import Navbar from './navbar';

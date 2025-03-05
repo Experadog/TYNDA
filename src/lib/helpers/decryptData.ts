@@ -1,6 +1,6 @@
 import { Session } from '@business-entities';
 import { AES, enc } from 'crypto-js';
-import { CRYPTO_KEY } from '../constants/constants';
+import { CRYPTO_KEY } from '../config/common';
 
 export function decryptData(encryptedData: string): Session | null {
     try {
