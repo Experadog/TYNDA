@@ -24,7 +24,7 @@
 @keyframes slideInFromRight {
     0% {
         opacity: 0;
-        transform: translateX(-var(--distance));
+        transform: translateX(calc(-1 * var(--distance)));
     }
     100% {
         opacity: 1;
@@ -39,14 +39,14 @@
     }
     100% {
         opacity: 0;
-        transform: translateX(-var(--distance));
+        transform: translateX(calc(-1 * var(--distance)));
     }
 }
 
 @keyframes slideInFromTop {
     0% {
         opacity: 0;
-        transform: translateY(var(--distance));
+        transform: translateY(calc(-1 * var(--distance)));
     }
     100% {
         opacity: 1;
@@ -61,14 +61,14 @@
     }
     100% {
         opacity: 0;
-        transform: translateY(var(--distance));
+        transform: translateY(calc(-1 * var(--distance)));
     }
 }
 
 @keyframes slideInFromBottom {
     0% {
         opacity: 0;
-        transform: translateY(-var(--distance));
+        transform: translateY(var(--distance));
     }
     100% {
         opacity: 1;
@@ -83,7 +83,7 @@
     }
     100% {
         opacity: 0;
-        transform: translateY(-var(--distance));
+        transform: translateY(var(--distance));
     }
 }
 
@@ -105,7 +105,7 @@
 }
 
 .translate-in.direction-up {
-    animation-name: slideInFromTop;
+    animation-name: slideInFromBottom;
 }
 
 .translate-out.direction-up {
@@ -113,14 +113,16 @@
 }
 
 .translate-in.direction-down {
-    animation-name: slideInFromBottom;
+    animation-name: slideInFromTop;
 }
 
 .translate-out.direction-down {
     animation-name: slideOutToBottom;
 }
 
+/* Глобальные настройки анимации */
 .translate-in,
 .translate-out {
     animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
 }

@@ -21,7 +21,7 @@ declare module 'react' {
     }
 }
 
-const Translate: FC<IProps> = ({ children, duration = 1, delay = 0, animateOnce = false, direction = 'left', distance = 20, className }) => {
+const Translate: FC<IProps> = ({ children, duration = 1, delay = 0, animateOnce = true, direction = 'left', distance = 20, className }) => {
     const [isInViewport, setIsInViewport] = useState(animateOnce);
     const elementRef = useRef<HTMLDivElement>(null);
 
