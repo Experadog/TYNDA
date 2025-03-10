@@ -1,4 +1,3 @@
-import { ImgMask } from '@components';
 import { FC, ReactNode } from 'react';
 
 interface IProps {
@@ -7,9 +6,9 @@ interface IProps {
 
 const AuthView: FC<IProps> = ({ children }) => {
     return (
-        <div className='flex flex-col items-center justify-center min-h-screen bg-[url("/auth.webp")] bg-cover bg-center relative'>
-            <ImgMask />
-            <div className='z-10'>{children}</div>
+        <div className='h-full flex items-center justify-center gap-20 px-12'>
+            <div className='z-10 flex-1'>{children}</div>
+            <div className="flex-1  relative h-[658px] bg-contain bg-[url('/auth.webp')]  bg-no-repeat" />
         </div>
     );
 };

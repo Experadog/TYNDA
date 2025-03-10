@@ -2,27 +2,29 @@
 
 import { useViewModel } from '@/i18n/getTranslate';
 import { useRouter } from '@/i18n/routing';
-import { PAGES } from '@/lib';
+import { createDynamicCallbackUrl, PAGES } from '@/lib';
+import { useLocale } from '@/providers/locale/locale-provider';
 import { useUser } from '@/providers/user/user-provider';
-import { login, LoginRequestModel, LoginResponseModel } from '@/services';
-import { createActionFactory, createLoginSchema, useAsyncAction } from '@common';
+import { GoogleLoginRequestModel, GoogleLoginResponseModel, login, LoginRequestModel, LoginResponseModel, sendAndLoginByGoogle } from '@/services';
+import { createAction, createLoginSchema, useAsyncAction } from '@common';
+import { useGoogleLogin } from '@react-oauth/google';
 
 export const useLoginUseCase = () => {
     const viewModel = useViewModel(['Toast', 'Login']);
 
     const { setUser } = useUser();
     const router = useRouter();
+    const { locale } = useLocale();
 
-    const { isLoading, execute } = useAsyncAction<LoginResponseModel, [LoginRequestModel]>({
+    const { execute: loginExecute, isLoading: isLoginLoading } = useAsyncAction<LoginResponseModel, [LoginRequestModel]>({
         messages: viewModel.Toast.Login,
     });
 
-    const form = createLoginSchema({
-        email: 'Введите корректный email',
-        password: 'Минимум 6',
+    const { execute: googleLoginExecute } = useAsyncAction<GoogleLoginResponseModel, [GoogleLoginRequestModel]>({
+        messages: viewModel.Toast.GoogleLogin,
     });
 
-    const loginAction = createActionFactory<LoginRequestModel, LoginResponseModel>({
+    const loginAction = createAction({
         requestAction: login,
         onSuccess: (response) => {
             setUser(response.data.user);
@@ -30,9 +32,38 @@ export const useLoginUseCase = () => {
         },
     });
 
-    const onSubmit = async (values: LoginRequestModel) => {
-        await execute(loginAction, values);
+    const sendGoogleCodeAction = createAction({
+        requestAction: sendAndLoginByGoogle,
+        onSuccess: (response) => {
+            setUser(response.data.user);
+            router.push(PAGES.PROFILE);
+        },
+        onError: () => {
+            router.push(PAGES.LOGIN);
+        },
+    });
+
+    const form = createLoginSchema({
+        email: 'Почта является не корректной',
+        password: 'Длинна пароля должна составлять минимум 6',
+    });
+
+    const onCommonLogin = async (values: LoginRequestModel) => {
+        await loginExecute(loginAction, values);
     };
 
-    return { isLoading, onSubmit, form, viewModel: viewModel.Login };
+    const onSendGoogleCode = async (values: GoogleLoginRequestModel) => {
+        await googleLoginExecute(sendGoogleCodeAction, values);
+    };
+
+    const loginVia = {
+        google: useGoogleLogin({
+            flow: 'auth-code',
+            ux_mode: 'redirect',
+            redirect_uri: createDynamicCallbackUrl(locale),
+            onSuccess: async (res) => console.log(res),
+        }),
+    };
+
+    return { isCommonLoginLoading: isLoginLoading, onSendGoogleCode, onCommonLogin, form, viewModel: viewModel.Login, loginVia };
 };

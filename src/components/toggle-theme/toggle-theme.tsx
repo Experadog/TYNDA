@@ -5,7 +5,11 @@ import { Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 
-const ThemeToggle = () => {
+import { FC } from 'react';
+
+interface IProps {}
+
+const ToggleTheme: FC<IProps> = ({}) => {
     const { forcedTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
 
@@ -33,4 +37,4 @@ const ThemeToggle = () => {
     );
 };
 
-export default ThemeToggle;
+export default ToggleTheme;

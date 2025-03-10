@@ -10,7 +10,7 @@ const ProfileView: FC<IProps> = () => {
     const { handleLogout, user } = useProfileUseCase();
 
     return (
-        <div className='h-[1000px] pt-16'>
+        <div className=''>
             {JSON.stringify(user)},<Button onClick={handleLogout}>Logout</Button>
         </div>
     );

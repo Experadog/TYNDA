@@ -1,16 +1,16 @@
 import { Layout } from '@components';
 import type { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
-import { Inter } from 'next/font/google';
+import { Raleway } from 'next/font/google';
 import NextTopLoader from 'nextjs-toploader';
 
 import CollectedProviders from '@/providers/collected-providers';
 import '../globals.css';
 
-const inter = Inter({
-    variable: '--font-inter',
+const raleway = Raleway({
+    variable: '--font-raleway',
     subsets: ['latin', 'cyrillic'],
-    weight: ['100', '300', '400', '500', '600', '700', '800', '900'],
+    weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
 });
 
 export const metadata: Metadata = {
@@ -32,7 +32,7 @@ export default async function RootLayout({
             lang={locale || 'ru'}
             suppressHydrationWarning
         >
-            <body className={`${inter.variable} antialiased`}>
+            <body className={`${raleway.variable} antialiased`}>
                 <NextTopLoader
                     color='var(--yellow)'
                     height={3}

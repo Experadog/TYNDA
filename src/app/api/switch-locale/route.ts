@@ -1,4 +1,4 @@
-import { COOKIES, sharedCookieConfig } from '@/lib';
+import { COOKIES, defaultCookieConfig } from '@/lib';
 import { cookies } from 'next/headers';
 
 export async function POST(request: Request) {
@@ -6,7 +6,7 @@ export async function POST(request: Request) {
 
     const cookieStore = await cookies();
 
-    cookieStore.set(COOKIES.NEXT_LOCALE, body.locale, sharedCookieConfig());
+    cookieStore.set(COOKIES.NEXT_LOCALE, body.locale, defaultCookieConfig());
 
     return new Response(JSON.stringify({ code: 200 }), { status: 200 });
 }

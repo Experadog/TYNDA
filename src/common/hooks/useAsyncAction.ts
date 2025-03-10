@@ -1,28 +1,29 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { pushToast } from '../toast/push-toast';
 import { ActionMessages } from '../types/messages.types';
 import { CommonResponse } from '../types/responses.types';
 
-type AsyncAction<T, P extends any[] = any[]> = (...args: P) => Promise<T>;
+type AsyncAction<T, P extends any[]> = (...args: P) => Promise<T>;
 
 interface UseAsyncActionProps {
-    throttleTime?: number;
     messages: ActionMessages;
+    throttleTime?: number;
 }
 
-export function useAsyncAction<T extends CommonResponse<any>, P extends any[]>({ throttleTime = 3000, messages }: UseAsyncActionProps) {
+export const useAsyncAction = <T, P extends any[]>(props: UseAsyncActionProps) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<Error | null>(null);
     const [lastExecuted, setLastExecuted] = useState<number | null>(null);
-    const isThrottling = useRef(false);
 
-    const execute = async (action: AsyncAction<T, P>, ...args: P) => {
+    const { messages, throttleTime = 3000 } = props;
+
+    const execute = async (action: AsyncAction<T, P>, ...args: P): Promise<T> => {
         const now = Date.now();
 
         if (lastExecuted && now - lastExecuted < throttleTime) {
-            return;
+            return {} as T;
         }
 
         setLastExecuted(now);
@@ -30,16 +31,14 @@ export function useAsyncAction<T extends CommonResponse<any>, P extends any[]>({
         setError(null);
 
         try {
-            isThrottling.current = true;
-            return await pushToast(action(...args), messages);
+            return await pushToast(action(...args) as Promise<CommonResponse<T>>, messages);
         } catch (err) {
             setError(err as Error);
             throw err;
         } finally {
             setIsLoading(false);
-            isThrottling.current = false;
         }
     };
 
-    return { isLoading, error, execute };
-}
+    return { execute, isLoading, error };
+};

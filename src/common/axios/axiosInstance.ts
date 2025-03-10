@@ -4,6 +4,7 @@ import axios, { AxiosInstance, AxiosResponse } from 'axios';
 export const axiosInstance: AxiosInstance = axios.create({
     baseURL: API_URL,
     withCredentials: true,
+    headers: { 'Content-Type': 'application/json' },
 });
 
 axiosInstance.interceptors.request.use(async (config) => {
@@ -12,6 +13,8 @@ axiosInstance.interceptors.request.use(async (config) => {
     const cookieStore = await cookies();
     const sessionCookie = cookieStore.get(COOKIES.SESSION);
     const tokens = getTokensFromSession(sessionCookie?.value);
+
+    console.log(config);
 
     if (tokens) {
         config.headers['Cookie'] = tokens;

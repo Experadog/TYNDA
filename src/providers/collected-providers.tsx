@@ -4,6 +4,7 @@ import { cookies } from 'next/headers';
 import { FC, ReactNode } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { LocaleProvider } from './locale/locale-provider';
+import OAuthProvider from './oAuth/oAuth-provider';
 import RefreshOnExpire from './refresh-token/refresh-on-expire';
 import { ThemeProvider } from './theme/theme-provider';
 import { UserProvider } from './user/user-provider';
@@ -29,11 +30,13 @@ const CollectedProviders: FC<IProps> = async ({ children }) => {
                 position='bottom-right'
                 toastOptions={{}}
             />
-            <LocaleProvider locale={locale}>
-                <UserProvider session={session}>
-                    <RefreshOnExpire initialSession={session}>{children}</RefreshOnExpire>
-                </UserProvider>
-            </LocaleProvider>
+            <OAuthProvider>
+                <LocaleProvider locale={locale}>
+                    <UserProvider session={session}>
+                        <RefreshOnExpire initialSession={session}>{children}</RefreshOnExpire>
+                    </UserProvider>
+                </LocaleProvider>
+            </OAuthProvider>
         </ThemeProvider>
     );
 };

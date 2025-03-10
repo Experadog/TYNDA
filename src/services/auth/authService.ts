@@ -1,9 +1,9 @@
 'use server';
 
-import { COOKIES, encryptData, isSuccessResponse, parseISOStringToDate, sharedCookieConfig, URL_ENTITIES } from '@/lib';
-import { AXIOS_POST, CommonResponse } from '@common';
+import { COOKIES, defaultCookieConfig, encryptData, isSuccessResponse, parseISOStringToDate, URL_ENTITIES } from '@/lib';
+import { AXIOS_GET, AXIOS_POST, CommonResponse } from '@common';
 import { cookies } from 'next/headers';
-import { LoginRequestModel, LoginResponseModel } from './authServiceTypes';
+import { GoogleLoginRequestModel, GoogleLoginResponseModel, LoginRequestModel, LoginResponseModel } from './authServiceTypes';
 
 class AuthService {
     static async login(request: LoginRequestModel): Promise<LoginResponseModel> {
@@ -16,7 +16,7 @@ class AuthService {
 
         if (isSuccessResponse(response)) {
             const encryptedSessionData = encryptData(response.data);
-            cookieStore.set(COOKIES.SESSION, encryptedSessionData, sharedCookieConfig(parseISOStringToDate(response.data.refresh_token_expire_time)));
+            cookieStore.set(COOKIES.SESSION, encryptedSessionData, defaultCookieConfig(parseISOStringToDate(response.data.refresh_token_expire_time)));
         }
 
         return response;
@@ -29,7 +29,26 @@ class AuthService {
         const cookieStore = await cookies();
 
         if (isSuccessResponse(response)) {
-            cookieStore.set(COOKIES.SESSION, '', sharedCookieConfig());
+            cookieStore.set(COOKIES.SESSION, '', defaultCookieConfig());
+        }
+
+        return response;
+    }
+
+    static async sendAndLoginByGoogle({ code, role, locale }: GoogleLoginRequestModel): Promise<GoogleLoginResponseModel> {
+        const response = await AXIOS_GET<GoogleLoginResponseModel>({
+            url: URL_ENTITIES.CALLBACK_GOOGLE,
+            params: {
+                code,
+                role,
+                state: locale,
+            },
+        });
+
+        if (isSuccessResponse(response)) {
+            const cookieStore = await cookies();
+            const encryptedSessionData = encryptData(response.data);
+            cookieStore.set(COOKIES.SESSION, encryptedSessionData, defaultCookieConfig(parseISOStringToDate(response.data.refresh_token_expire_time)));
         }
 
         return response;
@@ -38,3 +57,4 @@ class AuthService {
 
 export const login = AuthService.login;
 export const logout = AuthService.logout;
+export const sendAndLoginByGoogle = AuthService.sendAndLoginByGoogle;

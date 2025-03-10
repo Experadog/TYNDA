@@ -18,20 +18,10 @@ export const UserProvider: React.FC<{
     const [state, setState] = useState<User | null>(decryptData(session)?.user || null);
 
     const setUser = (newUser: User | null) => {
-        if (!newUser) {
-            setTimeout(() => {
-                setState(newUser);
-            }, 1000);
-        } else {
-            setState(newUser);
-        }
+        setState(newUser);
     };
 
-    return (
-        <UserContext.Provider value={{ user: state, setUser: setUser }}>
-            {children}
-        </UserContext.Provider>
-    );
+    return <UserContext.Provider value={{ user: state, setUser: setUser }}>{children}</UserContext.Provider>;
 };
 
 export const useUser = (): UserContextType => {

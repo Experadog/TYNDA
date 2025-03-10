@@ -13,11 +13,10 @@ const Layout: FC<IProps> = ({ children }) => {
     const viewModel = useViewModel(['Layout']);
 
     return (
-        <main className='flex flex-col'>
+        <main className='flex flex-col relative'>
             <Navbar viewModel={viewModel.navbar} />
-            {children}
+            <div style={{ height: `calc(100vh - 88px)`, overflowY: 'scroll' }}>{children}</div>
             <Footer viewModel={viewModel.footer} />
-            {/* <FpsShow /> */}
         </main>
     );
 };

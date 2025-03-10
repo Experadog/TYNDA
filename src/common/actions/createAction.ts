@@ -3,10 +3,10 @@ import { isSuccessResponse } from '@/lib';
 interface ActionFactoryOptions<TRequest, TResponse> {
     requestAction: (values: TRequest) => Promise<TResponse>;
     onSuccess?: (response: TResponse) => void;
-    onError?: (error: Error) => void;
+    onError?: (error?: Error) => void;
 }
 
-export function createActionFactory<TRequest, TResponse>({ requestAction, onSuccess, onError }: ActionFactoryOptions<TRequest, TResponse>) {
+export function createAction<TRequest, TResponse>({ requestAction, onSuccess, onError }: ActionFactoryOptions<TRequest, TResponse>) {
     return async (values: TRequest): Promise<TResponse> => {
         try {
             const response = await requestAction(values);
@@ -17,6 +17,10 @@ export function createActionFactory<TRequest, TResponse>({ requestAction, onSucc
 
             if (onSuccess && isSuccessResponse(response)) {
                 onSuccess(response);
+            } else {
+                if (onError) {
+                    onError();
+                }
             }
 
             return response;

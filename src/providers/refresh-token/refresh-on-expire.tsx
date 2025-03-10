@@ -55,6 +55,7 @@ const RefreshOnExpire: FC<IProps> = ({ children, initialSession }) => {
     const startRefreshTimer = useCallback(() => {
         if (!expires.current || !isValidSession || isRefreshing.current || isErrorHandled.current) return;
 
+        router.refresh();
         const sessionExpireDate = new Date(expires.current);
         const now = new Date();
         const refreshInterval = Math.max(sessionExpireDate.getTime() - now.getTime() - 10000, 0);

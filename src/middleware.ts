@@ -1,4 +1,4 @@
-import { COOKIES, decryptData, PAGES, sharedCookieDomain } from '@/lib';
+import { COOKIES, decryptData, PAGES } from '@/lib';
 import createMiddleware from 'next-intl/middleware';
 import { NextRequest, NextResponse } from 'next/server';
 import { routing } from './i18n/routing';
@@ -16,12 +16,7 @@ export default async function middleware(req: NextRequest): Promise<NextResponse
     const { pathname } = req.nextUrl;
 
     // Пропускаем запросы для статических файлов, API и других исключений
-    if (
-        pathname.startsWith('/_next') ||
-        pathname.includes('/api/') ||
-        pathname.includes('/skgapi/') ||
-        PUBLIC_FILE.test(pathname)
-    ) {
+    if (pathname.startsWith('/_next') || pathname.includes('/api/') || pathname.includes('/skgapi/') || PUBLIC_FILE.test(pathname)) {
         return NextResponse.next();
     }
 
@@ -45,7 +40,6 @@ export default async function middleware(req: NextRequest): Promise<NextResponse
     if (validLocale && localeCookie?.value !== pathLocale) {
         response.cookies.set(COOKIES.NEXT_LOCALE, pathLocale, {
             path: '/',
-            domain: sharedCookieDomain,
             sameSite: 'lax',
         });
         return response;
@@ -55,7 +49,6 @@ export default async function middleware(req: NextRequest): Promise<NextResponse
     if (!localeCookie || !locales.includes(localeCookie.value)) {
         response.cookies.set(COOKIES.NEXT_LOCALE, 'ru', {
             path: '/',
-            domain: sharedCookieDomain,
             sameSite: 'lax',
         });
         return response;
@@ -77,9 +70,16 @@ export default async function middleware(req: NextRequest): Promise<NextResponse
         return NextResponse.redirect(new URL(`/${pathLocale}${PAGES.LOGIN}`, req.url));
     }
 
+    if (basePath.includes('/callback')) {
+        const queryString = req.nextUrl.searchParams.toString();
+        if (!queryString.includes('email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&authuser=0&prompt=consent')) {
+            return NextResponse.redirect(new URL(`/${pathLocale}`, req.url));
+        }
+    }
+
     return response;
 }
 
 export const config = {
-    matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
+    matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)', '/callback'],
 };

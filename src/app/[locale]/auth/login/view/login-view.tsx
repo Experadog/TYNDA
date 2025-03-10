@@ -1,84 +1,36 @@
 'use client';
 
-import { Input } from '@/components/ui/input';
-import {
-    Button,
-    Fade,
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from '@components';
+import { Link } from '@/i18n/routing';
+import { PAGES } from '@/lib';
 import { FC } from 'react';
-import { useLoginUseCase } from '../use-case/useLoginUseCase';
+import LoginForm from './_components/login-form';
+import LoginVia from './_components/login-via';
 
 const LoginView: FC = () => {
-    const { form, isLoading, onSubmit, viewModel } = useLoginUseCase();
-
     return (
-        <div className='flex flex-col gap-5 items-center'>
-            <Fade duration={1}>
-                <p className='text-white text-2xl font-bold uppercase'>{viewModel.title}</p>
-            </Fade>
-
-            <Fade duration={1}>
-                <Form {...form}>
-                    <form
-                        onSubmit={form.handleSubmit(onSubmit)}
-                        className='bg-background_2  p-5 rounded-xl flex flex-col gap-5 w-[400px]'
+        <div className='flex flex-col'>
+            <div className='flex flex-col gap-3'>
+                <h1 className='text-foreground_1 text-2xl font-semibold'>Добро пожаловать!</h1>
+                <span className='text-gray'>
+                    У вас нет аккаунта?{' '}
+                    <Link
+                        href={PAGES.REGISTER}
+                        className='text-yellow font-semibold ml-2'
                     >
-                        <FormField
-                            control={form.control}
-                            name='email'
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Почта</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            type='email'
-                                            placeholder='your@email.com'
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <div className='h-5'>
-                                        <FormMessage className='text-red-500' />
-                                    </div>
-                                </FormItem>
-                            )}
-                        />
+                        Зарегистрируйтесь
+                    </Link>
+                </span>
+            </div>
 
-                        <FormField
-                            control={form.control}
-                            name='password'
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Пароль</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            type='password'
-                                            placeholder='Введите пароль'
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <div className='h-5'>
-                                        <FormMessage className='text-red-500' />
-                                    </div>
-                                </FormItem>
-                            )}
-                        />
+            <LoginForm />
 
-                        <Button
-                            disabled={isLoading}
-                            type='submit'
-                            className='bg-yellow text-white flex items-center gap-2'
-                        >
-                            Войти
-                        </Button>
-                    </form>
-                </Form>
-            </Fade>
+            <div className='flex items-center gap-4'>
+                <div className='flex-1 bg-shade_gray h-[1px] rounded-md' />
+                <span className='text-shade_gray'>или с помощью</span>
+                <div className='flex-1 bg-shade_gray h-[1px] rounded-md' />
+            </div>
+
+            <LoginVia />
         </div>
     );
 };

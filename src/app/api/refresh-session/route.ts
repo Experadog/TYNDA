@@ -1,12 +1,4 @@
-import {
-    COOKIES,
-    decryptData,
-    encryptData,
-    parseISOStringToDate,
-    REFRESH_INTERVAL_GUARD,
-    sharedCookieConfig,
-    URL_ENTITIES,
-} from '@/lib';
+import { COOKIES, decryptData, defaultCookieConfig, encryptData, parseISOStringToDate, REFRESH_INTERVAL_GUARD, URL_ENTITIES } from '@/lib';
 import { Credentials, Session } from '@business-entities';
 import { AXIOS_POST, CommonResponse } from '@common';
 import { cookies } from 'next/headers';
@@ -20,10 +12,7 @@ export async function POST() {
         return new Response(JSON.stringify(encryptData({ code: 401 })), { status: 200 });
     }
 
-    if (
-        decryptedOldSession?.last_refreshed &&
-        Date.now() - decryptedOldSession.last_refreshed < REFRESH_INTERVAL_GUARD
-    ) {
+    if (decryptedOldSession?.last_refreshed && Date.now() - decryptedOldSession.last_refreshed < REFRESH_INTERVAL_GUARD) {
         return new Response(JSON.stringify(oldSession), {
             status: 200,
         });
@@ -45,11 +34,7 @@ export async function POST() {
 
     const encryptedNewSession = encryptData(newSession);
 
-    cookieStore.set(
-        COOKIES.SESSION,
-        encryptedNewSession,
-        sharedCookieConfig(parseISOStringToDate(newSession.refresh_token_expire_time))
-    );
+    cookieStore.set(COOKIES.SESSION, encryptedNewSession, defaultCookieConfig(parseISOStringToDate(newSession.refresh_token_expire_time)));
 
     const response = new Response(JSON.stringify(encryptedNewSession), {
         status: 200,

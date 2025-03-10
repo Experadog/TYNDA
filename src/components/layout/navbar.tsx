@@ -1,87 +1,51 @@
-import { Link, usePathname } from '@/i18n/routing';
-import { PAGES } from '@/lib';
-import { useUser } from '@/providers/user/user-provider';
+import { Link } from '@/i18n/routing';
+import { NAV_LINKS } from '@/lib';
+import { Button, ToggleLocale, ToggleTheme } from '@components';
 import clsx from 'clsx';
-import { FC, useEffect, useState } from 'react';
-import ThemeToggle from '../toggle-theme/toggle-theme';
+import Image from 'next/image';
+import { FC } from 'react';
+import { useNavbarUseCase } from './use-cases/useNavbarUseCase';
 
 interface IProps {
     viewModel: ViewModel['Layout']['navbar'];
 }
 
 const Navbar: FC<IProps> = () => {
-    const [isScrolled, setIsScrolled] = useState(false);
-    const pathname = usePathname();
-    const { user } = useUser();
-
-    const links = [
-        {
-            path: PAGES.BENEFITS_MAP,
-            label: 'Карта рекомендаций',
-        },
-
-        {
-            path: PAGES.ABOUT,
-            label: 'О клубе',
-        },
-
-        {
-            path: user ? PAGES.PROFILE : PAGES.LOGIN,
-            label: user ? 'Кабинет' : 'Войти',
-        },
-    ];
-
-    useEffect(() => {
-        const handleScroll = () => {
-            setIsScrolled(window.scrollY > 50);
-        };
-
-        window.addEventListener('scroll', handleScroll);
-
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
+    const { isScrolled, navigateToAuthOrProfile, user, viewModel, shouldHighlightLink, shouldHighlightBtn } = useNavbarUseCase();
 
     return (
         <header
-            className={clsx(
-                'flex items-center justify-center h-16 fixed top-0 w-full transition-all duration-500 px-4 z-50',
-                isScrolled || ![PAGES.HOME, PAGES.LOGIN].includes(pathname as PAGES)
-                    ? 'bg-background_2 shadow-lg text-foreground_1'
-                    : 'bg-transparent text-white h-20'
-            )}
+            id='navbar'
+            className={clsx('bg-background_1  flex items-center px-12 py-5 gap-16 sticky z-50 top-0 right-0 left-0 transition-shadow', isScrolled ? 'shadow-md' : 'shadow-none')}
         >
-            <Link
-                href={PAGES.HOME}
-                className='uppercase absolute left-5 text-4xl text-yellow font-extralight'
-            >
-                s-club
-            </Link>
-
-            <nav className='flex items-center justify-center gap-5 self-center'>
-                {links.map(({ label, path }) => (
+            <Image
+                src={'/logo.svg'}
+                alt='logo'
+                width={62}
+                height={48}
+            />
+            <nav className='flex items-center gap-10'>
+                {NAV_LINKS.map((path, index) => (
                     <Link
-                        key={label}
+                        key={path}
                         href={path}
-                        className={
-                            'uppercase font-black  text-xs  hover:text-yellow ' +
-                            clsx(pathname === path ? 'text-yellow' : 'text-inherit')
-                        }
+                        className={clsx('font-semibold uppercase  text-sm hover:text-yellow', shouldHighlightLink(path) && 'text-yellow')}
                     >
-                        {label}
+                        {viewModel.navbar.links[index]}
                     </Link>
                 ))}
-                <Link
-                    href={'http://example.local:3000'}
-                    className={'uppercase font-black  text-xs  hover:text-yellow '}
-                >
-                    soyuz kg
-                </Link>
             </nav>
-            <div className='flex items-center gap-3 absolute right-5'>
-                <ThemeToggle />
-            </div>
+
+            <nav className='flex items-center ml-auto gap-5'>
+                <ToggleTheme />
+                <ToggleLocale />
+                <Button
+                    onClick={navigateToAuthOrProfile}
+                    className={clsx('bg-transparent uppercase text-foreground_1 font-semibold shadow-none p-5 rounded-3xl border-foreground_1  border cursor-pointer hover:bg-yellow hover:border-background_1 hover:text-white', shouldHighlightBtn && 'bg-yellow  border-background_1 text-white')}
+                >
+                    {user ? user.email : 'Авторизоваться'}
+                </Button>
+            </nav>
         </header>
     );
 };
