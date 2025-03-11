@@ -4,8 +4,8 @@ import { Link } from '@/i18n/routing';
 import { PAGES } from '@/lib';
 import { Fade, Translate } from '@components';
 import { FC } from 'react';
-import LoginForm from './_components/login-form';
-import LoginVia from './_components/login-via';
+import LoginForm from '../_components/login-form';
+import LoginVia from '../_components/login-via';
 
 const LoginView: FC = () => {
     return (
@@ -40,7 +40,8 @@ const LoginView: FC = () => {
 
             <Translate
                 direction='up'
-                distance={100}
+                distance={150}
+                duration={1.3}
             >
                 <LoginVia />
             </Translate>

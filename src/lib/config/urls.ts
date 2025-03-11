@@ -1,10 +1,13 @@
 export enum URL_ENTITIES {
+    //auth
     LOGIN = '/auth/login',
     LOGOUT = '/auth/logout',
-    REGISTER = '/auth/register',
-    PROFILE = '/sys/users/me',
     REFRESH_TOKEN = '/auth/refresh-token',
     CALLBACK_GOOGLE = '/auth/login/callback_from_google',
+
+    //sys
+    REGISTER = '/sys/users/register',
+    PROFILE = '/sys/users/me',
 }
 
 export enum URL_LOCAL_ENTITIES {

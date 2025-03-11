@@ -2,7 +2,7 @@
 
 import { useViewModel } from '@/i18n/getTranslate';
 import { useRouter } from '@/i18n/routing';
-import { createDynamicCallbackUrl, PAGES } from '@/lib';
+import { createDynamicCallbackUrl, PAGES, YANDEX_CLIENT_ID } from '@/lib';
 import { useLocale } from '@/providers/locale/locale-provider';
 import { useUser } from '@/providers/user/user-provider';
 import { GoogleLoginRequestModel, GoogleLoginResponseModel, login, LoginRequestModel, LoginResponseModel, sendAndLoginByGoogle } from '@/services';
@@ -56,13 +56,20 @@ export const useLoginUseCase = () => {
         await googleLoginExecute(sendGoogleCodeAction, values);
     };
 
+    const loginWithYandex = () => {
+        const redirect_uri = createDynamicCallbackUrl(locale);
+        const authUrl = `https://oauth.yandex.ru/authorize?response_type=code&client_id=${YANDEX_CLIENT_ID}&redirect_uri=${redirect_uri}`;
+        router.push(authUrl);
+    };
+
     const loginVia = {
         google: useGoogleLogin({
             flow: 'auth-code',
             ux_mode: 'redirect',
             redirect_uri: createDynamicCallbackUrl(locale),
-            onSuccess: async (res) => console.log(res),
         }),
+
+        yandex: loginWithYandex,
     };
 
     return { isCommonLoginLoading: isLoginLoading, onSendGoogleCode, onCommonLogin, form, viewModel: viewModel.Login, loginVia };

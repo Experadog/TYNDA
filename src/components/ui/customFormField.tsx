@@ -25,10 +25,10 @@ export const CustomFormField: FC<IProps> = ({ control, name, placeholder, type, 
             control={control}
             name={name}
             render={({ field }) => (
-                <FormItem className={clsx('relative', className)}>
+                <FormItem className={clsx('relative w-full', className)}>
                     <FormControl>
                         <Input
-                            className={clsx('bg-input_bg border-none outline-none focus:border-none placeholder:text-placeholder rounded-2xl px-4 py-6 font-semibold', type === 'password' ? 'pr-10' : '', InputClassName)}
+                            className={clsx('bg-input_bg  border-none outline-none focus:border-none placeholder:text-placeholder rounded-2xl px-4 py-6 font-semibold', type === 'password' ? 'pr-10' : '', InputClassName)}
                             type={type === 'password' ? (!isPasswordHidden ? 'text' : 'password') : type}
                             placeholder={placeholder}
                             {...field}

@@ -50,4 +50,5 @@ body {
 html {
     max-width: 1920px;
     margin-inline: auto;
+    will-change: background-color, color;
 }

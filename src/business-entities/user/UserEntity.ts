@@ -1,19 +1,28 @@
 export type User = {
+    id: string;
     first_name: string;
     last_name: string;
     email: string;
     phone: string;
-    uuid: string;
-    status: number;
+    status: 'enable' | 'disable';
     is_superuser: boolean;
     is_staff: boolean;
     is_multi_login: boolean;
+    is_phone_verified: boolean;
     created_time: string;
     last_login_time: string;
-    roles: [];
+    role: UserRole;
     card: null;
-    establishment: null;
+    cached_permission_groups: {
+        establishment: Partial<'crud'>;
+        user: Partial<'crud'>;
+    };
 };
+
+export enum UserRole {
+    CLIENT = 'client',
+    ESTABLISHER = 'establisher',
+}
 
 export type Credentials = {
     access_token: string;

@@ -18,12 +18,15 @@ const Navbar: FC<IProps> = () => {
             id='navbar'
             className={clsx('bg-background_1  flex items-center px-12 py-5 gap-16 sticky z-50 top-0 right-0 left-0 transition-shadow', isScrolled ? 'shadow-md' : 'shadow-none')}
         >
-            <Image
-                src={'/logo.svg'}
-                alt='logo'
-                width={62}
-                height={48}
-            />
+            <div className='w-[62px] h-[48px]'>
+                <Image
+                    src={'/logo.svg'}
+                    alt='logo'
+                    width={62}
+                    height={48}
+                />
+            </div>
+
             <nav className='flex items-center gap-10'>
                 {NAV_LINKS.map((path, index) => (
                     <Link

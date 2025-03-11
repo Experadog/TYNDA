@@ -8,6 +8,7 @@ export { default as ToggleTheme } from './toggle-theme/toggle-theme';
 //shadcn
 export * from './ui/button';
 export * from './ui/customFormField';
+export * from './ui/dialog';
 export * from './ui/form';
 export * from './ui/input';
 export * from './ui/label';

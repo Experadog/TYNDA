@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { FC } from 'react';
-import { useLoginUseCase } from '../../use-case/useLoginUseCase';
+import { useLoginUseCase } from '../use-case/useLoginUseCase';
 
 interface IButtonProps {
     imageSrc: string;
@@ -37,7 +37,7 @@ const LoginVia: FC = () => {
             <AuthButton
                 imageSrc='/ss/yandex.svg'
                 altText='auth-yandex'
-                onClick={() => {}}
+                onClick={loginVia.yandex}
             />
             <AuthButton
                 imageSrc='/ss/vk.svg'

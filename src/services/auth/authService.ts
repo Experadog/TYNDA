@@ -3,7 +3,7 @@
 import { COOKIES, defaultCookieConfig, encryptData, isSuccessResponse, parseISOStringToDate, URL_ENTITIES } from '@/lib';
 import { AXIOS_GET, AXIOS_POST, CommonResponse } from '@common';
 import { cookies } from 'next/headers';
-import { GoogleLoginRequestModel, GoogleLoginResponseModel, LoginRequestModel, LoginResponseModel } from './authServiceTypes';
+import { GoogleLoginRequestModel, GoogleLoginResponseModel, LoginRequestModel, LoginResponseModel, RegisterClientRequestModel, RegisterEstablisherRequestModel, RegisterResponseModel } from './authServiceTypes';
 
 class AuthService {
     static async login(request: LoginRequestModel): Promise<LoginResponseModel> {
@@ -53,8 +53,18 @@ class AuthService {
 
         return response;
     }
+
+    static async register(data: RegisterClientRequestModel | RegisterEstablisherRequestModel): Promise<RegisterResponseModel> {
+        const response = await AXIOS_POST<RegisterResponseModel>({
+            url: URL_ENTITIES.REGISTER,
+            data,
+        });
+
+        return response;
+    }
 }
 
 export const login = AuthService.login;
 export const logout = AuthService.logout;
 export const sendAndLoginByGoogle = AuthService.sendAndLoginByGoogle;
+export const register = AuthService.register;

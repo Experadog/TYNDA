@@ -1,6 +1,6 @@
 import { Button, CustomFormField, Form } from '@components';
 import { FC } from 'react';
-import { useLoginUseCase } from '../../use-case/useLoginUseCase';
+import { useLoginUseCase } from '../use-case/useLoginUseCase';
 
 interface IProps {}
 
@@ -31,7 +31,8 @@ const LoginForm: FC<IProps> = ({}) => {
                 <Button
                     disabled={!!Object.values(form.formState.errors).length || isCommonLoginLoading}
                     type='submit'
-                    className='bg-yellow text-white my-8 w-full p-6 disabled:bg-gray rounded-3xl text-base font-semibold shadow-none'
+                    variant={'yellow'}
+                    className='my-8 w-full rounded-3xl p-6'
                 >
                     Войти
                 </Button>
