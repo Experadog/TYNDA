@@ -8,6 +8,7 @@ export enum URL_ENTITIES {
     //sys
     REGISTER = '/sys/users/register',
     PROFILE = '/sys/users/me',
+    ACTIVATE_ACCOUNT = '/sys/users/activate',
 }
 
 export enum URL_LOCAL_ENTITIES {

@@ -6,7 +6,7 @@ import { UserRole } from '@business-entities';
 import { Translate } from '@components';
 import { FC } from 'react';
 import RegisterClientForm from '../_components/register-client-form';
-import RegisterConfirmDialog from '../_components/register-confirm-dialog';
+import RegisterDialog from '../_components/register-dialog';
 import RegisterPartnerForm from '../_components/register-establisher-form';
 import RegisterSwitcher from '../_components/register-switcher';
 import { useRegisterUseCase } from '../use-case/useRegisterUseCase';
@@ -57,7 +57,7 @@ const RegisterView: FC<IProps> = ({}) => {
                 />
             </Translate>
 
-            <RegisterConfirmDialog />
+            <RegisterDialog />
         </div>
     );
 };

@@ -27,4 +27,13 @@ export type RegisterClientRequestModel = {
     confirm_password?: string;
 };
 
+// Account activation
+
+export type AccountActivationRequestModel = {
+    email: string;
+    code: string;
+};
+
+export type AccountActivationResponseModel = CommonResponse<string>;
+
 export type RegisterResponseModel = CommonResponse<string>;

@@ -3,7 +3,7 @@
 import { COOKIES, defaultCookieConfig, encryptData, isSuccessResponse, parseISOStringToDate, URL_ENTITIES } from '@/lib';
 import { AXIOS_GET, AXIOS_POST, CommonResponse } from '@common';
 import { cookies } from 'next/headers';
-import { GoogleLoginRequestModel, GoogleLoginResponseModel, LoginRequestModel, LoginResponseModel, RegisterClientRequestModel, RegisterEstablisherRequestModel, RegisterResponseModel } from './authServiceTypes';
+import { AccountActivationRequestModel, AccountActivationResponseModel, GoogleLoginRequestModel, GoogleLoginResponseModel, LoginRequestModel, LoginResponseModel, RegisterClientRequestModel, RegisterEstablisherRequestModel, RegisterResponseModel } from './authServiceTypes';
 
 class AuthService {
     static async login(request: LoginRequestModel): Promise<LoginResponseModel> {
@@ -62,9 +62,19 @@ class AuthService {
 
         return response;
     }
+
+    static async activateAccount(data: AccountActivationRequestModel): Promise<AccountActivationResponseModel> {
+        const response = AXIOS_POST<AccountActivationResponseModel>({
+            url: URL_ENTITIES.ACTIVATE_ACCOUNT,
+            params: data,
+        });
+
+        return response;
+    }
 }
 
 export const login = AuthService.login;
 export const logout = AuthService.logout;
 export const sendAndLoginByGoogle = AuthService.sendAndLoginByGoogle;
 export const register = AuthService.register;
+export const activateAccount = AuthService.activateAccount;

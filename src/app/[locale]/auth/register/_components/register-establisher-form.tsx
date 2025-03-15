@@ -7,14 +7,11 @@ interface IProps {}
 const RegisterEstablisherForm: FC<IProps> = ({}) => {
     const { states, actions } = useRegisterUseCase();
     const { partnerForm } = states;
-    const { onRegisterEstablisher } = actions;
+    const { openAndTriggerConfirmModal } = actions;
 
     return (
         <Form {...partnerForm}>
-            <form
-                onSubmit={partnerForm.handleSubmit(onRegisterEstablisher)}
-                className='mt-7 flex flex-col gap-5'
-            >
+            <form className='mt-7 flex flex-col gap-5'>
                 <div className='flex items-center gap-4'>
                     <CustomFormField
                         control={partnerForm.control}
@@ -52,6 +49,8 @@ const RegisterEstablisherForm: FC<IProps> = ({}) => {
                 />
 
                 <Button
+                    onClick={openAndTriggerConfirmModal}
+                    type='button'
                     variant={'yellow'}
                     className='w-full rounded-3xl p-6'
                 >

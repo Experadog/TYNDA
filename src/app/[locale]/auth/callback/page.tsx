@@ -15,7 +15,6 @@ const Callback: FC<IProps> = ({}) => {
 
     useEffect(() => {
         const code = params.get('code') || '';
-
         onSendGoogleCode({ code, role: 'client', locale });
     }, []);
 

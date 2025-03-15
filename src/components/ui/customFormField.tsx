@@ -1,7 +1,7 @@
 'use client';
 
 import clsx from 'clsx';
-import { FC, HTMLInputTypeAttribute, useState } from 'react';
+import { FC, HTMLInputTypeAttribute, Ref, useState } from 'react';
 import { Control } from 'react-hook-form';
 import { IoEye, IoEyeOff } from 'react-icons/io5';
 import { FormControl, FormField, FormItem, FormMessage } from './form';
@@ -15,9 +15,10 @@ interface IProps {
     InputClassName?: string;
     ErrorClassName?: string;
     className?: string;
+    ref?: Ref<HTMLInputElement>;
 }
 
-export const CustomFormField: FC<IProps> = ({ control, name, placeholder, type, InputClassName, ErrorClassName, className }) => {
+export const CustomFormField: FC<IProps> = ({ control, name, placeholder, type, InputClassName, ErrorClassName, className, ref }) => {
     const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
     return (
@@ -28,10 +29,11 @@ export const CustomFormField: FC<IProps> = ({ control, name, placeholder, type, 
                 <FormItem className={clsx('relative w-full', className)}>
                     <FormControl>
                         <Input
+                            {...field}
                             className={clsx('bg-input_bg  border-none outline-none focus:border-none placeholder:text-placeholder rounded-2xl px-4 py-6 font-semibold', type === 'password' ? 'pr-10' : '', InputClassName)}
                             type={type === 'password' ? (!isPasswordHidden ? 'text' : 'password') : type}
                             placeholder={placeholder}
-                            {...field}
+                            ref={ref}
                         />
                     </FormControl>
 
