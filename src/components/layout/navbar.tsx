@@ -5,26 +5,35 @@ import clsx from 'clsx';
 import Image from 'next/image';
 import { FC } from 'react';
 import { useNavbarUseCase } from './use-cases/useNavbarUseCase';
+import { RiHome6Line } from 'react-icons/ri';
+import { CgInfo } from 'react-icons/cg';
+import { LiaPhoneSolid } from 'react-icons/lia';
+import { LuCreditCard } from 'react-icons/lu';
+import { TbMapSearch } from 'react-icons/tb';
 
 interface IProps {
     viewModel: ViewModel['Layout']['navbar'];
 }
 
+const icons = [<RiHome6Line className='w-[18px] h-[18px]' />, <TbMapSearch className='w-[18px] h-[18px]' />, <CgInfo className='w-[18px] h-[18px]' />, <LiaPhoneSolid className='w-[18px] h-[18px]' />, <LuCreditCard className='w-[18px] h-[18px]' />];
+
 const Navbar: FC<IProps> = () => {
-    const { isScrolled, navigateToAuthOrProfile, user, viewModel, shouldHighlightLink, shouldHighlightBtn } = useNavbarUseCase();
+    const { navigateToAuthOrProfile, user, viewModel, shouldHighlightLink, shouldHighlightBtn } = useNavbarUseCase();
 
     return (
         <header
             id='navbar'
-            className={clsx('bg-background_1  flex items-center px-12 py-5 gap-16 sticky z-50 top-0 right-0 left-0 transition-shadow', isScrolled ? 'shadow-md' : 'shadow-none')}
+            className={clsx('bg-background_1  flex items-center px-12 py-5 gap-16 sticky z-50 top-0 right-0 left-0 transition-shadow shadow-lg')}
         >
-            <div className='w-[62px] h-[48px]'>
-                <Image
-                    src={'/logo.svg'}
-                    alt='logo'
-                    width={62}
-                    height={48}
-                />
+            <div className='w-[50px] h-[48px]'>
+                <Link href={'/'}>
+                    <Image
+                        src={'/logo.svg'}
+                        alt='logo'
+                        width={50}
+                        height={48}
+                    />
+                </Link>
             </div>
 
             <nav className='flex items-center gap-10'>
@@ -34,7 +43,10 @@ const Navbar: FC<IProps> = () => {
                         href={path}
                         className={clsx('font-semibold uppercase  text-sm hover:text-yellow', shouldHighlightLink(path) && 'text-yellow')}
                     >
-                        {viewModel.navbar.links[index]}
+                        <div className='flex items-center gap-[10px]'>
+                            {icons[index]}
+                            {viewModel.navbar.links[index]}
+                        </div>
                     </Link>
                 ))}
             </nav>

@@ -15,7 +15,7 @@ const Layout: FC<IProps> = ({ children }) => {
     return (
         <main className='flex flex-col relative'>
             <Navbar viewModel={viewModel.navbar} />
-            <div style={{ height: `calc(100vh - 88px)`, overflowY: 'scroll' }}>{children}</div>
+            <div style={{ minHeight: `calc(100vh - 88px)`, overflowY: 'auto' }}>{children}</div>
             <Footer viewModel={viewModel.footer} />
         </main>
     );
