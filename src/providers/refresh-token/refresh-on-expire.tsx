@@ -3,7 +3,6 @@
 import { useRouter } from '@/i18n/routing';
 import { decryptData, LOCAL_API_URL, REFRESH_INTERVAL_GUARD, URL_LOCAL_ENTITIES } from '@/lib';
 import { Session } from '@business-entities';
-import { isAxiosError } from 'axios';
 import { FC, ReactNode, useCallback, useEffect, useRef } from 'react';
 import { useUser } from '../user/user-provider';
 
@@ -104,14 +103,10 @@ const RefreshOnExpire: FC<IProps> = ({ children, initialSession }) => {
             expires.current = decryptedData.access_token_expire_time;
             lastRefreshed.current = new Date().getTime();
             isErrorHandled.current = false;
-            router.refresh();
         } catch (error) {
-            if (isAxiosError(error) && error.status === 401) {
-                router.refresh();
-            } else {
-                await onError();
-            }
+            await onError();
         } finally {
+            router.refresh();
             isRefreshing.current = false;
         }
     }, [router, onError, startRefreshTimer, isValidSession]);

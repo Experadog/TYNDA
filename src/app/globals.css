@@ -54,3 +54,7 @@ html {
     margin-inline: auto;
     will-change: background-color, color;
 }
+
+.numeric {
+    font-variant-numeric: lining-nums proportional-nums;
+}

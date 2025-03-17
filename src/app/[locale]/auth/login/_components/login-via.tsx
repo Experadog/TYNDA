@@ -30,17 +30,17 @@ const LoginVia: FC = () => {
     return (
         <div className='mt-5 flex items-center justify-between w-full gap-7'>
             <AuthButton
-                imageSrc='/ss/google.svg'
+                imageSrc='/sm/google.svg'
                 altText='auth-google'
                 onClick={loginVia.google}
             />
             <AuthButton
-                imageSrc='/ss/yandex.svg'
+                imageSrc='/sm/yandex.svg'
                 altText='auth-yandex'
                 onClick={loginVia.yandex}
             />
             <AuthButton
-                imageSrc='/ss/vk.svg'
+                imageSrc='/sm/vk.svg'
                 altText='auth-vk'
                 onClick={() => {}}
             />

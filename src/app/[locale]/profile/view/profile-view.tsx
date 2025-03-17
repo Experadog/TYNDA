@@ -1,19 +1,13 @@
 'use client';
 
-import { Button } from '@components';
-import { FC } from 'react';
-import { useProfileUseCase } from '../use-case/useProfileUseCase';
+import { FC, ReactNode } from 'react';
 
-interface IProps {}
+interface IProps {
+    children: ReactNode;
+}
 
-const ProfileView: FC<IProps> = () => {
-    const { handleLogout, user } = useProfileUseCase();
-
-    return (
-        <div className=''>
-            {JSON.stringify(user)},<Button onClick={handleLogout}>Logout</Button>
-        </div>
-    );
+const ProfileView: FC<IProps> = ({ children }) => {
+    return <div className='h-full px-12 py-7'>{children}</div>;
 };
 
 export default ProfileView;

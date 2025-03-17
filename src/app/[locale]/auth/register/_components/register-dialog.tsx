@@ -1,13 +1,17 @@
+import { UserRole } from '@business-entities';
 import { Button, Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@components';
 import { FC } from 'react';
 import { useRegisterUseCase } from '../use-case/useRegisterUseCase';
+import ActivationCodeInput from './register-activation-inputs';
 
 interface IProps {}
 
-const RegisterConfirmDialog: FC<IProps> = ({}) => {
+const RegisterDialog: FC<IProps> = ({}) => {
     const { states, actions } = useRegisterUseCase();
-    const { clientForm, isConfirmModal } = states;
+    const { clientForm, partnerForm, role, isConfirmModal, isActivating } = states;
     const { closeConfirmModal, onConfirm } = actions;
+
+    const title = role === UserRole.CLIENT ? clientForm.getValues('email') : partnerForm.getValues('email');
 
     return (
         <Dialog
@@ -16,9 +20,10 @@ const RegisterConfirmDialog: FC<IProps> = ({}) => {
         >
             <DialogContent className='bg-background_1 p-10 border-none'>
                 <DialogHeader>
-                    <DialogTitle className='text-foreground_1 text-center mb-6'>{clientForm.getValues('email')}</DialogTitle>
-                    <DialogDescription className='text-gray text-center'>Проверьте, правильно ли указана ваша электронная почта - мы отправим на него код подтверждения</DialogDescription>
+                    <DialogTitle className='text-foreground_1 text-center mb-6 text-xl '>{isActivating ? 'Подтверждение кода' : title}</DialogTitle>
+                    <DialogDescription className='text-gray text-center'>{isActivating ? 'Проверьте, правильно ли вы ввели код активации почты' : 'Проверьте, правильно ли указана ваша электронная почта - мы отправим на него код подтверждения'}</DialogDescription>
                 </DialogHeader>
+                {isActivating && <ActivationCodeInput />}
                 <DialogFooter className='mt-5'>
                     <div className='flex flex-col w-full gap-5'>
                         <Button
@@ -45,4 +50,4 @@ const RegisterConfirmDialog: FC<IProps> = ({}) => {
     );
 };
 
-export default RegisterConfirmDialog;
+export default RegisterDialog;
