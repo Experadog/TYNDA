@@ -27,6 +27,16 @@ export default {
                 yellow: 'var(--yellow)',
                 error: 'var(--error)',
             },
+
+            screens: {
+                exs: { max: '375px' },
+                xs: { max: '480px' },
+                sm: { max: '640px' },
+                md: { max: '768px' },
+                lg: { max: '1024px' },
+                xl: { max: '1280px' },
+                xxl: { max: '1440px' },
+            },
         },
     },
     plugins: [require('tailwindcss-animate')],
