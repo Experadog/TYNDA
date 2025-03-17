@@ -4,12 +4,12 @@ import { Button, ToggleLocale, ToggleTheme } from '@components';
 import clsx from 'clsx';
 import Image from 'next/image';
 import { FC } from 'react';
-import { useNavbarUseCase } from './use-cases/useNavbarUseCase';
-import { RiHome6Line } from 'react-icons/ri';
 import { CgInfo } from 'react-icons/cg';
 import { LiaPhoneSolid } from 'react-icons/lia';
 import { LuCreditCard } from 'react-icons/lu';
+import { RiHome6Line } from 'react-icons/ri';
 import { TbMapSearch } from 'react-icons/tb';
+import { useNavbarUseCase } from './use-cases/useNavbarUseCase';
 
 interface IProps {
     viewModel: ViewModel['Layout']['navbar'];

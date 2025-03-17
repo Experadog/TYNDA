@@ -1,8 +1,8 @@
 'use client';
-import { FC } from 'react';
-import RecomendationCard from './recomendationCard';
-import { useHomeUseCase } from '../use-cases/useHomeUseCase';
 import { Translate } from '@components';
+import { FC } from 'react';
+import { useHomeUseCase } from '../use-cases/useHomeUseCase';
+import RecommendationCard from './recommendationCard';
 
 interface IProps {
     viewModel: ViewModel['Home']['moreRecs'];
@@ -26,7 +26,7 @@ const MoreRecs: FC<IProps> = ({}) => {
                         animateOnce={false}
                     >
                         <div>
-                            <RecomendationCard
+                            <RecommendationCard
                                 ratingClassName='max-w-[170px]'
                                 imageClassName='h-[560px]'
                                 className=''
@@ -41,7 +41,7 @@ const MoreRecs: FC<IProps> = ({}) => {
                     >
                         <div className='grid grid-cols-2 gap-[25px]'>
                             {Array.from({ length: 4 }).map((_, index) => (
-                                <RecomendationCard
+                                <RecommendationCard
                                     ratingClassName='max-w-[170px]'
                                     key={index}
                                     imageClassName='w-[320px] h-[224px]'

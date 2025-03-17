@@ -1,8 +1,7 @@
 'use client';
-import { Button } from '@components';
+import { Button, Translate } from '@components';
 import { FC } from 'react';
 import { useHomeUseCase } from '../use-cases/useHomeUseCase';
-import { Translate } from '@components';
 
 interface IProps {
     viewModel: ViewModel['Home']['hero'];

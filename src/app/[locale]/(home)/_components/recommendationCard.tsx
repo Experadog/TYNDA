@@ -19,9 +19,9 @@ interface IProps {
     imageHeight?: number;
 }
 
-const RecomendationCard: FC<IProps> = ({ className = '', bottomElClassName = '', titleClassName = '', descriptionClassName = '', buttonClassName = '', ratingClassName = '', imageClassName = '', hideImage = false, hideDescription = false, hideButton = false, hideRating = false, imageWidth = 320, imageHeight = 322 }) => {
+const RecommendationCard: FC<IProps> = ({ className = '', bottomElClassName = '', titleClassName = '', descriptionClassName = '', buttonClassName = '', ratingClassName = '', imageClassName = '', hideImage = false, hideDescription = false, hideButton = false, hideRating = false, imageWidth = 320, imageHeight = 322 }) => {
     return (
-        <div className={`flex flex-col gap-[14px] pb-[14px] shadow-md rounded-[20px] ${className}`}>
+        <div className={`flex flex-col gap-[14px] pb-[14px] shadow-md rounded-[20px] bg-background_1 ${className}`}>
             {!hideImage && (
                 <div>
                     <Image
@@ -57,4 +57,4 @@ const RecomendationCard: FC<IProps> = ({ className = '', bottomElClassName = '',
     );
 };
 
-export default RecomendationCard;
+export default RecommendationCard;
