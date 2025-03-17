@@ -7,7 +7,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 export function useNavbarUseCase() {
     const viewModel = useViewModel(['Layout']);
-    const [isScrolled, setIsScrolled] = useState(false);
+    // const [isScrolled, setIsScrolled] = useState(false);
     const { user } = useUser();
     const router = useRouter();
     const pathname = usePathname();
@@ -19,17 +19,17 @@ export function useNavbarUseCase() {
     const shouldHighlightLink = useMemo(() => (path: string) => path === pathname, [pathname]);
     const shouldHighlightBtn = useMemo(() => pathname.startsWith('/auth') || pathname.startsWith(PAGES.PROFILE), [pathname]);
 
-    useEffect(() => {
-        const handleScroll = () => {
-            setIsScrolled(window.scrollY > 50);
-        };
+    // useEffect(() => {
+    //     const handleScroll = () => {
+    //         setIsScrolled(window.scrollY > 1);
+    //     };
 
-        window.addEventListener('scroll', handleScroll);
+    //     window.addEventListener('scroll', handleScroll);
 
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
+    //     return () => {
+    //         window.removeEventListener('scroll', handleScroll);
+    //     };
+    // }, []);
 
-    return { viewModel, isScrolled, user, navigateToAuthOrProfile, shouldHighlightLink, shouldHighlightBtn };
+    return { viewModel, user, navigateToAuthOrProfile, shouldHighlightLink, shouldHighlightBtn };
 }
