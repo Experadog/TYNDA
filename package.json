@@ -21,6 +21,7 @@
         "cookies-next": "^5.1.0",
         "critters": "^0.0.25",
         "crypto-js": "^4.2.0",
+        "keen-slider": "^6.8.6",
         "lucide-react": "^0.475.0",
         "next": "15.1.7",
         "next-intl": "^3.26.3",
