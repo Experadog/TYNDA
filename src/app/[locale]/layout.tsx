@@ -1,4 +1,5 @@
-import { Layout } from '@components';
+import { AnimationTracker, Layout } from '@components';
+
 import type { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
 import { Raleway } from 'next/font/google';
@@ -41,6 +42,7 @@ export default async function RootLayout({
                 <NextIntlClientProvider>
                     <CollectedProviders>
                         <Layout>{children}</Layout>
+                        <AnimationTracker />
                     </CollectedProviders>
                 </NextIntlClientProvider>
             </body>

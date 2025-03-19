@@ -3,7 +3,7 @@
 import { Link } from '@/i18n/routing';
 import { phoneFormatter } from '@/lib';
 import { useUser } from '@/providers/user/user-provider';
-import { Button, TariffCard } from '@components';
+import { Button, TariffCard, Translate } from '@components';
 import { FC } from 'react';
 import { SlPencil } from 'react-icons/sl';
 
@@ -13,7 +13,11 @@ const UserCard: FC<IProps> = ({}) => {
     const { user } = useUser();
 
     return (
-        <div className='bg-background_1 w-full max-w-[416px] rounded-3xl p-6 absolute -top-[230px] shadow-md'>
+        <Translate
+            distance={150}
+            direction='right'
+            className='bg-background_1 w-full max-w-[416px] z-10 rounded-3xl p-6 shadow-md -mt-52 flex-shrink-0'
+        >
             <div className='relative flex flex-col w-full items-center'>
                 <div className='flex items-center flex-col w-full relative'>
                     <div className={`bg-[url(/auth.webp)] bg-cover size-28 absolute rounded-full -top-11`}>
@@ -65,7 +69,7 @@ const UserCard: FC<IProps> = ({}) => {
                     Редактировать профиль
                 </Link>
             </div>
-        </div>
+        </Translate>
     );
 };
 

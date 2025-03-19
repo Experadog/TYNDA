@@ -48,7 +48,7 @@ const RecommendationCard: FC<IProps> = ({ className = '', bottomElClassName = ''
                     {!hideRating && (
                         <div className={`flex gap-1 items-center`}>
                             <p>4.9</p>
-                            <IoStar className='text-[#F4A900]' />
+                            <IoStar className='text-[var(--yellow)]' />
                         </div>
                     )}
                 </div>

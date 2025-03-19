@@ -1,8 +1,8 @@
 'use client';
+import { Translate } from '@components';
 import Image from 'next/image';
 import { FC } from 'react';
 import { useHomeUseCase } from '../use-cases/useHomeUseCase';
-import { Translate } from '@components';
 
 interface IProps {
     viewModel: ViewModel['Home']['about'];
@@ -21,8 +21,8 @@ const About: FC<IProps> = ({}) => {
                     <div className='flex flex-col gap-[20px]'>
                         <h3 className='uppercase font-semibold text-lg opacity-70'>{viewModel.about.title}</h3>
                         <h2 className='uppercase font-medium text-[34px] max-w-[734px]'>
-                            {viewModel.about.title1} <span className='text-[#F4A900]'>{viewModel.about.title2} </span>
-                            {viewModel.about.title3} <span className='text-[#F4A900]'>{viewModel.about.title4}</span>
+                            {viewModel.about.title1} <span className='text-[var(--yellow)]'>{viewModel.about.title2} </span>
+                            {viewModel.about.title3} <span className='text-[var(--yellow)]'>{viewModel.about.title4}</span>
                         </h2>
                         <p className='text-lg opacity-80 font-normal max-w-[510px] mt-[20px]'>{viewModel.about.description1}</p>
                         <p className='text-lg opacity-80 font-normal max-w-[510px]'>{viewModel.about.description2}</p>
@@ -67,15 +67,15 @@ const About: FC<IProps> = ({}) => {
                     />
                     <div className='grid grid-cols-3 items-center justify-between gap-4'>
                         <div className='flex flex-col gap-[10px]'>
-                            <p className='font-bold text-6xl uppercase text-[#F4A900]'>24/7</p>
+                            <p className='font-bold text-6xl uppercase text-[var(--yellow)]'>24/7</p>
                             <p className='font-normal text-base max-w-[150px]'>{viewModel.about.stats1}</p>
                         </div>
                         <div className='flex flex-col gap-[10px]'>
-                            <p className='font-bold text-6xl uppercase text-[#F4A900]'>50+</p>
+                            <p className='font-bold text-6xl uppercase text-[var(--yellow)]'>50+</p>
                             <p className='font-normal text-base max-w-[110px]'>{viewModel.about.stats2}</p>
                         </div>
                         <div className='flex flex-col gap-[10px]'>
-                            <p className='font-bold text-6xl uppercase text-[#F4A900]'>3 500+</p>
+                            <p className='font-bold text-6xl uppercase text-[var(--yellow)]'>3 500+</p>
                             <p className='font-normal text-base max-w-[200px]'>{viewModel.about.stats3}</p>
                         </div>
                     </div>

@@ -45,6 +45,11 @@
     }
 }
 
+/* disable animation on low FPS */
+.reduce-motion * {
+    animation: none !important;
+}
+
 body {
     font-family: var(--font-raleway), sans-serif;
 }
@@ -55,6 +60,7 @@ html {
     will-change: background-color, color;
 }
 
+/* for all numeric values */
 .numeric {
     font-variant-numeric: lining-nums proportional-nums;
 }

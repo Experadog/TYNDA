@@ -2,6 +2,7 @@ import { Translate } from '@components';
 import { FC } from 'react';
 import Hero from '../_components/hero/hero';
 import RecentlyVisited from '../_components/recently-visited/recently-visited';
+import UserCard from '../_components/user-card/user-card';
 
 interface IProps {}
 
@@ -14,23 +15,10 @@ const MainProfileView: FC<IProps> = ({}) => {
             >
                 <Hero />
             </Translate>
-            <div className='flex gap-7 relative bg-red-300'>
-                {/* <div className='w-full max-w-[416px] ml-10'>
-                    <Translate
-                        direction='up'
-                        distance={150}
-                    >
-                        <UserCard />
-                    </Translate>
-                </div> */}
 
-                <Translate
-                    direction='left'
-                    distance={150}
-                    className='w-full h-full'
-                >
-                    <RecentlyVisited />
-                </Translate>
+            <div className='flex gap-7 pl-10 relative'>
+                <UserCard />
+                <RecentlyVisited />
             </div>
         </div>
     );

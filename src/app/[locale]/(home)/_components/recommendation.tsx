@@ -1,8 +1,6 @@
 'use client';
 
-import { Button, Translate } from '@components';
-import 'keen-slider/keen-slider.min.css';
-import { useKeenSlider } from 'keen-slider/react';
+import { Button, Slider, Translate } from '@components';
 import { FC } from 'react';
 import { BsPassport } from 'react-icons/bs';
 import { GoArrowRight, GoGift } from 'react-icons/go';
@@ -32,10 +30,7 @@ interface IProps {
 
 const Recommendation: FC<IProps> = ({}) => {
     const { viewModel } = useHomeUseCase();
-    const [sliderRef] = useKeenSlider({
-        loop: true,
-        slides: { perView: 8, spacing: 15 },
-    });
+
     return (
         <div className='mt-[75px]'>
             <Translate
@@ -60,25 +55,27 @@ const Recommendation: FC<IProps> = ({}) => {
                 distance={60}
                 animateOnce={false}
             >
-                <div
-                    ref={sliderRef}
-                    className='keen-slider mt-[50px]'
+                <Slider
+                    loop
+                    slidesPerView={8}
+                    spacing={15}
+                    classNameSlider='mt-[50px]'
                 >
                     {sliderData.map((item, index) => {
                         const Icon = item.img;
                         return (
                             <div
                                 key={index}
-                                className='keen-slider__slide flex flex-col items-center gap-3 group cursor-pointer'
+                                className='flex flex-col items-center gap-3 group cursor-pointer'
                             >
-                                <div className='p-[30px] bg-white rounded-full shadow-lg transition-all duration-300 group-hover:bg-[#F4A900] active:bg-[#F4A900]'>
-                                    <Icon className='text-4xl text-[#1C1C1C] group-hover:text-white w-[34px] h-[34px]' />
+                                <div className='p-[30px] bg-background_1 rounded-full shadow-lg transition-all duration-300 group-hover:bg-[var(--yellow)] active:bg-[var(--yellow)]'>
+                                    <Icon className='text-4xl text-foreground_1 group-hover:text-white w-[34px] h-[34px]' />
                                 </div>
-                                <p className='font-semibold text-base text-center group-hover:text-[#F4A900] active:text-[#F4A900]'>{viewModel.recommendation.links[index]}</p>
+                                <p className='font-semibold text-base text-center group-hover:text-[var(--yellow)] active:text-[var(--yellow)]'>{viewModel.recommendation.links[index]}</p>
                             </div>
                         );
                     })}
-                </div>
+                </Slider>
             </Translate>
 
             <div className='grid grid-cols-4 mt-[60px] gap-x-5 gap-y-[34px]'>

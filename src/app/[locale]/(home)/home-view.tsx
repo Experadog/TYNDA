@@ -1,11 +1,14 @@
 'use client';
+
 import { useViewModel } from '@/i18n/getTranslate';
+import dynamic from 'next/dynamic'; // Импорт динамической загрузки
 import { FC } from 'react';
-import About from './_components/about';
-import AdMobile from './_components/adMobile';
 import Hero from './_components/hero';
-import MoreRecs from './_components/moreRecs';
-import Recommendation from './_components/recommendation';
+
+const About = dynamic(() => import('./_components/about'), { ssr: true });
+const AdMobile = dynamic(() => import('./_components/adMobile'), { ssr: true });
+const MoreRecs = dynamic(() => import('./_components/moreRecs'), { ssr: true });
+const Recommendation = dynamic(() => import('./_components/recommendation'), { ssr: true });
 
 interface IProps {}
 

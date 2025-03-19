@@ -22,7 +22,7 @@ declare module 'react' {
 }
 
 const Translate: FC<IProps> = ({ children, duration = 1, delay = 0, animateOnce = true, direction = 'left', distance = 20, className }) => {
-    const [isInViewport, setIsInViewport] = useState(animateOnce);
+    const [isInViewport, setIsInViewport] = useState(false);
     const elementRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -32,10 +32,12 @@ const Translate: FC<IProps> = ({ children, duration = 1, delay = 0, animateOnce 
                     if (entry.isIntersecting) {
                         setIsInViewport(true);
                     } else {
-                        setIsInViewport(false);
+                        if (!animateOnce) {
+                            setIsInViewport(false);
+                        }
                     }
                 },
-                { threshold: 0.1 },
+                { threshold: 0.01 },
             );
 
             if (elementRef.current) {
@@ -47,8 +49,10 @@ const Translate: FC<IProps> = ({ children, duration = 1, delay = 0, animateOnce 
                     observer.unobserve(elementRef.current);
                 }
             };
+        } else {
+            setIsInViewport(true);
         }
-    }, []);
+    }, [animateOnce]);
 
     const style: CSSProperties = {
         animationDuration: `${duration}s`,

@@ -1,8 +1,8 @@
 'use client';
+import { Translate } from '@components';
 import Image from 'next/image';
 import { FC } from 'react';
 import { useHomeUseCase } from '../use-cases/useHomeUseCase';
-import { Translate } from '@components';
 
 interface IProps {
     viewModel: ViewModel['Home']['adMobile'];
@@ -17,7 +17,7 @@ const AdMobile: FC<IProps> = ({}) => {
                 distance={100}
                 animateOnce={false}
             >
-                <div className='bg-[#F4A900] rounded-[45px] pt-[25px] px-[39px]'>
+                <div className='bg-[var(--yellow)] rounded-[45px] pt-[25px] px-[39px]'>
                     <Image
                         src={'/mobileImg.webp'}
                         alt='phone'
