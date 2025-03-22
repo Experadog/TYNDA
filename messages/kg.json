@@ -1,7 +1,10 @@
 {
     "Layout": {
         "navbar": {
-            "links": ["Башкы бет", "Карта", "Компания жөнүндө", "Кызматтар", "Байланыштар"]
+            "links": ["Башкы бет", "Карта", "Компания жөнүндө", "Кызматтар", "Байланыштар"],
+            "button1": "Кирүү",
+            "button2": "Тиркемени жүктөп алыңыз",
+            "button3": "Дареги боюнча жеткиликтүү"
         },
         "footer": {
             "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",

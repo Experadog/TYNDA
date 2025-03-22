@@ -33,7 +33,7 @@ export default async function RootLayout({
             lang={locale || 'ru'}
             suppressHydrationWarning
         >
-            <body className={`${raleway.variable} antialiased`}>
+            <body className={`${raleway.variable} antialiased min-w-80`}>
                 <NextTopLoader
                     color='var(--yellow)'
                     height={3}
