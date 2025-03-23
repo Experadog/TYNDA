@@ -8,9 +8,9 @@ import { IoGameControllerOutline } from 'react-icons/io5';
 import { MdOutlineFamilyRestroom, MdOutlineNightShelter } from 'react-icons/md';
 import { PiCallBellLight } from 'react-icons/pi';
 import { TbFountain, TbMassage } from 'react-icons/tb';
+import { useMediaQuery } from 'react-responsive';
 import { useHomeUseCase } from '../use-cases/useHomeUseCase';
 import RecommendationCard from './recommendationCard';
-import { useMediaQuery } from 'react-responsive';
 
 const data = [
     { id: 0, img: PiCallBellLight },

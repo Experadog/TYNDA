@@ -1,9 +1,9 @@
 'use client';
 import { Translate } from '@components';
 import { FC } from 'react';
+import { useMediaQuery } from 'react-responsive';
 import { useHomeUseCase } from '../use-cases/useHomeUseCase';
 import RecommendationCard from './recommendationCard';
-import { useMediaQuery } from 'react-responsive';
 
 interface IProps {
     viewModel: ViewModel['Home']['moreRecs'];

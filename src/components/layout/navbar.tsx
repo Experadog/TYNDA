@@ -5,14 +5,14 @@ import clsx from 'clsx';
 import Image from 'next/image';
 import { FC, useState } from 'react';
 import { CgInfo } from 'react-icons/cg';
+import { IoClose } from 'react-icons/io5';
 import { LiaPhoneSolid } from 'react-icons/lia';
 import { LuCreditCard } from 'react-icons/lu';
 import { RiHome6Line } from 'react-icons/ri';
-import { TbMapSearch } from 'react-icons/tb';
-import { useNavbarUseCase } from './use-cases/useNavbarUseCase';
 import { RxHamburgerMenu } from 'react-icons/rx';
-import { IoClose } from 'react-icons/io5';
+import { TbMapSearch } from 'react-icons/tb';
 import MobileNavbar from './mobile-navbar';
+import { useNavbarUseCase } from './use-cases/useNavbarUseCase';
 
 interface IProps {
     viewModel: ViewModel['Layout']['navbar'];
