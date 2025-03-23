@@ -40,14 +40,14 @@ const RecommendationCard: FC<IProps> = ({ className = '', bottomElClassName = ''
                     {!hideButton && (
                         <Button
                             variant={'yellow'}
-                            className={`rounded-[18px] ${buttonClassName}`}
+                            className={`rounded-[18px] numeric ${buttonClassName}`}
                         >
                             2 356 c
                         </Button>
                     )}
                     {!hideRating && (
                         <div className={`flex gap-1 items-center`}>
-                            <p>4.9</p>
+                            <p className='numeric'>4.9</p>
                             <IoStar className='text-[var(--yellow)]' />
                         </div>
                     )}

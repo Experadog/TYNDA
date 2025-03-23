@@ -20,11 +20,11 @@ const Footer: FC<IProps> = () => {
     return (
         <footer
             id='footer'
-            className='bg-background_4 p-[60px]'
+            className='bg-background_4 py-[60px] pl-[60px] lg:pt-20 lg:px-5 lg:pb-24'
         >
             <div className='max-w-[1320px] m-auto flex flex-col gap-[30px]'>
-                <div className='flex gap-[10px] pr-[125px]'>
-                    <div className='flex flex-col gap-[25px] w-[430px]'>
+                <div className='flex gap-[10px] justify-between lg:flex-col lg:gap-[50px]'>
+                    <div className='flex flex-col gap-[25px]'>
                         <Image
                             src={'/logo.svg'}
                             alt='logo'
@@ -33,11 +33,11 @@ const Footer: FC<IProps> = () => {
                         />
                         <p className='font-medium text-[15px] max-w-[340px]'>{viewModel.footer.text}</p>
                     </div>
-                    <div className='flex gap-[50px]'>
+                    <div className='flex gap-[50px] lg:flex-col'>
                         {viewModel.footer.menu.map((section, index) => (
                             <div
                                 key={index}
-                                className='flex flex-col gap-6 w-56'
+                                className='flex flex-col gap-6 w-40'
                             >
                                 <p className='uppercase text-[15px] font-medium opacity-60'>{section.title}</p>
                                 <ul className='flex flex-col gap-[10px] font-normal text-base'>
@@ -72,7 +72,7 @@ const Footer: FC<IProps> = () => {
                             </div>
                         ))}
                     </div>
-                    <p className='text-[12px] font-semibold text-foreground_1 max-w-[100px]'>2024 Kyrgyzstan, Bishkek 81063</p>
+                    <p className='text-[12px] font-semibold text-foreground_1 max-w-[100px] numeric lg:hidden'>2024 Kyrgyzstan, Bishkek 81063</p>
                 </div>
             </div>
         </footer>

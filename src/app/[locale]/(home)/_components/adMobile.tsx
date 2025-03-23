@@ -11,7 +11,7 @@ interface IProps {
 const AdMobile: FC<IProps> = ({}) => {
     const { viewModel } = useHomeUseCase();
     return (
-        <div className='mt-[120px] grid grid-cols-2 gap-[40px]'>
+        <div className='mt-[120px] lg:mt-[60px] grid grid-cols-2 lg:grid-cols-1 gap-[40px] px-5'>
             <Translate
                 direction='right'
                 distance={100}
@@ -30,8 +30,9 @@ const AdMobile: FC<IProps> = ({}) => {
                 direction='left'
                 distance={100}
                 animateOnce={false}
+                className="flex items-center justify-center"
             >
-                <div className='flex flex-col gap-[40px] max-w-[487px]'>
+                <div className='flex flex-col gap-[40px] max-w-[487px] lg:items-center lg:justify-center lg:gap-8'>
                     <h2 className='font-medium text-[34px] uppercase'>{viewModel.adMobile.title}</h2>
                     <p className='text-base font-normal'>{viewModel.adMobile.description1}</p>
                     <p className='text-base font-normal'>{viewModel.adMobile.description2}</p>
@@ -40,8 +41,8 @@ const AdMobile: FC<IProps> = ({}) => {
                         distance={50}
                         animateOnce={false}
                     >
-                        <div className='flex flex-col gap-[10px] mt-[30px]'>
-                            <p className='text-lg font-medium pr-[90px]'>{viewModel.adMobile.links}</p>
+                        <div className='flex flex-col gap-[10px] mt-[30px] lg:mt-0 lg:justify-center lg:items-center'>
+                            <p className='text-lg font-medium pr-[90px] lg:text-center lg:pr-0'>{viewModel.adMobile.links}</p>
                             <div className='flex items-center gap-[10px]'>
                                 <Image
                                     src={'/appStoreImg.webp'}

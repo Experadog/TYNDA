@@ -15,7 +15,7 @@ interface IProps {}
 const HomeView: FC<IProps> = ({}) => {
     const viewModel = useViewModel(['Home']);
     return (
-        <div className='p-3'>
+        <div className='p-3 lg:p-0'>
             <Hero viewModel={viewModel.hero} />
             <div className='container m-auto'>
                 <Recommendation viewModel={viewModel.recommendation} />
