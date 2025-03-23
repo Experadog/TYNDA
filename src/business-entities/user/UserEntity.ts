@@ -34,3 +34,31 @@ export type Credentials = {
 };
 
 export type Session = { user: User; last_refreshed: number } & Credentials;
+
+export type ClientHistory = {
+    image: string;
+    title: string;
+    category: string;
+    location: string;
+    rating: number;
+    review_count: number;
+};
+
+export type BonusHistory = {
+    image: string;
+    title: string;
+    category: string;
+    location: string;
+    date: string;
+    discount: number;
+};
+
+export type UserReviews = {
+    image: string;
+    title: string;
+    category: string;
+    location: string;
+    rating: number;
+    text: string;
+    date: string;
+};

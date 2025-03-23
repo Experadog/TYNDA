@@ -16,7 +16,7 @@ interface IProps {
 const CollectedProviders: FC<IProps> = async ({ children }) => {
     const cookieStore = await cookies();
     const locale = (cookieStore.get(COOKIES.NEXT_LOCALE)?.value || 'ru') as Locale;
-    const theme = cookieStore.get(COOKIES.THEME)?.value;
+    const theme = cookieStore.get(COOKIES.THEME)?.value as Theme;
     const session = cookieStore.get(COOKIES.SESSION)?.value || '';
 
     return (
@@ -25,6 +25,7 @@ const CollectedProviders: FC<IProps> = async ({ children }) => {
             defaultTheme={'system'}
             forcedTheme={theme}
             enableSystem
+            theme={theme}
         >
             <Toaster
                 position='bottom-right'

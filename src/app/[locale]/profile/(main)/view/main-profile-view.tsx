@@ -1,5 +1,6 @@
 import { Translate } from '@components';
 import { FC } from 'react';
+import BonusAndRating from '../_components/bonus-and-rating/bonus-and-rating';
 import Hero from '../_components/hero/hero';
 import RecentlyVisited from '../_components/recently-visited/recently-visited';
 import UserCard from '../_components/user-card/user-card';
@@ -8,7 +9,7 @@ interface IProps {}
 
 const MainProfileView: FC<IProps> = ({}) => {
     return (
-        <div className='flex flex-col gap-12'>
+        <div className='flex flex-col gap-12 pb-32'>
             <Translate
                 direction='down'
                 distance={150}
@@ -19,6 +20,9 @@ const MainProfileView: FC<IProps> = ({}) => {
             <div className='flex gap-7 pl-10 relative'>
                 <UserCard />
                 <RecentlyVisited />
+            </div>
+            <div className='pl-10'>
+                <BonusAndRating />
             </div>
         </div>
     );

@@ -8,7 +8,7 @@ export { default as TariffCard } from './tariff-card/tariff-card';
 export { default as ToggleLocale } from './toggle-locale/toggle-locale';
 export { default as ToggleTheme } from './toggle-theme/toggle-theme';
 
-//shadcn
+//ui
 export * from './ui/button';
 export * from './ui/customFormField';
 export * from './ui/dialog';
@@ -16,3 +16,4 @@ export * from './ui/form';
 export * from './ui/input';
 export * from './ui/label';
 export * from './ui/loading-spinner';
+export * from './ui/rating-stars';

@@ -1,14 +1,16 @@
 'use client';
 
+import { MOCK_CLIENT_HISTORY } from '@/dto/dtoClientHistory';
 import { Slider, Translate } from '@components';
 import { FC } from 'react';
+import Empty from './empty';
 import RecentlyVisitedCard from './recently-visited-card';
-
-import { MOCK_CLIENT_HISTORY } from '@/dto/dtoClientHistory';
 
 interface IProps {}
 
 const RecentlyVisited: FC<IProps> = ({}) => {
+    const isEmpty = false;
+
     return (
         <Translate
             direction='left'
@@ -17,19 +19,23 @@ const RecentlyVisited: FC<IProps> = ({}) => {
         >
             <span className='text-foreground_1 text-base font-semibold'>Ваши недавно посещенные места</span>
 
-            <Slider
-                loop={false}
-                slidesPerView={3}
-                spacing={1}
-                classNameChildren='px-3'
-            >
-                {MOCK_CLIENT_HISTORY.map((item) => (
-                    <RecentlyVisitedCard
-                        key={item.title}
-                        {...item}
-                    />
-                ))}
-            </Slider>
+            {isEmpty ? (
+                <Empty />
+            ) : (
+                <Slider
+                    loop={false}
+                    slidesPerView={3}
+                    spacing={1}
+                    classNameChildren='p-3'
+                >
+                    {MOCK_CLIENT_HISTORY.map((item) => (
+                        <RecentlyVisitedCard
+                            key={item.title}
+                            {...item}
+                        />
+                    ))}
+                </Slider>
+            )}
         </Translate>
     );
 };

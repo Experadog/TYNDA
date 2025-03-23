@@ -18,9 +18,8 @@ const RecentlyVisitedCard: FC<IProps> = ({ image, title, category, location, rat
             direction='up'
             distance={150}
             animateOnce={false}
-            className='py-3'
         >
-            <div className='flex flex-col w-full shadow-md rounded-xl overflow-hidden gap-3 border border-background_3 cursor-pointer hover:border-white  hover:-translate-y-3 transition-transform flex-shrink-0'>
+            <div className='flex flex-col w-full shadow-md rounded-xl overflow-hidden gap-3 border border-background_3 cursor-pointer hover:border-white  hover:-translate-y-3 transition-transform flex-shrink-0 relative'>
                 <div className='w-full h-32 relative'>
                     <Image
                         src={image}

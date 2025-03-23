@@ -10,7 +10,7 @@ import { FC } from 'react';
 interface IProps {}
 
 const ToggleTheme: FC<IProps> = ({}) => {
-    const { forcedTheme } = useTheme();
+    const { forcedTheme, setTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
@@ -21,6 +21,7 @@ const ToggleTheme: FC<IProps> = ({}) => {
 
     const handleSetTheme = async () => {
         const theme = forcedTheme === 'dark' ? 'light' : 'dark';
+        setTheme(theme);
         await switchTheme(theme);
     };
 
