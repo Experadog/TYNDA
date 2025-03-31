@@ -10,8 +10,9 @@ const nextConfig: NextConfig = {
     trailingSlash: false,
     images: {
         formats: ['image/avif', 'image/webp'],
-        minimumCacheTTL: 60 * 60 * 24,
+        minimumCacheTTL: 86400,
     },
+
     experimental: {
         optimizeCss: true,
         scrollRestoration: true,
@@ -19,6 +20,7 @@ const nextConfig: NextConfig = {
     compiler: {
         removeConsole: process.env.NODE_ENV === 'production',
     },
+
     async headers() {
         return [
             {
@@ -33,7 +35,7 @@ const nextConfig: NextConfig = {
                     { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
                     {
                         key: 'Content-Security-Policy',
-                        value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://accounts.google.com https://accounts.google.com/gsi/client; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' wss://souyz3-0.vercel.app;",
+                        value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://accounts.google.com https://accounts.google.com/gsi/client; style-src 'self' 'unsafe-inline'; img-src 'self' https://soyuz.kg; font-src 'self'; connect-src 'self';",
                     },
 
                     {
@@ -42,7 +44,9 @@ const nextConfig: NextConfig = {
                     },
                     { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
                     { key: 'Cross-Origin-Resource-Policy', value: 'same-origin' },
-                    { key: 'Cross-Origin-Embedder-Policy', value: 'require-corp' },
+                    // { key: 'Cross-Origin-Embedder-Policy', value: 'require-corp' },
+
+                    { key: 'Access-Control-Allow-Origin', value: 'https://soyuz.kg' },
                 ],
             },
         ];

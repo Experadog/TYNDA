@@ -12,11 +12,18 @@ const nextIntlMiddleware = createMiddleware({
 const PUBLIC_FILE = /\.(.*)$/;
 const protectedRoutes = [PAGES.PROFILE];
 
-export default async function middleware(req: NextRequest): Promise<NextResponse> {
+export default async function middleware(
+    req: NextRequest,
+): Promise<NextResponse> {
     const { pathname } = req.nextUrl;
 
     // Пропускаем запросы для статических файлов, API и других исключений
-    if (pathname.startsWith('/_next') || pathname.includes('/api/') || pathname.includes('/skgapi/') || PUBLIC_FILE.test(pathname)) {
+    if (
+        pathname.startsWith('/_next') ||
+        pathname.includes('/api/') ||
+        pathname.includes('/skgapi/') ||
+        PUBLIC_FILE.test(pathname)
+    ) {
         return NextResponse.next();
     }
 
@@ -56,10 +63,14 @@ export default async function middleware(req: NextRequest): Promise<NextResponse
 
     // Проверка, если это защищенная страница
     const basePath = req.nextUrl.pathname.replace(/^\/(ru|kg)\//, '/') as PAGES;
-    const isProtectedRoute = protectedRoutes.includes(basePath);
+    const isProtectedRoute =
+        protectedRoutes.includes(basePath) ||
+        protectedRoutes.some((route) => basePath.includes(route));
 
     const sessionCookieValue = req.cookies.get(COOKIES.SESSION)?.value || '';
-    const sessionData = sessionCookieValue ? decryptData(sessionCookieValue) : null;
+    const sessionData = sessionCookieValue
+        ? decryptData(sessionCookieValue)
+        : null;
 
     if (sessionData && basePath.startsWith('/auth')) {
         const redirectUrl = new URL(`/${pathLocale}${PAGES.PROFILE}`, req.url);
@@ -67,12 +78,18 @@ export default async function middleware(req: NextRequest): Promise<NextResponse
     }
 
     if (isProtectedRoute && !sessionData) {
-        return NextResponse.redirect(new URL(`/${pathLocale}${PAGES.LOGIN}`, req.url));
+        return NextResponse.redirect(
+            new URL(`/${pathLocale}${PAGES.LOGIN}`, req.url),
+        );
     }
 
     if (basePath.includes('/callback')) {
         const queryString = req.nextUrl.searchParams.toString();
-        if (!queryString.includes('email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&authuser=0&prompt=consent')) {
+        if (
+            !queryString.includes(
+                'email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&authuser=0&prompt=consent',
+            )
+        ) {
             return NextResponse.redirect(new URL(`/${pathLocale}`, req.url));
         }
     }

@@ -60,7 +60,10 @@ html {
     will-change: background-color, color;
 }
 
-/* for all numeric values */
 .numeric {
     font-variant-numeric: lining-nums proportional-nums;
+}
+
+.full-height {
+    min-height: calc(100vh - 88px);
 }

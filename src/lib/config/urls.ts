@@ -9,6 +9,9 @@ export enum URL_ENTITIES {
     REGISTER = '/sys/users/register',
     PROFILE = '/sys/users/me',
     ACTIVATE_ACCOUNT = '/sys/users/activate',
+
+    //biz
+    CARD_HISTORY = '/biz/card_history/client-history',
 }
 
 export enum URL_LOCAL_ENTITIES {

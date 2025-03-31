@@ -1,7 +1,7 @@
 'use client';
 
 import { Link } from '@/i18n/routing';
-import { phoneFormatter } from '@/lib';
+import { PAGES, phoneFormatter } from '@/lib';
 import { useUser } from '@/providers/user/user-provider';
 import { Button, TariffCard, Translate } from '@components';
 import { FC } from 'react';
@@ -18,7 +18,7 @@ const UserCard: FC<IProps> = ({}) => {
             direction='right'
             className='bg-background_1 w-full max-w-[416px] z-10 rounded-3xl p-6 shadow-md -mt-52 flex-shrink-0'
         >
-            <div className='relative flex flex-col w-full items-center'>
+            <div className='relative flex flex-col w-full items-center h-full'>
                 <div className='flex items-center flex-col w-full relative'>
                     <div className={`bg-[url(/auth.webp)] bg-cover size-28 absolute rounded-full -top-11`}>
                         <Button
@@ -62,8 +62,8 @@ const UserCard: FC<IProps> = ({}) => {
                 </div>
 
                 <Link
-                    href={'/'}
-                    className='bg-yellow text-white rounded-2xl text-base font-semibold w-full mt-6 p-3 text-center flex items-center gap-2 justify-center'
+                    href={PAGES.UPDATE_PROFILE}
+                    className='bg-yellow text-white rounded-2xl text-base font-semibold w-full  mt-auto p-3 text-center flex items-center gap-2 justify-center'
                 >
                     <SlPencil />
                     Редактировать профиль

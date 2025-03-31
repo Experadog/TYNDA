@@ -2,7 +2,13 @@
 
 import { decryptData } from '@/lib';
 import { User } from '@business-entities';
-import React, { createContext, ReactNode, useContext, useState } from 'react';
+import React, {
+    createContext,
+    ReactNode,
+    useContext,
+    useEffect,
+    useState,
+} from 'react';
 
 interface UserContextType {
     user: User | null;
@@ -15,13 +21,23 @@ export const UserProvider: React.FC<{
     children: ReactNode;
     session: string;
 }> = ({ children, session }) => {
-    const [state, setState] = useState<User | null>(decryptData(session)?.user || null);
+    const [state, setState] = useState<User | null>(
+        decryptData(session)?.user || null,
+    );
 
     const setUser = (newUser: User | null) => {
         setState(newUser);
     };
 
-    return <UserContext.Provider value={{ user: state, setUser: setUser }}>{children}</UserContext.Provider>;
+    useEffect(() => {
+        setState(decryptData(session)?.user || null);
+    }, [session]);
+
+    return (
+        <UserContext.Provider value={{ user: state, setUser: setUser }}>
+            {children}
+        </UserContext.Provider>
+    );
 };
 
 export const useUser = (): UserContextType => {

@@ -15,7 +15,8 @@ interface IProps {
 
 const CollectedProviders: FC<IProps> = async ({ children }) => {
     const cookieStore = await cookies();
-    const locale = (cookieStore.get(COOKIES.NEXT_LOCALE)?.value || 'ru') as Locale;
+    const locale = (cookieStore.get(COOKIES.NEXT_LOCALE)?.value ||
+        'ru') as Locale;
     const theme = cookieStore.get(COOKIES.THEME)?.value as Theme;
     const session = cookieStore.get(COOKIES.SESSION)?.value || '';
 
@@ -34,7 +35,9 @@ const CollectedProviders: FC<IProps> = async ({ children }) => {
             <OAuthProvider>
                 <LocaleProvider locale={locale}>
                     <UserProvider session={session}>
-                        <RefreshOnExpire initialSession={session}>{children}</RefreshOnExpire>
+                        <RefreshOnExpire initialSession={session}>
+                            {children}
+                        </RefreshOnExpire>
                     </UserProvider>
                 </LocaleProvider>
             </OAuthProvider>

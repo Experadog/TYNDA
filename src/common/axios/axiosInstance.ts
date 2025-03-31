@@ -1,5 +1,6 @@
 import { API_URL, COOKIES, getTokensFromSession } from '@/lib';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import { Params } from '../types/http.types';
 
 export const axiosInstance: AxiosInstance = axios.create({
     baseURL: API_URL,
@@ -47,7 +48,7 @@ async function request<T>(method: 'get' | 'post' | 'put' | 'patch' | 'delete', {
 
 interface RequestOptions {
     url: string;
-    params?: Record<string, any>;
+    params?: Params;
     data?: any;
     headers?: Record<string, string>;
 }

@@ -5,7 +5,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-export const createRegisterEstablisherSchema = (message: ValidationMessages) => {
+export const createRegisterEstablisherSchema = (
+    message: ValidationMessages,
+) => {
     const schema = z
         .object({
             first_name: z.string().min(1, message.first_name),
