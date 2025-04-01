@@ -9,7 +9,15 @@ import {
     URL_ENTITIES,
 } from '@/lib';
 import { Session, User } from '@business-entities';
-import { AXIOS_GET, AXIOS_PATCH, getCookie, Params, setCookie } from '@common';
+import {
+    AXIOS_GET,
+    AXIOS_PATCH,
+    AXIOS_POST,
+    CommonDataStringResponse,
+    getCookie,
+    Params,
+    setCookie,
+} from '@common';
 import {
     ClientHistoryResponseModel,
     ProfileResponseModel,
@@ -67,7 +75,19 @@ class ProfileService {
 
         return response;
     }
+
+    static async firstStepPhoneVerification() {
+        const response = await AXIOS_POST<CommonDataStringResponse>({
+            url: URL_ENTITIES.PHONE_PRE_VERIFY,
+        });
+
+        return response;
+    }
 }
 
-export const getClientHistory = ProfileService.getClientHistory;
-export const updateProfile = ProfileService.updateProfile;
+export const {
+    firstStepPhoneVerification,
+    getClientHistory,
+    getProfileInfo,
+    updateProfile,
+} = ProfileService;

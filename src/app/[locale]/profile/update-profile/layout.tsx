@@ -2,7 +2,7 @@
 
 import { useUser } from '@/providers/user/user-provider';
 import { FC, ReactNode } from 'react';
-import { UpdateProfileProvider } from './use-case/useUpdateProfileInfoUseCase';
+import { UpdateProfileProvider } from './use-case/useUpdateProfileUseCase';
 import UpdateProfileView from './view/update-profile-view';
 
 interface IProps {

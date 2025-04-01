@@ -19,13 +19,29 @@ interface IProps {
     imageHeight?: number;
 }
 
-const RecommendationCard: FC<IProps> = ({ className = '', bottomElClassName = '', titleClassName = '', descriptionClassName = '', buttonClassName = '', ratingClassName = '', imageClassName = '', hideImage = false, hideDescription = false, hideButton = false, hideRating = false, imageWidth = 320, imageHeight = 322 }) => {
+const RecommendationCard: FC<IProps> = ({
+    className = '',
+    bottomElClassName = '',
+    titleClassName = '',
+    descriptionClassName = '',
+    buttonClassName = '',
+    ratingClassName = '',
+    imageClassName = '',
+    hideImage = false,
+    hideDescription = false,
+    hideButton = false,
+    hideRating = false,
+    imageWidth = 320,
+    imageHeight = 322,
+}) => {
     return (
-        <div className={`flex flex-col gap-[14px] pb-[14px] shadow-md rounded-[20px] bg-background_1 ${className}`}>
+        <div
+            className={`flex flex-col gap-[14px] pb-[14px] shadow-md rounded-[20px] bg-background_1 ${className}`}
+        >
             {!hideImage && (
                 <div>
                     <Image
-                        src={'/cardImg.webp'}
+                        src={'/other/cardImg.webp'}
                         alt=''
                         width={imageWidth}
                         height={imageHeight}
@@ -34,8 +50,16 @@ const RecommendationCard: FC<IProps> = ({ className = '', bottomElClassName = ''
                 </div>
             )}
             <div className={`px-[14px] ${bottomElClassName}`}>
-                <h4 className={`font-semibold text-lg uppercase ${titleClassName}`}>Обзорная экскурсия по городу</h4>
-                {!hideDescription && <p className={`font-normal text-sm line-clamp-2 ${descriptionClassName}`}>Это первый в Кыргызстане этно-фастфуд, который был запущен в 2019 году. Уютное заведение в центре города, где можно угостить гостей национальными кыргызскими блюдами.</p>}
+                <h4 className={`font-semibold text-lg uppercase ${titleClassName}`}>
+                    Обзорная экскурсия по городу
+                </h4>
+                {!hideDescription && (
+                    <p className={`font-normal text-sm line-clamp-2 ${descriptionClassName}`}>
+                        Это первый в Кыргызстане этно-фастфуд, который был запущен в 2019 году.
+                        Уютное заведение в центре города, где можно угостить гостей национальными
+                        кыргызскими блюдами.
+                    </p>
+                )}
                 <div className={`flex justify-between mt-[18px] ${ratingClassName}`}>
                     {!hideButton && (
                         <Button

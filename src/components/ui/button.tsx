@@ -60,7 +60,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                 className={cn(
                     buttonVariants({ variant, size, className }),
                     !disableAnimation &&
-                        'transition-transform duration-300 active:scale-95 hover:scale-105',
+                        'transition-transform duration-300 active:scale-95 hover:scale-[1.03]',
                 )}
                 ref={ref}
                 {...props}

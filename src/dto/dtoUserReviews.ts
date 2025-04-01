@@ -2,7 +2,7 @@ import { UserReviews } from '@business-entities';
 
 export const MOCK_USER_REVIEWS: UserReviews[] = [
     {
-        image: '/auth.webp',
+        image: '/auth/auth.webp',
         title: 'Кафе "Арома"',
         category: 'Кафе',
         location: 'Бишкек, Кыргызстан',
@@ -11,7 +11,7 @@ export const MOCK_USER_REVIEWS: UserReviews[] = [
         date: '24 апрель, 2018 г.',
     },
     {
-        image: '/auth.webp',
+        image: '/auth/auth.webp',
         title: 'Ресторан "Манас Ордо"',
         category: 'Ресторан',
         location: 'Ош, Кыргызстан',
@@ -20,7 +20,7 @@ export const MOCK_USER_REVIEWS: UserReviews[] = [
         date: '15 июнь, 2019 г.',
     },
     {
-        image: '/auth.webp',
+        image: '/auth/auth.webp',
         title: 'Фитнес-центр "Energy"',
         category: 'Фитнес-центр',
         location: 'Бишкек, Кыргызстан',
@@ -29,7 +29,7 @@ export const MOCK_USER_REVIEWS: UserReviews[] = [
         date: '3 март, 2021 г.',
     },
     {
-        image: '/auth.webp',
+        image: '/auth/auth.webp',
         title: 'Гостиница "Silk Road Lodge"',
         category: 'Гостиница',
         location: 'Каракол, Кыргызстан',
@@ -38,7 +38,7 @@ export const MOCK_USER_REVIEWS: UserReviews[] = [
         date: '7 декабрь, 2020 г.',
     },
     {
-        image: '/auth.webp',
+        image: '/auth/auth.webp',
         title: 'Кинотеатр "Космос"',
         category: 'Кинотеатр',
         location: 'Бишкек, Кыргызстан',

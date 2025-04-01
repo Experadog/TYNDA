@@ -13,9 +13,7 @@ const RecentlyVisited: FC<IProps> = ({}) => {
     const { clientHistory } = states;
     const { moveToNextClientHistory } = actions;
 
-    const isEmpty = clientHistory.data
-        ? !clientHistory.data.items.length
-        : true;
+    const isEmpty = clientHistory.data ? !clientHistory.data.items.length : true;
 
     return (
         <Translate

@@ -20,3 +20,5 @@ export type Paginated<T> = {
         prev?: string;
     };
 };
+
+export type CommonDataStringResponse = CommonResponse<string>;

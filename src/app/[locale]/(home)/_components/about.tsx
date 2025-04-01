@@ -19,13 +19,21 @@ const About: FC<IProps> = ({}) => {
                     animateOnce={false}
                 >
                     <div className='flex flex-col gap-[20px] lg:items-center lg:justify-center'>
-                        <h3 className='uppercase font-semibold text-lg opacity-70'>{viewModel.about.title}</h3>
+                        <h3 className='uppercase font-semibold text-lg opacity-70'>
+                            {viewModel.about.title}
+                        </h3>
                         <h2 className='uppercase font-medium text-[34px] max-w-[734px] lg:text-center'>
-                            {viewModel.about.title1} <span className='text-[var(--yellow)]'>{viewModel.about.title2} </span>
-                            {viewModel.about.title3} <span className='text-[var(--yellow)]'>{viewModel.about.title4}</span>
+                            {viewModel.about.title1}{' '}
+                            <span className='text-[var(--yellow)]'>{viewModel.about.title2} </span>
+                            {viewModel.about.title3}{' '}
+                            <span className='text-[var(--yellow)]'>{viewModel.about.title4}</span>
                         </h2>
-                        <p className='text-lg opacity-80 font-normal max-w-[510px] mt-[20px]'>{viewModel.about.description1}</p>
-                        <p className='text-lg opacity-80 font-normal max-w-[510px]'>{viewModel.about.description2}</p>
+                        <p className='text-lg opacity-80 font-normal max-w-[510px] mt-[20px]'>
+                            {viewModel.about.description1}
+                        </p>
+                        <p className='text-lg opacity-80 font-normal max-w-[510px]'>
+                            {viewModel.about.description2}
+                        </p>
                     </div>
                 </Translate>
                 <Translate
@@ -35,14 +43,14 @@ const About: FC<IProps> = ({}) => {
                 >
                     <div className='flex gap-[20px]'>
                         <Image
-                            src={'/nature.webp'}
+                            src={'/home/nature.webp'}
                             alt='nature'
                             width={318}
                             height={398}
                             className='rounded-2xl lg:w-[355px]'
                         />
                         <Image
-                            src={'/nature.webp'}
+                            src={'/home/nature.webp'}
                             alt='nature'
                             width={228}
                             height={258}
@@ -60,7 +68,7 @@ const About: FC<IProps> = ({}) => {
                 <div className='flex justify-between gap-5 lg:flex-col-reverse md:justify-center md:items-center'>
                     <div className='flex items-center justify-center'>
                         <Image
-                            src={'/nature.webp'}
+                            src={'/home/nature.webp'}
                             alt='nature'
                             width={545}
                             height={258}
@@ -77,7 +85,9 @@ const About: FC<IProps> = ({}) => {
                             <p className='font-normal text-base'>{viewModel.about.stats2}</p>
                         </div>
                         <div className='flex flex-col gap-[10px]'>
-                            <p className='font-bold text-6xl uppercase text-yellow numeric'>3500+</p>
+                            <p className='font-bold text-6xl uppercase text-yellow numeric'>
+                                3500+
+                            </p>
                             <p className='font-normal text-base'>{viewModel.about.stats3}</p>
                         </div>
                     </div>

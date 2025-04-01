@@ -12,7 +12,13 @@ type Props = {
     revalidateTags?: URL_ENTITIES[];
 };
 
-export async function createFetchAction<T>({ endpoint, shouldBeAuthorized, params, revalidate = false, revalidateTags }: Props): Promise<T> {
+export async function createFetchAction<T>({
+    endpoint,
+    shouldBeAuthorized,
+    params,
+    revalidate = false,
+    revalidateTags,
+}: Props): Promise<T> {
     const cleanBaseUrl = API_URL?.replace(/\/$/, '');
     const cleanEndpoint = endpoint.replace(/^\//, '');
 
@@ -48,7 +54,7 @@ export async function createFetchAction<T>({ endpoint, shouldBeAuthorized, param
         });
 
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            return {} as T;
         }
 
         const data: T = await response.json();

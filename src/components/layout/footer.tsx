@@ -5,10 +5,10 @@ import { FC } from 'react';
 import { useFooterUseCase } from './use-cases/useFooterUseCase';
 
 const icons = [
-    { id: 0, src: '/telegramIcon.svg', alt: 'telegram icon' },
-    { id: 1, src: '/whatsappIcon.svg', alt: 'whatsapp icon' },
-    { id: 2, src: '/instagramIcon.svg', alt: 'instagram icon' },
-    { id: 3, src: '/tiktokIcon.svg', alt: 'tiktok icon' },
+    { id: 0, src: '/sm/telegramIcon.svg', alt: 'telegram icon' },
+    { id: 1, src: '/sm/whatsappIcon.svg', alt: 'whatsapp icon' },
+    { id: 2, src: '/sm/instagramIcon.svg', alt: 'instagram icon' },
+    { id: 3, src: '/sm/tiktokIcon.svg', alt: 'tiktok icon' },
 ];
 
 interface IProps {

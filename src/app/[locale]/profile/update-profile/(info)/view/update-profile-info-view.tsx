@@ -2,6 +2,7 @@
 
 import { FC } from 'react';
 import InfoForm from '../_components/info-form';
+import PhoneVerificationDialog from '../_components/phone-verification/phone-verification-dialog';
 
 interface IProps {}
 
@@ -17,6 +18,7 @@ const UpdateProfileInfoView: FC<IProps> = ({}) => {
             </p>
 
             <InfoForm />
+            <PhoneVerificationDialog />
         </div>
     );
 };

@@ -20,7 +20,9 @@ const UserCard: FC<IProps> = ({}) => {
         >
             <div className='relative flex flex-col w-full items-center h-full'>
                 <div className='flex items-center flex-col w-full relative'>
-                    <div className={`bg-[url(/auth.webp)] bg-cover size-28 absolute rounded-full -top-11`}>
+                    <div
+                        className={`bg-[url(/auth/auth.webp)] bg-cover size-28 absolute rounded-full -top-11`}
+                    >
                         <Button
                             variant={'yellow'}
                             className='size-9 absolute bottom-0 right-0 z-10 p-0 text-4xl font-extralight text-white rounded-full'
@@ -38,8 +40,12 @@ const UserCard: FC<IProps> = ({}) => {
                         <div className='bg-[url("/profile/check.svg")] size-5 bg-cover' />
                     </div>
                     <div className='flex flex-col gap-1 mt-4 items-center'>
-                        <h4 className='text-foreground_1 font-semibold text-sm  numeric'>{phoneFormatter(user?.phone)}</h4>
-                        <h4 className='text-foreground_1 font-semibold text-sm  numeric'>{user?.email}</h4>
+                        <h4 className='text-foreground_1 font-semibold text-sm  numeric'>
+                            {phoneFormatter(user?.phone)}
+                        </h4>
+                        <h4 className='text-foreground_1 font-semibold text-sm  numeric'>
+                            {user?.email}
+                        </h4>
                     </div>
                 </div>
 
@@ -50,13 +56,19 @@ const UserCard: FC<IProps> = ({}) => {
                     />
                     <div className='flex flex-col gap-1 w-full px-3'>
                         <div className='flex items-center justify-between'>
-                            <span className='text-foreground_1 text-base font-semibold'>Туристическая</span>
-                            <span className='text-foreground_1 text-base font-semibold text-end numeric'>24/09</span>
+                            <span className='text-foreground_1 text-base font-semibold'>
+                                Туристическая
+                            </span>
+                            <span className='text-foreground_1 text-base font-semibold text-end numeric'>
+                                24/09
+                            </span>
                         </div>
 
                         <div className='flex items-center justify-between'>
                             <span className='text-foreground_1 text-sm font-light'>Ваш план</span>
-                            <span className='text-foreground_1 text-sm font-light text-end numeric'>Дата истечения</span>
+                            <span className='text-foreground_1 text-sm font-light text-end numeric'>
+                                Дата истечения
+                            </span>
                         </div>
                     </div>
                 </div>

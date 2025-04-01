@@ -23,7 +23,7 @@ const RecentlyVisitedCard: FC<ClientHistory> = (item) => {
                     fill
                     style={{ objectFit: 'cover' }}
                     onError={(event) => {
-                        event.currentTarget.src = '/placeholder.webp';
+                        event.currentTarget.src = '/other/placeholder.webp';
                     }}
                     priority
                 />

@@ -1,22 +1,10 @@
 'use client';
 
 import clsx from 'clsx';
-import {
-    CSSProperties,
-    FC,
-    HTMLInputTypeAttribute,
-    Ref,
-    useState,
-} from 'react';
+import { CSSProperties, FC, HTMLInputTypeAttribute, Ref, useState } from 'react';
 import { Control } from 'react-hook-form';
 import { IoEye, IoEyeOff } from 'react-icons/io5';
-import {
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from './form';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from './form';
 import { Input } from './input';
 
 interface IProps {
@@ -51,7 +39,7 @@ export const CustomFormField: FC<IProps> = ({
             control={control}
             name={name}
             render={({ field }) => (
-                <FormItem className={clsx('relative w-full ', className)}>
+                <FormItem className={clsx('relative w-full', className)}>
                     {label && (
                         <FormLabel
                             htmlFor={name}
@@ -101,9 +89,7 @@ export const CustomFormField: FC<IProps> = ({
                         </button>
                     )}
                     <div className='flex justify-end w-full text-xs'>
-                        <FormMessage
-                            className={clsx('text-error', ErrorClassName)}
-                        />
+                        <FormMessage className={clsx('text-error', ErrorClassName)} />
                     </div>
                 </FormItem>
             )}

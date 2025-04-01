@@ -58,6 +58,30 @@ html {
     max-width: 1920px;
     margin-inline: auto;
     will-change: background-color, color;
+
+    overscroll-behavior-y: none;
+    overscroll-behavior-x: none;
+    overflow-y: auto;
+}
+
+* {
+    ::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: var(--background-1);
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: #747474;
+        border-radius: 10px;
+        border: 2px solid #f0f0f0;
+    }
+
+    scrollbar-width: thin;
+    scrollbar-color: #747474 #f0f0f0;
 }
 
 .numeric {

@@ -9,3 +9,4 @@ export type ClientHistoryResponseModel = CommonResponse<
 >;
 
 export type ProfileUpdateResponseModel = CommonResponse<string>;
+export type PhoneFirstStepVerificationResponseModel = CommonResponse<string>;

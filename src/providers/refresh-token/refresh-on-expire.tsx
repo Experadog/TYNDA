@@ -71,8 +71,6 @@ const RefreshOnExpire: FC<IProps> = ({ children, initialSession }) => {
         const timeRemaining = sessionExpireDate.getTime() - now.getTime();
 
         if (timeRemaining <= 10000) {
-            router.refresh();
-        } else {
             const refreshInterval = Math.max(timeRemaining - 10000, 0);
             clearRefreshTimer();
             refreshTimer.current = setTimeout(handleRefresh, refreshInterval);
