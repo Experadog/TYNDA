@@ -20,22 +20,28 @@ const BonusCard: FC<BonusHistory> = (item) => {
                     <Image
                         src={item.image}
                         alt={item.title}
-                        layout='fill'
-                        objectFit='cover'
+                        fill
+                        style={{ objectFit: 'cover' }}
                         priority
                         className='rounded-2xl'
                     />
                 </div>
 
                 <div className='flex flex-col gap-1 p-3'>
-                    <p className='text-foreground_1 font-bold text-lg truncate'>{item.title}</p>
+                    <p className='text-foreground_1 font-bold text-lg truncate'>
+                        {item.title}
+                    </p>
                     <p className='text-foreground_1 font-semibold text-sm truncate'>
                         {item.category}
-                        <span className='text-foreground_1 font-normal text-sm ml-1'>{item.location}</span>
+                        <span className='text-foreground_1 font-normal text-sm ml-1'>
+                            {item.location}
+                        </span>
                     </p>
 
                     <div className='flex items-center gap-2 px-1'>
-                        <p className='text-foreground_2 font-semibold text-sm truncate numeric'>{item.date}</p>
+                        <p className='text-foreground_2 font-semibold text-sm truncate numeric'>
+                            {item.date}
+                        </p>
                     </div>
                 </div>
 

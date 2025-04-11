@@ -1,5 +1,6 @@
 import { API_URL, COOKIES, getTokensFromSession } from '@/lib';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import { Params } from '../types/http.types';
 
 export const axiosInstance: AxiosInstance = axios.create({
     baseURL: API_URL,
@@ -21,7 +22,10 @@ axiosInstance.interceptors.request.use(async (config) => {
     return config;
 });
 
-async function request<T>(method: 'get' | 'post' | 'put' | 'patch' | 'delete', { url, params, data, headers }: RequestOptions): Promise<T> {
+async function request<T>(
+    method: 'get' | 'post' | 'put' | 'patch' | 'delete',
+    { url, params, data, headers }: RequestOptions,
+): Promise<T> {
     try {
         const response: AxiosResponse<T> = await axiosInstance.request<T>({
             method,
@@ -33,11 +37,19 @@ async function request<T>(method: 'get' | 'post' | 'put' | 'patch' | 'delete', {
             },
         });
 
-        console.log('LOGGER:', method.toLocaleUpperCase(), url, response.status);
+        console.log(
+            'LOGGER:',
+            method.toLocaleUpperCase(),
+            url,
+            response.status,
+            response.data,
+        );
 
         return response.data;
     } catch (error) {
-        console.log(error);
+        if (axios.isAxiosError(error)) {
+            console.log(error.response?.data);
+        }
         return {
             code: axios.isAxiosError(error) ? error.response?.status : 500,
             data: null,
@@ -47,7 +59,7 @@ async function request<T>(method: 'get' | 'post' | 'put' | 'patch' | 'delete', {
 
 interface RequestOptions {
     url: string;
-    params?: Record<string, any>;
+    params?: Params;
     data?: any;
     headers?: Record<string, string>;
 }

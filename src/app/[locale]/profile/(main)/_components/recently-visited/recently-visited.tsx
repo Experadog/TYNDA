@@ -1,15 +1,19 @@
 'use client';
 
-import { MOCK_CLIENT_HISTORY } from '@/dto/dtoClientHistory';
 import { Slider, Translate } from '@components';
 import { FC } from 'react';
+import { useProfileUseCase } from '../../../use-case/profile-use-case';
 import Empty from './empty';
 import RecentlyVisitedCard from './recently-visited-card';
 
 interface IProps {}
 
 const RecentlyVisited: FC<IProps> = ({}) => {
-    const isEmpty = false;
+    const { states, actions } = useProfileUseCase();
+    const { clientHistory } = states;
+    const { moveToNextClientHistory } = actions;
+
+    const isEmpty = clientHistory.data ? !clientHistory.data.items.length : true;
 
     return (
         <Translate
@@ -17,7 +21,9 @@ const RecentlyVisited: FC<IProps> = ({}) => {
             distance={150}
             className='bg-background_1 rounded-3xl p-6 shadow-md flex flex-col gap-3 w-full overflow-hidden'
         >
-            <span className='text-foreground_1 text-base font-semibold'>Ваши недавно посещенные места</span>
+            <span className='text-foreground_1 text-base font-semibold'>
+                Ваши недавно посещенные места
+            </span>
 
             {isEmpty ? (
                 <Empty />
@@ -27,10 +33,13 @@ const RecentlyVisited: FC<IProps> = ({}) => {
                     slidesPerView={3}
                     spacing={1}
                     classNameChildren='p-3'
+                    total={clientHistory.data.total}
+                    onReachEnd={moveToNextClientHistory}
+                    page={clientHistory.data.page}
                 >
-                    {MOCK_CLIENT_HISTORY.map((item) => (
+                    {clientHistory.data.items.map((item) => (
                         <RecentlyVisitedCard
-                            key={item.title}
+                            key={item.establishment_id}
                             {...item}
                         />
                     ))}

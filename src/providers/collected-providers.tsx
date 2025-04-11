@@ -29,7 +29,15 @@ const CollectedProviders: FC<IProps> = async ({ children }) => {
         >
             <Toaster
                 position='bottom-right'
-                toastOptions={{}}
+                toastOptions={{
+                    style: {
+                        background: theme === 'dark' ? '#333' : '#f5f5f5',
+                        color: theme === 'dark' ? '#f5f5f5' : '#333',
+                        border: '1px solid',
+                        borderColor: '#f5f5f5',
+                        fontWeight: 600,
+                    },
+                }}
             />
             <OAuthProvider>
                 <LocaleProvider locale={locale}>

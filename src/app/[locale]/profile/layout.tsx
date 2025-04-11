@@ -1,3 +1,4 @@
+import { getClientHistory } from '@/services/profile/profileService';
 import { FC, ReactNode } from 'react';
 import { ProfileContextProvider } from './use-case/profile-use-case';
 import ProfileView from './view/profile-view';
@@ -7,8 +8,10 @@ interface IProps {
 }
 
 const ProfileLayout: FC<IProps> = async ({ children }) => {
+    const clientHistory = await getClientHistory({ page: '1' });
+
     return (
-        <ProfileContextProvider>
+        <ProfileContextProvider clientHistoryResponse={clientHistory}>
             <ProfileView>{children}</ProfileView>
         </ProfileContextProvider>
     );

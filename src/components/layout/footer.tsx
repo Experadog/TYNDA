@@ -1,14 +1,14 @@
 'use client';
+import { Link } from '@/i18n/routing';
 import Image from 'next/image';
 import { FC } from 'react';
 import { useFooterUseCase } from './use-cases/useFooterUseCase';
-import { Link } from '@/i18n/routing';
 
 const icons = [
-    { id: 0, src: '/telegramIcon.svg', alt: 'telegram icon' },
-    { id: 1, src: '/whatsappIcon.svg', alt: 'whatsapp icon' },
-    { id: 2, src: '/instagramIcon.svg', alt: 'instagram icon' },
-    { id: 3, src: '/tiktokIcon.svg', alt: 'tiktok icon' },
+    { id: 0, src: '/sm/telegramIcon.svg', alt: 'telegram icon' },
+    { id: 1, src: '/sm/whatsappIcon.svg', alt: 'whatsapp icon' },
+    { id: 2, src: '/sm/instagramIcon.svg', alt: 'instagram icon' },
+    { id: 3, src: '/sm/tiktokIcon.svg', alt: 'tiktok icon' },
 ];
 
 interface IProps {
@@ -31,7 +31,9 @@ const Footer: FC<IProps> = () => {
                             width={120}
                             height={90}
                         />
-                        <p className='font-medium text-[15px] max-w-[340px]'>{viewModel.footer.text}</p>
+                        <p className='font-medium text-[15px] max-w-[340px]'>
+                            {viewModel.footer.text}
+                        </p>
                     </div>
                     <div className='flex gap-[50px] lg:flex-col'>
                         {viewModel.footer.menu.map((section, index) => (
@@ -39,7 +41,9 @@ const Footer: FC<IProps> = () => {
                                 key={index}
                                 className='flex flex-col gap-6 w-40'
                             >
-                                <p className='uppercase text-[15px] font-medium opacity-60'>{section.title}</p>
+                                <p className='uppercase text-[15px] font-medium opacity-60'>
+                                    {section.title}
+                                </p>
                                 <ul className='flex flex-col gap-[10px] font-normal text-base'>
                                     {section.items.map((item, i) => (
                                         <Link
@@ -72,7 +76,9 @@ const Footer: FC<IProps> = () => {
                             </div>
                         ))}
                     </div>
-                    <p className='text-[12px] font-semibold text-foreground_1 max-w-[100px] numeric lg:hidden'>2024 Kyrgyzstan, Bishkek 81063</p>
+                    <p className='text-[12px] font-semibold text-foreground_1 max-w-[100px] numeric lg:hidden'>
+                        2024 Kyrgyzstan, Bishkek 81063
+                    </p>
                 </div>
             </div>
         </footer>

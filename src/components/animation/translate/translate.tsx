@@ -1,7 +1,14 @@
 'use client';
 
 import clsx from 'clsx';
-import { CSSProperties, FC, ReactNode, useEffect, useRef, useState } from 'react';
+import {
+    CSSProperties,
+    FC,
+    ReactNode,
+    useEffect,
+    useRef,
+    useState,
+} from 'react';
 import { ClassNameValue } from 'tailwind-merge';
 import './translate.css';
 
@@ -21,37 +28,33 @@ declare module 'react' {
     }
 }
 
-const Translate: FC<IProps> = ({ children, duration = 1, delay = 0, animateOnce = true, direction = 'left', distance = 20, className }) => {
-    const [isInViewport, setIsInViewport] = useState(false);
+const Translate: FC<IProps> = ({
+    children,
+    duration = 1,
+    delay = 0,
+    animateOnce = true,
+    direction = 'left',
+    distance = 20,
+    className,
+}) => {
+    const [isInViewport, setIsInViewport] = useState(animateOnce);
     const elementRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (!animateOnce) {
-            const observer = new IntersectionObserver(
-                ([entry]) => {
-                    if (entry.isIntersecting) {
-                        setIsInViewport(true);
-                    } else {
-                        if (!animateOnce) {
-                            setIsInViewport(false);
-                        }
-                    }
-                },
-                { threshold: 0.01 },
-            );
+        const element = elementRef.current;
+        if (!element || animateOnce) return;
 
-            if (elementRef.current) {
-                observer.observe(elementRef.current);
-            }
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                requestAnimationFrame(() => {
+                    setIsInViewport(entry.isIntersecting);
+                });
+            },
+            { threshold: 0.001 },
+        );
 
-            return () => {
-                if (elementRef.current) {
-                    observer.unobserve(elementRef.current);
-                }
-            };
-        } else {
-            setIsInViewport(true);
-        }
+        observer.observe(element);
+        return () => observer.disconnect();
     }, [animateOnce]);
 
     const style: CSSProperties = {
@@ -60,7 +63,12 @@ const Translate: FC<IProps> = ({ children, duration = 1, delay = 0, animateOnce 
         '--distance': `${distance}px`,
     };
 
-    const mergedClassNames = clsx('translate', isInViewport ? 'translate-in' : 'translate-out', `direction-${direction}`, className);
+    const mergedClassNames = clsx(
+        'translate',
+        isInViewport ? 'translate-in' : 'translate-out',
+        `direction-${direction}`,
+        className,
+    );
 
     return (
         <div

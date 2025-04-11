@@ -11,7 +11,10 @@ const Hero: FC<IProps> = ({}) => {
     const { viewModel } = useHomeUseCase();
     return (
         <div className='pt-[10px] lg:pt-0 px-[10px] lg:px-0 max-w-[1420px] m-auto'>
-            <div className='rounded-[30px] lg:rounded-none w-full h-[720px] lg:h-[630px] pl-10 lg:pl-5 flex flex-col justify-end gap-9 lg:gap-8 pb-[75px] lg:pb-8 bg-cover bg-center bg-no-repeat bg-[url("/hero.webp")]'>
+            <div
+                className='rounded-[30px] lg:rounded-none w-full h-[720px] lg:h-[630px] pl-10 lg:pl-5 flex flex-col justify-end gap-9 lg:gap-8 pb-[75px] lg:pb-8'
+                style={{ backgroundImage: `url('/home/hero.webp')` }}
+            >
                 <div className='flex flex-col gap-[25px] max-w-[964px] pr-[250px] lg:pr-5'>
                     <Translate
                         direction='right'
@@ -27,7 +30,9 @@ const Hero: FC<IProps> = ({}) => {
                         distance={200}
                         animateOnce={false}
                     >
-                        <p className='text-white text-base md:text-sm font-medium'>{viewModel.hero.description}</p>
+                        <p className='text-white text-base md:text-sm font-medium'>
+                            {viewModel.hero.description}
+                        </p>
                     </Translate>
                     <Translate
                         direction='left'

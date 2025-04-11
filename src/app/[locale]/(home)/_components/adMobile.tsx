@@ -19,7 +19,7 @@ const AdMobile: FC<IProps> = ({}) => {
             >
                 <div className='bg-[var(--yellow)] rounded-[45px] pt-[25px] px-[39px]'>
                     <Image
-                        src={'/mobileImg.webp'}
+                        src={'/home/mobileImg.webp'}
                         alt='phone'
                         width={540}
                         height={699}
@@ -30,10 +30,12 @@ const AdMobile: FC<IProps> = ({}) => {
                 direction='left'
                 distance={100}
                 animateOnce={false}
-                className="flex items-center justify-center"
+                className='flex items-center justify-center'
             >
                 <div className='flex flex-col gap-[40px] max-w-[487px] lg:items-center lg:justify-center lg:gap-8'>
-                    <h2 className='font-medium text-[34px] lg:text-2xl uppercase'>{viewModel.adMobile.title}</h2>
+                    <h2 className='font-medium text-[34px] lg:text-2xl uppercase'>
+                        {viewModel.adMobile.title}
+                    </h2>
                     <p className='text-base lg:text-sm font-normal'>{viewModel.adMobile.description1}</p>
                     <p className='text-base lg:text-sm font-normal'>{viewModel.adMobile.description2}</p>
                     <Translate
@@ -42,17 +44,19 @@ const AdMobile: FC<IProps> = ({}) => {
                         animateOnce={false}
                     >
                         <div className='flex flex-col gap-[10px] mt-[30px] lg:mt-0 lg:justify-center lg:items-center'>
-                            <p className='text-lg font-medium pr-[90px] lg:text-center lg:pr-0'>{viewModel.adMobile.links}</p>
+                            <p className='text-lg font-medium pr-[90px] lg:text-center lg:pr-0'>
+                                {viewModel.adMobile.links}
+                            </p>
                             <div className='flex items-center gap-[10px]'>
                                 <Image
-                                    src={'/appStoreImg.webp'}
+                                    src={'/sm/appStoreImg.webp'}
                                     alt='app store'
                                     width={128}
                                     height={43}
                                     className='cursor-pointer'
                                 />
                                 <Image
-                                    src={'/googlePlayImg.webp'}
+                                    src={'/sm/googlePlayImg.webp'}
                                     alt='google'
                                     width={147}
                                     height={43}

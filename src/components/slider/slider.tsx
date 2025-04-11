@@ -3,7 +3,7 @@
 import clsx from 'clsx';
 import 'keen-slider/keen-slider.min.css';
 import { useKeenSlider } from 'keen-slider/react';
-import { FC, ReactNode, useState } from 'react';
+import { FC, ReactNode, useEffect, useState } from 'react';
 import { ClassNameValue } from 'tailwind-merge';
 
 interface SliderProps {
@@ -13,32 +13,75 @@ interface SliderProps {
     loop?: boolean;
     classNameChildren?: ClassNameValue;
     classNameSlider?: ClassNameValue;
+    onReachEnd?: () => Promise<void>;
+    total?: number;
+    page?: number;
+    rubberband?: boolean;
 }
 
-const Slider: FC<SliderProps> = ({ children, slidesPerView = 3, spacing = 10, loop = true, classNameChildren, classNameSlider }) => {
+const Slider: FC<SliderProps> = ({
+    children,
+    slidesPerView = 3,
+    spacing = 10,
+    loop = true,
+    classNameChildren,
+    classNameSlider,
+    onReachEnd,
+    total,
+    rubberband = true,
+}) => {
     const [isLoaded, setIsLoaded] = useState(false);
+    const [number, setNumber] = useState(slidesPerView * 1.1);
+
     const [sliderRef] = useKeenSlider({
-        loop,
-        mode: 'free-snap',
+        mode: 'free',
         slides: {
             perView: slidesPerView,
             spacing,
+            number,
         },
+        loop,
         drag: true,
+        rubberband,
+
         created() {
             setIsLoaded(true);
         },
+
+        async slideChanged(s) {
+            const isEnd = s.track.details.rel === s.track.details.maxIdx;
+
+            if (isEnd && onReachEnd) {
+                if (total && children.length < total) {
+                    await onReachEnd();
+                    setNumber((prev) => prev + 1.1);
+                } else {
+                    setNumber(children.length);
+                }
+            }
+        },
     });
 
+    useEffect(() => {
+        if (total && children.length === total) {
+            setNumber(total);
+        }
+    }, [children]);
     return (
         <div className='relative w-full'>
             <div
-                className={clsx(`keen-slider transition-opacity duration-300 ${isLoaded ? 'opacity-100' : 'opacity-0'}`, classNameSlider)}
+                className={clsx(
+                    `keen-slider transition-opacity duration-300 ${isLoaded ? 'opacity-100' : 'opacity-0'}`,
+                    classNameSlider,
+                )}
                 ref={sliderRef}
             >
-                {children.map((child, index) => (
+                {[...children].map((child, index) => (
                     <div
-                        className={clsx('keen-slider__slide', classNameChildren)}
+                        className={clsx(
+                            'keen-slider__slide',
+                            classNameChildren,
+                        )}
                         key={index}
                     >
                         {child}

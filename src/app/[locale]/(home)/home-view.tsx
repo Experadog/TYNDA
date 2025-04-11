@@ -8,7 +8,9 @@ import Hero from './_components/hero';
 const About = dynamic(() => import('./_components/about'), { ssr: true });
 const AdMobile = dynamic(() => import('./_components/adMobile'), { ssr: true });
 const MoreRecs = dynamic(() => import('./_components/moreRecs'), { ssr: true });
-const Recommendation = dynamic(() => import('./_components/recommendation'), { ssr: true });
+const Recommendation = dynamic(() => import('./_components/recommendation'), {
+    ssr: true,
+});
 
 interface IProps {}
 

@@ -13,19 +13,15 @@ const sizeClasses = {
     large: 'w-7 h-7',
 };
 
-const getFillPercentage = (value: number) => {
-    if (value >= 0.7) return 75;
-    if (value >= 0.4) return 50;
-    if (value >= 0.1) return 25;
-    return 0;
-};
-
 const RatingStars: FC<IProps> = ({ rating, size = 'default' }) => {
+    const fullStars = Math.floor(rating);
+    const fractionalStar = rating - fullStars;
+
     return (
         <div className='flex gap-1'>
             {[...Array(5)].map((_, i) => {
-                const rawFill = rating - i;
-                const fillPercentage = rawFill >= 1 ? 100 : getFillPercentage(rawFill);
+                const isFullStar = i < fullStars;
+                const isPartialStar = i === fullStars && fractionalStar > 0;
 
                 return (
                     <div
@@ -33,14 +29,21 @@ const RatingStars: FC<IProps> = ({ rating, size = 'default' }) => {
                         className='relative'
                     >
                         <Star className={clsx(sizeClasses[size], 'fill-black stroke-none')} />
-                        {fillPercentage > 0 && (
+
+                        {isPartialStar && (
                             <div
-                                className='absolute top-0 left-0 overflow-hidden'
-                                style={{ width: `${fillPercentage}%` }}
+                                className='absolute top-0 left-0 w-full overflow-hidden '
+                                style={{
+                                    width: `${fractionalStar * 100}%`,
+                                    height: '100%',
+                                }}
                             >
-                                <Star className={clsx(sizeClasses[size], 'fill-yellow stroke-yellow')} />
+                                <Star className={clsx(sizeClasses[size], 'fill-yellow stroke-none')} />
                             </div>
                         )}
+
+                        {/* Полностью залитая желтая звезда */}
+                        {isFullStar && <Star className={clsx(sizeClasses[size], 'fill-yellow stroke-none absolute top-0 left-0 w-full overflow-hidden ')} />}
                     </div>
                 );
             })}

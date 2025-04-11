@@ -18,10 +18,17 @@ interface IProps {
     viewModel: ViewModel['Layout']['navbar'];
 }
 
-export const navbarIcons = [<RiHome6Line className='w-[18px] h-[18px]' />, <TbMapSearch className='w-[18px] h-[18px]' />, <CgInfo className='w-[18px] h-[18px]' />, <LiaPhoneSolid className='w-[18px] h-[18px]' />, <LuCreditCard className='w-[18px] h-[18px]' />];
+export const navbarIcons = [
+    <RiHome6Line className='w-[18px] h-[18px]' />,
+    <TbMapSearch className='w-[18px] h-[18px]' />,
+    <CgInfo className='w-[18px] h-[18px]' />,
+    <LiaPhoneSolid className='w-[18px] h-[18px]' />,
+    <LuCreditCard className='w-[18px] h-[18px]' />,
+];
 
 const Navbar: FC<IProps> = () => {
-    const { navigateToAuthOrProfile, user, viewModel, shouldHighlightLink, shouldHighlightBtn } = useNavbarUseCase();
+    const { navigateToAuthOrProfile, user, viewModel, shouldHighlightLink, shouldHighlightBtn } =
+        useNavbarUseCase();
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -29,7 +36,9 @@ const Navbar: FC<IProps> = () => {
     return (
         <header
             id='navbar'
-            className={clsx('bg-background_1 flex flex-col sticky z-50 top-0 right-0 left-0 transition-shadow shadow-lg')}
+            className={clsx(
+                'bg-background_1 flex flex-col sticky z-50 top-0 right-0 left-0 transition-shadow shadow-lg',
+            )}
         >
             <div className='flex items-center px-10 xs:px-5 py-5 gap-8 justify-between'>
                 <div className='flex items-center gap-16'>
@@ -45,12 +54,19 @@ const Navbar: FC<IProps> = () => {
                         </Link>
                     </div>
 
-                    <nav className={clsx('flex items-center gap-7 xl:gap-4 whitespace-nowrap lg:hidden')}>
+                    <nav
+                        className={clsx(
+                            'flex items-center gap-7 xl:gap-4 whitespace-nowrap lg:hidden',
+                        )}
+                    >
                         {NAV_LINKS.map((path, index) => (
                             <Link
                                 key={path}
                                 href={path}
-                                className={clsx('font-semibold uppercase text-sm hover:text-yellow', shouldHighlightLink(path) && 'text-yellow')}
+                                className={clsx(
+                                    'font-semibold uppercase text-sm hover:text-yellow',
+                                    shouldHighlightLink(path) && 'text-yellow',
+                                )}
                             >
                                 <div className='flex items-center gap-[10px]'>
                                     {navbarIcons[index]}
@@ -66,7 +82,10 @@ const Navbar: FC<IProps> = () => {
                     <ToggleLocale />
                     <Button
                         onClick={navigateToAuthOrProfile}
-                        className={clsx('bg-transparent uppercase text-foreground_1 font-semibold shadow-none p-5 rounded-3xl border-foreground_1  border cursor-pointer hover:bg-yellow hover:border-background_1 hover:text-white lg:hidden text-xs', shouldHighlightBtn && 'bg-yellow  border-background_1 text-white')}
+                        className={clsx(
+                            'bg-transparent uppercase text-foreground_1 font-semibold shadow-none p-5 rounded-3xl border-foreground_1  border cursor-pointer hover:bg-yellow hover:border-background_1 hover:text-white lg:hidden text-xs',
+                            shouldHighlightBtn && 'bg-yellow  border-background_1 text-white',
+                        )}
                     >
                         {user ? user.email : viewModel.navbar.button1}
                     </Button>

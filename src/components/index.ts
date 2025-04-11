@@ -17,3 +17,4 @@ export * from './ui/input';
 export * from './ui/label';
 export * from './ui/loading-spinner';
 export * from './ui/rating-stars';
+export * from './ui/skeleton';

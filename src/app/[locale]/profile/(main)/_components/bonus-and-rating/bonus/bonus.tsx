@@ -7,14 +7,14 @@ import BonusCard from './bonus-card';
 interface IProps {}
 
 const Bonus: FC<IProps> = ({}) => {
-    const isEmpty = true;
+    const isEmpty = false;
 
     return isEmpty ? (
         <Empty text='Здесь будет ваша история использованных бонусов и скидок!' />
     ) : (
         <Slider
             loop={false}
-            slidesPerView={4.2}
+            slidesPerView={4.5}
             spacing={15}
             classNameChildren='p-3'
         >
