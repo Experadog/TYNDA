@@ -21,7 +21,7 @@ interface IProps {
 
 const RecommendationCard: FC<IProps> = ({ className = '', bottomElClassName = '', titleClassName = '', descriptionClassName = '', buttonClassName = '', ratingClassName = '', imageClassName = '', hideImage = false, hideDescription = false, hideButton = false, hideRating = false, imageWidth = 320, imageHeight = 322 }) => {
     return (
-        <div className={`flex flex-col gap-[14px] pb-[14px] shadow-md rounded-[20px] bg-background_1 ${className}`}>
+        <div className={`flex flex-col gap-[14px] md:gap-2 md:pb-2 pb-[14px] shadow-md rounded-[20px] bg-background_1 ${className}`}>
             {!hideImage && (
                 <div>
                     <Image
@@ -33,22 +33,22 @@ const RecommendationCard: FC<IProps> = ({ className = '', bottomElClassName = ''
                     />
                 </div>
             )}
-            <div className={`px-[14px] ${bottomElClassName}`}>
-                <h4 className={`font-semibold text-lg uppercase ${titleClassName}`}>Обзорная экскурсия по городу</h4>
-                {!hideDescription && <p className={`font-normal text-sm line-clamp-2 ${descriptionClassName}`}>Это первый в Кыргызстане этно-фастфуд, который был запущен в 2019 году. Уютное заведение в центре города, где можно угостить гостей национальными кыргызскими блюдами.</p>}
-                <div className={`flex justify-between mt-[18px] ${ratingClassName}`}>
+            <div className={`px-[14px] md:px-1 ${bottomElClassName}`}>
+                <h4 className={`font-semibold text-lg uppercase md:text-base md:font-medium ${titleClassName}`}>Обзорная экскурсия по городу</h4>
+                {!hideDescription && <p className={`font-normal text-sm line-clamp-2 md:text-xs ${descriptionClassName}`}>Это первый в Кыргызстане этно-фастфуд, который был запущен в 2019 году. Уютное заведение в центре города, где можно угостить гостей национальными кыргызскими блюдами.</p>}
+                <div className={`flex justify-between mt-[18px] md:mt-3 ${ratingClassName}`}>
                     {!hideButton && (
                         <Button
                             variant={'yellow'}
-                            className={`rounded-[18px] numeric ${buttonClassName}`}
+                            className={`rounded-[18px] text-base font-semibold md:text-sm numeric  ${buttonClassName}`}
                         >
                             2 356 c
                         </Button>
                     )}
                     {!hideRating && (
                         <div className={`flex gap-1 items-center`}>
-                            <p className='numeric'>4.9</p>
-                            <IoStar className='text-[var(--yellow)]' />
+                            <p className='numeric text-base font-semibold md:text-sm'>4.9</p>
+                            <IoStar className='text-[var(--yellow)] md:text-sm' />
                         </div>
                     )}
                 </div>

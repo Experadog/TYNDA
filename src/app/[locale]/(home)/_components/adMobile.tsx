@@ -11,7 +11,7 @@ interface IProps {
 const AdMobile: FC<IProps> = ({}) => {
     const { viewModel } = useHomeUseCase();
     return (
-        <div className='mt-[120px] lg:mt-[60px] grid grid-cols-2 lg:grid-cols-1 gap-[40px] px-5'>
+        <div className='mt-[120px] lg:mt-[60px] grid grid-cols-2 lg:grid-cols-1 gap-[40px]'>
             <Translate
                 direction='right'
                 distance={100}
@@ -33,9 +33,9 @@ const AdMobile: FC<IProps> = ({}) => {
                 className="flex items-center justify-center"
             >
                 <div className='flex flex-col gap-[40px] max-w-[487px] lg:items-center lg:justify-center lg:gap-8'>
-                    <h2 className='font-medium text-[34px] uppercase'>{viewModel.adMobile.title}</h2>
-                    <p className='text-base font-normal'>{viewModel.adMobile.description1}</p>
-                    <p className='text-base font-normal'>{viewModel.adMobile.description2}</p>
+                    <h2 className='font-medium text-[34px] lg:text-2xl uppercase'>{viewModel.adMobile.title}</h2>
+                    <p className='text-base lg:text-sm font-normal'>{viewModel.adMobile.description1}</p>
+                    <p className='text-base lg:text-sm font-normal'>{viewModel.adMobile.description2}</p>
                     <Translate
                         direction='up'
                         distance={50}
@@ -54,7 +54,7 @@ const AdMobile: FC<IProps> = ({}) => {
                                 <Image
                                     src={'/googlePlayImg.webp'}
                                     alt='google'
-                                    width={128}
+                                    width={147}
                                     height={43}
                                     className='cursor-pointer h-[43px]'
                                 />

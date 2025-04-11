@@ -11,16 +11,16 @@ interface IProps {
 const About: FC<IProps> = ({}) => {
     const { viewModel } = useHomeUseCase();
     return (
-        <div className='mt-[120px] lg:mt-[60px] px-5 flex flex-col gap-[60px] lg:gap-[30px] mb-[200px] lg:mb-[60px]'>
-            <div className='flex justify-between lg:flex-col lg:px-5 lg:gap-[30px] lg:items-center lg:justify-center'>
+        <div className='mt-[120px] lg:mt-[60px] flex flex-col gap-[60px] lg:gap-[30px] mb-[200px] lg:mb-[60px]'>
+            <div className='flex justify-between lg:flex-col lg:gap-[30px] lg:items-center lg:justify-center'>
                 <Translate
                     direction='right'
                     distance={100}
                     animateOnce={false}
                 >
-                    <div className='flex flex-col gap-[20px] lg:items-center lg:justify-center'>
+                    <div className='flex flex-col gap-[20px] lg:items-start lg:justify-center'>
                         <h3 className='uppercase font-semibold text-lg opacity-70'>{viewModel.about.title}</h3>
-                        <h2 className='uppercase font-medium text-[34px] max-w-[734px] lg:text-center'>
+                        <h2 className='uppercase font-medium text-[34px] max-w-[734px]'>
                             {viewModel.about.title1} <span className='text-[var(--yellow)]'>{viewModel.about.title2} </span>
                             {viewModel.about.title3} <span className='text-[var(--yellow)]'>{viewModel.about.title4}</span>
                         </h2>
@@ -57,7 +57,7 @@ const About: FC<IProps> = ({}) => {
                 distance={50}
                 animateOnce={false}
             >
-                <div className='flex justify-between gap-5 lg:flex-col-reverse md:justify-center md:items-center'>
+                <div className='flex justify-between gap-5 lg:flex-col-reverse md:justify-center'>
                     <div className='flex items-center justify-center'>
                         <Image
                             src={'/nature.webp'}
@@ -67,7 +67,7 @@ const About: FC<IProps> = ({}) => {
                             className='h-[258px] rounded-2xl lg:w-[355px]'
                         />
                     </div>
-                    <div className='flex flex-wrap items-center justify-center gap-4'>
+                    <div className='flex flex-wrap lg:flex-col items-center lg:items-start justify-center gap-4'>
                         <div className='flex flex-col gap-[10px]'>
                             <p className='font-bold text-6xl uppercase text-yellow numeric'>24/7</p>
                             <p className='font-normal text-base'>{viewModel.about.stats1}</p>

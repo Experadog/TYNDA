@@ -11,6 +11,7 @@ export default {
                 background_2: 'var(--background-2)',
                 background_3: 'var(--background-3)',
                 background_4: 'var(--background-4)',
+                background_5: 'var(--background-5)',
 
                 foreground_1: 'var(--foreground-1)',
                 foreground_2: 'var(--foreground-2)',
