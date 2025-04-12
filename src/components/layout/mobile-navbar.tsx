@@ -14,7 +14,7 @@ const MobileNavbar: FC<IProps> = () => {
         useNavbarUseCase();
 
     return (
-        <div className='fixed inset-x-0 top-[87px] h-screen bg-background_1 px-5 py-10 flex flex-col overflow-y-auto'>
+        <div className='fixed inset-x-0 top-[87px] h-[calc(100vh-87px)] bg-background_1 px-5 py-10 flex flex-col overflow-y-auto'>
             <nav className={clsx('flex flex-wrap justify-around md:flex-col md:items-start gap-8')}>
                 {NAV_LINKS.map((path, index) => (
                     <Link

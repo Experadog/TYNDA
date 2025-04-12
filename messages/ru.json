@@ -6,7 +6,6 @@
             "button2": "Скачать приложение",
             "button3": "Доступно на"
         },
-
         "footer": {
             "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
             "menu": [
@@ -140,6 +139,38 @@
             "loading": "Обновление профиля...",
             "success": "Профиль успешно обновлен!",
             "error": "Произошла ошибка при попытке обновить профиль"
+        }
+    },
+    "AllEnterprises": {
+        "hero": {
+            "home": "Главная",
+            "allEnterprises": "Все предприятия",
+            "explore": "исследуйте",
+            "openNew": "Откройте новые грани путешествий с нашими уникальными маршрутами. Забронируйте прямо сейчас!",
+            "links": ["Питание", "Аренда", "Здоровье и красота", "Покупки и сувениры", "Культура и история", "События и развлечения", "Для семейного отдыха", "Тур трансферы", "Питание", "Аренда", "Здоровье и красота", "Покупки и сувениры", "Культура и история", "События и развлечения", "Для семейного отдыха", "Тур трансферы"]
+        },
+        "enterprisesFilter": {
+            "button1": "Фильтр",
+            "button2": "Средний чек",
+            "button3": "Дистанция"
+        }
+    },
+    "DetailEnterprise": {
+        "hero": {
+            "home": "Главная",
+            "address": "Адрес",
+            "contacts": "Контакты",
+            "workTime": "Время работы",
+            "aboutEnterprise": "О предприятии",
+            "button1": "Написать",
+            "button2": "Показать на карте"
+        },
+        "allPhoto": {
+            "photo": "Все фото"
+        },
+        "weAdvise": {
+            "weAdvise": "Советуем",
+            "similarEnterprise": "Похожие предприятия"
         }
     }
 }
