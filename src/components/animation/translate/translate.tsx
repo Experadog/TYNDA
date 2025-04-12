@@ -1,14 +1,7 @@
 'use client';
 
 import clsx from 'clsx';
-import {
-    CSSProperties,
-    FC,
-    ReactNode,
-    useEffect,
-    useRef,
-    useState,
-} from 'react';
+import { CSSProperties, FC, ReactNode, useEffect, useRef, useState } from 'react';
 import { ClassNameValue } from 'tailwind-merge';
 import './translate.css';
 

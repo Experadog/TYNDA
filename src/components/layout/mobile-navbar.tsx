@@ -1,6 +1,6 @@
 import { Link } from '@/i18n/routing';
 import { NAV_LINKS } from '@/lib';
-import { Button } from '@components';
+import { Button, Translate } from '@components';
 import clsx from 'clsx';
 import Image from 'next/image';
 import { FC } from 'react';
@@ -9,12 +9,17 @@ import { useNavbarUseCase } from './use-cases/useNavbarUseCase';
 
 interface IProps {}
 
-const MobileNavbar: FC<IProps> = () => {
+const MobileNavbar: FC<IProps> = ({}) => {
     const { viewModel, navigateToAuthOrProfile, user, shouldHighlightLink, shouldHighlightBtn } =
         useNavbarUseCase();
 
     return (
-        <div className='fixed inset-x-0 top-[87px] h-screen bg-background_1 px-5 py-10 flex flex-col overflow-y-auto'>
+        <Translate
+            direction='up'
+            duration={1}
+            distance={300}
+            className='fixed inset-x-0 top-[87px] h-screen bg-background_1 px-5 py-10 flex flex-col overflow-y-auto border-t border-t-background_2'
+        >
             <nav className={clsx('flex flex-wrap justify-around md:flex-col md:items-start gap-8')}>
                 {NAV_LINKS.map((path, index) => (
                     <Link
@@ -84,7 +89,7 @@ const MobileNavbar: FC<IProps> = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </Translate>
     );
 };
 

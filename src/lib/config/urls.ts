@@ -13,6 +13,9 @@ export enum URL_ENTITIES {
 
     //biz
     CARD_HISTORY = '/biz/card_history/client-history',
+
+    //base
+    LOAD_FILE = '/base/resources',
 }
 
 export enum URL_LOCAL_ENTITIES {

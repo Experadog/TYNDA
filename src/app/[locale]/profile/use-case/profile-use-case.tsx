@@ -1,15 +1,25 @@
 'use client';
 
-import { ClientHistoryResponseModel } from '@/services';
+import {
+    ClientHistoryResponseModel,
+    loadFile,
+    LoadFileRequestModel,
+    LoadFileResponseModel,
+} from '@/services';
 import { getClientHistory } from '@/services/profile/profileService';
+import { createAction, useAsyncAction } from '@common';
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
 
 interface ProfileContextType {
     states: {
         clientHistory: ClientHistoryResponseModel;
+        isAvatarUpdating: boolean;
     };
     actions: {
         moveToNextClientHistory: () => Promise<void>;
+        openAvatarUpdating: () => void;
+        closeAvatarUpdating: () => void;
+        onUpdateAvatar: (data: LoadFileRequestModel) => Promise<void>;
     };
 }
 
@@ -22,6 +32,32 @@ const ProfileContext = createContext<ProfileContextType | undefined>(undefined);
 
 export const ProfileContextProvider: FC<ContextProps> = ({ children, clientHistoryResponse }) => {
     const [clientHistory, setClientHistory] = useState(clientHistoryResponse);
+    const [isAvatarUpdating, setIsAvatarUpdating] = useState(false);
+
+    const openAvatarUpdating = () => setIsAvatarUpdating(true);
+    const closeAvatarUpdating = () => setIsAvatarUpdating(false);
+
+    const { execute: loadFileExecute } = useAsyncAction<
+        LoadFileResponseModel,
+        [LoadFileRequestModel]
+    >({
+        messages: {
+            error: 'Ошибка при попытке обновить фото профиля',
+            loading: 'Загрузка...',
+            success: 'Фото профиля успешно обновлено!',
+        },
+    });
+
+    const updateAvatarAction = createAction({
+        requestAction: loadFile,
+        onError: (err) => {
+            console.log(err, 'JAI JAI');
+        },
+    });
+
+    const onUpdateAvatar = async (data: LoadFileRequestModel) => {
+        await loadFileExecute(updateAvatarAction, data);
+    };
 
     const moveToNextClientHistory = async () => {
         const nextPage = clientHistory.data.page + 1;
@@ -39,14 +75,19 @@ export const ProfileContextProvider: FC<ContextProps> = ({ children, clientHisto
             },
         }));
     };
+
     return (
         <ProfileContext.Provider
             value={{
                 actions: {
                     moveToNextClientHistory,
+                    closeAvatarUpdating,
+                    openAvatarUpdating,
+                    onUpdateAvatar,
                 },
                 states: {
                     clientHistory,
+                    isAvatarUpdating,
                 },
             }}
         >

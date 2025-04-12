@@ -36,6 +36,10 @@ const CollectedProviders: FC<IProps> = async ({ children }) => {
                         border: '1px solid',
                         borderColor: '#f5f5f5',
                         fontWeight: 600,
+                        boxShadow:
+                            theme === 'dark'
+                                ? '0px 0px 5px rgba(0,0,0,0.5), 0px 0px 5px rgba(255,255,255,0.5)'
+                                : '0px 0px 5px rgba(0,0,0,0.3), 0px 0px 5px rgba(255,255,255,0.3)',
                     },
                 }}
             />

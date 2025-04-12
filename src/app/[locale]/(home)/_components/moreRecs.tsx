@@ -1,7 +1,6 @@
 'use client';
 import { Translate } from '@components';
 import { FC } from 'react';
-import { useMediaQuery } from 'react-responsive';
 import { useHomeUseCase } from '../use-cases/useHomeUseCase';
 import RecommendationCard from './recommendationCard';
 
@@ -11,8 +10,6 @@ interface IProps {
 
 const MoreRecs: FC<IProps> = ({}) => {
     const { viewModel } = useHomeUseCase();
-    const isLargeScreen = useMediaQuery({ minWidth: 1025 });
-    const itemsCount = isLargeScreen ? 4 : 2;
     return (
         <Translate
             direction='right'
@@ -43,7 +40,7 @@ const MoreRecs: FC<IProps> = ({}) => {
                         animateOnce={false}
                     >
                         <div className='grid grid-cols-2 gap-[25px] lg:gap-[10px]'>
-                            {Array.from({ length: itemsCount }).map((_, index) => (
+                            {Array.from({ length: 4 }).map((_, index) => (
                                 <RecommendationCard
                                     ratingClassName='max-w-[170px]'
                                     key={index}

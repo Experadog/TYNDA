@@ -12,19 +12,14 @@ interface UseAsyncActionProps {
     throttleTime?: number;
 }
 
-export const useAsyncAction = <T, P extends any[]>(
-    props: UseAsyncActionProps,
-) => {
+export const useAsyncAction = <T, P extends any[]>(props: UseAsyncActionProps) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<Error | null>(null);
     const [lastExecuted, setLastExecuted] = useState<number | null>(null);
 
     const { messages, throttleTime = 3000 } = props;
 
-    const execute = async (
-        action: AsyncAction<T, P>,
-        ...args: P
-    ): Promise<T> => {
+    const execute = async (action: AsyncAction<T, P>, ...args: P): Promise<T> => {
         const now = Date.now();
 
         if (lastExecuted && now - lastExecuted < throttleTime) {
@@ -37,10 +32,7 @@ export const useAsyncAction = <T, P extends any[]>(
 
         try {
             if (messages) {
-                return await pushToast(
-                    action(...args) as Promise<CommonResponse<T>>,
-                    messages,
-                );
+                return await pushToast(action(...args) as Promise<CommonResponse<T>>, messages);
             } else {
                 return await action(...args);
             }

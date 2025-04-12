@@ -6,11 +6,18 @@ import { useUser } from '@/providers/user/user-provider';
 import { Button, TariffCard, Translate } from '@components';
 import { FC } from 'react';
 import { SlPencil } from 'react-icons/sl';
+import { useProfileUseCase } from '../../../use-case/profile-use-case';
+import AvatarUpdating from '../avatar-updating/avatar-updating';
 
 interface IProps {}
 
 const UserCard: FC<IProps> = ({}) => {
     const { user } = useUser();
+    const {
+        actions: { openAvatarUpdating },
+    } = useProfileUseCase();
+
+    const avatar = user?.avatar || '/other/avatar-placeholder.webp';
 
     return (
         <Translate
@@ -21,9 +28,11 @@ const UserCard: FC<IProps> = ({}) => {
             <div className='relative flex flex-col w-full items-center h-full'>
                 <div className='flex items-center flex-col w-full relative'>
                     <div
-                        className={`bg-[url(/auth/auth.webp)] bg-cover size-28 absolute rounded-full -top-11`}
+                        className='size-28 absolute rounded-full -top-11 bg-cover bg-center'
+                        style={{ backgroundImage: `url(${avatar})` }}
                     >
                         <Button
+                            onClick={openAvatarUpdating}
                             variant={'yellow'}
                             className='size-9 absolute bottom-0 right-0 z-10 p-0 text-4xl font-extralight text-white rounded-full'
                         >
@@ -72,6 +81,8 @@ const UserCard: FC<IProps> = ({}) => {
                         </div>
                     </div>
                 </div>
+
+                <AvatarUpdating />
 
                 <Link
                     href={PAGES.UPDATE_PROFILE}

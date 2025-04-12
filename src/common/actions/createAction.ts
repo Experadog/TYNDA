@@ -6,7 +6,11 @@ interface ActionFactoryOptions<TRequest, TResponse> {
     onError?: (error?: Error) => void;
 }
 
-export function createAction<TRequest, TResponse>({ requestAction, onSuccess, onError }: ActionFactoryOptions<TRequest, TResponse>) {
+export function createAction<TRequest, TResponse>({
+    requestAction,
+    onSuccess,
+    onError,
+}: ActionFactoryOptions<TRequest, TResponse>) {
     return async (values: TRequest): Promise<TResponse> => {
         try {
             const response = await requestAction(values);
@@ -19,7 +23,7 @@ export function createAction<TRequest, TResponse>({ requestAction, onSuccess, on
                 onSuccess(response);
             } else {
                 if (onError) {
-                    onError();
+                    onError(response as any);
                 }
             }
 

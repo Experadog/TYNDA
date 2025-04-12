@@ -1,13 +1,7 @@
 'use server';
 
 import { createFetchAction } from '@/common/actions/createFetchAction';
-import {
-    COOKIES,
-    encryptData,
-    isSuccessResponse,
-    parseISOStringToDate,
-    URL_ENTITIES,
-} from '@/lib';
+import { COOKIES, encryptData, isSuccessResponse, parseISOStringToDate, URL_ENTITIES } from '@/lib';
 import { Session, User } from '@business-entities';
 import {
     AXIOS_GET,
@@ -38,7 +32,7 @@ class ProfileService {
             endpoint: URL_ENTITIES.CARD_HISTORY,
             shouldBeAuthorized: true,
             revalidateTags: [URL_ENTITIES.CARD_HISTORY],
-            params: { ...params, size: '4' },
+            params: { ...params, size: '20' },
         });
 
         return response;
@@ -85,9 +79,5 @@ class ProfileService {
     }
 }
 
-export const {
-    firstStepPhoneVerification,
-    getClientHistory,
-    getProfileInfo,
-    updateProfile,
-} = ProfileService;
+export const { firstStepPhoneVerification, getClientHistory, getProfileInfo, updateProfile } =
+    ProfileService;

@@ -27,13 +27,8 @@ export const navbarIcons = [
 ];
 
 const Navbar: FC<IProps> = () => {
-    const {
-        navigateToAuthOrProfile,
-        user,
-        viewModel,
-        shouldHighlightLink,
-        shouldHighlightBtn,
-    } = useNavbarUseCase();
+    const { navigateToAuthOrProfile, user, viewModel, shouldHighlightLink, shouldHighlightBtn } =
+        useNavbarUseCase();
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -45,7 +40,7 @@ const Navbar: FC<IProps> = () => {
                 'bg-background_1 flex flex-col sticky z-50 top-0 right-0 left-0 transition-shadow shadow-lg',
             )}
         >
-            <div className='flex items-center px-10 xs:px-5 py-5 gap-8 justify-between'>
+            <div className='flex items-center px-10 xs:px-5 py-5 gap-8'>
                 <div className='w-[50px] h-[48px]'>
                     <Link href={'/'}>
                         <Image
@@ -58,9 +53,7 @@ const Navbar: FC<IProps> = () => {
                 </div>
 
                 <nav
-                    className={clsx(
-                        'flex items-center gap-7 xl:gap-4 whitespace-nowrap lg:hidden',
-                    )}
+                    className={clsx('flex items-center gap-7 xl:gap-4 whitespace-nowrap lg:hidden')}
                 >
                     {NAV_LINKS.map((path, index) => (
                         <Link
@@ -79,15 +72,14 @@ const Navbar: FC<IProps> = () => {
                     ))}
                 </nav>
 
-                <nav className='flex items-center gap-5 xl:gap-3 exs:gap-3 relative'>
+                <nav className='flex items-center gap-5 xl:gap-3 exs:gap-3 relative ml-auto'>
                     <ToggleTheme />
                     <ToggleLocale />
                     <Button
                         onClick={navigateToAuthOrProfile}
                         className={clsx(
                             'bg-transparent uppercase text-foreground_1 font-semibold shadow-none p-5 rounded-3xl border-foreground_1  border cursor-pointer hover:bg-yellow hover:border-background_1 hover:text-white lg:hidden text-xs',
-                            shouldHighlightBtn &&
-                                'bg-yellow  border-background_1 text-white',
+                            shouldHighlightBtn && 'bg-yellow  border-background_1 text-white',
                         )}
                     >
                         {user ? user.email : viewModel.navbar.button1}
@@ -99,13 +91,12 @@ const Navbar: FC<IProps> = () => {
                             onClick={toggleMenu}
                             className='bg-transparent text-foreground_1 py-2 px-4 rounded-[50px] border-foreground_1 border hover:bg-yellow hover:border-yellow hover:text-white'
                         >
-                            <div>
-                                {isMenuOpen ? <IoClose /> : <RxHamburgerMenu />}
-                            </div>
+                            <div>{isMenuOpen ? <IoClose /> : <RxHamburgerMenu />}</div>
                         </Button>
                     </div>
                 </nav>
             </div>
+
             {isMenuOpen && <MobileNavbar />}
         </header>
     );

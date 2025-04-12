@@ -1,11 +1,12 @@
 import { API_URL, COOKIES, getTokensFromSession } from '@/lib';
-import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
+import { clearCookie } from '../actions/clear-cookie';
 import { Params } from '../types/http.types';
+import { CommonResponse } from '../types/responses.types';
 
 export const axiosInstance: AxiosInstance = axios.create({
     baseURL: API_URL,
     withCredentials: true,
-    headers: { 'Content-Type': 'application/json' },
 });
 
 axiosInstance.interceptors.request.use(async (config) => {
@@ -15,12 +16,33 @@ axiosInstance.interceptors.request.use(async (config) => {
     const sessionCookie = cookieStore.get(COOKIES.SESSION);
     const tokens = getTokensFromSession(sessionCookie?.value);
 
+    console.log('REQUEST: ', config.data);
+
     if (tokens) {
+        console.log('Adding cookie to request...');
         config.headers['Cookie'] = tokens;
     }
 
     return config;
 });
+
+axiosInstance.interceptors.response.use(
+    (response) => {
+        console.log('SUCCESS RESPONSE:', response.data);
+
+        return response;
+    },
+    async (error: AxiosError) => {
+        const { response } = error;
+        const data = response?.data as CommonResponse<null>;
+
+        console.log('ERROR: ', data);
+
+        if (response?.status === 401 || data?.code === 401) {
+            await clearCookie(COOKIES.SESSION);
+        }
+    },
+);
 
 async function request<T>(
     method: 'get' | 'post' | 'put' | 'patch' | 'delete',
@@ -37,21 +59,17 @@ async function request<T>(
             },
         });
 
-        console.log(
-            'LOGGER:',
-            method.toLocaleUpperCase(),
-            url,
-            response.status,
-            response.data,
-        );
-
-        return response.data;
+        return response?.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
-            console.log(error.response?.data);
+            return {
+                code: error.response?.data.code || 500,
+                data: error.response?.data,
+            } as T;
         }
+
         return {
-            code: axios.isAxiosError(error) ? error.response?.status : 500,
+            code: 500,
             data: null,
         } as T;
     }

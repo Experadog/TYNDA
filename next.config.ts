@@ -16,6 +16,9 @@ const nextConfig: NextConfig = {
     experimental: {
         optimizeCss: true,
         scrollRestoration: true,
+        serverActions: {
+            bodySizeLimit: '5mb',
+        },
     },
     compiler: {
         removeConsole: process.env.NODE_ENV === 'production',
@@ -35,7 +38,7 @@ const nextConfig: NextConfig = {
                     { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
                     {
                         key: 'Content-Security-Policy',
-                        value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://accounts.google.com https://accounts.google.com/gsi/client; style-src 'self' 'unsafe-inline'; img-src 'self' https://soyuz.kg; font-src 'self'; connect-src 'self';",
+                        value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://accounts.google.com https://accounts.google.com/gsi/client; style-src 'self' 'unsafe-inline'; img-src 'self' blob: https://soyuz.kg; font-src 'self'; connect-src 'self';",
                     },
 
                     {

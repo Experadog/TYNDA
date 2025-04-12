@@ -4,7 +4,4 @@ export enum COOKIES {
     NEXT_LOCALE = 'NEXT_LOCALE',
     SESSION = 'session',
     THEME = 'theme',
-
-    // client
-    CLIENT_HISTORY_PAGE = 'client_history_page',
 }
