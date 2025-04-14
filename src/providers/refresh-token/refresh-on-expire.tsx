@@ -1,12 +1,7 @@
 'use client';
 
 import { useRouter } from '@/i18n/routing';
-import {
-    decryptData,
-    LOCAL_API_URL,
-    REFRESH_INTERVAL_GUARD,
-    URL_LOCAL_ENTITIES,
-} from '@/lib';
+import { decryptData, LOCAL_API_URL, REFRESH_INTERVAL_GUARD, URL_LOCAL_ENTITIES } from '@/lib';
 import { Session } from '@business-entities';
 import { FC, ReactNode, useCallback, useEffect, useRef } from 'react';
 import { useUser } from '../user/user-provider';
@@ -31,8 +26,7 @@ const RefreshOnExpire: FC<IProps> = ({ children, initialSession }) => {
     const isErrorHandled = useRef(false);
     const abortController = useRef<AbortController | null>(null);
 
-    const isValidSession =
-        !!access.current && !!refresh.current && !!expires.current;
+    const isValidSession = !!access.current && !!refresh.current && !!expires.current;
 
     const clearRefreshTimer = useCallback(() => {
         if (refreshTimer.current) {
@@ -58,12 +52,7 @@ const RefreshOnExpire: FC<IProps> = ({ children, initialSession }) => {
     }, [router]);
 
     const startRefreshTimer = useCallback(() => {
-        if (
-            !expires.current ||
-            !isValidSession ||
-            isRefreshing.current ||
-            isErrorHandled.current
-        )
+        if (!expires.current || !isValidSession || isRefreshing.current || isErrorHandled.current)
             return;
 
         const sessionExpireDate = new Date(expires.current);
@@ -78,13 +67,11 @@ const RefreshOnExpire: FC<IProps> = ({ children, initialSession }) => {
     }, [isValidSession, clearRefreshTimer]);
 
     const handleRefresh = useCallback(async () => {
-        if (isRefreshing.current || !isValidSession || isErrorHandled.current)
-            return;
+        if (isRefreshing.current || !isValidSession || isErrorHandled.current) return;
 
         if (
             lastRefreshed.current &&
-            new Date().getTime() - lastRefreshed.current <
-                REFRESH_INTERVAL_GUARD
+            new Date().getTime() - lastRefreshed.current < REFRESH_INTERVAL_GUARD
         ) {
             return;
         }
@@ -105,26 +92,29 @@ const RefreshOnExpire: FC<IProps> = ({ children, initialSession }) => {
         abortController.current = new AbortController();
 
         try {
-            const res = await fetch(
-                `${LOCAL_API_URL}${URL_LOCAL_ENTITIES.REFRESH_SESSION}`,
-                {
-                    method: 'POST',
-                    credentials: 'include',
-                    signal: abortController.current.signal,
-                    priority: 'high',
-                },
-            );
+            const res = await fetch(`${LOCAL_API_URL}${URL_LOCAL_ENTITIES.REFRESH_SESSION}`, {
+                method: 'POST',
+                credentials: 'include',
+                signal: abortController.current.signal,
+                priority: 'high',
+            });
 
             if (!res.ok) throw new Error('Failed to refresh token');
 
             const data = await res.json();
             const decryptedData = decryptData(data) as Session;
 
-            // testing
-            localStorage.setItem(
-                JSON.stringify(decryptedData.access_token_expire_time),
-                JSON.stringify(decryptedData.access_token),
-            );
+            // Testing
+            const currentDateKey = new Date()
+                .toLocaleString('ru-RU', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                })
+                .replace(/[\s,:]/g, '-');
+            localStorage.setItem(currentDateKey, JSON.stringify(decryptedData.access_token));
 
             if (!decryptedData?.access_token) throw new Error('Invalid token');
 
@@ -157,19 +147,13 @@ const RefreshOnExpire: FC<IProps> = ({ children, initialSession }) => {
 
             const resumeHandler = () => startRefreshTimer();
 
-            document.addEventListener(
-                'visibilitychange',
-                visibilityChangeHandler,
-            );
+            document.addEventListener('visibilitychange', visibilityChangeHandler);
             window.addEventListener('focus', focusHandler);
             document.addEventListener('resume', resumeHandler);
 
             return () => {
                 clearRefreshTimer();
-                document.removeEventListener(
-                    'visibilitychange',
-                    visibilityChangeHandler,
-                );
+                document.removeEventListener('visibilitychange', visibilityChangeHandler);
                 window.removeEventListener('focus', focusHandler);
                 document.removeEventListener('resume', resumeHandler);
                 abortController.current?.abort();

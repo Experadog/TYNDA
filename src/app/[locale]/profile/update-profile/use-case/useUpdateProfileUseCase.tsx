@@ -1,13 +1,25 @@
 'use client';
 
 import { useViewModel } from '@/i18n/getTranslate';
-import { phoneFormatter } from '@/lib';
-import { ProfileUpdateResponseModel } from '@/services';
-import { firstStepPhoneVerification, updateProfile } from '@/services/profile/profileService';
+import { useRouter } from '@/i18n/routing';
+import { PAGES, phoneFormatter } from '@/lib';
+import {
+    CredentialsUpdateRequestModel,
+    CredentialsUpdateResponseModel,
+    logout,
+    ProfileUpdateResponseModel,
+} from '@/services';
+import {
+    firstStepPhoneVerification,
+    updateCredentials,
+    updateProfile,
+} from '@/services/profile/profileService';
 import { User } from '@business-entities';
 import {
     CommonDataStringResponse,
+    CommonResponse,
     createAction,
+    createCredentialsSchema,
     createProfileSchema,
     pushCommonToast,
     useAsyncAction,
@@ -20,6 +32,11 @@ interface UpdateProfileContextType {
             form: ReturnType<typeof createProfileSchema>;
             isLoading: boolean;
         };
+
+        credentials: {
+            form: ReturnType<typeof createCredentialsSchema>;
+        };
+
         phone: {
             preVerification: {
                 isOpen: boolean;
@@ -39,6 +56,8 @@ interface UpdateProfileContextType {
                 close: () => void;
             };
         };
+        onUpdateCredentials: (data: CredentialsUpdateRequestModel) => Promise<void>;
+        onLogout: () => Promise<void>;
     };
 }
 
@@ -49,6 +68,8 @@ export const UpdateProfileProvider: React.FC<{ children: ReactNode; user: User |
     user,
 }) => {
     const viewModel = useViewModel(['Toast']);
+
+    const router = useRouter();
 
     const [isPreVerificationOpen, setIsPreVerificationOpen] = useState(false);
     const [isPreVerificationExecuted, setIsPreVerificationExecuted] = useState(false);
@@ -66,6 +87,14 @@ export const UpdateProfileProvider: React.FC<{ children: ReactNode; user: User |
         },
     });
 
+    const credentialsForm = createCredentialsSchema({
+        message: {
+            confirm_password: 'Пароли не совпадают',
+            new_password: 'Обязательное поле',
+            old_password: 'Обязательное поле',
+        },
+    });
+
     const action_executes = {
         updateProfile: useAsyncAction<ProfileUpdateResponseModel, [Partial<User>]>({
             messages: viewModel.UpdateProfile,
@@ -74,10 +103,21 @@ export const UpdateProfileProvider: React.FC<{ children: ReactNode; user: User |
         phone: {
             preVerification: useAsyncAction<CommonDataStringResponse, [void]>({}),
         },
+
+        updateCredentials: useAsyncAction<
+            CredentialsUpdateResponseModel,
+            [CredentialsUpdateRequestModel]
+        >({
+            messages: viewModel.UpdateCredentials,
+        }),
+
+        logout: useAsyncAction<CommonResponse<null>, [void]>({
+            messages: viewModel.Logout,
+        }),
     };
 
     const actions = {
-        updateProfile: createAction({
+        updateProfileAction: createAction({
             requestAction: updateProfile,
         }),
 
@@ -89,13 +129,30 @@ export const UpdateProfileProvider: React.FC<{ children: ReactNode; user: User |
                     pushCommonToast('Ошибка при попытке подтвердить номер телефона', 'error'),
             }),
         },
+
+        updateCredentialsAction: createAction({
+            requestAction: updateCredentials,
+            onSuccess: () => {
+                router.push(PAGES.LOGIN);
+            },
+        }),
+
+        logoutAction: createAction({
+            requestAction: logout,
+            onSuccess: () => {
+                router.push(PAGES.LOGIN);
+            },
+        }),
     };
 
     const handlers: UpdateProfileContextType['actions'] = {
         onUpdateProfile: async (payload: Partial<User>) => {
             const { phone, ...rest } = payload;
             const payloadData = phone ? payload : rest;
-            await action_executes.updateProfile.execute(actions.updateProfile, payloadData);
+            await action_executes.updateProfile.execute(actions.updateProfileAction, payloadData);
+            updateProfileForm.reset({
+                ...payload,
+            });
         },
 
         phone: {
@@ -109,6 +166,14 @@ export const UpdateProfileProvider: React.FC<{ children: ReactNode; user: User |
                 close: () => setIsPreVerificationOpen(false),
             },
         },
+
+        onUpdateCredentials: async (data: CredentialsUpdateRequestModel) => {
+            await action_executes.updateCredentials.execute(actions.updateCredentialsAction, data);
+        },
+
+        onLogout: async () => {
+            await action_executes.logout.execute(actions.logoutAction);
+        },
     };
 
     const states: UpdateProfileContextType['states'] = {
@@ -116,6 +181,7 @@ export const UpdateProfileProvider: React.FC<{ children: ReactNode; user: User |
             form: updateProfileForm,
             isLoading: action_executes.updateProfile.isLoading,
         },
+        credentials: { form: credentialsForm },
         phone: {
             preVerification: {
                 isOpen: isPreVerificationOpen,

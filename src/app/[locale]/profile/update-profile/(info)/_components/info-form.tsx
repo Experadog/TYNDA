@@ -73,12 +73,13 @@ const InfoForm: FC<IProps> = ({}) => {
                     <Button
                         type='button'
                         variant={'default'}
+                        onClick={() => updateProfile.form.reset()}
                         className='text-foreground_1 w-full  bg-light_gray text-sm font-semibold shadow-none py-5 rounded-2xl'
                     >
                         Сбросить
                     </Button>
                     <Button
-                        disabled={updateProfile.isLoading}
+                        disabled={updateProfile.isLoading || !updateProfile.form.formState.isDirty}
                         type='submit'
                         variant={'yellow'}
                         className='text-sm m-0 w-full py-5 rounded-2xl'

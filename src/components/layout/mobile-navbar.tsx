@@ -1,6 +1,6 @@
 import { Link } from '@/i18n/routing';
 import { NAV_LINKS } from '@/lib';
-import { Button, Translate } from '@components';
+import { Button } from '@components';
 import clsx from 'clsx';
 import Image from 'next/image';
 import { FC } from 'react';
@@ -14,12 +14,7 @@ const MobileNavbar: FC<IProps> = ({}) => {
         useNavbarUseCase();
 
     return (
-        <Translate
-            direction='up'
-            duration={1}
-            distance={300}
-            className='fixed inset-x-0 top-[87px] h-screen bg-background_1 px-5 py-10 flex flex-col overflow-y-auto border-t border-t-background_2'
-        >
+        <div className='fixed inset-x-0 top-[87px] h-[calc(100vh-87px)] bg-background_1 px-5 py-10 flex flex-col overflow-y-auto'>
             <nav className={clsx('flex flex-wrap justify-around md:flex-col md:items-start gap-8')}>
                 {NAV_LINKS.map((path, index) => (
                     <Link
@@ -89,7 +84,7 @@ const MobileNavbar: FC<IProps> = ({}) => {
                     </div>
                 </div>
             </div>
-        </Translate>
+        </div>
     );
 };
 

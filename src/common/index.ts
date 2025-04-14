@@ -4,6 +4,7 @@ export * from './types/responses.types';
 
 // Schemas
 export * from './schemas/login/login.schema';
+export * from './schemas/profile/credentials.schema';
 export * from './schemas/profile/profile.schema';
 export * from './schemas/register/register.client.schema';
 export * from './schemas/register/register.establisher.schema';

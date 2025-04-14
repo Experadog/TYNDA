@@ -49,45 +49,47 @@ export const CustomFormField: FC<IProps> = ({
                         </FormLabel>
                     )}
                     <FormControl>
-                        <Input
-                            {...field}
-                            className={clsx(
-                                'bg-input_bg  border-none outline-none focus:border-none placeholder:text-placeholder rounded-2xl px-4 py-6 font-semibold numeric',
-                                type === 'password' ? 'pr-10' : '',
-                                InputClassName,
+                        <div className='relative w-full'>
+                            <Input
+                                {...field}
+                                className={clsx(
+                                    'bg-input_bg border-none outline-none focus:border-none placeholder:text-placeholder rounded-2xl px-4 py-6 font-semibold numeric',
+                                    type === 'password' ? 'pr-10' : '',
+                                    InputClassName,
+                                )}
+                                style={inputStyles}
+                                type={
+                                    type === 'password'
+                                        ? !isPasswordHidden
+                                            ? 'text'
+                                            : 'password'
+                                        : type
+                                }
+                                placeholder={placeholder}
+                                ref={ref}
+                            />
+                            {type === 'password' && (
+                                <button
+                                    type='button'
+                                    className='absolute right-4 top-1/2 -translate-y-1/2'
+                                    onClick={() => setIsPasswordHidden((prev) => !prev)}
+                                >
+                                    {isPasswordHidden ? (
+                                        <IoEyeOff
+                                            size={20}
+                                            className='text-shade_gray'
+                                        />
+                                    ) : (
+                                        <IoEye
+                                            size={20}
+                                            className='text-shade_gray'
+                                        />
+                                    )}
+                                </button>
                             )}
-                            style={inputStyles}
-                            type={
-                                type === 'password'
-                                    ? !isPasswordHidden
-                                        ? 'text'
-                                        : 'password'
-                                    : type
-                            }
-                            placeholder={placeholder}
-                            ref={ref}
-                        />
+                        </div>
                     </FormControl>
 
-                    {type === 'password' && (
-                        <button
-                            type='button'
-                            className='absolute right-4 top-[15%] -translate-y-[15%]'
-                            onClick={() => setIsPasswordHidden((prev) => !prev)}
-                        >
-                            {isPasswordHidden ? (
-                                <IoEyeOff
-                                    size={20}
-                                    className='text-shade_gray'
-                                />
-                            ) : (
-                                <IoEye
-                                    size={20}
-                                    className='text-shade_gray'
-                                />
-                            )}
-                        </button>
-                    )}
                     <div className='flex justify-end w-full text-xs'>
                         <FormMessage className={clsx('text-error', ErrorClassName)} />
                     </div>

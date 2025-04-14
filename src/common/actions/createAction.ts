@@ -16,7 +16,7 @@ export function createAction<TRequest, TResponse>({
             const response = await requestAction(values);
 
             if (!response) {
-                throw new Error('Request failed');
+                throw new Error();
             }
 
             if (onSuccess && isSuccessResponse(response)) {

@@ -50,9 +50,6 @@ export const ProfileContextProvider: FC<ContextProps> = ({ children, clientHisto
 
     const updateAvatarAction = createAction({
         requestAction: loadFile,
-        onError: (err) => {
-            console.log(err, 'JAI JAI');
-        },
     });
 
     const onUpdateAvatar = async (data: LoadFileRequestModel) => {

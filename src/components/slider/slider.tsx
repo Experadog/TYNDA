@@ -67,6 +67,7 @@ const Slider: FC<SliderProps> = ({
             setNumber(total);
         }
     }, [children]);
+
     return (
         <div className='relative w-full'>
             <div
@@ -78,10 +79,7 @@ const Slider: FC<SliderProps> = ({
             >
                 {[...children].map((child, index) => (
                     <div
-                        className={clsx(
-                            'keen-slider__slide',
-                            classNameChildren,
-                        )}
+                        className={clsx('keen-slider__slide', classNameChildren)}
                         key={index}
                     >
                         {child}

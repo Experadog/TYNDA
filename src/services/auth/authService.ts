@@ -1,9 +1,27 @@
 'use server';
 
-import { COOKIES, defaultCookieConfig, encryptData, isSuccessResponse, parseISOStringToDate, URL_ENTITIES } from '@/lib';
+import { clearCookie } from '@/common/actions/clear-cookie';
+import {
+    COOKIES,
+    defaultCookieConfig,
+    encryptData,
+    isSuccessResponse,
+    parseISOStringToDate,
+    URL_ENTITIES,
+} from '@/lib';
 import { AXIOS_GET, AXIOS_POST, CommonResponse } from '@common';
 import { cookies } from 'next/headers';
-import { AccountActivationRequestModel, AccountActivationResponseModel, GoogleLoginRequestModel, GoogleLoginResponseModel, LoginRequestModel, LoginResponseModel, RegisterClientRequestModel, RegisterEstablisherRequestModel, RegisterResponseModel } from './authServiceTypes';
+import {
+    AccountActivationRequestModel,
+    AccountActivationResponseModel,
+    GoogleLoginRequestModel,
+    GoogleLoginResponseModel,
+    LoginRequestModel,
+    LoginResponseModel,
+    RegisterClientRequestModel,
+    RegisterEstablisherRequestModel,
+    RegisterResponseModel,
+} from './authServiceTypes';
 
 class AuthService {
     static async login(request: LoginRequestModel): Promise<LoginResponseModel> {
@@ -16,7 +34,11 @@ class AuthService {
 
         if (isSuccessResponse(response)) {
             const encryptedSessionData = encryptData(response.data);
-            cookieStore.set(COOKIES.SESSION, encryptedSessionData, defaultCookieConfig(parseISOStringToDate(response.data.refresh_token_expire_time)));
+            cookieStore.set(
+                COOKIES.SESSION,
+                encryptedSessionData,
+                defaultCookieConfig(parseISOStringToDate(response.data.refresh_token_expire_time)),
+            );
         }
 
         return response;
@@ -26,16 +48,19 @@ class AuthService {
         const response = await AXIOS_POST<CommonResponse<null>>({
             url: URL_ENTITIES.LOGOUT,
         });
-        const cookieStore = await cookies();
 
         if (isSuccessResponse(response)) {
-            cookieStore.set(COOKIES.SESSION, '', defaultCookieConfig());
+            await clearCookie(COOKIES.SESSION);
         }
 
         return response;
     }
 
-    static async sendAndLoginByGoogle({ code, role, locale }: GoogleLoginRequestModel): Promise<GoogleLoginResponseModel> {
+    static async sendAndLoginByGoogle({
+        code,
+        role,
+        locale,
+    }: GoogleLoginRequestModel): Promise<GoogleLoginResponseModel> {
         const response = await AXIOS_GET<GoogleLoginResponseModel>({
             url: URL_ENTITIES.CALLBACK_GOOGLE,
             params: {
@@ -48,13 +73,19 @@ class AuthService {
         if (isSuccessResponse(response)) {
             const cookieStore = await cookies();
             const encryptedSessionData = encryptData(response.data);
-            cookieStore.set(COOKIES.SESSION, encryptedSessionData, defaultCookieConfig(parseISOStringToDate(response.data.refresh_token_expire_time)));
+            cookieStore.set(
+                COOKIES.SESSION,
+                encryptedSessionData,
+                defaultCookieConfig(parseISOStringToDate(response.data.refresh_token_expire_time)),
+            );
         }
 
         return response;
     }
 
-    static async register(data: RegisterClientRequestModel | RegisterEstablisherRequestModel): Promise<RegisterResponseModel> {
+    static async register(
+        data: RegisterClientRequestModel | RegisterEstablisherRequestModel,
+    ): Promise<RegisterResponseModel> {
         const response = await AXIOS_POST<RegisterResponseModel>({
             url: URL_ENTITIES.REGISTER,
             data,
@@ -63,7 +94,9 @@ class AuthService {
         return response;
     }
 
-    static async activateAccount(data: AccountActivationRequestModel): Promise<AccountActivationResponseModel> {
+    static async activateAccount(
+        data: AccountActivationRequestModel,
+    ): Promise<AccountActivationResponseModel> {
         const response = AXIOS_POST<AccountActivationResponseModel>({
             url: URL_ENTITIES.ACTIVATE_ACCOUNT,
             params: data,
@@ -73,8 +106,4 @@ class AuthService {
     }
 }
 
-export const login = AuthService.login;
-export const logout = AuthService.logout;
-export const sendAndLoginByGoogle = AuthService.sendAndLoginByGoogle;
-export const register = AuthService.register;
-export const activateAccount = AuthService.activateAccount;
+export const { login, logout, activateAccount, register, sendAndLoginByGoogle } = AuthService;

@@ -40,37 +40,42 @@ const Navbar: FC<IProps> = () => {
                 'bg-background_1 flex flex-col sticky z-50 top-0 right-0 left-0 transition-shadow shadow-lg',
             )}
         >
-            <div className='flex items-center px-10 xs:px-5 py-5 gap-8'>
-                <div className='w-[50px] h-[48px]'>
-                    <Link href={'/'}>
-                        <Image
-                            src={'/logo.svg'}
-                            alt='Логотип'
-                            width={50}
-                            height={48}
-                        />
-                    </Link>
-                </div>
-
-                <nav
-                    className={clsx('flex items-center gap-7 xl:gap-4 whitespace-nowrap lg:hidden')}
-                >
-                    {NAV_LINKS.map((path, index) => (
-                        <Link
-                            key={path}
-                            href={path}
-                            className={clsx(
-                                'font-semibold uppercase text-sm hover:text-yellow',
-                                shouldHighlightLink(path) && 'text-yellow',
-                            )}
-                        >
-                            <div className='flex items-center gap-[10px]'>
-                                {navbarIcons[index]}
-                                {viewModel.navbar.links[index]}
-                            </div>
+            <div className='flex items-center px-10 xs:px-5 py-5 gap-8 justify-between'>
+                <div className='flex items-center gap-16'>
+                    <div className='w-[50px] h-[48px]'>
+                        <Link href={'/'}>
+                            <Image
+                                src={'/logo.svg'}
+                                alt='Логотип'
+                                width={50}
+                                height={48}
+                                className='min-w-[50px] min-h-[48px]'
+                            />
                         </Link>
-                    ))}
-                </nav>
+                    </div>
+
+                    <nav
+                        className={clsx(
+                            'flex items-center gap-7 xl:gap-4 whitespace-nowrap lg:hidden',
+                        )}
+                    >
+                        {NAV_LINKS.map((path, index) => (
+                            <Link
+                                key={path}
+                                href={path}
+                                className={clsx(
+                                    'font-semibold uppercase text-sm hover:text-yellow',
+                                    shouldHighlightLink(path) && 'text-yellow',
+                                )}
+                            >
+                                <div className='flex items-center gap-[10px]'>
+                                    {navbarIcons[index]}
+                                    {viewModel.navbar.links[index]}
+                                </div>
+                            </Link>
+                        ))}
+                    </nav>
+                </div>
 
                 <nav className='flex items-center gap-5 xl:gap-3 exs:gap-3 relative ml-auto'>
                     <ToggleTheme />

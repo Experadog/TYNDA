@@ -1,5 +1,6 @@
 'use server';
 
+import { clearCookie } from '@/common/actions/clear-cookie';
 import { createFetchAction } from '@/common/actions/createFetchAction';
 import { COOKIES, encryptData, isSuccessResponse, parseISOStringToDate, URL_ENTITIES } from '@/lib';
 import { Session, User } from '@business-entities';
@@ -14,6 +15,8 @@ import {
 } from '@common';
 import {
     ClientHistoryResponseModel,
+    CredentialsUpdateRequestModel,
+    CredentialsUpdateResponseModel,
     ProfileResponseModel,
     ProfileUpdateResponseModel,
 } from './profileServiceTypes';
@@ -77,7 +80,25 @@ class ProfileService {
 
         return response;
     }
+
+    static async updateCredentials(data: CredentialsUpdateRequestModel) {
+        const response = await AXIOS_POST<CredentialsUpdateResponseModel>({
+            url: URL_ENTITIES.UPDATE_CREDENTIALS,
+            data,
+        });
+
+        if (isSuccessResponse(response)) {
+            await clearCookie(COOKIES.SESSION);
+        }
+
+        return response;
+    }
 }
 
-export const { firstStepPhoneVerification, getClientHistory, getProfileInfo, updateProfile } =
-    ProfileService;
+export const {
+    firstStepPhoneVerification,
+    getClientHistory,
+    getProfileInfo,
+    updateProfile,
+    updateCredentials,
+} = ProfileService;

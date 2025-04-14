@@ -31,9 +31,9 @@ interface IProps {
 
 const Recommendation: FC<IProps> = ({}) => {
     const isLargeScreen = useMediaQuery({ minWidth: 1025 });
-    const isMediumScreen = useMediaQuery({ minWidth: 641, maxWidth: 1024 });
+    const isSmallScreen = useMediaQuery({ minWidth: 440 });
 
-    const itemsCount = isLargeScreen ? 7 : isMediumScreen ? 4 : 2;
+    const itemsCount = isLargeScreen ? 7 : isSmallScreen ? 4 : 3;
     const itemsSpacing = isLargeScreen ? 15 : 20;
 
     const { viewModel } = useHomeUseCase();
@@ -73,19 +73,19 @@ const Recommendation: FC<IProps> = ({}) => {
                         return (
                             <div
                                 key={index}
-                                className='flex flex-col items-center gap-3 group cursor-pointer px-5'
+                                className='flex flex-col items-center gap-5 lg:gap-[10px] group cursor-pointer pt-2'
                             >
-                                <div className='p-[30px] bg-background_1 rounded-full shadow-lg transition-all duration-300 group-hover:bg-[var(--yellow)] active:bg-[var(--yellow)]'>
-                                    <Icon className='text-4xl text-foreground_1 group-hover:text-white w-[34px] h-[34px]' />
+                                <div className='p-[30px] lg:p-[23px] flex items-center justify-center bg-background_1 rounded-full shadow-[0_0_10px_1px_rgba(41,53,61,0.20)] transition-all duration-300 group-hover:bg-[var(--yellow)] active:bg-[var(--yellow)]'>
+                                    <Icon className='text-foreground_1 group-hover:text-white w-[34px] h-[34px] lg:w-5 lg:h-5' />
                                 </div>
-                                <p className='font-semibold text-base text-center group-hover:text-[var(--yellow)] active:text-[var(--yellow)]'>{viewModel.recommendation.links[index]}</p>
+                                <p className='font-semibold text-base lg:text-xs lg:font-medium text-center lg:text-wrap group-hover:text-[var(--yellow)] active:text-[var(--yellow)]'>{viewModel.recommendation.links[index]}</p>
                             </div>
                         );
                     })}
                 </Slider>
             </Translate>
 
-            <div className='grid grid-cols-4 lg:grid-cols-2 mt-[60px] lg:mt-[30px] gap-x-5 gap-y-[34px] lg:gap-x-[10px] lg:gap-y-[20px] px-5'>
+            <div className='grid grid-cols-4 lg:grid-cols-2 mt-[60px] lg:mt-[30px] gap-x-5 gap-y-[34px] lg:gap-x-[10px] lg:gap-y-[20px]'>
                 {Array.from({ length: 8 }).map((_, index) => (
                     <RecommendationCard key={index} />
                 ))}

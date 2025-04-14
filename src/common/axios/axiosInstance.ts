@@ -41,6 +41,8 @@ axiosInstance.interceptors.response.use(
         if (response?.status === 401 || data?.code === 401) {
             await clearCookie(COOKIES.SESSION);
         }
+
+        throw error;
     },
 );
 
