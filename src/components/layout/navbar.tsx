@@ -13,6 +13,7 @@ import { RxHamburgerMenu } from 'react-icons/rx';
 import { TbMapSearch } from 'react-icons/tb';
 import MobileNavbar from './mobile-navbar';
 import { useNavbarUseCase } from './use-cases/useNavbarUseCase';
+import { useScrolled } from './use-cases/useScrolled';
 
 interface IProps {
     viewModel: ViewModel['Layout']['navbar'];
@@ -30,6 +31,8 @@ const Navbar: FC<IProps> = () => {
     const { navigateToAuthOrProfile, user, viewModel, shouldHighlightLink, shouldHighlightBtn } =
         useNavbarUseCase();
 
+    const isScrolled = useScrolled(10);
+
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -37,7 +40,8 @@ const Navbar: FC<IProps> = () => {
         <header
             id='navbar'
             className={clsx(
-                'bg-background_1 flex flex-col sticky z-50 top-0 right-0 left-0 transition-shadow shadow-lg',
+                'bg-background_1 flex flex-col sticky z-50 top-0 right-0 left-0 transition-shadow duration-1000 border-b border-b-light_gray',
+                isScrolled && 'shadow-lg border-none',
             )}
         >
             <div className='flex items-center px-10 xs:px-5 py-5 gap-8 justify-between'>

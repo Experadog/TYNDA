@@ -1,11 +1,11 @@
 'use client';
+
 import { useViewModel } from '@/i18n/getTranslate';
+import dynamic from 'next/dynamic';
 import { FC } from 'react';
 import Hero from './_components/hero';
-import dynamic from 'next/dynamic';
 
 const AllPhoto = dynamic(() => import('./_components/all-photo'), { ssr: true });
-
 const WeAdvise = dynamic(() => import('./_components/we-advise'), { ssr: true });
 
 interface IProps {}

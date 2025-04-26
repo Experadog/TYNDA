@@ -1,4 +1,5 @@
 import { COOKIES, decryptData, PAGES } from '@/lib';
+import { UserRole } from '@business-entities';
 import createMiddleware from 'next-intl/middleware';
 import { NextRequest, NextResponse } from 'next/server';
 import { routing } from './i18n/routing';
@@ -10,11 +11,9 @@ const nextIntlMiddleware = createMiddleware({
 });
 
 const PUBLIC_FILE = /\.(.*)$/;
-const protectedRoutes = [PAGES.PROFILE];
+const protectedClientRoutes = [PAGES.PROFILE];
 
-export default async function middleware(
-    req: NextRequest,
-): Promise<NextResponse> {
+export default async function middleware(req: NextRequest): Promise<NextResponse> {
     const { pathname } = req.nextUrl;
 
     // Пропускаем запросы для статических файлов, API и других исключений
@@ -63,24 +62,25 @@ export default async function middleware(
 
     // Проверка, если это защищенная страница
     const basePath = req.nextUrl.pathname.replace(/^\/(ru|kg)\//, '/') as PAGES;
-    const isProtectedRoute =
-        protectedRoutes.includes(basePath) ||
-        protectedRoutes.some((route) => basePath.includes(route));
+    const isProtectedClientRoute =
+        protectedClientRoutes.includes(basePath) ||
+        protectedClientRoutes.some((route) => basePath.includes(route));
 
     const sessionCookieValue = req.cookies.get(COOKIES.SESSION)?.value || '';
-    const sessionData = sessionCookieValue
-        ? decryptData(sessionCookieValue)
-        : null;
+    const sessionData = sessionCookieValue ? decryptData(sessionCookieValue) : null;
+
+    if (sessionData?.user.role === UserRole.ESTABLISHER && isProtectedClientRoute) {
+        const redirectUrl = new URL(`/${pathLocale}${PAGES.HOME}`, req.url);
+        return NextResponse.redirect(redirectUrl);
+    }
 
     if (sessionData && basePath.startsWith('/auth')) {
         const redirectUrl = new URL(`/${pathLocale}${PAGES.PROFILE}`, req.url);
         return NextResponse.redirect(redirectUrl);
     }
 
-    if (isProtectedRoute && !sessionData) {
-        return NextResponse.redirect(
-            new URL(`/${pathLocale}${PAGES.LOGIN}`, req.url),
-        );
+    if (isProtectedClientRoute && !sessionData) {
+        return NextResponse.redirect(new URL(`/${pathLocale}${PAGES.LOGIN}`, req.url));
     }
 
     if (basePath.includes('/callback')) {
@@ -94,7 +94,7 @@ export default async function middleware(
         }
     }
 
-    return response;
+    return response; 
 }
 
 export const config = {
