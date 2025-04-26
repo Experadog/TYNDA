@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import DetailEnterpriseView from './DetailEnterpriseView';
+import DetailEnterpriseView from './detail-enterprise-view';
 
 interface IProps {}
 

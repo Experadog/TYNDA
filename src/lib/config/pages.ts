@@ -6,6 +6,7 @@ export enum PAGES {
     SERVICE = '/service',
     CONTACTS = '/contacts',
     CALLBACK = '/callback',
+    SERVICES = '/services',
 
     // nested auth
     LOGIN = '/auth/login',
@@ -25,6 +26,7 @@ export const NAV_LINKS = [
     PAGES.ABOUT,
     PAGES.SERVICE,
     PAGES.CONTACTS,
+    PAGES.SERVICES,
 ];
 export const PROFILE_LINKS = [
     PAGES.UPDATE_PROFILE,

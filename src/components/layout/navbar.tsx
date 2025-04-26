@@ -11,6 +11,7 @@ import { LuCreditCard } from 'react-icons/lu';
 import { RiHome6Line } from 'react-icons/ri';
 import { RxHamburgerMenu } from 'react-icons/rx';
 import { TbMapSearch } from 'react-icons/tb';
+import { AiOutlineFileProtect } from 'react-icons/ai';
 import MobileNavbar from './mobile-navbar';
 import { useNavbarUseCase } from './use-cases/useNavbarUseCase';
 
@@ -24,6 +25,7 @@ export const navbarIcons = [
     <CgInfo className='w-[18px] h-[18px]' />,
     <LiaPhoneSolid className='w-[18px] h-[18px]' />,
     <LuCreditCard className='w-[18px] h-[18px]' />,
+    <AiOutlineFileProtect className='w-[18px] h-[18px]' />,
 ];
 
 const Navbar: FC<IProps> = () => {
