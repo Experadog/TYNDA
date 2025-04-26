@@ -1,57 +1,42 @@
 'use server';
 import { COOKIES } from '@/lib';
 import { cookies } from 'next/headers';
-import { FC, ReactNode } from 'react';
-import { Toaster } from 'react-hot-toast';
+import type { FC, ReactNode } from 'react';
 import { LocaleProvider } from './locale/locale-provider';
 import OAuthProvider from './oAuth/oAuth-provider';
 import RefreshOnExpire from './refresh-token/refresh-on-expire';
 import { ThemeProvider } from './theme/theme-provider';
+import { ToastClientProvider } from './toast-provider/toast-provider';
 import { UserProvider } from './user/user-provider';
 
 interface IProps {
-    children: ReactNode;
+	children: ReactNode;
 }
 
 const CollectedProviders: FC<IProps> = async ({ children }) => {
-    const cookieStore = await cookies();
-    const locale = (cookieStore.get(COOKIES.NEXT_LOCALE)?.value || 'ru') as Locale;
-    const theme = cookieStore.get(COOKIES.THEME)?.value as Theme;
-    const session = cookieStore.get(COOKIES.SESSION)?.value || '';
+	const cookieStore = await cookies();
+	const locale = (cookieStore.get(COOKIES.NEXT_LOCALE)?.value || 'ru') as Locale;
+	const theme = cookieStore.get(COOKIES.THEME)?.value as Theme;
+	const session = cookieStore.get(COOKIES.SESSION)?.value || '';
 
-    return (
-        <ThemeProvider
-            attribute='class'
-            defaultTheme={'system'}
-            forcedTheme={theme}
-            enableSystem
-            theme={theme}
-        >
-            <Toaster
-                position='bottom-right'
-                toastOptions={{
-                    style: {
-                        background: theme === 'dark' ? '#333' : '#f5f5f5',
-                        color: theme === 'dark' ? '#f5f5f5' : '#333',
-                        border: '1px solid',
-                        borderColor: '#f5f5f5',
-                        fontWeight: 600,
-                        boxShadow:
-                            theme === 'dark'
-                                ? '0px 0px 5px rgba(0,0,0,0.5), 0px 0px 5px rgba(255,255,255,0.5)'
-                                : '0px 0px 5px rgba(0,0,0,0.3), 0px 0px 5px rgba(255,255,255,0.3)',
-                    },
-                }}
-            />
-            <OAuthProvider>
-                <LocaleProvider locale={locale}>
-                    <UserProvider session={session}>
-                        <RefreshOnExpire initialSession={session}>{children}</RefreshOnExpire>
-                    </UserProvider>
-                </LocaleProvider>
-            </OAuthProvider>
-        </ThemeProvider>
-    );
+	return (
+		<ThemeProvider
+			attribute="class"
+			defaultTheme={'system'}
+			forcedTheme={theme}
+			enableSystem
+			theme={theme}
+		>
+			<ToastClientProvider theme={theme} />
+			<OAuthProvider>
+				<LocaleProvider locale={locale}>
+					<UserProvider session={session}>
+						<RefreshOnExpire initialSession={session}>{children}</RefreshOnExpire>
+					</UserProvider>
+				</LocaleProvider>
+			</OAuthProvider>
+		</ThemeProvider>
+	);
 };
 
 export default CollectedProviders;
