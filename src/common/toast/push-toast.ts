@@ -23,7 +23,7 @@ export function pushToast<T>(
             }
 
             if (typeof options.error === 'object' && options.error !== null) {
-                return options.error[statusCode] || `Ошибка: ${JSON.stringify(error)}`;
+                return options.error[statusCode] || `Неизвестная ошибка: ${statusCode}`;
             }
 
             return 'Произошла неизвестная ошибка';
