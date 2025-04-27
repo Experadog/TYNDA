@@ -46,6 +46,7 @@
         "@types/react": "^19",
         "@types/react-dom": "^19",
         "@types/react-transition-group": "^4.4.12",
+        "chalk": "^5.4.1",
         "postcss": "^8",
         "prettier": "^3.5.3",
         "tailwindcss": "^3.4.1",

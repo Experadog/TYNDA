@@ -1,4 +1,5 @@
 import { Session } from '@business-entities';
+import { LOGGER } from './chalkLogger';
 import { decryptData } from './decryptData';
 
 export function getTokensFromSession(session?: string): string {
@@ -15,7 +16,7 @@ export function getTokensFromSession(session?: string): string {
 
         return `access_token=${access_token}; refresh_token=${refresh_token}; Path=/; HttpOnly; Secure`;
     } catch (error) {
-        console.error('Ошибка обработки сессии:', error);
+        LOGGER.error('Ошибка обработки сессии:');
         return '';
     }
 }

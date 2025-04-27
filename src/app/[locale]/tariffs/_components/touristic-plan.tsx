@@ -3,9 +3,9 @@ import { Button } from '@components';
 import Image from 'next/image';
 import { FC } from 'react';
 import { FiCheckCircle } from 'react-icons/fi';
-import { TbCoins } from 'react-icons/tb';
-import { PiHandHeart } from 'react-icons/pi';
 import { LuGrid2X2 } from 'react-icons/lu';
+import { PiHandHeart } from 'react-icons/pi';
+import { TbCoins } from 'react-icons/tb';
 
 const iconPaths = [
     '/tariffs/spotifyIcon.svg',

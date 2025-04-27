@@ -1,8 +1,9 @@
 'use server';
 
-import { API_URL, COOKIES, getTokensFromSession, URL_ENTITIES } from '@/lib';
+import { API_URL, COOKIES, getTokensFromSession, LOGGER, URL_ENTITIES } from '@/lib';
 import { cookies } from 'next/headers';
 import { Params } from '../types/http.types';
+
 
 type Props = {
     endpoint: URL_ENTITIES;
@@ -61,7 +62,7 @@ export async function createFetchAction<T>({
 
         return data;
     } catch (error) {
-        console.log(error);
+        LOGGER.error(error);
 
         return {} as T;
     }

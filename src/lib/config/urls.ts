@@ -17,6 +17,10 @@ export enum URL_ENTITIES {
 
     //base
     LOAD_FILE = '/base/resources',
+
+    //org
+    ESTABLISHMENTALLCLIENT = '/org/establishment/all-client',
+    ESTABLISHMENTDETAIL = '/org/establishment/detail'
 }
 
 export enum URL_LOCAL_ENTITIES {

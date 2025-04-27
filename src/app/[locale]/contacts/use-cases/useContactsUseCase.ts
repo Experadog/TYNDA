@@ -1,4 +1,1 @@
-
-export const useContactsUseCase = () => {
-   
-};
+export const useContactsUseCase = () => {};

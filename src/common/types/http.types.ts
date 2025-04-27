@@ -5,4 +5,5 @@ export type Params = {
     code?: string;
     role?: string;
     state?: Locale;
+    category?: string;
 };

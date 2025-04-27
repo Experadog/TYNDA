@@ -1,6 +1,7 @@
 'use client';
 
 import { useViewModel } from '@/i18n/getTranslate';
+import { Establishment } from '@/services/establishment/establishmentServiceTypes.ts';
 import dynamic from 'next/dynamic'; // Импорт динамической загрузки
 import { FC } from 'react';
 import Hero from './_components/hero';
@@ -12,17 +13,19 @@ const Recommendation = dynamic(() => import('./_components/recommendation'), {
     ssr: true,
 });
 
-interface IProps {}
+interface IProps {
+    establishments: Establishment[];
+}
 
-const HomeView: FC<IProps> = ({}) => {
+const HomeView: FC<IProps> = ({establishments}) => {
     const viewModel = useViewModel(['Home']);
     return (
         <>
             <Hero viewModel={viewModel.hero} />
             <div className='px-[50px] lg:px-5 max-w-[1390px] m-auto'>
-                <Recommendation viewModel={viewModel.recommendation} />
+                <Recommendation viewModel={viewModel.recommendation} establishments={establishments} />
                 <AdMobile viewModel={viewModel.adMobile} />
-                <MoreRecs viewModel={viewModel.moreRecs} />
+                <MoreRecs viewModel={viewModel.moreRecs} establishments={establishments} />
                 <About viewModel={viewModel.about} />
             </div>
         </>

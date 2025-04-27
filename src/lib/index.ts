@@ -7,11 +7,13 @@ export * from './config/pages';
 export * from './config/urls';
 
 // helpers
+export * from './helpers/chalkLogger';
 export * from './helpers/createDynamicCallbackUrl';
 export * from './helpers/decryptData';
 export * from './helpers/defaultCookieConfig';
 export * from './helpers/encryptData';
 export * from './helpers/getTokensFromSession';
+export * from './helpers/middleware-helpers';
 export * from './helpers/parseISOStringToDate';
 export * from './helpers/phoneFormatter';
 export * from './helpers/responseValidate';

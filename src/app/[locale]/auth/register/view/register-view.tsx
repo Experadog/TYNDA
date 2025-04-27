@@ -25,7 +25,9 @@ const RegisterView: FC<IProps> = ({}) => {
                 distance={100}
             >
                 <div className='flex flex-col gap-3'>
-                    <h1 className='text-foreground_1 text-2xl font-semibold'>Создайте новую учетную запись</h1>
+                    <h1 className='text-foreground_1 text-2xl font-semibold'>
+                        Создайте новую учетную запись
+                    </h1>
                     <span className='text-gray'>
                         У вас уже есть существующий аккаунт?{' '}
                         <Link

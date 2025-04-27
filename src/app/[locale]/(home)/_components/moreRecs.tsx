@@ -1,15 +1,18 @@
 'use client';
 import { Translate } from '@components';
 import { FC } from 'react';
+import { Establishment } from '../page';
 import { useHomeUseCase } from '../use-cases/useHomeUseCase';
 import RecommendationCard from './recommendationCard';
 
 interface IProps {
     viewModel: ViewModel['Home']['moreRecs'];
+    establishments: Establishment[];
 }
 
-const MoreRecs: FC<IProps> = ({}) => {
+const MoreRecs: FC<IProps> = ({ establishments }) => {
     const { viewModel } = useHomeUseCase();
+
     return (
         <Translate
             direction='right'
@@ -26,11 +29,16 @@ const MoreRecs: FC<IProps> = ({}) => {
                         animateOnce={false}
                     >
                         <div>
-                            <RecommendationCard
-                                ratingClassName='md:pr-4 exs:pr-0'
-                                imageClassName='h-[560px] lg:h-[322px]'
-                                bottomElClassName='flex flex-col gap-[20px] lg:gap-[10px]'
-                            />
+                            {establishments[0] && (
+                                <RecommendationCard
+                                    key={establishments[0].id}
+                                    ratingClassName='md:pr-4 exs:pr-0'
+                                    imageClassName='h-[560px] lg:h-[322px]'
+                                    establishmentImageContainer='max-w-[650px] max-h-[560px]'
+                                    bottomElClassName='flex flex-col gap-[20px] lg:gap-[10px]'
+                                    establishment={establishments[0]}
+                                />
+                            )}
                         </div>
                     </Translate>
                     <Translate
@@ -39,12 +47,14 @@ const MoreRecs: FC<IProps> = ({}) => {
                         animateOnce={false}
                     >
                         <div className='grid grid-cols-2 gap-[25px] lg:gap-[10px]'>
-                            {Array.from({ length: 4 }).map((_, index) => (
+                            {establishments.map((establishment) => (
                                 <RecommendationCard
                                     ratingClassName='md:pr-4 exs:pr-0 xs:justify-start xs:gap-2'
-                                    key={index}
+                                    key={establishment.id}
                                     imageClassName='w-[320px] h-[224px] lg:w-full xs:h-[171px] md:h-[250px]'
+                                    establishmentImageContainer='max-w-[320px] max-h-[224px]'
                                     hideDescription
+                                    establishment={establishment}
                                 />
                             ))}
                         </div>

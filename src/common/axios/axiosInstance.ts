@@ -1,4 +1,4 @@
-import { API_URL, COOKIES, getTokensFromSession } from '@/lib';
+import { API_URL, COOKIES, getTokensFromSession, LOGGER } from '@/lib';
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 import { clearCookie } from '../actions/clear-cookie';
 import { Params } from '../types/http.types';
@@ -16,10 +16,10 @@ axiosInstance.interceptors.request.use(async (config) => {
     const sessionCookie = cookieStore.get(COOKIES.SESSION);
     const tokens = getTokensFromSession(sessionCookie?.value);
 
-    console.log('REQUEST: ', config.data);
+    LOGGER.info(config.data);
 
     if (tokens) {
-        console.log('Adding cookie to request...');
+        LOGGER.info('Adding cookie to request...');
         config.headers['Cookie'] = tokens;
     }
 
@@ -28,7 +28,7 @@ axiosInstance.interceptors.request.use(async (config) => {
 
 axiosInstance.interceptors.response.use(
     (response) => {
-        console.log('SUCCESS RESPONSE:', response.data);
+        LOGGER.success(response.data);
 
         return response;
     },
@@ -36,7 +36,7 @@ axiosInstance.interceptors.response.use(
         const { response } = error;
         const data = response?.data as CommonResponse<null>;
 
-        console.log('ERROR: ', data);
+        LOGGER.error(data);
 
         if (response?.status === 401 || data?.code === 401) {
             await clearCookie(COOKIES.SESSION);
