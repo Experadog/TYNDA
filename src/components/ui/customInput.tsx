@@ -12,12 +12,12 @@ const CustomInput: FC<CustomInputProps> = (props) => {
 			name={props.name}
 			value={props.value}
 			defaultValue={props.defaultValue}
-			className={`outline-none border border-light_gray px-4 py-3 rounded-xl bg-input_bg numeric ${props.className || ''}`}
+			className={`outline-none border border-light_gray px-4 py-3 rounded-xl bg-input_bg ${props.className || ''}`}
 		/>
 	) : (
 		<input
 			{...props}
-			className={`outline-none border border-light_gray px-4 py-3 rounded-xl bg-input_bg numeric ${props.className || ''}`}
+			className={`outline-none border border-light_gray px-4 py-3 rounded-xl bg-input_bg ${props.className || ''}`}
 		/>
 	);
 };

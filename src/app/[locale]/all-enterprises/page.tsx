@@ -1,12 +1,10 @@
-import { getEstablishmentAllclient } from '@/services/establishment/establishmentService';
-import { FC } from 'react';
+import { getEstablishmentAllClient } from '@/services/establishment/establishmentService';
 import AllEnterprisesView from './all-enterprises-view';
 
-interface IProps {}
+const Page = async () => {
+	const response = await getEstablishmentAllClient({});
 
-const AllEnterprises: FC<IProps> = async ({}) => {
-    const establishmentAllclient = await getEstablishmentAllclient({})
-    return <AllEnterprisesView establishments={establishmentAllclient?.data?.items || []} />;
+	return <AllEnterprisesView data={response.data} />;
 };
 
-export default AllEnterprises;
+export default Page;

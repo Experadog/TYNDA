@@ -1,12 +1,12 @@
-import { getEstablishmentAllclient } from '@/services/establishment/establishmentService';
-import { FC } from 'react';
+import { getEstablishmentAllClient } from '@/services/establishment/establishmentService';
+import type { FC } from 'react';
 import HomeView from './home-view';
 
-interface IProps {}
+type IProps = {};
 
 const Home: FC<IProps> = async ({}) => {
-    const establishmentAllclient = await getEstablishmentAllclient({})
-    return <HomeView establishments={establishmentAllclient?.data?.items || []} />;
+	const establishmentAllClient = await getEstablishmentAllClient({});
+	return <HomeView establishments={establishmentAllClient?.data?.items || []} />;
 };
 
 export default Home;

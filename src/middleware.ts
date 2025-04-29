@@ -8,9 +8,10 @@ import {
 } from '@/lib';
 import createMiddleware from 'next-intl/middleware';
 import { type NextRequest, NextResponse } from 'next/server';
+import { supportedLanguages } from './i18n/routing';
 
 const nextIntlMiddleware = createMiddleware({
-	locales: ['ru', 'kg'],
+	locales: supportedLanguages,
 	defaultLocale: 'ru',
 	localeDetection: false,
 });

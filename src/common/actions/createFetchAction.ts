@@ -1,69 +1,74 @@
 'use server';
 
-import { API_URL, COOKIES, getTokensFromSession, LOGGER, URL_ENTITIES } from '@/lib';
+import { API_URL, COOKIES, LOGGER, getTokensFromSession } from '@/lib';
 import { cookies } from 'next/headers';
-import { Params } from '../types/http.types';
-
+import type { Params } from '../types/http.types';
 
 type Props = {
-    endpoint: URL_ENTITIES;
-    shouldBeAuthorized: boolean;
-    params?: Params;
-    revalidate?: boolean;
-    revalidateTags?: URL_ENTITIES[];
+	endpoint: string; // например, '/org/establishment/detail'
+	shouldBeAuthorized: boolean;
+	params?: Params; // query-параметры
+	postfix?: (string | number)[];
+	revalidate?: boolean;
+	revalidateTags?: string[];
 };
 
 export async function createFetchAction<T>({
-    endpoint,
-    shouldBeAuthorized,
-    params,
-    revalidate = false,
-    revalidateTags,
+	endpoint,
+	shouldBeAuthorized,
+	params,
+	postfix = [],
+	revalidate = false,
+	revalidateTags,
 }: Props): Promise<T> {
-    const cleanBaseUrl = API_URL?.replace(/\/$/, '');
-    const cleanEndpoint = endpoint.replace(/^\//, '');
+	const cleanBaseUrl = API_URL?.replace(/\/$/, '');
+	const cleanEndpoint = endpoint.replace(/^\//, '');
 
-    const url = new URL(`${cleanBaseUrl}/${cleanEndpoint}`);
+	const pathWithPostfix = [cleanEndpoint, ...postfix.map((p) => encodeURIComponent(p))].join('/');
 
-    const headers: HeadersInit = {};
+	const url = new URL(`${cleanBaseUrl}/${pathWithPostfix}`);
 
-    if (params) {
-        Object.keys(params).forEach((key) => {
-            const paramValue = params[key as keyof Params];
-            if (paramValue !== undefined) {
-                url.searchParams.append(key, paramValue);
-            }
-        });
-    }
+	if (params) {
+		for (const [key, value] of Object.entries(params)) {
+			if (value !== undefined) {
+				url.searchParams.append(key, String(value));
+			}
+		}
+	}
 
-    if (shouldBeAuthorized) {
-        const cookieStore = await cookies();
-        const session = cookieStore.get(COOKIES.SESSION)?.value;
-        const credentials = getTokensFromSession(session);
-        if (session) {
-            headers['Cookie'] = credentials;
-        }
-    }
+	const headers: HeadersInit = {};
 
-    try {
-        const response = await fetch(url.toString(), {
-            method: 'GET',
-            credentials: 'include',
-            cache: revalidate ? 'no-store' : 'force-cache',
-            headers,
-            next: { tags: revalidateTags },
-        });
+	if (shouldBeAuthorized) {
+		const cookieStore = await cookies();
+		const session = cookieStore.get(COOKIES.SESSION)?.value;
+		const credentials = getTokensFromSession(session);
+		if (session) {
+			headers.Cookie = credentials;
+		}
+	}
 
-        if (!response.ok) {
-            return {} as T;
-        }
+	LOGGER.info(`Final URL: ${url.toString()}`);
 
-        const data: T = await response.json();
+	try {
+		const response = await fetch(url.toString(), {
+			method: 'GET',
+			credentials: 'include',
+			cache: revalidate ? 'no-store' : 'force-cache',
+			headers,
+			next: { tags: revalidateTags },
+		});
 
-        return data;
-    } catch (error) {
-        LOGGER.error(error);
+		if (!response.ok) {
+			LOGGER.error(`Fetch failed: ${response.statusText}`);
+			return {} as T;
+		}
 
-        return {} as T;
-    }
+		const data: T = await response.json();
+		LOGGER.success(`Received data: ${JSON.stringify(data, null, 2)}`);
+
+		return data;
+	} catch (error) {
+		LOGGER.error(error);
+		return {} as T;
+	}
 }

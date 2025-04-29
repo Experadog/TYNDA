@@ -1,6 +1,7 @@
 // Types
 export * from './types/http.types';
 export * from './types/responses.types';
+export * from './types/shared.types';
 
 // Schemas
 export * from './schemas/login/login.schema';

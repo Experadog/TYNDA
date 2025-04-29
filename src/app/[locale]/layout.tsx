@@ -2,7 +2,7 @@ import { AnimationTracker, Layout } from '@components';
 
 import type { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
-import { Raleway } from 'next/font/google';
+import { Raleway, Roboto } from 'next/font/google';
 import NextTopLoader from 'nextjs-toploader';
 
 import CollectedProviders from '@/providers/collected-providers';
@@ -12,6 +12,12 @@ const raleway = Raleway({
 	variable: '--font-raleway',
 	subsets: ['latin', 'cyrillic'],
 	weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+});
+
+const roboto = Roboto({
+	subsets: ['latin', 'cyrillic'],
+	weight: ['100', '300', '400', '500', '700', '900'],
+	variable: '--font-roboto',
 });
 
 export const metadata: Metadata = {
@@ -30,7 +36,7 @@ export default async function RootLayout({
 
 	return (
 		<html lang={locale || 'ru'} suppressHydrationWarning>
-			<body className={`${raleway.variable} antialiased min-w-96`}>
+			<body className={`${raleway.variable} ${roboto.variable} antialiased min-w-96`}>
 				<NextTopLoader color="var(--yellow)" height={3} showSpinner={false} />
 				<NextIntlClientProvider>
 					<CollectedProviders>

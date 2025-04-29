@@ -9,6 +9,7 @@ export * from './config/urls';
 // helpers
 export * from './helpers/chalkLogger';
 export * from './helpers/createDynamicCallbackUrl';
+export * from './helpers/createRandomID';
 export * from './helpers/decryptData';
 export * from './helpers/defaultCookieConfig';
 export * from './helpers/encryptData';

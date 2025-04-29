@@ -1,7 +1,16 @@
+'use client';
+
+import { ESTABLISHMENTS_CATEGORIES } from '@/business-entities/establishment/EstablishmentEntity';
 import CustomInput from '@/components/ui/customInput';
+import CustomSelect from '@/components/ui/customSelect';
+import CustomTimeRangePicker from '@/components/ui/customTimeRangePicker';
 import { Button } from '@components';
 
-const MainInfoBlock = () => {
+type Props = {
+	categoriesViewModel: ViewModel['Shared']['establishment_categories'];
+};
+
+const MainInfoBlock = ({ categoriesViewModel }: Props) => {
 	return (
 		<div className="flex flex-col gap-7">
 			<div className="flex justify-between w-full gap-10">
@@ -13,9 +22,18 @@ const MainInfoBlock = () => {
 					/>
 
 					<div className="flex items-center gap-3">
-						<CustomInput className="w-52" placeholder="Тип" name="category" />
-						<CustomInput className="w-52" placeholder="Адрес" name="address" />
+						<CustomSelect
+							data={Object.values(ESTABLISHMENTS_CATEGORIES).map((value) => ({
+								label: categoriesViewModel[value],
+								value,
+							}))}
+							placeholder="Тип"
+							name="category"
+						/>
+						<CustomInput placeholder="Адрес" name="address" />
 					</div>
+
+					<CustomTimeRangePicker />
 
 					<CustomInput
 						isTextArea

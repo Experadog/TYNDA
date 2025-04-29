@@ -3,96 +3,109 @@
 @tailwind utilities;
 
 @layer base {
-    :root {
-        /* dynamic */
-        --background-1: white;
-        --background-2: #f5f5f5;
-        --background-3: #f9f9f9;
-        --background-4: #f0f0f0;
-        --background-5: #323232;
+	:root {
+		/* dynamic */
+		--background-1: white;
+		--background-2: #f5f5f5;
+		--background-3: #f9f9f9;
+		--background-4: #f0f0f0;
+		--background-5: #323232;
 
-        --foreground-1: #1c1c1c;
-        --foreground-2: #555555;
-        --foreground-3: #777777;
+		--foreground-1: #1c1c1c;
+		--foreground-2: #555555;
+		--foreground-3: #777777;
 
-        --gray: #53555d;
-        --shade-gray: #b3b3b3;
-        --light-gray: #e6e6e6;
-        --placeholder: #666666e5;
-        --input-bg: #f0f0f0;
+		--gray: #53555d;
+		--shade-gray: #b3b3b3;
+		--light-gray: #e6e6e6;
+		--placeholder: #666666e5;
+		--input-bg: #f0f0f0;
 
-        /* static */
-        --darkBlue: #2c3258;
-        --yellow: #f4a900;
-        --error: #d20035;
-    }
+		/* static */
+		--darkBlue: #2c3258;
+		--yellow: #f4a900;
+		--error: #d20035;
+	}
 
-    .dark {
-        /* dynamic */
-        --background-1: #202124;
-        --background-2: #2c2c2c;
-        --background-3: #4a4a4a;
-        --background-4: #202124;
-        --background-5: #202124;
+	.dark {
+		/* dynamic */
+		--background-1: #202124;
+		--background-2: #2c2c2c;
+		--background-3: #4a4a4a;
+		--background-4: #202124;
+		--background-5: #202124;
 
-        --foreground-1: white;
-        --foreground-2: #b3b3b3;
-        --foreground-3: #999999;
+		--foreground-1: white;
+		--foreground-2: #b3b3b3;
+		--foreground-3: #999999;
 
-        --yellow: #cb8e00;
-        --error: #e34242;
+		--yellow: #cb8e00;
+		--error: #e34242;
 
-        --gray: #a0a0a0;
-        --shade-gray: #707070;
-        --light-gray: #3a3a3a;
-        --placeholder: #888888e5;
-        --input-bg: #1f1f1f;
-    }
+		--gray: #a0a0a0;
+		--shade-gray: #707070;
+		--light-gray: #3a3a3a;
+		--placeholder: #888888e5;
+		--input-bg: #1f1f1f;
+	}
 }
 
 /* disable animation on low FPS */
 .reduce-motion * {
-    animation: none !important;
+	animation: none !important;
 }
 
 body {
-    font-family: var(--font-raleway), sans-serif;
+	font-family: var(--font-raleway), sans-serif;
+}
+
+input,
+textarea {
+	font-family: var(--font-roboto), sans-serif;
+}
+
+input::placeholder {
+	font-family: var(--font-roboto), sans-serif;
+}
+
+textarea::placeholder {
+	font-family: var(--font-roboto), sans-serif;
 }
 
 html {
-    max-width: 1920px;
-    margin-inline: auto;
-    will-change: background-color, color;
+	max-width: 1920px;
+	margin-inline: auto;
+	will-change: background-color, color;
 
-    overscroll-behavior-y: none;
-    overscroll-behavior-x: none;
-    overflow-y: auto;
+	overscroll-behavior-y: none;
+	overscroll-behavior-x: none;
+	overflow-y: auto;
 }
 
 * {
-    ::-webkit-scrollbar {
-        width: 6px;
-    }
+	::-webkit-scrollbar {
+		width: 6px;
+	}
 
-    ::-webkit-scrollbar-track {
-        background: var(--background-1);
-        border-radius: 10px;
-    }
+	::-webkit-scrollbar-track {
+		background: var(--background-1);
+		border-radius: 10px;
+	}
 
-    ::-webkit-scrollbar-thumb {
-        background-color: #747474;
-        border-radius: 10px;
-        border: 2px solid #f0f0f0;
-    }
+	::-webkit-scrollbar-thumb {
+		background-color: #747474;
+		border-radius: 10px;
+		border: 2px solid #f0f0f0;
+	}
 
-    scrollbar-width: thin;
-    scrollbar-color: #747474 #f0f0f0;
+	scrollbar-width: thin;
+	scrollbar-color: #747474 #f0f0f0;
 }
 
 .numeric {
-    font-variant-numeric: lining-nums proportional-nums;
+	font-variant-numeric: lining-nums proportional-nums;
 }
 
 .full-height {
-    min-height: calc(100vh - 88px);
+	min-height: calc(100vh - 88px);
 }

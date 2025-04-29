@@ -1,23 +1,42 @@
 'use server';
 
-import { URL_ENTITIES } from '@/lib';
-import { AXIOS_GET, Params } from '@common';
-import { GetEstablishmentAllClientResponseModel, GetEstablishmentDetailResponseModel } from './establishmentServiceTypes.ts';
+import { createFetchAction } from '@/common/actions/createFetchAction';
+import { PAGES, URL_ENTITIES, isSuccessResponse } from '@/lib';
+import type { Params } from '@common';
+import { permanentRedirect } from 'next/navigation.js';
+import type {
+	GetEstablishmentAllClientResponseModel,
+	GetEstablishmentDetailedResponseModel,
+} from './establishmentServiceTypes.ts';
 
 class EstablishmentService {
-    static async getEstablishmentAllclient(params: Params): Promise<GetEstablishmentAllClientResponseModel> {
-        const response = await AXIOS_GET<GetEstablishmentAllClientResponseModel>({
-            url: URL_ENTITIES.ESTABLISHMENTALLCLIENT,
-            params: params
-        });
-        return response;
-    }
-    static async getEstablishmentDetail(id: string): Promise<GetEstablishmentDetailResponseModel> {
-        const response = await AXIOS_GET<GetEstablishmentDetailResponseModel>({
-            url: `${URL_ENTITIES.ESTABLISHMENTDETAIL}/${id}`,
-        });
-        return response;
-    }
+	static async getEstablishmentAllClient(
+		params: Params,
+	): Promise<GetEstablishmentAllClientResponseModel> {
+		const response = await createFetchAction<GetEstablishmentAllClientResponseModel>({
+			endpoint: URL_ENTITIES.ESTABLISHMENT_ALL_CLIENT,
+			shouldBeAuthorized: false,
+			params,
+		});
+
+		return response;
+	}
+
+	static async getEstablishmentDetail(
+		id: string,
+	): Promise<GetEstablishmentDetailedResponseModel> {
+		const response = await createFetchAction<GetEstablishmentDetailedResponseModel>({
+			endpoint: URL_ENTITIES.ESTABLISHMENT_DETAIL,
+			postfix: [id],
+			shouldBeAuthorized: false,
+		});
+
+		if (!isSuccessResponse(response)) {
+			permanentRedirect(PAGES.ENTERPRISES_ALL);
+		}
+
+		return response;
+	}
 }
 
-export const { getEstablishmentAllclient, getEstablishmentDetail } = EstablishmentService;
+export const { getEstablishmentAllClient, getEstablishmentDetail } = EstablishmentService;

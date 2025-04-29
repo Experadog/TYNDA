@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from 'next/server';
 
-import { routing } from '@/i18n/routing';
+import { type SupportedLanguages, routing } from '@/i18n/routing';
 import { type Session, UserRole } from '@business-entities';
 import { COOKIES } from '../config/cookies';
 import { googleGuardUrlPath } from '../config/oauth';
@@ -19,14 +19,16 @@ export function isStaticOrApiRequest(pathname: string): boolean {
 	);
 }
 
-export function getLocaleFromPath(pathname: string): string | undefined {
+export function getLocaleFromPath(pathname: string): SupportedLanguages | undefined {
 	const [_, locale] = pathname.split('/');
-	return locale;
+	return locale as SupportedLanguages;
 }
 
-export function getValidLocale(req: NextRequest): string {
-	const pathLocale = getLocaleFromPath(req.nextUrl.pathname);
-	const cookieLocale = req.cookies.get(COOKIES.NEXT_LOCALE)?.value;
+export function getValidLocale(req: NextRequest): SupportedLanguages {
+	const pathLocale: SupportedLanguages | undefined = getLocaleFromPath(req.nextUrl.pathname);
+	const cookieLocale = req.cookies.get(COOKIES.NEXT_LOCALE)?.value as
+		| SupportedLanguages
+		| undefined;
 	const locales = routing.locales;
 
 	if (pathLocale && locales.includes(pathLocale)) {
