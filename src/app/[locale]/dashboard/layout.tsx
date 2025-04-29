@@ -19,10 +19,10 @@ const DashboardLayout: FC<IProps> = ({ children }) => {
 	return (
 		<UpdateProfileProvider user={user}>
 			<div className="flex full-height">
-				<div className="flex-[1] p-6 border-r border-r-light_gray">
+				<div className="flex-[1] bg-background_6 p-6 border-r border-r-light_gray">
 					<Sidebar user={user} />
 				</div>
-				<div className="flex-[5] p-6 bg-background_2">{children}</div>
+				<div className="flex-[5] p-6 bg-background_2  full-height-max">{children}</div>
 			</div>
 		</UpdateProfileProvider>
 	);

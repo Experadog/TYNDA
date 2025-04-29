@@ -5,7 +5,10 @@ import { NextIntlClientProvider } from 'next-intl';
 import { Raleway, Roboto } from 'next/font/google';
 import NextTopLoader from 'nextjs-toploader';
 
+import { type SupportedLanguages, supportedLanguages } from '@/i18n/routing';
+import { PAGES } from '@/lib';
 import CollectedProviders from '@/providers/collected-providers';
+import { headers } from 'next/headers';
 import '../globals.css';
 
 const raleway = Raleway({
@@ -30,12 +33,20 @@ export default async function RootLayout({
 	params,
 }: Readonly<{
 	children: React.ReactNode;
-	params: { locale: string };
+	params: { locale: SupportedLanguages };
 }>) {
 	const { locale } = await params;
 
+	const headersList = await headers();
+	const path = headersList.get('x-invoke-path') || headersList.get('referer') || '';
+	const isDashboard = path.includes(PAGES.DASHBOARD);
+
 	return (
-		<html lang={locale || 'ru'} suppressHydrationWarning>
+		<html
+			lang={locale || supportedLanguages[0]}
+			suppressHydrationWarning
+			style={{ maxWidth: isDashboard ? '100vw' : 'auto' }}
+		>
 			<body className={`${raleway.variable} ${roboto.variable} antialiased min-w-96`}>
 				<NextTopLoader color="var(--yellow)" height={3} showSpinner={false} />
 				<NextIntlClientProvider>

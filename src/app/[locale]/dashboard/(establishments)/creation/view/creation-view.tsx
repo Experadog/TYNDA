@@ -9,7 +9,7 @@ const EstablishmentCreationView = () => {
 	const viewModel = useViewModel(['Shared']);
 
 	return (
-		<div className="full-height flex flex-col gap-7">
+		<div className="flex flex-col gap-7">
 			<BlockWrapper>
 				<TabsSwitcher />
 			</BlockWrapper>

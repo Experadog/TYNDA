@@ -19,6 +19,7 @@ export default {
 				background_3: 'var(--background-3)',
 				background_4: 'var(--background-4)',
 				background_5: 'var(--background-5)',
+				background_6: 'var(--background-6)',
 
 				foreground_1: 'var(--foreground-1)',
 				foreground_2: 'var(--foreground-2)',
@@ -29,6 +30,8 @@ export default {
 				light_gray: 'var(--light-gray)',
 				placeholder: 'var(--placeholder)',
 				input_bg: 'var(--input-bg)',
+
+				gradient: 'var(--gradient)',
 
 				//static
 				darkBlue: 'var(--darkBlue)',

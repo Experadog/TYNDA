@@ -15,7 +15,9 @@ const Layout: FC<IProps> = ({ children }) => {
 	return (
 		<main className="flex flex-col relative">
 			<Navbar viewModel={viewModel.navbar} />
-			<div className="full-height overflow-y-auto overflow-x-hidden">{children}</div>
+			<div className="overflow-y-auto overflow-x-hidden mt-[88px] full-height">
+				{children}
+			</div>
 			<Footer viewModel={viewModel.footer} />
 		</main>
 	);

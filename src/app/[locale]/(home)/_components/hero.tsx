@@ -8,9 +8,9 @@ interface IProps {
 
 const Hero: FC<IProps> = ({ heroViewModel }) => {
 	return (
-		<div className="pt-[10px] lg:pt-0 px-[10px] lg:px-0 max-w-[1420px] m-auto">
+		<div className="pt-[10px] lg:pt-0 px-[10px] lg:px-0 max-w-[1420px] m-auto ">
 			<div
-				className="rounded-[30px] lg:rounded-none w-full h-[720px] lg:h-[630px] pl-10 lg:pl-5 flex flex-col justify-end gap-9 lg:gap-8 pb-[75px] lg:pb-8"
+				className="rounded-[30px] lg:rounded-none w-full h-[720px] lg:h-[630px] pl-10 lg:pl-5 flex flex-col justify-end gap-9 lg:gap-8 pb-[75px] lg:pb-8 bg-fixed bg-center bg-cover"
 				style={{ backgroundImage: `url('/home/hero.webp')` }}
 			>
 				<div className="flex flex-col gap-[25px] max-w-[964px] pr-[250px] lg:pr-5">

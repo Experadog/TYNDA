@@ -10,6 +10,7 @@
 		--background-3: #f9f9f9;
 		--background-4: #f0f0f0;
 		--background-5: #323232;
+		--background-6: white;
 
 		--foreground-1: #1c1c1c;
 		--foreground-2: #555555;
@@ -21,6 +22,8 @@
 		--placeholder: #666666e5;
 		--input-bg: #f0f0f0;
 
+		--gradient: linear-gradient(to bottom, #ffffff, #f0f0f3, #e4e6eb);
+
 		/* static */
 		--darkBlue: #2c3258;
 		--yellow: #f4a900;
@@ -30,10 +33,11 @@
 	.dark {
 		/* dynamic */
 		--background-1: #202124;
-		--background-2: #2c2c2c;
+		--background-2: #222222;
 		--background-3: #4a4a4a;
 		--background-4: #202124;
 		--background-5: #202124;
+		--background-6: #1c1c1c;
 
 		--foreground-1: white;
 		--foreground-2: #b3b3b3;
@@ -41,6 +45,8 @@
 
 		--yellow: #cb8e00;
 		--error: #e34242;
+
+		--gradient: linear-gradient(to bottom, #0f0f11, #1a1b1e, #2c2e32);
 
 		--gray: #a0a0a0;
 		--shade-gray: #707070;
@@ -57,15 +63,18 @@
 
 body {
 	font-family: var(--font-raleway), sans-serif;
+	background-image: var(--gradient);
 }
 
 input,
 textarea {
 	font-family: var(--font-roboto), sans-serif;
+	font-weight: 500;
 }
 
 input::placeholder {
 	font-family: var(--font-roboto), sans-serif;
+	font-weight: 500;
 }
 
 textarea::placeholder {
@@ -108,4 +117,9 @@ html {
 
 .full-height {
 	min-height: calc(100vh - 88px);
+}
+
+.full-height-max {
+	max-height: calc(100vh - 88px);
+	overflow-y: scroll;
 }
