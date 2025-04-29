@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
     reactStrictMode: true,
     trailingSlash: false,
     images: {
+        domains: ['soyuz.kg'],
         formats: ['image/avif', 'image/webp'],
         minimumCacheTTL: 86400,
     },

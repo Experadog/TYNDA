@@ -5,8 +5,6 @@ export type CommonResponse<T> = {
 };
 
 export type Paginated<T> = {
-    code: number;
-    msg: string;
     items: Array<T>;
     total: number;
     page: number;

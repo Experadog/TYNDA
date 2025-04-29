@@ -1,9 +1,13 @@
 'use client';
+import dynamic from 'next/dynamic';
 import { FC } from 'react';
 import Hero from './_components/hero';
-import ContactDetails from './_components/contact-details';
-import Address from './_components/address';
-import ContactForm from './_components/contact-form';
+
+const ContactDetails = dynamic(() => import('./_components/contact-details'), { ssr: true });
+
+const Address = dynamic(() => import('./_components/address'), { ssr: true });
+
+const ContactForm = dynamic(() => import('./_components/contact-form'), { ssr: true });
 
 interface IProps {}
 
