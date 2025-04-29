@@ -1,6 +1,5 @@
-import { ClientHistory } from '@business-entities';
-import { CommonResponse, Paginated } from '@common';
-import { Session } from 'inspector/promises';
+import type { ClientHistory, Session } from '@business-entities';
+import type { CommonResponse, Paginated } from '@common';
 
 export type ProfileResponseModel = CommonResponse<Session>;
 
@@ -11,7 +10,7 @@ export type PhoneFirstStepVerificationResponseModel = CommonResponse<string>;
 
 export type CredentialsUpdateResponseModel = CommonResponse<string>;
 export type CredentialsUpdateRequestModel = {
-    new_password: string;
-    old_password: string;
-    confirm_password: string;
+	new_password: string;
+	old_password: string;
+	confirm_password: string;
 };

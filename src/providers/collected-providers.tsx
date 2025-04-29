@@ -27,11 +27,13 @@ const CollectedProviders: FC<IProps> = async ({ children }) => {
 			enableSystem
 			theme={theme}
 		>
-			<ToastClientProvider theme={theme} />
 			<OAuthProvider>
 				<LocaleProvider locale={locale}>
 					<UserProvider session={session}>
-						<RefreshOnExpire initialSession={session}>{children}</RefreshOnExpire>
+						<RefreshOnExpire initialSession={session}>
+							<ToastClientProvider theme={theme} />
+							{children}
+						</RefreshOnExpire>
 					</UserProvider>
 				</LocaleProvider>
 			</OAuthProvider>

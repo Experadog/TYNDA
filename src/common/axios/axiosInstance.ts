@@ -1,105 +1,105 @@
-import { API_URL, COOKIES, getTokensFromSession, LOGGER } from '@/lib';
-import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
+import { API_URL, COOKIES, LOGGER, getTokensFromSession } from '@/lib';
+import axios, { type AxiosError, type AxiosInstance, type AxiosResponse } from 'axios';
 import { clearCookie } from '../actions/clear-cookie';
-import { Params } from '../types/http.types';
-import { CommonResponse } from '../types/responses.types';
+import type { Params } from '../types/http.types';
+import type { CommonResponse } from '../types/responses.types';
 
 export const axiosInstance: AxiosInstance = axios.create({
-    baseURL: API_URL,
-    withCredentials: true,
+	baseURL: API_URL,
+	withCredentials: true,
 });
 
 axiosInstance.interceptors.request.use(async (config) => {
-    const { cookies } = await import('next/headers');
+	const { cookies } = await import('next/headers');
 
-    const cookieStore = await cookies();
-    const sessionCookie = cookieStore.get(COOKIES.SESSION);
-    const tokens = getTokensFromSession(sessionCookie?.value);
+	const cookieStore = await cookies();
+	const sessionCookie = cookieStore.get(COOKIES.SESSION);
+	const tokens = getTokensFromSession(sessionCookie?.value);
 
-    LOGGER.info(config.data);
+	LOGGER.info(config.data);
 
-    if (tokens) {
-        LOGGER.info('Adding cookie to request...');
-        config.headers['Cookie'] = tokens;
-    }
+	if (tokens) {
+		LOGGER.info('Adding cookie to request...');
+		config.headers.Cookie = tokens;
+	}
 
-    return config;
+	return config;
 });
 
 axiosInstance.interceptors.response.use(
-    (response) => {
-        LOGGER.success(response.data);
+	(response) => {
+		LOGGER.success(response.data);
 
-        return response;
-    },
-    async (error: AxiosError) => {
-        const { response } = error;
-        const data = response?.data as CommonResponse<null>;
+		return response;
+	},
+	async (error: AxiosError) => {
+		const { response } = error;
+		const data = response?.data as CommonResponse<null>;
 
-        LOGGER.error(data);
+		LOGGER.error(data);
 
-        if (response?.status === 401 || data?.code === 401) {
-            await clearCookie(COOKIES.SESSION);
-        }
+		if (response?.status === 401 || data?.code === 401) {
+			await clearCookie(COOKIES.SESSION);
+		}
 
-        throw error;
-    },
+		throw error;
+	},
 );
 
 async function request<T>(
-    method: 'get' | 'post' | 'put' | 'patch' | 'delete',
-    { url, params, data, headers }: RequestOptions,
+	method: 'get' | 'post' | 'put' | 'patch' | 'delete',
+	{ url, params, data, headers }: RequestOptions,
 ): Promise<T> {
-    try {
-        const response: AxiosResponse<T> = await axiosInstance.request<T>({
-            method,
-            url,
-            params,
-            data,
-            headers: {
-                ...headers,
-            },
-        });
+	try {
+		const response: AxiosResponse<T> = await axiosInstance.request<T>({
+			method,
+			url,
+			params,
+			data,
+			headers: {
+				...headers,
+			},
+		});
 
-        return response?.data;
-    } catch (error) {
-        if (axios.isAxiosError(error)) {
-            return {
-                code: error.response?.data.code || 500,
-                data: error.response?.data,
-            } as T;
-        }
+		return response?.data;
+	} catch (error) {
+		if (axios.isAxiosError(error)) {
+			return {
+				code: error.response?.data.code || 500,
+				data: error.response?.data,
+			} as T;
+		}
 
-        return {
-            code: 500,
-            data: null,
-        } as T;
-    }
+		return {
+			code: 500,
+			data: null,
+		} as T;
+	}
 }
 
 interface RequestOptions {
-    url: string;
-    params?: Params;
-    data?: any;
-    headers?: Record<string, string>;
+	url: string;
+	params?: Params;
+	data?: unknown;
+	headers?: Record<string, string>;
 }
 
 export async function AXIOS_GET<T>(options: RequestOptions): Promise<T> {
-    return request<T>('get', options);
+	return request<T>('get', options);
 }
 
 export async function AXIOS_POST<T>(options: RequestOptions): Promise<T> {
-    return request<T>('post', options);
+	return request<T>('post', options);
 }
 
 export async function AXIOS_PUT<T>(options: RequestOptions): Promise<T> {
-    return request<T>('put', options);
+	return request<T>('put', options);
 }
 
 export async function AXIOS_PATCH<T>(options: RequestOptions): Promise<T> {
-    return request<T>('patch', options);
+	return request<T>('patch', options);
 }
 
 export async function AXIOS_DELETE<T>(options: RequestOptions): Promise<T> {
-    return request<T>('delete', options);
+	return request<T>('delete', options);
 }
