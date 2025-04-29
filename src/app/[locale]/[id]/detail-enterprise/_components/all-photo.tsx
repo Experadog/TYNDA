@@ -1,4 +1,5 @@
 'use client';
+import { EstablishmentDetail } from '@/services/establishment/establishmentServiceTypes.ts';
 import { Button, Slider } from '@components';
 import Image from 'next/image';
 import { FC } from 'react';
@@ -15,9 +16,10 @@ const photosData = [
 
 interface IProps {
     viewModel: ViewModel['DetailEnterprise']['allPhoto'];
+    establishment: EstablishmentDetail;
 }
 
-const AllPhoto: FC<IProps> = ({}) => {
+const AllPhoto: FC<IProps> = ({ establishment }) => {
     const { viewModel } = useDetailEnterpriseUseCase();
     return (
         <div className='mt-[80px] lg:mt-[30px] flex flex-col gap-7 mb-[100px]'>

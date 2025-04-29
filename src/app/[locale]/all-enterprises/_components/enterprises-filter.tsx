@@ -1,16 +1,18 @@
 'use client';
-import { FC } from 'react';
-import RecommendationCard from '../../(home)/_components/recommendationCard';
+import { Establishment } from '@/services/establishment/establishmentServiceTypes.ts';
 import { Button } from '@components';
+import { FC } from 'react';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import { TbFilter } from 'react-icons/tb';
+import RecommendationCard from '../../(home)/_components/recommendationCard';
 import { useAllEnterprisesUseCase } from '../use-cases/useAllEnterprisesUseCase';
 
 interface IProps {
     viewModel: ViewModel['AllEnterprises']['enterprisesFilter'];
+    establishments: Establishment[];
 }
 
-const EnterprisesFilter: FC<IProps> = ({}) => {
+const EnterprisesFilter: FC<IProps> = ({ establishments }) => {
     const { viewModel } = useAllEnterprisesUseCase();
     return (
         <div className='mt-10 pb-[248px] lg:pb-14 lg:mt-5'>
@@ -35,8 +37,9 @@ const EnterprisesFilter: FC<IProps> = ({}) => {
                 </Button>
             </div>
             <div className='grid grid-cols-4 lg:grid-cols-2 mt-[60px] lg:mt-[30px] gap-x-5 gap-y-[34px] lg:gap-x-[10px] lg:gap-y-[20px]'>
-                {Array.from({ length: 8 }).map((_, index) => (
-                    <RecommendationCard key={index} />
+                {establishments.map((establishment) => (
+                    <RecommendationCard key={establishment.id} establishment={establishment} establishmentImageContainer='max-w-[320px] max-h-[322px]' imageClassName='w-[320px] h-[322px]' />
+
                 ))}
             </div>
         </div>
