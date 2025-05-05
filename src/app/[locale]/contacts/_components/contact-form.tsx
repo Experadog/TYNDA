@@ -30,7 +30,7 @@ const ContactForm: FC<IProps> = ({}) => {
                             placeholder='Ваше имя'
                             required
                             autoComplete='name'
-                            className='w-full outline-none numeric'
+                            className='w-full outline-none numeric bg-inherit'
                         />
                     </div>
                     <div
@@ -44,7 +44,7 @@ const ContactForm: FC<IProps> = ({}) => {
                             placeholder='Введите номер телефона'
                             required
                             autoComplete='tel'
-                            className='w-full outline-none numeric'
+                            className='w-full outline-none numeric bg-inherit'
                         />
                     </div>
                     <div
@@ -58,7 +58,7 @@ const ContactForm: FC<IProps> = ({}) => {
                             placeholder='Ваш e-mail'
                             required
                             autoComplete='email'
-                            className='w-full outline-none numeric'
+                            className='w-full outline-none numeric bg-inherit'
                         />
                     </div>
                     <div
@@ -70,7 +70,7 @@ const ContactForm: FC<IProps> = ({}) => {
                             name='message'
                             required
                             autoComplete='off'
-                            className='w-full outline-none min-h-[20px] numeric'
+                            className='w-full outline-none min-h-[20px] numeric bg-inherit'
                             placeholder='Напишите сообщение'
                         ></textarea>
                     </div>

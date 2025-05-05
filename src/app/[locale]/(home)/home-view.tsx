@@ -22,10 +22,12 @@ const HomeView: FC<IProps> = ({ establishments }) => {
 		viewModel: { home, shared },
 	} = useHomeUseCase();
 
+	if (!home || !shared) return null;
+
 	return (
 		<>
 			<Hero heroViewModel={home.hero} />
-			<div className="px-[50px] lg:px-5 max-w-[1390px] m-auto">
+			<div className="lg:px-5 max-w-[1340px] m-auto">
 				<Recommendation
 					recommendationViewModel={home.recommendation}
 					sharedViewModel={shared}

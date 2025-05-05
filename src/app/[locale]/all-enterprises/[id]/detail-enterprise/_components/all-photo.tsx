@@ -20,13 +20,14 @@ const AllPhoto: FC<IProps> = ({ imagesList }) => {
 				<Slider loop slidesPerView={4} spacing={20}>
 					{imagesList.map((url) => {
 						return (
-							<div key={url}>
+							<div className='w-[290px] h-[208px]' key={url}>
 								<Image
+									priority
 									src={url}
 									alt="photo"
 									width={290}
 									height={208}
-									className="rounded-[15px]"
+									className="rounded-[15px] w-full h-[208px]"
 								/>
 							</div>
 						);
@@ -35,42 +36,47 @@ const AllPhoto: FC<IProps> = ({ imagesList }) => {
 			</div>
 			<div className="lg:flex flex-col gap-[10px] hidden">
 				<div className="flex gap-[10px]">
-					<Image
-						src="/enterprisesBg.webp"
-						alt="photo"
-						width={220}
-						height={250}
-						className="rounded-[10px] min-h-[250px]"
-					/>
-					<div className="flex flex-col gap-[10px]">
+					<div className='w-[220px] h-[250px]'>
 						<Image
-							src="/enterprisesBg.webp"
+							priority
+							src={imagesList[0]}
 							alt="photo"
-							width={123}
-							height={120}
-							className="rounded-[10px]"
-						/>
-						<Image
-							src="/enterprisesBg.webp"
-							alt="photo"
-							width={123}
-							height={120}
-							className="rounded-[10px]"
+							width={220}
+							height={250}
+							className="rounded-[10px] w-full h-[250px] object-cover"
 						/>
 					</div>
-				</div>
-				<div className="max-w-[353px]">
-					<Slider loop slidesPerView={3} spacing={10}>
-						{imagesList.map((url) => {
-							return (
+					<div className="flex flex-col gap-[10px]">
+						{imagesList.slice(1, 3).map((url, index) =>
+							<div key={index} className='w-[123px] h-[120px]'>
 								<Image
-									key={url}
+									priority
 									src={url}
 									alt="photo"
-									width={111}
-									height={108}
-									className="rounded-[10px]"
+									width={123}
+									height={120}
+									className="rounded-[10px] w-full h-[120px] object-cover"
 								/>
+							</div>
+						)}
+
+					</div>
+				</div>
+				<div className="w-full">
+					<Slider loop slidesPerView={3} spacing={10}>
+						{imagesList.map((url, index) => {
+							return (
+								<div key={index} className='w-[108px] h-[108px]'>
+									<Image
+										priority
+										key={url}
+										src={url}
+										alt="photo"
+										width={111}
+										height={108}
+										className="rounded-[10px] w-full h-[108px] object-cover"
+									/>
+								</div>
 							);
 						})}
 					</Slider>

@@ -4,6 +4,7 @@ import type {
 	EstablishmentCategory,
 	EstablishmentListItem,
 } from '@/business-entities/establishment/EstablishmentEntity';
+import { Link } from '@/i18n/routing';
 import { Button, EstCategorySlider, Translate } from '@components';
 import { type FC, useState } from 'react';
 import { GoArrowRight } from 'react-icons/go';
@@ -21,7 +22,7 @@ const Recommendation: FC<IProps> = ({
 	recommendationViewModel,
 	sharedViewModel,
 }) => {
-	if (establishments.length === 0) return null;
+	// if (establishments.length === 0) return null;
 
 	const isLargeScreen = useMediaQuery({ minWidth: 1025 });
 	const isSmallScreen = useMediaQuery({ minWidth: 440 });
@@ -59,25 +60,31 @@ const Recommendation: FC<IProps> = ({
 				/>
 			</Translate>
 
-			<div className="grid grid-cols-4 lg:grid-cols-2 items-center mt-[60px] lg:mt-[30px] gap-x-5 gap-y-[34px] lg:gap-x-[10px] lg:gap-y-[20px]">
-				{filteredEstablishments.map((establishment) => (
-					<RecommendationCard
-						key={establishment.id}
-						establishment={establishment}
-						establishmentImageContainer="max-w-[320px] max-h-[322px]"
-						imageClassName="w-[320px] h-[322px]"
-					/>
-				))}
-			</div>
+			{filteredEstablishments.length ? (
+				<div className="grid grid-cols-4 lg:grid-cols-2 mt-[60px] lg:mt-[30px] gap-5 gap-y-[34px]">
+					{filteredEstablishments.map((establishment) => (
+						<RecommendationCard
+							key={establishment.id}
+							establishment={establishment}
+						/>
+					))}
+				</div>
+			) : (
+				<div className='flex items-center justify-center mt-14'>
+					<p>По выбранной категории предприятий пока нет</p>
+				</div>
+			)}
+
 
 			<div className="flex items-center justify-center">
-				<Button
-					variant={'yellow'}
-					className="mt-[34px] rounded-[42px] px-[22px] py-[14px] h-[52px] flex items-center"
-				>
-					{recommendationViewModel.button}
-					<GoArrowRight />
-				</Button>
+				<Link href={`/all-enterprises`}>
+					<Button
+						variant={'yellow'}
+						className="mt-[34px] rounded-[42px] px-[22px] py-[14px] h-[52px] flex items-center"
+					>
+						{recommendationViewModel.button}
+						<GoArrowRight />
+					</Button></Link>
 			</div>
 		</div>
 	);

@@ -2,15 +2,16 @@
 import Image from 'next/image';
 import { FC } from 'react';
 
-interface IProps {}
+interface IProps { }
 
-const FirstService: FC<IProps> = ({}) => {
+const FirstService: FC<IProps> = ({ }) => {
     return (
         <div className='mt-[155px] mb-[100px] lg:mb-[60px] lg:px-5 max-w-[1158px] m-auto rounded-[35px] bg-background_1 [box-shadow:0px_0px_15px_2px_rgba(41,53,61,0.2)] px-[116px] lg:shadow-none lg:rounded-none'>
             <div className='grid grid-cols-2 lg:grid-cols-1 items-center gap-[130px] lg:gap-[50px]'>
                 <div className='flex flex-col gap-[60px]'>
                     <div className='flex items-center gap-5'>
                         <Image
+                            priority
                             src={'/logo.svg'}
                             alt='logo'
                             width={69}
@@ -29,6 +30,7 @@ const FirstService: FC<IProps> = ({}) => {
                 </div>
                 <div className=''>
                     <Image
+                        priority
                         src={'/tariffs/earth2.png'}
                         alt='earth'
                         width={451}

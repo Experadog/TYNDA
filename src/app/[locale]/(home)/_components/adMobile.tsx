@@ -12,7 +12,7 @@ const AdMobile: FC<IProps> = ({ adMobileViewModel }) => {
 		<div className="mt-[120px] lg:mt-[60px] grid grid-cols-2 lg:grid-cols-1 gap-[40px]">
 			<Translate direction="right" distance={100} animateOnce={false}>
 				<div className="bg-[var(--yellow)] rounded-[45px] pt-[25px] px-[39px]">
-					<Image src={'/home/mobileImg.webp'} alt="phone" width={540} height={699} />
+					<Image priority src={'/home/mobileImg.webp'} alt="phone" width={540} height={699} />
 				</div>
 			</Translate>
 			<Translate
@@ -38,6 +38,7 @@ const AdMobile: FC<IProps> = ({ adMobileViewModel }) => {
 							</p>
 							<div className="flex items-center gap-[10px]">
 								<Image
+									priority
 									src={'/sm/appStoreImg.webp'}
 									alt="app store"
 									width={128}
@@ -45,6 +46,7 @@ const AdMobile: FC<IProps> = ({ adMobileViewModel }) => {
 									className="cursor-pointer"
 								/>
 								<Image
+									priority
 									src={'/sm/googlePlayImg.webp'}
 									alt="google"
 									width={147}
