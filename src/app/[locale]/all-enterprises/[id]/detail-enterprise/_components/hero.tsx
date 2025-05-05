@@ -1,12 +1,12 @@
 'use client';
 import type { EstablishmentDetailed } from '@/business-entities/establishment/EstablishmentEntity';
-import { Link } from '@/i18n/routing';
+import { BreadCrumbs } from '@/components/ui/breadCrumbs';
 import Image from 'next/image';
 import type { FC } from 'react';
 import { BsGeoAlt } from 'react-icons/bs';
 import { GoClock } from 'react-icons/go';
 import { LiaPhoneSolid } from 'react-icons/lia';
-import { SlArrowRight } from 'react-icons/sl';
+
 
 interface IProps {
 	viewModel: ViewModel['DetailEnterprise'];
@@ -17,17 +17,7 @@ interface IProps {
 const Hero: FC<IProps> = ({ viewModel, item, categoriesViewModel }) => {
 	return (
 		<div className="mt-[50px] lg:mt-[30px]">
-			<div className="lg:hidden">
-				<div className="flex items-center gap-2 lg:hidden">
-					<Link href="/">
-						<span className="opacity-50 hover:text-yellow hover:opacity-100">
-							{viewModel.hero.home}
-						</span>
-					</Link>
-					<SlArrowRight className="text-[14px] opacity-50" />
-					<span className="opacity-50">{item?.translates?.ru?.name || ''}</span>
-				</div>
-			</div>
+			<BreadCrumbs home={viewModel.hero.home} pageName={item?.translates?.ru?.name || ''} />
 			<div className="grid grid-cols-2 lg:grid-cols-1 items-start lg:items-center justify-between gap-7 mt-5">
 				<div className="flex flex-col items-center justify-center gap-4">
 					<Image
@@ -65,15 +55,15 @@ const Hero: FC<IProps> = ({ viewModel, item, categoriesViewModel }) => {
 							{item.address}
 						</p>
 						{/* <p className='flex gap-2 items-center numeric'>
-                            <span>
-                                <IoStar className='text-[var(--yellow)] md:text-sm' />
-                            </span>
-                            <span className='flex items-center text-lg lg:text-base font-medium'>
-                                <span className='text-lg font-semibold'>4.9</span>
-                                <LuDot className='text-xl' />
-                                18 отзывов
-                            </span>
-                        </p> */}
+								<span>
+										<IoStar className='text-[var(--yellow)] md:text-sm' />
+								</span>
+								<span className='flex items-center text-lg lg:text-base font-medium'>
+										<span className='text-lg font-semibold'>4.9</span>
+										<LuDot className='text-xl' />
+										18 отзывов
+								</span>
+						</p> */}
 					</div>
 					<div className="flex flex-col gap-4 px-5 lg:px-[10px] py-4 shadow-[0_0_15px_2px_rgba(41,53,61,0.20)] rounded-[15px] bg-background_1">
 						<div>
@@ -97,9 +87,9 @@ const Hero: FC<IProps> = ({ viewModel, item, categoriesViewModel }) => {
 								<span className="text-base font-medium">
 									{viewModel.hero.contacts}
 								</span>
-								<span className="text-base font-medium opacity-70">
-									{item?.contacts?.phone}
-								</span>
+								<a href={item?.contacts?.phone} className="text-base font-medium opacity-70">
+									{item?.contacts?.phone.replace(/^tel:/, '')}
+								</a>
 							</p>
 						</div>
 						<div>

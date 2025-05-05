@@ -26,8 +26,6 @@ const WeAdvise: FC<IProps> = ({ list }) => {
 					<RecommendationCard
 						key={establishment.id}
 						establishment={establishment}
-						establishmentImageContainer="max-w-[320px] max-h-[322px]"
-						imageClassName="w-[320px] h-[322px]"
 					/>
 				))}
 			</div>

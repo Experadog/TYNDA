@@ -13,6 +13,7 @@ const Address: FC<IProps> = ({}) => {
             </div>
             <div className='rounded-[25px] max-w-[957px] min-h-[445px] lg:max-w-[353px]'>
                 <Image
+                    priority
                     src='/map.webp'
                     alt='map'
                     width={957}

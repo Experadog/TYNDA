@@ -2,7 +2,7 @@
 import type { EstablishmentListItem } from '@/business-entities/establishment/EstablishmentEntity';
 import { Translate } from '@components';
 import type { FC } from 'react';
-import RecommendationCard from './recommendationCard';
+import MoreRecsCard from './moreRecsCard';
 
 interface IProps {
 	moreRecsViewModel: ViewModel['Home']['moreRecs'];
@@ -23,12 +23,11 @@ const MoreRecs: FC<IProps> = ({ establishments, moreRecsViewModel }) => {
 					<Translate direction="right" distance={100} animateOnce={false}>
 						<div>
 							{establishments[0] && (
-								<RecommendationCard
+								<MoreRecsCard
 									key={establishments[0].id}
-									ratingClassName="md:pr-4 exs:pr-0"
-									imageClassName="h-[560px] lg:h-[322px]"
-									establishmentImageContainer="max-w-[650px] max-h-[560px]"
-									bottomElClassName="flex flex-col gap-[20px] lg:gap-[10px]"
+									imageContainer="w-[650px] h-[559px] lg:w-[353px] lg:h-[322px]"
+									imageClassName="h-[559px] lg:h-[322px]"
+									mainClassName="w-[650px] lg:w-[353px] h-[729px] lg:h-[478px]"
 									establishment={establishments[0]}
 								/>
 							)}
@@ -37,12 +36,11 @@ const MoreRecs: FC<IProps> = ({ establishments, moreRecsViewModel }) => {
 					<Translate direction="left" distance={100} animateOnce={false}>
 						<div className="grid grid-cols-2 gap-[25px] lg:gap-[10px]">
 							{establishments.map((establishment) => (
-								<RecommendationCard
-									ratingClassName="md:pr-4 exs:pr-0 xs:justify-start xs:gap-2"
+								<MoreRecsCard
 									key={establishment.id}
-									imageClassName="w-[320px] h-[224px] lg:w-full xs:h-[171px] md:h-[250px]"
-									establishmentImageContainer="max-w-[320px] max-h-[224px]"
-									hideDescription
+									imageContainer="w-[320px] lg:w-[171px] h-[224px] lg:h-[171px]"
+									imageClassName="h-[224px] lg:h-[171px]"
+									mainClassName="w-[320px] lg:w-[171px] h-[360px] lg:h-[320px]"
 									establishment={establishment}
 								/>
 							))}

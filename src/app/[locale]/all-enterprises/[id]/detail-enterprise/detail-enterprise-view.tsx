@@ -22,7 +22,7 @@ const DetailEnterpriseView: FC<IProps> = ({ item, list }) => {
 	const viewModel = useViewModel(['DetailEnterprise', 'Shared']);
 
 	return (
-		<div className="max-w-[1340px] m-auto px-14 lg:px-5">
+		<div className="max-w-[1340px] m-auto lg:px-5">
 			<Hero
 				viewModel={viewModel.DetailEnterprise}
 				categoriesViewModel={viewModel.Shared.establishment_categories}

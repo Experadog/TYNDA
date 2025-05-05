@@ -3,9 +3,9 @@ import { Button } from '@components';
 import Image from 'next/image';
 import { FC } from 'react';
 
-interface IProps {}
+interface IProps { }
 
-const MoreAboutPlans: FC<IProps> = ({}) => {
+const MoreAboutPlans: FC<IProps> = ({ }) => {
     return (
         <div className='mt-[120px] lg:mt-[60px] lg:px-5'>
             <div className='flex flex-col items-center'>
@@ -24,6 +24,7 @@ const MoreAboutPlans: FC<IProps> = ({}) => {
                     </p>
                     <div className='flex items-center gap-[10px]'>
                         <Image
+                            priority
                             src={'/sm/appStoreImg.webp'}
                             alt='app store'
                             width={128}
@@ -31,6 +32,7 @@ const MoreAboutPlans: FC<IProps> = ({}) => {
                             className='cursor-pointer'
                         />
                         <Image
+                            priority
                             src={'/sm/googlePlayImg.webp'}
                             alt='google'
                             width={128}

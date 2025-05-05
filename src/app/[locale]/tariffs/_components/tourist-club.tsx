@@ -95,6 +95,7 @@ const TouristClub: FC<IProps> = ({}) => {
                                         className={`w-[275px] h-[218px] flex relative rounded-[15px] ${item.style || ''}`}
                                     >
                                         <Image
+                                            priority
                                             src={item.image}
                                             alt='icon'
                                             width={300}
