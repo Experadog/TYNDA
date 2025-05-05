@@ -12,6 +12,7 @@ export { default as ToggleTheme } from './toggle-theme/toggle-theme';
 
 //ui
 export * from './ui/button';
+export * from './ui/customAutoComplete';
 export * from './ui/customFormField';
 export * from './ui/customInput';
 export * from './ui/customSelect';

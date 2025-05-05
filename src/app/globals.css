@@ -21,10 +21,10 @@
 		--light-gray: #e6e6e6;
 		--placeholder: #666666e5;
 		--input-bg: #f0f0f0;
+		--success: #16a34a;
 
 		--gradient: linear-gradient(to bottom, #ffffff, #f0f0f3, #e4e6eb);
 
-		/* static */
 		--darkBlue: #2c3258;
 		--yellow: #f4a900;
 		--error: #d20035;
@@ -42,6 +42,7 @@
 		--foreground-1: white;
 		--foreground-2: #b3b3b3;
 		--foreground-3: #999999;
+		--success: #22c55e;
 
 		--yellow: #cb8e00;
 		--error: #e34242;

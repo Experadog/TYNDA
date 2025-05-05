@@ -2,7 +2,7 @@
 
 import { Button } from '@components';
 import clsx from 'clsx';
-import { useTabSwitcherUseCase } from '../../use-cases/useTabSwitcherUseCase';
+import { useTabSwitcherUseCase } from '../../use-case/useTabSwitcherUseCase';
 
 const TabsSwitcher = () => {
 	const {

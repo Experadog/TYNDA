@@ -1,39 +1,39 @@
 import { isSuccessResponse } from '@/lib';
 
 interface ActionFactoryOptions<TRequest, TResponse> {
-    requestAction: (values: TRequest) => Promise<TResponse>;
-    onSuccess?: (response: TResponse) => void;
-    onError?: (error?: Error) => void;
+	requestAction: (values: TRequest) => Promise<TResponse>;
+	onSuccess?: (response: TResponse) => void;
+	onError?: (error?: Error) => void;
 }
 
 export function createAction<TRequest, TResponse>({
-    requestAction,
-    onSuccess,
-    onError,
+	requestAction,
+	onSuccess,
+	onError,
 }: ActionFactoryOptions<TRequest, TResponse>) {
-    return async (values: TRequest): Promise<TResponse> => {
-        try {
-            const response = await requestAction(values);
+	return async (values: TRequest): Promise<TResponse> => {
+		try {
+			const response = await requestAction(values);
 
-            if (!response) {
-                throw new Error();
-            }
+			if (!response) {
+				throw new Error();
+			}
 
-            if (onSuccess && isSuccessResponse(response)) {
-                onSuccess(response);
-            } else {
-                if (onError) {
-                    onError(response as any);
-                }
-            }
+			if (onSuccess && isSuccessResponse(response)) {
+				onSuccess(response);
+			} else {
+				if (onError) {
+					onError(response as any);
+				}
+			}
 
-            return response;
-        } catch (error) {
-            if (onError) {
-                onError(error as Error);
-            }
+			return response;
+		} catch (error) {
+			if (onError) {
+				onError(error as Error);
+			}
 
-            throw error;
-        }
-    };
+			throw error;
+		}
+	};
 }

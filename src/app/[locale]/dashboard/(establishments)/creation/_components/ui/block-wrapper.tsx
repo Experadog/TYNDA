@@ -6,7 +6,9 @@ type Props = {
 
 const BlockWrapper = ({ children }: Props) => {
 	return (
-		<div className="p-5 bg-background_1 rounded-xl border border-light_gray">{children}</div>
+		<div className="p-5 bg-background_1 rounded-xl border border-light_gray w-full">
+			{children}
+		</div>
 	);
 };
 

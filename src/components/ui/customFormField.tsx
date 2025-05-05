@@ -1,22 +1,15 @@
 'use client';
 
 import clsx from 'clsx';
-import {
-	type CSSProperties,
-	type FC,
-	type HTMLInputTypeAttribute,
-	type Ref,
-	useState,
-} from 'react';
-import type { Control } from 'react-hook-form';
+import { type CSSProperties, type HTMLInputTypeAttribute, type Ref, useState } from 'react';
+import type { Control, FieldValues, Path } from 'react-hook-form';
 import { IoEye, IoEyeOff } from 'react-icons/io5';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from './form';
 import { Input } from './input';
 
-interface IProps {
-	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-	control: Control<any>;
-	name: string;
+interface IProps<T extends FieldValues> {
+	control: Control<T>;
+	name: Path<T>;
 	placeholder: string;
 	type: HTMLInputTypeAttribute;
 	InputClassName?: string;
@@ -25,9 +18,13 @@ interface IProps {
 	ref?: Ref<HTMLInputElement>;
 	label?: string;
 	inputStyles?: CSSProperties;
+	isTextArea?: boolean;
+	TextAreaClassName?: string;
+	max?: number;
+	min?: number;
 }
 
-export const CustomFormField: FC<IProps> = ({
+export const CustomFormField = <T extends FieldValues>({
 	control,
 	name,
 	placeholder,
@@ -38,7 +35,11 @@ export const CustomFormField: FC<IProps> = ({
 	ref,
 	label,
 	inputStyles,
-}) => {
+	isTextArea = false,
+	TextAreaClassName,
+	max,
+	min,
+}: IProps<T>) => {
 	const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
 	return (
@@ -57,42 +58,61 @@ export const CustomFormField: FC<IProps> = ({
 					)}
 					<FormControl>
 						<div className="relative w-full">
-							<Input
-								{...field}
-								className={clsx(
-									'bg-input_bg border-none outline-none focus:border-none placeholder:text-placeholder rounded-2xl px-4 py-6 font-semibold numeric',
-									type === 'password' ? 'pr-10' : '',
-									InputClassName,
-								)}
-								style={inputStyles}
-								type={
-									type === 'password'
-										? !isPasswordHidden
-											? 'text'
-											: 'password'
-										: type
-								}
-								placeholder={placeholder}
-								ref={ref}
-							/>
-							{type === 'password' && (
-								<button
-									type="button"
-									className="absolute right-4 top-1/2 -translate-y-1/2"
-									onClick={() => setIsPasswordHidden((prev) => !prev)}
-								>
-									{isPasswordHidden ? (
-										<IoEyeOff size={20} className="text-shade_gray" />
-									) : (
-										<IoEye size={20} className="text-shade_gray" />
+							{isTextArea ? (
+								<textarea
+									{...field}
+									placeholder={placeholder}
+									name={name}
+									className={`outline-none font-normal max-h-96 min-h-56 border border-light_gray px-4 py-3 rounded-xl ${TextAreaClassName || ''}`}
+								/>
+							) : (
+								<>
+									<Input
+										{...field}
+										max={max}
+										min={min}
+										className={clsx(
+											'outline-none placeholder:text-placeholder placeholder:font-normal rounded-2xl px-4 py-6 numeric border border-light_gray font-normal',
+											type === 'password' ? 'pr-10' : '',
+											InputClassName,
+										)}
+										style={inputStyles}
+										type={
+											type === 'password'
+												? !isPasswordHidden
+													? 'text'
+													: 'password'
+												: type
+										}
+										placeholder={placeholder}
+										ref={ref}
+									/>
+
+									{type === 'password' && (
+										<button
+											type="button"
+											className="absolute right-4 top-1/2 -translate-y-1/2"
+											onClick={() => setIsPasswordHidden((prev) => !prev)}
+										>
+											{isPasswordHidden ? (
+												<IoEyeOff size={20} className="text-shade_gray" />
+											) : (
+												<IoEye size={20} className="text-shade_gray" />
+											)}
+										</button>
 									)}
-								</button>
+								</>
 							)}
 						</div>
 					</FormControl>
 
 					<div className="flex justify-end w-full text-xs">
-						<FormMessage className={clsx('text-error', ErrorClassName)} />
+						<FormMessage
+							className={clsx(
+								'text-error numeric font-roboto text-end',
+								ErrorClassName,
+							)}
+						/>
 					</div>
 				</FormItem>
 			)}

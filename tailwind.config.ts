@@ -37,6 +37,7 @@ export default {
 				darkBlue: 'var(--darkBlue)',
 				yellow: 'var(--yellow)',
 				error: 'var(--error)',
+				success: 'var(--success)',
 			},
 
 			screens: {
