@@ -33,6 +33,7 @@ const About: FC<IProps> = ({ aboutViewModel }) => {
 				<Translate direction="left" distance={100} animateOnce={false}>
 					<div className="flex gap-[20px]">
 						<Image
+							priority
 							src={'/home/nature.webp'}
 							alt="nature"
 							width={318}
@@ -40,7 +41,8 @@ const About: FC<IProps> = ({ aboutViewModel }) => {
 							className="rounded-2xl lg:w-[355px]"
 						/>
 						<Image
-							src={'/home/nature.webp'}
+							priority
+							src={'/home/waterfall.webp'}
 							alt="nature"
 							width={228}
 							height={258}
@@ -54,7 +56,8 @@ const About: FC<IProps> = ({ aboutViewModel }) => {
 				<div className="flex justify-between gap-5 lg:flex-col-reverse md:justify-center">
 					<div className="flex items-center justify-center">
 						<Image
-							src={'/home/nature.webp'}
+							priority
+							src={'/home/humanMount.webp'}
 							alt="nature"
 							width={545}
 							height={258}

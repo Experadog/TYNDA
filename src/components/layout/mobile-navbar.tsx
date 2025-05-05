@@ -35,7 +35,7 @@ const MobileNavbar: FC<IProps> = ({}) => {
                     <Button
                         onClick={navigateToAuthOrProfile}
                         className={clsx(
-                            'bg-transparent uppercase text-foreground_1 font-semibold shadow-none p-5 rounded-3xl border-foreground_1  border cursor-pointer hover:bg-yellow hover:border-background_1 hover:text-white xs:w-full',
+                            'bg-transparent uppercase text-foreground_1 font-semibold shadow-none p-5 rounded-3xl border-foreground_1  border cursor-pointer hover:bg-yellow hover:border-background_1 hover:text-white xs:w-full numeric',
                             shouldHighlightBtn && 'bg-yellow  border-background_1 text-white',
                         )}
                     >

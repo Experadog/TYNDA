@@ -16,15 +16,16 @@ const iconPaths = [
     '/tariffs/facebookIcon.svg',
 ];
 
-interface IProps {}
+interface IProps { }
 
-const TouristicPlan: FC<IProps> = ({}) => {
+const TouristicPlan: FC<IProps> = ({ }) => {
     return (
         <div className='mt-[60px] h-[477px] lg:h-auto bg-yellow bg-no-repeat flex gap-[46px] lg:gap-[30px] justify-between lg:flex-col lg:items-center p-[50px] lg:px-[17px] lg:py-[34px] rounded-[35px] relative'>
             <div className='flex items-center'>
                 <div className='flex flex-col items-start gap-[138px] lg:gap-[60px] relative'>
                     <div className='absolute lg:hidden bottom-[-17px] left-2 w-[559px] h-[286px] opacity-30'>
                         <Image
+                            priority
                             className='w-full h-auto'
                             src='/tariffs/earthDots.webp'
                             alt='card image'
@@ -40,6 +41,7 @@ const TouristicPlan: FC<IProps> = ({}) => {
                     </div>
                     <div className='w-[367px] h-[329px] hidden lg:block'>
                         <Image
+                            priority
                             className='w-full'
                             src='/tariffs/planCard.webp'
                             alt='card image'
@@ -61,6 +63,7 @@ const TouristicPlan: FC<IProps> = ({}) => {
                 </div>
                 <div className='lg:hidden block'>
                     <Image
+                        priority
                         className='min-w-[505px] min-h-[453px] absolute top-[-26px] left-[383px]'
                         src='/tariffs/planCard2.webp'
                         alt='card image'
@@ -110,11 +113,11 @@ const TouristicPlan: FC<IProps> = ({}) => {
                         {iconPaths.map((path, index) => (
                             <div
                                 key={index}
-                                className={`w-[44px] h-[44px] rounded-full overflow-hidden ${
-                                    index !== 0 ? '-ml-2' : ''
-                                }`}
+                                className={`w-[44px] h-[44px] rounded-full overflow-hidden ${index !== 0 ? '-ml-2' : ''
+                                    }`}
                             >
                                 <Image
+                                    priority
                                     src={path}
                                     alt={`partner-${index}`}
                                     width={44}

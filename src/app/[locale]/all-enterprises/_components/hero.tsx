@@ -1,8 +1,7 @@
 'use client';
-import { Link } from '@/i18n/routing';
+import { BreadCrumbs } from '@/components/ui/breadCrumbs';
 import { EstCategorySlider } from '@components';
 import type { FC } from 'react';
-import { SlArrowRight } from 'react-icons/sl';
 import { useMediaQuery } from 'react-responsive';
 
 interface IProps {
@@ -19,15 +18,7 @@ const Hero: FC<IProps> = ({ heroViewModel, categoriesViewModel }) => {
 
 	return (
 		<div className="mt-[50px] lg:mt-0 max-w-[1340px] m-auto px-14 lg:px-0">
-			<div className="flex items-center gap-2 lg:hidden">
-				<Link href="/">
-					<span className="opacity-50 hover:text-yellow hover:opacity-100">
-						{heroViewModel.home}
-					</span>
-				</Link>
-				<SlArrowRight className="text-[14px] opacity-50" />
-				<span className="opacity-50">{heroViewModel.allEnterprises}</span>
-			</div>
+			<BreadCrumbs home={heroViewModel.home} pageName={heroViewModel.allEnterprises} />
 			<div className='w-full h-[280px] lg:px-5 flex flex-col justify-center items-center gap-7 rounded-[25px] mt-[20px] lg:m-0 lg:rounded-none bg-[linear-gradient(0deg,rgba(9,9,9,0.60)_0%,rgba(9,9,9,0.60)_100%),url("/enterprisesBg.webp")] lg:bg-[linear-gradient(0deg,rgba(9,9,9,0.50)_0%,rgba(9,9,9,0.50)_100%),url("/enterprisesBg.webp")] bg-cover bg-center bg-no-repeat'>
 				<h2 className="uppercase text-white text-center text-6xl lg:text-3xl font-semibold lg:font-bold">
 					{heroViewModel.explore}
