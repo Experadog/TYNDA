@@ -1,23 +1,23 @@
-import type { EntityStatus, Translations } from '@common';
+import type { EntityStatus, SocialMediaKey, Translations } from '@common';
 
 type EstablishmentTranslates = {
 	name: string;
 	description: string;
 };
 
+type Contacts = Record<SocialMediaKey, string>;
+type Coordinates = { latitude: number; longitude: number };
+
 export type EstablishmentDetailed = {
 	translates: Translations<EstablishmentTranslates>;
 	name: string;
 	address: string;
-	coordinates: string;
-	contacts: {
-		phone: string;
-		telegram: string;
-	};
-
+	coordinates: Coordinates;
+	contacts: Contacts;
 	website: string;
 	email: string;
 	status: EntityStatus;
+	discount: number;
 	average_bill: number;
 	work_time: string;
 	id: string;
@@ -26,10 +26,27 @@ export type EstablishmentDetailed = {
 	cover: string;
 };
 
+export type EstablishmentDetailedDefaultValue = {
+	name: string;
+	address: string;
+	category: undefined;
+	contacts: Partial<Contacts>;
+	coordinates: Partial<Coordinates>;
+	translates: Partial<Translations<EstablishmentTranslates>>;
+	website: string;
+	email: string;
+	average_bill: undefined;
+	work_time_start: string;
+	work_time_end: string;
+	images: Array<never>;
+	cover: undefined;
+	discount: undefined;
+};
+
 export type EstablishmentListItem = {
 	translates: Translations<EstablishmentTranslates>;
 	id: string;
-	category: string;
+	category: EstablishmentCategory;
 	status: EntityStatus;
 	discount: number;
 	cover: string;

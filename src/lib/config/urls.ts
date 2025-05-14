@@ -20,7 +20,12 @@ export enum URL_ENTITIES {
 
 	//org
 	ESTABLISHMENT_ALL_CLIENT = '/org/establishment/all-client',
+	ESTABLISHMENT_ALL_ESTABLISHER = '/org/establishment/all-establisher',
 	ESTABLISHMENT_DETAIL = '/org/establishment/detail',
+
+	ESTABLISHMENT_CREATION = '/org/establishment',
+	ESTABLISHMENT_DELETION = '/org/establishment',
+	ESTABLISHMENT_UPDATING = '/org/establishment',
 }
 
 export enum URL_LOCAL_ENTITIES {

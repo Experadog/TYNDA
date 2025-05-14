@@ -1,16 +1,18 @@
 import { useEffect, useState } from 'react';
 
 export function useScrolled(offset: number) {
-    const [isScrolled, setIsScrolled] = useState(false);
+	const [isScrolled, setIsScrolled] = useState(false);
 
-    useEffect(() => {
-        const onScroll = () => {
-            setIsScrolled(window.scrollY > offset);
-        };
+	useEffect(() => {
+		if (window === undefined) return;
 
-        window.addEventListener('scroll', onScroll);
-        return () => window.removeEventListener('scroll', onScroll);
-    }, [offset]);
+		const onScroll = () => {
+			setIsScrolled(window.scrollY > offset);
+		};
 
-    return isScrolled;
+		window.addEventListener('scroll', onScroll);
+		return () => window.removeEventListener('scroll', onScroll);
+	}, [offset]);
+
+	return isScrolled;
 }

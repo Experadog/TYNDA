@@ -1,20 +1,19 @@
+'use client';
+
 import { Link, usePathname } from '@/i18n/routing';
 import { DASHBOARD_LINKS } from '@/lib';
-import type { User } from '@business-entities';
+import { useUser } from '@/providers/user/user-provider';
 import { Avatar, Button } from '@components';
 import clsx from 'clsx';
-import { type FC, Fragment, useMemo } from 'react';
+import { Fragment, useMemo } from 'react';
 import { CiDiscount1, CiShop } from 'react-icons/ci';
 import { HiOutlineChatAlt } from 'react-icons/hi';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { MdLogout } from 'react-icons/md';
 import { useUpdateProfileUseCase } from '../../profile/update-profile/use-case/useUpdateProfileUseCase';
 
-interface IProps {
-	user: User;
-}
-
-const Sidebar: FC<IProps> = ({ user }) => {
+const Sidebar = () => {
+	const { user } = useUser();
 	const pathname = usePathname();
 
 	const {
@@ -36,14 +35,14 @@ const Sidebar: FC<IProps> = ({ user }) => {
 			<div className="flex gap-3 w-full items-center">
 				<Avatar
 					className="rounded-full"
-					src={user.avatar || '/other/avatar-placeholder.webp'}
+					src={user?.avatar || '/other/avatar-placeholder.webp'}
 				/>
 				<div className="flex flex-col gap-1">
 					<p className="text-foreground_1 font-semibold">
-						{user.last_name} {user.first_name}
+						{user?.last_name} {user?.first_name}
 					</p>
 
-					<p className="text-gray text-xs font-normal">{user.email}</p>
+					<p className="text-gray text-xs font-normal">{user?.email}</p>
 				</div>
 			</div>
 

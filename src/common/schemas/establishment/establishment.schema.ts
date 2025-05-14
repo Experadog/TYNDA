@@ -3,21 +3,26 @@
 import {
 	ESTABLISHMENTS_CATEGORIES,
 	type EstablishmentCategory,
+	type EstablishmentDetailedDefaultValue,
 } from '@/business-entities/establishment/EstablishmentEntity';
+import { SOCIAL_MEDIAS } from '@/lib';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { createTranslatesShape } from '../common/common-rules';
+import { createTranslatesShape, emptyToNull, fileOrString } from '../common/common-rules';
 
-export const createEstablishmentSchema = (messages: ViewModel['Validation']) => {
+const establishmentFormShape = (messages: ViewModel['Validation']) => {
 	const baseTranslateShape = {
-		name: z.string().min(3, messages.min_3).max(100, messages.max_100),
-		description: z.string().min(20, messages.min_20),
+		name: z
+			.string({ message: messages.required })
+			.min(3, messages.min_3)
+			.max(100, messages.max_100),
+		description: z.string({ message: messages.required }).min(20, messages.min_20),
 	};
 
 	const translates = createTranslatesShape(baseTranslateShape);
 
-	const schema = z
+	return z
 		.object({
 			name: z.string().readonly(),
 			address: z.string().min(3, messages.min_3).max(100, messages.max_100),
@@ -30,92 +35,129 @@ export const createEstablishmentSchema = (messages: ViewModel['Validation']) => 
 				{ required_error: messages.required },
 			),
 
-			contacts: z.object({
-				phone: z.string().refine(Boolean, { message: messages.required }),
-				telegram: z.string().optional(),
-			}),
+			contacts: z
+				.object(
+					Object.keys(SOCIAL_MEDIAS).reduce(
+						(acc, key) => {
+							if (key === 'phone') {
+								acc[key as keyof typeof SOCIAL_MEDIAS] = z
+									.string()
+									.nullable()
+									.optional();
+							} else {
+								acc[key as keyof typeof SOCIAL_MEDIAS] = z
+									.string()
+									.nullable()
+									.optional()
+									.refine(
+										(val) => {
+											if (!val) return true;
+											try {
+												new URL(val);
+												return true;
+											} catch {
+												return false;
+											}
+										},
+										{ message: messages.invalid_url },
+									);
+							}
+							return acc;
+						},
+						{} as Record<keyof typeof SOCIAL_MEDIAS, z.ZodTypeAny>,
+					),
+				)
+				.optional(),
 
-			coordinates: z.object({
-				lat: z.string().refine(Boolean, { message: messages.required }),
-				lon: z.string().refine(Boolean, { message: messages.required }),
-			}),
+			coordinates: z
+				.object({
+					latitude: z.number().optional(),
+					longitude: z.number().optional(),
+				})
+				.refine((data) => data.latitude !== undefined && data.longitude !== undefined, {
+					message: messages.coordinates_required,
+				}),
 
 			translates: z.object(translates),
+			website: z.preprocess(
+				emptyToNull,
+				z.string().url({ message: messages.invalid_url }).nullable().optional(),
+			),
 
-			website: z.string().url({ message: messages.invalid_url }).optional(),
-
-			email: z.string().email({ message: messages.invalid_email }).optional(),
-
-			average_bill: z
-				.number()
-				.or(z.string())
-				.refine((val) => typeof val === 'string' && Number(val) > 0, {
-					message: messages.gt_0,
-				}),
+			email: z.preprocess(
+				emptyToNull,
+				z.string().email({ message: messages.invalid_email }).nullable().optional(),
+			),
 
 			work_time_start: z.string().refine(Boolean, { message: messages.required }),
 			work_time_end: z.string().refine(Boolean, { message: messages.required }),
 
-			images: z.array(z.instanceof(File)).min(1, { message: messages.required }),
+			images: z.array(fileOrString).min(1, { message: messages.images_required }),
+			cover: z
+				.union([z.instanceof(File), z.string()])
+				.nullable()
+				.optional(),
 
-			cover: z.instanceof(File).nullable().refine(Boolean, { message: messages.required }),
+			average_bill: z.preprocess((val) => {
+				if (val === '' || val === undefined || val === null) return null;
+				const num = Number(val);
+				return Number.isNaN(num) ? val : num;
+			}, z
+				.number({ invalid_type_error: messages.gt_0 })
+				.positive({ message: messages.gt_0 })
+				.nullable()
+				.optional()),
 
 			discount: z
-				.number()
-				.or(z.string())
-				.refine((val) => typeof val === 'string' && Number(val) > 0, {
-					message: messages.gt_0,
-				}),
+				.preprocess(
+					(val) => (val === '' || val === undefined ? undefined : Number(val)),
+					z.number({
+						required_error: messages.required,
+						invalid_type_error: messages.gt_0,
+					}),
+				)
+				.refine((val) => val > 0, { message: messages.gt_0 })
+				.refine((val) => val < 100, { message: messages.lt_100 }),
 		})
 		.transform((data) => ({
 			...data,
 			name: data.translates?.ru?.name ?? '',
 		}));
+};
+
+export const createEstablishmentSchema = (
+	messages: ViewModel['Validation'],
+	detailedDefaultValue?: EstablishmentFormValues | undefined,
+) => {
+	const schema = establishmentFormShape(messages);
 
 	type FormValues = z.infer<typeof schema>;
 
 	const form = useForm<FormValues>({
 		resolver: zodResolver(schema),
-		defaultValues: defaultValues,
+		defaultValues: detailedDefaultValue ?? defaultValue,
+		reValidateMode: 'onChange',
 	});
 
 	return form;
 };
 
-const defaultValues = {
+export const defaultValue: EstablishmentDetailedDefaultValue = {
 	name: '',
 	address: '',
 	category: undefined,
-	contacts: {
-		phone: '',
-		telegram: '',
-	},
-	coordinates: {
-		lat: '',
-		lon: '',
-	},
-	translates: {
-		ru: {
-			name: '',
-			description: '',
-		},
-
-		en: {
-			name: '',
-			description: '',
-		},
-
-		kg: {
-			name: '',
-			description: '',
-		},
-	},
+	contacts: {},
+	coordinates: {},
+	translates: {},
 	website: '',
 	email: '',
-	average_bill: '',
+	average_bill: undefined,
 	work_time_start: '',
 	work_time_end: '',
 	images: [],
 	cover: undefined,
-	discount: '',
+	discount: undefined,
 };
+
+export type EstablishmentFormValues = z.infer<ReturnType<typeof establishmentFormShape>>;
+export type EstablishmentSchema = ReturnType<typeof createEstablishmentSchema>;

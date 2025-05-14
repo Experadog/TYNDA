@@ -38,7 +38,12 @@ export default async function RootLayout({
 	const { locale } = await params;
 
 	const headersList = await headers();
-	const path = headersList.get('x-invoke-path') || headersList.get('referer') || '';
+	const path =
+		headersList.get('x-invoke-path') ||
+		headersList.get('referer') ||
+		headersList.get('next-url') ||
+		'';
+
 	const isDashboard = path.includes(PAGES.DASHBOARD);
 
 	return (
@@ -48,7 +53,13 @@ export default async function RootLayout({
 			style={{ maxWidth: isDashboard ? '100vw' : 'auto' }}
 		>
 			<body className={`${raleway.variable} ${roboto.variable} antialiased min-w-96`}>
-				<NextTopLoader color="var(--yellow)" height={3} showSpinner={false} />
+				<NextTopLoader
+					color="var(--yellow)"
+					height={3}
+					showSpinner={false}
+					zIndex={999999999}
+				/>
+
 				<NextIntlClientProvider>
 					<CollectedProviders>
 						<Layout>{children}</Layout>

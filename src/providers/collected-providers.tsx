@@ -1,5 +1,6 @@
 'use server';
 import { COOKIES } from '@/lib';
+import { TooltipProvider } from '@components';
 import { cookies } from 'next/headers';
 import type { FC, ReactNode } from 'react';
 import { LocaleProvider } from './locale/locale-provider';
@@ -32,7 +33,7 @@ const CollectedProviders: FC<IProps> = async ({ children }) => {
 					<UserProvider session={session}>
 						<RefreshOnExpire initialSession={session}>
 							<ToastClientProvider theme={theme} />
-							{children}
+							<TooltipProvider>{children}</TooltipProvider>
 						</RefreshOnExpire>
 					</UserProvider>
 				</LocaleProvider>

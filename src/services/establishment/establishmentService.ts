@@ -2,9 +2,14 @@
 
 import { createFetchAction } from '@/common/actions/createFetchAction';
 import { PAGES, URL_ENTITIES, isSuccessResponse } from '@/lib';
-import type { Params } from '@common';
+import { AXIOS_DELETE, AXIOS_PATCH, AXIOS_POST, type Params } from '@common';
 import { permanentRedirect } from 'next/navigation.js';
 import type {
+	EstablishmentCreationRequestModel,
+	EstablishmentCreationResponseModel,
+	EstablishmentDeletionRequestModel,
+	EstablishmentUpdatingRequestModel,
+	EstablishmentUpdatingResponseModel,
 	GetEstablishmentAllClientResponseModel,
 	GetEstablishmentDetailedResponseModel,
 } from './establishmentServiceTypes.ts';
@@ -17,6 +22,18 @@ class EstablishmentService {
 			endpoint: URL_ENTITIES.ESTABLISHMENT_ALL_CLIENT,
 			shouldBeAuthorized: false,
 			params,
+			revalidateTags: [URL_ENTITIES.ESTABLISHMENT_ALL_CLIENT],
+		});
+
+		return response;
+	}
+
+	static async getEstablishmentAllEstablisher(params: Params) {
+		const response = await createFetchAction<GetEstablishmentAllClientResponseModel>({
+			endpoint: URL_ENTITIES.ESTABLISHMENT_ALL_ESTABLISHER,
+			shouldBeAuthorized: true,
+			params,
+			revalidateTags: [URL_ENTITIES.ESTABLISHMENT_ALL_ESTABLISHER],
 		});
 
 		return response;
@@ -24,19 +41,60 @@ class EstablishmentService {
 
 	static async getEstablishmentDetail(
 		id: string,
+		isDashboard = false,
 	): Promise<GetEstablishmentDetailedResponseModel> {
 		const response = await createFetchAction<GetEstablishmentDetailedResponseModel>({
 			endpoint: URL_ENTITIES.ESTABLISHMENT_DETAIL,
 			postfix: [id],
 			shouldBeAuthorized: false,
+			revalidateTags: [URL_ENTITIES.ESTABLISHMENT_DETAIL],
 		});
 
 		if (!isSuccessResponse(response)) {
-			permanentRedirect(PAGES.ENTERPRISES_ALL);
+			permanentRedirect(isDashboard ? PAGES.DASHBOARD : PAGES.ENTERPRISES_ALL);
 		}
+
+		return response;
+	}
+
+	static async createEstablishment(
+		data: EstablishmentCreationRequestModel,
+	): Promise<EstablishmentCreationResponseModel> {
+		const response = await AXIOS_POST<EstablishmentCreationResponseModel>({
+			url: URL_ENTITIES.ESTABLISHMENT_CREATION,
+			data,
+		});
+
+		return response;
+	}
+
+	static async deleteEstablishment(
+		data: EstablishmentDeletionRequestModel,
+	): Promise<EstablishmentCreationResponseModel> {
+		const response = await AXIOS_DELETE<EstablishmentCreationResponseModel>({
+			url: `${URL_ENTITIES.ESTABLISHMENT_DELETION}/${data.id}`,
+		});
+
+		return response;
+	}
+
+	static async updateEstablishment(
+		data: EstablishmentUpdatingRequestModel,
+	): Promise<EstablishmentUpdatingResponseModel> {
+		const response = await AXIOS_PATCH<EstablishmentUpdatingResponseModel>({
+			url: `${URL_ENTITIES.ESTABLISHMENT_UPDATING}/${data.id}`,
+			data: data.payload,
+		});
 
 		return response;
 	}
 }
 
-export const { getEstablishmentAllClient, getEstablishmentDetail } = EstablishmentService;
+export const {
+	getEstablishmentAllClient,
+	getEstablishmentDetail,
+	createEstablishment,
+	getEstablishmentAllEstablisher,
+	deleteEstablishment,
+	updateEstablishment,
+} = EstablishmentService;

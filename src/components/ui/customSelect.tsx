@@ -50,10 +50,11 @@ const CustomSelect = <T extends FieldValues>({
 					)}
 
 					<FormControl>
-						<Select value={field.value} onValueChange={field.onChange}>
+						<Select value={field?.value} onValueChange={field.onChange}>
 							<SelectTrigger
 								className={clsx(
-									'outline-none border border-light_gray numeric h-full shadow-none rounded-xl bg-input_bg font-semibold',
+									'outline-none border border-light_gray numeric h-full shadow-none rounded-xl bg-input_bg font-normal font-roboto',
+									field.value ? 'text-foreground_1' : 'text-placeholder',
 									className,
 								)}
 							>
@@ -65,7 +66,7 @@ const CustomSelect = <T extends FieldValues>({
 										<SelectItem
 											key={item.value}
 											value={item.value}
-											className="hover:bg-light_gray cursor-pointer font-semibold numeric"
+											className="hover:bg-light_gray cursor-pointer font-normal numeric font-roboto"
 										>
 											{item.label}
 										</SelectItem>

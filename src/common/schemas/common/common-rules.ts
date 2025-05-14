@@ -12,3 +12,16 @@ export const createTranslatesShape = <T extends ZodRawShape>(
 		{} as Record<SupportedLanguages, ZodObject<T>>,
 	);
 };
+
+export const fileOrString = z.union([z.instanceof(File), z.string()]);
+
+export const zRequiredString = (msg: string) =>
+	z.string({ required_error: msg, invalid_type_error: msg });
+
+export const zRequiredNumber = (msg: string) =>
+	z.number({ required_error: msg, invalid_type_error: msg });
+
+export const emptyToUndefined = (v: unknown) =>
+	typeof v === 'string' && v.trim() === '' ? undefined : v;
+
+export const emptyToNull = (v: unknown) => (typeof v === 'string' && v.trim() === '' ? null : v);

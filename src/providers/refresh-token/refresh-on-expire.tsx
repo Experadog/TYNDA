@@ -1,7 +1,13 @@
 'use client';
 
 import { useRouter } from '@/i18n/routing';
-import { LOCAL_API_URL, REFRESH_INTERVAL_GUARD, URL_LOCAL_ENTITIES, decryptData } from '@/lib';
+import {
+	LOCAL_API_URL,
+	LOGGER,
+	REFRESH_INTERVAL_GUARD,
+	URL_LOCAL_ENTITIES,
+	decryptData,
+} from '@/lib';
 import type { Session } from '@business-entities';
 import { type FC, type ReactNode, useCallback, useEffect, useRef } from 'react';
 import { useUser } from '../user/user-provider';
@@ -40,6 +46,8 @@ const RefreshOnExpire: FC<IProps> = ({ children, initialSession }) => {
 
 		isErrorHandled.current = true;
 		abortController.current?.abort();
+
+		LOGGER.error('Error in session refreshing');
 
 		await fetch(`${LOCAL_API_URL}${URL_LOCAL_ENTITIES.CLEAR_SESSION}`, {
 			method: 'POST',
@@ -92,6 +100,7 @@ const RefreshOnExpire: FC<IProps> = ({ children, initialSession }) => {
 		abortController.current = new AbortController();
 
 		try {
+			LOGGER.info('Starting refreshing session...');
 			const res = await fetch(`${LOCAL_API_URL}${URL_LOCAL_ENTITIES.REFRESH_SESSION}`, {
 				method: 'POST',
 				credentials: 'include',
@@ -123,6 +132,7 @@ const RefreshOnExpire: FC<IProps> = ({ children, initialSession }) => {
 			expires.current = decryptedData.access_token_expire_time;
 			lastRefreshed.current = new Date().getTime();
 			isErrorHandled.current = false;
+			LOGGER.success('Session successfully refreshed');
 		} catch (error) {
 			await onError();
 		} finally {

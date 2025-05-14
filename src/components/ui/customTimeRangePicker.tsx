@@ -18,7 +18,7 @@ const CustomTimeRangePicker = <T extends FieldValues>({ control, name }: Props<T
 					data={selectionData}
 					name={name[0]}
 					placeholder="Начало"
-					className="py-3.5"
+					className="py-3.5 text-base"
 					control={control}
 				/>
 
@@ -26,7 +26,7 @@ const CustomTimeRangePicker = <T extends FieldValues>({ control, name }: Props<T
 					data={selectionData}
 					name={name[1]}
 					placeholder="Конец"
-					className="py-3.5"
+					className="py-3.5 text-base"
 					control={control}
 				/>
 			</div>

@@ -1,3 +1,4 @@
+import { Button } from '@components';
 import clsx from 'clsx';
 import Image from 'next/image';
 import type { MouseEvent } from 'react';
@@ -5,7 +6,7 @@ import { AiOutlineDelete, AiOutlineEdit, AiOutlinePlus } from 'react-icons/ai';
 
 interface Props {
 	isCover?: boolean;
-	image?: string | null;
+	image?: File | string | null;
 	onEdit?: () => void;
 	onDelete?: () => void;
 }
@@ -26,6 +27,8 @@ const ImageBlockItem = ({ isCover = false, image = null, onEdit, onDelete }: Pro
 		}
 	};
 
+	const imageUrl = image instanceof File ? URL.createObjectURL(image) : image;
+
 	return (
 		<div
 			className={clsx(
@@ -38,23 +41,32 @@ const ImageBlockItem = ({ isCover = false, image = null, onEdit, onDelete }: Pro
 		>
 			{image ? (
 				<>
-					<Image src={image} alt="preview" fill className="object-cover" />
+					<Image
+						src={imageUrl || ''}
+						alt="preview"
+						sizes="300px"
+						priority
+						fill
+						className="object-cover"
+					/>
 
 					<div className="absolute top-2 right-2 flex gap-2">
-						<button
-							type="button"
+						<Button
 							onClick={handleOnEdit}
-							className="bg-yellow p-2 rounded-xl"
+							className="bg-yellow p-2 rounded-full"
+							disableAnimation
+							size={'icon'}
 						>
 							<AiOutlineEdit className="text-white text-lg" />
-						</button>
-						<button
-							type="button"
+						</Button>
+						<Button
 							onClick={handleOnDelete}
-							className="bg-yellow p-2 rounded-xl"
+							className="bg-yellow p-2 rounded-full"
+							disableAnimation
+							size={'icon'}
 						>
 							<AiOutlineDelete className="text-white text-lg" />
-						</button>
+						</Button>
 					</div>
 				</>
 			) : (

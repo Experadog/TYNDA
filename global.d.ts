@@ -19,5 +19,5 @@ type CapitalizedKeys<T> = {
 
 declare type IntlNamespaces = CapitalizedKeys<RuMessages> | CapitalizedKeys<KgMessages>;
 
-declare type Locale = 'ru' | 'kg';
+declare type Locale = 'ru' | 'kg' | 'en';
 declare type Theme = 'dark' | 'light';

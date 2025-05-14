@@ -20,14 +20,13 @@ const AllPhoto: FC<IProps> = ({ imagesList }) => {
 				<Slider loop slidesPerView={4} spacing={20}>
 					{imagesList.map((url) => {
 						return (
-							<div className='w-[290px] h-[208px]' key={url}>
+							<div className="w-[290px] h-[208px] relative" key={url}>
 								<Image
 									priority
 									src={url}
 									alt="photo"
-									width={290}
-									height={208}
-									className="rounded-[15px] w-full h-[208px]"
+									fill
+									className="rounded-[15px] object-cover"
 								/>
 							</div>
 						);
@@ -36,37 +35,34 @@ const AllPhoto: FC<IProps> = ({ imagesList }) => {
 			</div>
 			<div className="lg:flex flex-col gap-[10px] hidden">
 				<div className="flex gap-[10px]">
-					<div className='w-[220px] h-[250px]'>
+					<div className="w-[220px] h-[250px] relative">
 						<Image
 							priority
 							src={imagesList[0]}
 							alt="photo"
-							width={220}
-							height={250}
-							className="rounded-[10px] w-full h-[250px] object-cover"
+							fill
+							className="rounded-[10px] object-cover"
 						/>
 					</div>
 					<div className="flex flex-col gap-[10px]">
-						{imagesList.slice(1, 3).map((url, index) =>
-							<div key={index} className='w-[123px] h-[120px]'>
+						{imagesList.slice(1, 3).map((url) => (
+							<div key={url} className="w-[123px] h-[120px] relative">
 								<Image
 									priority
 									src={url}
 									alt="photo"
-									width={123}
-									height={120}
-									className="rounded-[10px] w-full h-[120px] object-cover"
+									fill
+									className="rounded-[10px] object-cover"
 								/>
 							</div>
-						)}
-
+						))}
 					</div>
 				</div>
 				<div className="w-full">
 					<Slider loop slidesPerView={3} spacing={10}>
-						{imagesList.map((url, index) => {
+						{imagesList.map((url) => {
 							return (
-								<div key={index} className='w-[108px] h-[108px]'>
+								<div key={url} className="w-[108px] h-[108px]">
 									<Image
 										priority
 										key={url}

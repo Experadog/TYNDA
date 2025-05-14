@@ -38,7 +38,7 @@ const Slider: FC<SliderProps> = ({
 		slides: {
 			perView: slidesPerView,
 			spacing,
-			number,
+			number: total ? number : undefined,
 		},
 		loop,
 		drag: true,

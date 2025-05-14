@@ -1,7 +1,7 @@
-import EstablishmentCreationView from './view/creation-view';
+import EstablishmentForm from '../_components/form/establishment-form';
 
 const Page = () => {
-	return <EstablishmentCreationView />;
+	return <EstablishmentForm />;
 };
 
 export default Page;

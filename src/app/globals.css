@@ -122,5 +122,32 @@ html {
 
 .full-height-max {
 	max-height: calc(100vh - 88px);
+	min-height: calc(100vh - 88px);
+	height: 100%;
 	overflow-y: scroll;
+}
+
+/* Leaflet */
+.leaflet-control-attribution {
+	display: none;
+}
+
+.custom-marker-icon .custom-marker-inner {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 24px;
+	height: 24px;
+	font-size: 24px;
+	color: #ff0000;
+	transition: transform 0.2s ease;
+}
+
+.custom-marker-icon .custom-marker-inner:hover {
+	transform: scale(1.4);
+}
+
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+	background-color: var(--background-1) !important;
 }

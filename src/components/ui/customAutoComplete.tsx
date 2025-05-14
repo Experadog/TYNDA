@@ -20,8 +20,8 @@ import { LoadingSpinner } from './loading-spinner';
 type Item = {
 	label: string;
 	value: string;
-	lat: string;
-	lon: string;
+	latitude: string;
+	longitude: string;
 };
 
 type Props = {

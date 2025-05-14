@@ -1,5 +1,6 @@
 'use client';
 
+import { useUser } from '@/providers/user/user-provider';
 import {
 	type ClientHistoryResponseModel,
 	type LoadFileRequestModel,
@@ -9,6 +10,7 @@ import {
 import { getClientHistory } from '@/services/profile/profileService';
 import { createAction, useAsyncAction } from '@common';
 import { type FC, type ReactNode, createContext, useContext, useState } from 'react';
+import { useUpdateProfileUseCase } from '../update-profile/use-case/useUpdateProfileUseCase';
 
 interface ProfileContextType {
 	states: {
@@ -34,6 +36,12 @@ export const ProfileContextProvider: FC<ContextProps> = ({ children, clientHisto
 	const [clientHistory, setClientHistory] = useState(clientHistoryResponse);
 	const [isAvatarUpdating, setIsAvatarUpdating] = useState(false);
 
+	const { user } = useUser();
+
+	const {
+		actions: { onUpdateProfile },
+	} = useUpdateProfileUseCase();
+
 	const openAvatarUpdating = () => setIsAvatarUpdating(true);
 	const closeAvatarUpdating = () => setIsAvatarUpdating(false);
 
@@ -50,6 +58,7 @@ export const ProfileContextProvider: FC<ContextProps> = ({ children, clientHisto
 
 	const updateAvatarAction = createAction({
 		requestAction: loadFile,
+		onSuccess: (res) => onUpdateProfile({ ...user, avatar: res.data[0] }),
 	});
 
 	const onUpdateAvatar = async (data: LoadFileRequestModel) => {

@@ -1,12 +1,15 @@
 'use client';
 import type { EstablishmentDetailed } from '@/business-entities/establishment/EstablishmentEntity';
 import { BreadCrumbs } from '@/components/ui/breadCrumbs';
+import { Link } from '@/i18n/routing';
+import { SOCIAL_MEDIAS, getTranslateByKey } from '@/lib';
+import { useLocale } from '@/providers/locale/locale-provider';
+import type { SocialMediaKey } from '@common';
 import Image from 'next/image';
-import type { FC } from 'react';
+import { type FC, useState } from 'react';
 import { BsGeoAlt } from 'react-icons/bs';
 import { GoClock } from 'react-icons/go';
 import { LiaPhoneSolid } from 'react-icons/lia';
-
 
 interface IProps {
 	viewModel: ViewModel['DetailEnterprise'];
@@ -15,6 +18,10 @@ interface IProps {
 }
 
 const Hero: FC<IProps> = ({ viewModel, item, categoriesViewModel }) => {
+	const [shouldShowAllText, setShouldShowAllText] = useState(false);
+
+	const { locale } = useLocale();
+
 	return (
 		<div className="mt-[50px] lg:mt-[30px]">
 			<BreadCrumbs home={viewModel.hero.home} pageName={item?.translates?.ru?.name || ''} />
@@ -26,7 +33,7 @@ const Hero: FC<IProps> = ({ viewModel, item, categoriesViewModel }) => {
 						alt="main image"
 						width={650}
 						height={520}
-						className="rounded-[20px] w-[650px] h-[520px] lg:w-[353px] lg:h-[270px]"
+						className="rounded-[20px] lg:w-[353px] lg:h-[270px] object-cover"
 					/>
 					<div className="grid grid-cols-3 items-center gap-4 lg:hidden">
 						{item.images.slice(0, 3).map((url) => (
@@ -37,7 +44,7 @@ const Hero: FC<IProps> = ({ viewModel, item, categoriesViewModel }) => {
 								alt="image"
 								width={205}
 								height={170}
-								className="rounded-[10px] w-[205px] h-[170px]"
+								className="rounded-[10px] w-[205px] h-[170px] object-cover"
 							/>
 						))}
 					</div>
@@ -87,11 +94,12 @@ const Hero: FC<IProps> = ({ viewModel, item, categoriesViewModel }) => {
 								<span className="text-base font-medium">
 									{viewModel.hero.contacts}
 								</span>
-								<a href={item?.contacts?.phone} className="text-base font-medium opacity-70">
-									{item?.contacts?.phone.replace(/^tel:/, '')}
-								</a>
+								<span className="text-base font-medium opacity-70">
+									{item.contacts.phone}
+								</span>
 							</p>
 						</div>
+
 						<div>
 							<p className="flex items-center gap-4 py-2 numeric">
 								<span>
@@ -105,16 +113,51 @@ const Hero: FC<IProps> = ({ viewModel, item, categoriesViewModel }) => {
 								</span>
 							</p>
 						</div>
+
+						<div className="flex items-center gap-2">
+							{Object.entries(item.contacts).map(([key, value]) => {
+								const socialKey = key as SocialMediaKey;
+								if (!value || socialKey === 'phone') return null;
+								return (
+									<Link
+										key={socialKey}
+										href={value}
+										target="_blank"
+										className="bg-yellow rounded-full p-2 hover:scale-105 transition-transform"
+									>
+										<Image
+											width={16}
+											height={16}
+											alt={socialKey}
+											src={SOCIAL_MEDIAS[socialKey].icon}
+											className="h-4 w-4"
+										/>
+									</Link>
+								);
+							})}
+						</div>
 					</div>
 
 					<div className="max-w-[650px]">
 						<h3 className="text-lg font-semibold uppercase lg:text-2xl">
 							{viewModel.hero.aboutEnterprise}
 						</h3>
+
 						{item?.translates?.ru?.description && (
-							<p className="text-base font-normal">
-								{item?.translates?.ru?.description}
-							</p>
+							<>
+								<p className="text-base font-normal whitespace-pre-line">
+									{shouldShowAllText
+										? getTranslateByKey(locale, item.translates, 'description')
+										: `${getTranslateByKey(locale, item.translates, 'description').slice(0, 300)}...`}
+								</p>
+								<button
+									type="button"
+									onClick={() => setShouldShowAllText((prev) => !prev)}
+									className="mt-2 text-yellow font-medium hover:underline"
+								>
+									{shouldShowAllText ? 'Спрятать' : 'Показать полный текст'}
+								</button>
+							</>
 						)}
 					</div>
 					{/* <div className='flex items-center justify-between w-full gap-3 lg:hidden'>

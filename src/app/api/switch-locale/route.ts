@@ -2,11 +2,11 @@ import { COOKIES, defaultCookieConfig } from '@/lib';
 import { cookies } from 'next/headers';
 
 export async function POST(request: Request) {
-    const body = await request.json();
+	const body = await request.json();
 
-    const cookieStore = await cookies();
+	const cookieStore = await cookies();
 
-    cookieStore.set(COOKIES.NEXT_LOCALE, body.locale, defaultCookieConfig());
+	cookieStore.set(COOKIES.NEXT_LOCALE, body.locale, defaultCookieConfig());
 
-    return new Response(JSON.stringify({ code: 200 }), { status: 200 });
+	return new Response(JSON.stringify({ code: 200 }), { status: 200 });
 }

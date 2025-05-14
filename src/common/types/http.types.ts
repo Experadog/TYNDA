@@ -7,4 +7,7 @@ export type Params = {
 	state?: Locale;
 	category?: string;
 	id?: string;
+	format?: string;
+	limit?: string;
+	q?: string;
 };

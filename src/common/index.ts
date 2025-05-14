@@ -20,9 +20,12 @@ export * from './hooks/useDebounce';
 
 // Actions
 export * from './actions/createAction';
+export * from './actions/createExternalFetchAction';
 export * from './actions/get-cookie';
+export * from './actions/loadFilesAction';
 export * from './actions/revalidateByTags';
 export * from './actions/set-cookie';
+export * from './actions/switch-locale';
 export * from './actions/switch-theme';
 
 // Toast

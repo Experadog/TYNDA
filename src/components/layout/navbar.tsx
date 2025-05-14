@@ -42,7 +42,7 @@ const Navbar: FC<IProps> = () => {
 	return (
 		<header
 			className={clsx(
-				'bg-background_1 flex flex-col fixed z-50 top-0 right-0 left-0 transition-shadow duration-1000 border-b border-b-light_gray',
+				'bg-background_1 flex flex-col fixed z-[9999] top-0 right-0 left-0 transition-shadow duration-1000 border-b border-b-light_gray',
 				isScrolled && 'shadow-lg border-none',
 			)}
 		>

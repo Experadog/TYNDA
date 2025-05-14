@@ -1,5 +1,6 @@
-import { API_URL, COOKIES, LOGGER, getTokensFromSession } from '@/lib';
+import { API_URL, COOKIES, LOGGER, PAGES, getTokensFromSession } from '@/lib';
 import axios, { type AxiosError, type AxiosInstance, type AxiosResponse } from 'axios';
+import { permanentRedirect } from 'next/navigation';
 import { clearCookie } from '../actions/clear-cookie';
 import type { Params } from '../types/http.types';
 import type { CommonResponse } from '../types/responses.types';
@@ -16,11 +17,13 @@ axiosInstance.interceptors.request.use(async (config) => {
 	const sessionCookie = cookieStore.get(COOKIES.SESSION);
 	const tokens = getTokensFromSession(sessionCookie?.value);
 
-	LOGGER.info(config.data);
+	if (config.data) {
+		LOGGER.info(config.data);
+	}
 
 	if (tokens) {
-		LOGGER.info('Adding cookie to request...');
-		config.headers.Cookie = tokens;
+		LOGGER.warning('Adding cookie to request...');
+		config.headers.set('Cookie', tokens);
 	}
 
 	return config;
@@ -28,7 +31,7 @@ axiosInstance.interceptors.request.use(async (config) => {
 
 axiosInstance.interceptors.response.use(
 	(response) => {
-		LOGGER.success(response.data);
+		LOGGER.success(`Received data from: ${response.config.url}`);
 
 		return response;
 	},
@@ -36,10 +39,11 @@ axiosInstance.interceptors.response.use(
 		const { response } = error;
 		const data = response?.data as CommonResponse<null>;
 
-		LOGGER.error(data);
+		LOGGER.error(`Error in ${response?.config.url}, errors: message: '${data.msg}'`);
 
 		if (response?.status === 401 || data?.code === 401) {
 			await clearCookie(COOKIES.SESSION);
+			permanentRedirect(PAGES.HOME);
 		}
 
 		throw error;

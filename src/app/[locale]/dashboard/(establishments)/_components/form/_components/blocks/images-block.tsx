@@ -1,33 +1,34 @@
-import { useDashboardUseCases } from '@/app/[locale]/dashboard/use-case/dashboard-useCases-provider';
-import type { TargetRow } from '../../../../use-case/useImageUploadingUseCase';
-import ImageBlockItem from '../../ui/image-block-item';
+import type { EstablishmentSchema } from '@common';
+import {
+	type TargetRow,
+	useImageUploadingUseCase,
+} from '../../../../use-case/other/useImageUploadingUseCase';
+import ImageBlockItem from '../ui/image-block-item';
 
-const ImagesBlock = () => {
-	const {
-		useCases: {
-			establishment: { sharedUseCases },
-		},
-	} = useDashboardUseCases();
+type Props = {
+	schema: EstablishmentSchema;
+};
 
-	const {
-		imageUploadUseCase: { actions, refs, states },
-	} = sharedUseCases;
+const ImagesBlock = ({ schema }: Props) => {
+	const imageUploadUseCase = useImageUploadingUseCase({ schema });
+
+	const { actions, refs, states } = imageUploadUseCase;
 
 	const { onChangeImages, onCoverChange, onDelete, onEditChange, onEditTarget, onDeleteCover } =
 		actions;
 	const { bottomInputRef, editInputRef, topInputRef, coverInputRef } = refs;
-	const { bottomRowFiles, coverFile, topRowFiles } = states;
+	const { bottomRowFiles, coverFile, topRowFiles, fieldErrors } = states;
 
 	const renderRow = (
-		files: File[],
+		files: Array<File | string>,
 		row: TargetRow,
 		inputRef: React.RefObject<HTMLInputElement | null>,
 	) => (
 		<div className="flex gap-4 flex-nowrap h-1/2">
 			{files.map((file, idx) => (
 				<ImageBlockItem
-					key={`${file.name}-${idx}`}
-					image={URL.createObjectURL(file)}
+					key={`${file instanceof File ? file.name : file}-${idx}`}
+					image={file}
 					onDelete={() => onDelete(idx, row)}
 					onEdit={() => onEditTarget(idx, row)}
 				/>
@@ -48,7 +49,7 @@ const ImagesBlock = () => {
 				>
 					<ImageBlockItem
 						isCover
-						image={coverFile ? URL.createObjectURL(coverFile) : null}
+						image={coverFile}
 						onDelete={onDeleteCover}
 						onEdit={() => coverInputRef?.current?.click()}
 					/>
@@ -65,6 +66,20 @@ const ImagesBlock = () => {
 					{renderRow(topRowFiles, 'top', topInputRef)}
 					{renderRow(bottomRowFiles, 'bottom', bottomInputRef)}
 				</div>
+			</div>
+
+			<div className="flex flex-col gap-2">
+				{fieldErrors.map(
+					(error) =>
+						error && (
+							<span
+								key={error}
+								className="text-error font-semibold text-sm numeric font-roboto text-end"
+							>
+								{error}
+							</span>
+						),
+				)}
 			</div>
 
 			<input

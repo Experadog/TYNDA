@@ -49,3 +49,49 @@ export const TIMES = [
 	'23:00',
 	'23:30',
 ];
+
+export const SOCIAL_MEDIAS = {
+	telegram: {
+		title: 'Telegram',
+		icon: '/sm/telegram.svg',
+	},
+	whatsApp: {
+		title: 'WhatsApp',
+		icon: '/sm/whatsapp.svg',
+	},
+
+	instagram: {
+		title: 'Instagram',
+		icon: '/sm/instagram.svg',
+	},
+
+	facebook: {
+		title: 'Facebook',
+		icon: '/sm/facebook.svg',
+	},
+	twitter: {
+		title: 'Twitter',
+		icon: '/sm/twitter.svg',
+	},
+	tiktok: {
+		title: 'TikTok',
+		icon: '/sm/tiktok.svg',
+	},
+	youtube: {
+		title: 'YouTube',
+		icon: '/sm/youtube.svg',
+	},
+	vk: {
+		title: 'VK',
+		icon: '/sm/vk-white.svg',
+	},
+	linkedin: {
+		title: 'LinkedIn',
+		icon: '/sm/linkedin.svg',
+	},
+
+	phone: {
+		title: 'Phone',
+		icon: '/sm/phone.svg',
+	},
+};

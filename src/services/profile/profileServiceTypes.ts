@@ -1,7 +1,7 @@
-import type { ClientHistory, Session } from '@business-entities';
+import type { ClientHistory, User } from '@business-entities';
 import type { CommonResponse, Paginated } from '@common';
 
-export type ProfileResponseModel = CommonResponse<Session>;
+export type ProfileResponseModel = CommonResponse<User>;
 
 export type ClientHistoryResponseModel = CommonResponse<Paginated<ClientHistory>>;
 

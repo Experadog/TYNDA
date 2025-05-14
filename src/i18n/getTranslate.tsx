@@ -20,7 +20,7 @@ export function useViewModel<T extends IntlNamespaces[]>(namespaces: [...T]): Vi
 	const { locale } = useLocale();
 
 	return useMemo(() => {
-		const localeMessages = messages[locale];
+		const localeMessages = messages[locale as keyof typeof messages];
 
 		if (namespaces.length === 1) {
 			return localeMessages[namespaces[0]] as ViewModelReturn<T>;

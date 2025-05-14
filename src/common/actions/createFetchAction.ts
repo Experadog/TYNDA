@@ -5,9 +5,9 @@ import { cookies } from 'next/headers';
 import type { Params } from '../types/http.types';
 
 type Props = {
-	endpoint: string; // например, '/org/establishment/detail'
+	endpoint: string;
 	shouldBeAuthorized: boolean;
-	params?: Params; // query-параметры
+	params?: Params;
 	postfix?: (string | number)[];
 	revalidate?: boolean;
 	revalidateTags?: string[];
@@ -47,8 +47,6 @@ export async function createFetchAction<T>({
 		}
 	}
 
-	LOGGER.info(`Final URL: ${url.toString()}`);
-
 	try {
 		const response = await fetch(url.toString(), {
 			method: 'GET',
@@ -59,12 +57,13 @@ export async function createFetchAction<T>({
 		});
 
 		if (!response.ok) {
-			LOGGER.error(`Fetch failed: ${response.statusText}`);
+			LOGGER.error(`Fetch failed: ${response.statusText} ${url}`);
 			return {} as T;
 		}
 
 		const data: T = await response.json();
-		LOGGER.success(`Received data: ${JSON.stringify(data, null, 2)}`);
+		LOGGER.success(`Received data from: ${cleanEndpoint} `);
+		// LOGGER.success(`Received data: ${JSON.stringify(data, null, 2)}`);
 
 		return data;
 	} catch (error) {

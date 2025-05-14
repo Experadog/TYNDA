@@ -3,6 +3,7 @@
 import { useViewModel } from '@/i18n/getTranslate';
 import { useRouter } from '@/i18n/routing';
 import { PAGES, phoneFormatter } from '@/lib';
+import { useUser } from '@/providers/user/user-provider';
 import {
 	type CredentialsUpdateRequestModel,
 	type CredentialsUpdateResponseModel,
@@ -63,11 +64,10 @@ interface UpdateProfileContextType {
 
 const UpdateProfileContext = createContext<UpdateProfileContextType | undefined>(undefined);
 
-export const UpdateProfileProvider: React.FC<{ children: ReactNode; user: User | null }> = ({
-	children,
-	user,
-}) => {
+export const UpdateProfileProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 	const viewModel = useViewModel(['Toast']);
+
+	const { user } = useUser();
 
 	const router = useRouter();
 
@@ -101,7 +101,7 @@ export const UpdateProfileProvider: React.FC<{ children: ReactNode; user: User |
 		}),
 
 		phone: {
-			preVerification: useAsyncAction<CommonDataStringResponse, [void]>({}),
+			preVerification: useAsyncAction<CommonDataStringResponse, [unknown]>({}),
 		},
 
 		updateCredentials: useAsyncAction<
@@ -111,7 +111,7 @@ export const UpdateProfileProvider: React.FC<{ children: ReactNode; user: User |
 			messages: viewModel.UpdateCredentials,
 		}),
 
-		logout: useAsyncAction<CommonResponse<null>, [void]>({
+		logout: useAsyncAction<CommonResponse<null>, [string]>({
 			messages: viewModel.Logout,
 		}),
 	};
@@ -160,6 +160,7 @@ export const UpdateProfileProvider: React.FC<{ children: ReactNode; user: User |
 				start: async () => {
 					await action_executes.phone.preVerification.execute(
 						actions.phone.preVerification,
+						[],
 					);
 				},
 				open: () => setIsPreVerificationOpen(true),
@@ -172,7 +173,7 @@ export const UpdateProfileProvider: React.FC<{ children: ReactNode; user: User |
 		},
 
 		onLogout: async () => {
-			await action_executes.logout.execute(actions.logoutAction);
+			await action_executes.logout.execute(actions.logoutAction, '');
 		},
 	};
 

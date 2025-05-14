@@ -2,6 +2,7 @@ export { default as AnimationTracker } from './animation/animation-tracker/anima
 export { default as Fade } from './animation/fade/fade';
 export { default as Translate } from './animation/translate/translate';
 export { default as Avatar } from './avatar/avatar';
+export { default as DeletionConfirmModal } from './deletion-confirm-modal/deletion-confirm-modal';
 export { default as EstCategorySlider } from './est-category-slider/est-category-slider';
 export { default as ImgMask } from './img-mask/img-mask';
 export { default as Layout } from './layout/layout';
@@ -23,3 +24,4 @@ export * from './ui/label';
 export * from './ui/loading-spinner';
 export * from './ui/rating-stars';
 export * from './ui/skeleton';
+export * from './ui/tooltip';

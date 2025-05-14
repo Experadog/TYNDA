@@ -1,18 +1,19 @@
+'use client';
+
 import { useViewModel } from '@/i18n/getTranslate';
-import { createEstablishmentSchema } from '@common';
-import { useImageUploadingUseCase } from './useImageUploadingUseCase';
+import type { GetEstablishmentAllClientResponseModel } from '@/services';
 
-export function useEstablishmentUseCase() {
-	const viewModel = useViewModel(['Validation']);
+type Props = {
+	establishments: GetEstablishmentAllClientResponseModel['data'];
+};
 
-	const imageUploadUseCase = useImageUploadingUseCase();
+export function useEstablishmentUseCase({ establishments }: Props) {
+	const viewModel = useViewModel(['Validation', 'Toast', 'Shared']);
 
-	const schema = createEstablishmentSchema(viewModel);
+	const states = { viewModel, establishments };
+	const actions = {};
 
-	const states = { schema };
-	const sharedUseCases = { imageUploadUseCase };
-
-	return { states, sharedUseCases };
+	return { states, actions };
 }
 
 export type UseEstablishmentUseCaseType = ReturnType<typeof useEstablishmentUseCase>;

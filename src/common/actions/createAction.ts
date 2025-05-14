@@ -1,9 +1,10 @@
-import { isSuccessResponse } from '@/lib';
+import { isCommonResponse, isSuccessResponse } from '@/lib';
+import type { CommonResponse } from '../types/responses.types';
 
 interface ActionFactoryOptions<TRequest, TResponse> {
 	requestAction: (values: TRequest) => Promise<TResponse>;
 	onSuccess?: (response: TResponse) => void;
-	onError?: (error?: Error) => void;
+	onError?: (error?: Error | CommonResponse<unknown>) => void;
 }
 
 export function createAction<TRequest, TResponse>({
@@ -22,8 +23,12 @@ export function createAction<TRequest, TResponse>({
 			if (onSuccess && isSuccessResponse(response)) {
 				onSuccess(response);
 			} else {
-				if (onError) {
-					onError(response as any);
+				if (isCommonResponse(response)) {
+					if (onError) {
+						onError(response);
+					}
+				} else {
+					new Error('Unexpected response format');
 				}
 			}
 

@@ -1,35 +1,31 @@
-'use client';
-
-import { PAGES } from '@/lib';
-import { useUser } from '@/providers/user/user-provider';
-import { permanentRedirect } from 'next/navigation';
+import { getEstablishmentAllEstablisher } from '@/services';
+import { getProfileInfo } from '@/services/profile/profileService';
 import type { FC, ReactNode } from 'react';
 import { UpdateProfileProvider } from '../profile/update-profile/use-case/useUpdateProfileUseCase';
+import { EstablishmentContextProvider } from './(establishments)/use-case/establishment-context-provider';
 import Sidebar from './_components/sidebar';
-import { DashboardContextProvider } from './use-case/dashboard-useCases-provider';
 
 interface IProps {
 	children: ReactNode;
 }
 
-const DashboardLayout: FC<IProps> = ({ children }) => {
-	const { user } = useUser();
-
-	if (!user) permanentRedirect(PAGES.HOME);
+const DashboardLayout: FC<IProps> = async ({ children }) => {
+	const establishmentsResponse = await getEstablishmentAllEstablisher({ page: '1', size: '10' });
+	const userResponse = await getProfileInfo();
 
 	return (
-		<DashboardContextProvider>
-			<UpdateProfileProvider user={user}>
+		<EstablishmentContextProvider establishments={establishmentsResponse.data}>
+			<UpdateProfileProvider user={userResponse.data}>
 				<div className="flex full-height">
 					<div className="flex-[1] bg-background_6 p-6 border-r border-r-light_gray">
-						<Sidebar user={user} />
+						<Sidebar />
 					</div>
-					<div className="flex-[5] p-6 bg-background_2 full-height min-w-0">
+					<div className="flex-[5] p-6  bg-background_2 full-height-max min-w-0 pb-10">
 						{children}
 					</div>
 				</div>
 			</UpdateProfileProvider>
-		</DashboardContextProvider>
+		</EstablishmentContextProvider>
 	);
 };
 

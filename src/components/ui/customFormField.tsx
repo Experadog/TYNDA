@@ -63,7 +63,7 @@ export const CustomFormField = <T extends FieldValues>({
 									{...field}
 									placeholder={placeholder}
 									name={name}
-									className={`outline-none font-normal max-h-96 min-h-56 border border-light_gray px-4 py-3 rounded-xl ${TextAreaClassName || ''}`}
+									className={`outline-none font-normal max-h-[400px] min-h-56 border border-light_gray px-4 py-3 rounded-xl  whitespace-pre-line ${TextAreaClassName || ''}`}
 								/>
 							) : (
 								<>
@@ -71,6 +71,7 @@ export const CustomFormField = <T extends FieldValues>({
 										{...field}
 										max={max}
 										min={min}
+										value={field.value ?? ''}
 										className={clsx(
 											'outline-none placeholder:text-placeholder placeholder:font-normal rounded-2xl px-4 py-6 numeric border border-light_gray font-normal',
 											type === 'password' ? 'pr-10' : '',
