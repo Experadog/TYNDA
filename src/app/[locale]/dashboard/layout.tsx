@@ -1,5 +1,4 @@
 import { getEstablishmentAllEstablisher } from '@/services';
-import { getProfileInfo } from '@/services/profile/profileService';
 import type { FC, ReactNode } from 'react';
 import { UpdateProfileProvider } from '../profile/update-profile/use-case/useUpdateProfileUseCase';
 import { EstablishmentContextProvider } from './(establishments)/use-case/establishment-context-provider';
@@ -11,11 +10,10 @@ interface IProps {
 
 const DashboardLayout: FC<IProps> = async ({ children }) => {
 	const establishmentsResponse = await getEstablishmentAllEstablisher({ page: '1', size: '10' });
-	const userResponse = await getProfileInfo();
 
 	return (
 		<EstablishmentContextProvider establishments={establishmentsResponse.data}>
-			<UpdateProfileProvider user={userResponse.data}>
+			<UpdateProfileProvider>
 				<div className="flex full-height">
 					<div className="flex-[1] bg-background_6 p-6 border-r border-r-light_gray">
 						<Sidebar />
