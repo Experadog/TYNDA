@@ -22,6 +22,7 @@ export function useImageUploadingUseCase({ schema }: Props): Exposes {
 	const [coverFile, setCoverFile] = useState<File | string | null>(null);
 	const [topRowFiles, setTopRowFiles] = useState<Array<File | string>>([]);
 	const [bottomRowFiles, setBottomRowFiles] = useState<Array<File | string>>([]);
+
 	const [editTarget, setEditTarget] = useState<EditTarget | null>(null);
 
 	const coverInputRef = useRef<HTMLInputElement>(null);
@@ -64,7 +65,7 @@ export function useImageUploadingUseCase({ schema }: Props): Exposes {
 			});
 		}
 
-		setImagesSchema([...topRowFiles, ...bottomRowFiles]);
+		setImagesSchema([...images, ...newFiles]);
 
 		e.target.value = '';
 	};

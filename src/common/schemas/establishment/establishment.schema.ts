@@ -96,7 +96,8 @@ const establishmentFormShape = (messages: ViewModel['Validation']) => {
 			cover: z
 				.union([z.instanceof(File), z.string()])
 				.nullable()
-				.optional(),
+				.optional()
+				.refine((val) => Boolean(val), { message: messages.cover_required }),
 
 			average_bill: z.preprocess((val) => {
 				if (val === '' || val === undefined || val === null) return null;
