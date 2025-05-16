@@ -27,15 +27,16 @@ const MoreRecs: FC<IProps> = ({ establishments, moreRecsViewModel }) => {
 									key={establishments[0].id}
 									imageContainer="w-[650px] h-[559px] lg:w-[353px] lg:h-[322px]"
 									imageClassName="h-[559px] lg:h-[322px]"
-									mainClassName="w-[650px] lg:w-[353px] h-[729px] lg:h-[478px]"
+									mainClassName="w-[650px] lg:w-[353px] h-[745px] lg:h-[478px]"
 									establishment={establishments[0]}
+									descriptionClassName="line-clamp-2"
 								/>
 							)}
 						</div>
 					</Translate>
 					<Translate direction="left" distance={100} animateOnce={false}>
 						<div className="grid grid-cols-2 gap-[25px] lg:gap-[10px]">
-							{establishments.map((establishment) => (
+							{establishments.slice(0, 4).map((establishment) => (
 								<MoreRecsCard
 									key={establishment.id}
 									imageContainer="w-[320px] lg:w-[171px] h-[224px] lg:h-[171px]"

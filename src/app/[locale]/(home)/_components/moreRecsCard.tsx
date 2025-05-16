@@ -11,13 +11,15 @@ interface IProps {
 	imageClassName?: string;
 	imageContainer?: string;
 	mainClassName?: string;
+	descriptionClassName?: string;
 }
 
 const MoreRecsCard: FC<IProps> = ({
 	establishment,
 	imageClassName = '',
 	imageContainer = '',
-	mainClassName = ''
+	mainClassName = '',
+	descriptionClassName = 'line-clamp-1'
 }) => {
 	return (
 		<Link href={`${PAGES.ENTERPRISES_ALL}/${establishment.id}`}>
@@ -41,7 +43,7 @@ const MoreRecsCard: FC<IProps> = ({
 						>
 							{establishment.translates?.ru?.name}
 						</h4>
-						<p className="font-normal text-sm line-clamp-2 lg:text-xs">
+						<p className={`font-normal text-sm lg:text-xs ${descriptionClassName}`}>
 							{establishment.translates?.ru?.description}
 						</p>
 					</div>

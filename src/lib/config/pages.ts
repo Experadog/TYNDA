@@ -3,7 +3,7 @@ export enum PAGES {
 	BENEFITS_MAP = '/benefits-map',
 	ABOUT = '/about',
 	MAP = '/map',
-	SERVICE = '/service',
+	SERVICE = '/tariffs',
 	CONTACTS = '/contacts',
 	CALLBACK = '/callback',
 	DASHBOARD = '/dashboard',
@@ -30,7 +30,7 @@ export enum PAGES {
 	ENTERPRISES_ALL = '/all-enterprises',
 }
 
-export const NAV_LINKS = [PAGES.HOME, PAGES.MAP, PAGES.ABOUT, PAGES.SERVICE, PAGES.CONTACTS];
+export const NAV_LINKS = [PAGES.HOME, PAGES.BENEFITS_MAP, PAGES.ABOUT, PAGES.SERVICE, PAGES.CONTACTS];
 export const PROFILE_LINKS = [
 	PAGES.UPDATE_PROFILE,
 	PAGES.PROFILE_CREDENTIALS,

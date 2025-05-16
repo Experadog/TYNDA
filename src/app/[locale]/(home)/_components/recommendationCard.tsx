@@ -1,6 +1,7 @@
 import type { EstablishmentListItem } from '@/business-entities/establishment/EstablishmentEntity';
 import { Link } from '@/i18n/routing';
-import { PAGES } from '@/lib';
+import { getTranslateByKey, PAGES } from '@/lib';
+import { useLocale } from '@/providers/locale/locale-provider';
 import { Button } from '@components';
 import Image from 'next/image';
 import type { FC } from 'react';
@@ -13,6 +14,8 @@ interface IProps {
 const RecommendationCard: FC<IProps> = ({
 	establishment,
 }) => {
+
+	const { locale } = useLocale();
 
 	return (
 		<Link href={`${PAGES.ENTERPRISES_ALL}/${establishment.id}`}>
@@ -32,14 +35,15 @@ const RecommendationCard: FC<IProps> = ({
 				<div className="px-[14px] md:px-1 h-full flex flex-col justify-between">
 					<div className="">
 						<h4 className="font-semibold text-lg uppercase md:text-base md:font-medium line-clamp-2">
-							{establishment.translates?.ru?.name}
+							{getTranslateByKey(locale, establishment.translates, 'name')}
 						</h4>
 						<p className="font-normal text-sm line-clamp-2 md:text-xs">
-							{establishment.translates?.ru?.description}
+							{getTranslateByKey(locale, establishment.translates, 'description')}
 						</p>
 					</div>
 					<div className="flex justify-between">
 						<Button
+							clickable={'nonClickable'}
 							variant={'yellow'}
 							className="rounded-[18px] text-base font-semibold md:text-sm numeric"
 						>

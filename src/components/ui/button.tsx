@@ -25,24 +25,29 @@ const buttonVariants = cva(
 				lg: 'h-10 rounded-md px-8',
 				icon: 'h-9 w-9',
 			},
+			clickable: {
+				nonClickable: 'cursor-default pointer-events-none',
+				default: 'cursor-pointer',
+			},
 		},
 
 		defaultVariants: {
 			variant: 'default',
 			size: 'default',
+			clickable: 'default',
 		},
 	},
 );
 
 export interface ButtonProps
 	extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-		VariantProps<typeof buttonVariants> {
+	VariantProps<typeof buttonVariants> {
 	asChild?: boolean;
 	disableAnimation?: boolean;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-	({ className, variant, size, asChild = false, disableAnimation = false, ...props }, ref) => {
+	({ className, variant, size, clickable, asChild = false, disableAnimation = false, ...props }, ref) => {
 		const Comp = asChild ? Slot : 'button';
 
 		return (
@@ -50,7 +55,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 				{...props}
 				type={props.type ? props.type : 'button'}
 				className={cn(
-					buttonVariants({ variant, size, className }),
+					buttonVariants({ variant, size, clickable, className }),
 
 					!disableAnimation
 						? 'transition-transform duration-300 active:scale-95 hover:scale-[1.03]'

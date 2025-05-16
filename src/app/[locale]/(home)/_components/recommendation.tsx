@@ -22,7 +22,6 @@ const Recommendation: FC<IProps> = ({
 	recommendationViewModel,
 	sharedViewModel,
 }) => {
-	// if (establishments.length === 0) return null;
 
 	const isLargeScreen = useMediaQuery({ minWidth: 1025 });
 	const isSmallScreen = useMediaQuery({ minWidth: 440 });
@@ -71,7 +70,7 @@ const Recommendation: FC<IProps> = ({
 				</div>
 			) : (
 				<div className='flex items-center justify-center mt-14'>
-					<p>По выбранной категории предприятий пока нет</p>
+					<p className='text-xl font-semibold text-gray-800'>По выбранной категории предприятий пока нет</p>
 				</div>
 			)}
 
