@@ -2,6 +2,7 @@
 import dynamic from "next/dynamic";
 import { FC } from "react";
 import Hero from "./_components/hero";
+import { useTariffsUseCase } from "./use-cases/useTariffsUseCase";
 
 const MoreAboutPlans = dynamic(() => import("./_components/more-about-plans"), {
   ssr: true,
@@ -17,18 +18,21 @@ const FirstService = dynamic(() => import("./_components/first-service"), {
   ssr: true,
 });
 
-interface IProps {}
+interface IProps { }
 
-const TariffsView: FC<IProps> = ({}) => {
+const TariffsView: FC<IProps> = ({ }) => {
+  const {
+    viewModel: { tariffs }
+  } = useTariffsUseCase();
   return (
     <>
-      <Hero />
-      <MoreAboutPlans />
+      <Hero heroViewModel={tariffs.hero} />
+      <MoreAboutPlans moreAboutPlansViewModel={tariffs.moreAboutPlans} />
       <div className="max-w-[1340px] m-auto lg:w-full">
-        <TouristicPlan />
+        <TouristicPlan touristicPlanViewModel={tariffs.touristicPlan}/>
       </div>
-      <TouristClub />
-      <FirstService />
+      <TouristClub touristClubViewModel={tariffs.touristClub} />
+      <FirstService firstService={tariffs.firstService} />
     </>
   );
 };

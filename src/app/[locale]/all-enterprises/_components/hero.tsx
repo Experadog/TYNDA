@@ -1,21 +1,13 @@
 'use client';
 import { BreadCrumbs } from '@/components/ui/breadCrumbs';
-import { EstCategorySlider } from '@components';
 import type { FC } from 'react';
-import { useMediaQuery } from 'react-responsive';
 
 interface IProps {
 	heroViewModel: ViewModel['AllEnterprises']['hero'];
-	categoriesViewModel: ViewModel['Shared']['establishment_categories'];
+
 }
 
-const Hero: FC<IProps> = ({ heroViewModel, categoriesViewModel }) => {
-	const isLargeScreen = useMediaQuery({ minWidth: 1025 });
-	const isSmallScreen = useMediaQuery({ minWidth: 440 });
-
-	const itemsCount = isLargeScreen ? 7 : isSmallScreen ? 4 : 3;
-	const itemsSpacing = isLargeScreen ? 15 : 20;
-
+const Hero: FC<IProps> = ({ heroViewModel }) => {
 	return (
 		<div className="mt-[50px] lg:mt-0 max-w-[1340px] m-auto px-14 lg:px-0">
 			<BreadCrumbs home={heroViewModel.home} pageName={heroViewModel.allEnterprises} />
@@ -27,13 +19,6 @@ const Hero: FC<IProps> = ({ heroViewModel, categoriesViewModel }) => {
 					{heroViewModel.openNew}
 				</p>
 			</div>
-
-			<EstCategorySlider
-				onSelect={(category) => console.log(category)}
-				slidesPerView={itemsCount}
-				spacing={itemsSpacing}
-				viewModel={categoriesViewModel}
-			/>
 		</div>
 	);
 };

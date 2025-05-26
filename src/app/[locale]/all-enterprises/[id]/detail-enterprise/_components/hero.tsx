@@ -24,7 +24,7 @@ const Hero: FC<IProps> = ({ viewModel, item, categoriesViewModel }) => {
 
 	return (
 		<div className="mt-[50px] lg:mt-[30px]">
-			<BreadCrumbs home={viewModel.hero.home} pageName={item?.translates?.ru?.name || ''} />
+			<BreadCrumbs home={viewModel.hero.home} pageName={getTranslateByKey(locale, item.translates, 'name')} />
 			<div className="grid grid-cols-2 lg:grid-cols-1 items-start lg:items-center justify-between gap-7 mt-5">
 				<div className="flex flex-col items-center justify-center gap-4">
 					<Image
@@ -52,7 +52,7 @@ const Hero: FC<IProps> = ({ viewModel, item, categoriesViewModel }) => {
 
 				<div className="flex flex-col gap-7 lg:items-start">
 					<h2 className="text-4xl font-medium lg:text-2xl lg:font-semibold">
-						{item?.translates?.ru?.name}
+						{getTranslateByKey(locale, item.translates, 'name')}
 					</h2>
 					<div className="flex flex-col gap-4">
 						<p className="text-lg font-medium numeric">
@@ -155,7 +155,7 @@ const Hero: FC<IProps> = ({ viewModel, item, categoriesViewModel }) => {
 									onClick={() => setShouldShowAllText((prev) => !prev)}
 									className="mt-2 text-yellow font-medium hover:underline"
 								>
-									{shouldShowAllText ? 'Спрятать' : 'Показать полный текст'}
+									{shouldShowAllText ? `${viewModel.hero.hide_text}` : `${viewModel.hero.show_text}`}
 								</button>
 							</>
 						)}

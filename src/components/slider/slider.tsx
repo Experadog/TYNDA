@@ -2,9 +2,16 @@
 
 import clsx from 'clsx';
 import 'keen-slider/keen-slider.min.css';
-import { useKeenSlider } from 'keen-slider/react';
+import { KeenSliderPlugin, useKeenSlider } from 'keen-slider/react';
 import { type FC, type ReactNode, useEffect, useState } from 'react';
 import type { ClassNameValue } from 'tailwind-merge';
+
+type NavigationOptions = {
+	nextEl?: string;
+	prevEl?: string;
+	disabledClass?: string;
+	hiddenClass?: string;
+};
 
 interface SliderProps {
 	children: ReactNode[];
@@ -17,7 +24,22 @@ interface SliderProps {
 	total?: number;
 	page?: number;
 	rubberband?: boolean;
+	navigation?: boolean | NavigationOptions;
 }
+
+// Плагин для навигации
+const NavigationPlugin: KeenSliderPlugin = (slider) => {
+	const nextButton = document.querySelector('.category-slider-next');
+	const prevButton = document.querySelector('.category-slider-prev');
+
+	if (nextButton) {
+		nextButton.addEventListener('click', () => slider.next());
+	}
+
+	if (prevButton) {
+		prevButton.addEventListener('click', () => slider.prev());
+	}
+};
 
 const Slider: FC<SliderProps> = ({
 	children,
@@ -29,9 +51,16 @@ const Slider: FC<SliderProps> = ({
 	onReachEnd,
 	total,
 	rubberband = true,
+	navigation = false,
 }) => {
 	const [isLoaded, setIsLoaded] = useState(false);
 	const [number, setNumber] = useState(slidesPerView * 1.1);
+
+	// Добавляем плагины в зависимости от наличия навигации
+	const plugins = [];
+	if (navigation) {
+		plugins.push(NavigationPlugin);
+	}
 
 	const [sliderRef] = useKeenSlider({
 		mode: 'free',
@@ -60,7 +89,7 @@ const Slider: FC<SliderProps> = ({
 				}
 			}
 		},
-	});
+	}, plugins);
 
 	useEffect(() => {
 		if (total && children.length === total) {
