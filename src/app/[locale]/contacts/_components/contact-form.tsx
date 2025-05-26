@@ -2,18 +2,19 @@
 import { Button } from '@components';
 import { FC } from 'react';
 
-interface IProps {}
+interface IProps {
+    contactForm: ViewModel['Contacts']['contactForm']
+}
 
-const ContactForm: FC<IProps> = ({}) => {
+const ContactForm: FC<IProps> = ({ contactForm }) => {
     return (
         <div className='my-[100px] lg:my-[60px] flex flex-col gap-[60px]'>
             <div className='flex lg:flex-wrap items-center gap-8'>
                 <h3 className='text-4xl lg:text-2xl font-medium'>
-                    Свяжитесь с нами – мы всегда готовы помочь и ответить на ваши вопросы!
+                    {contactForm.contactUs}
                 </h3>
                 <p className='opacity-70 text-base font-normal max-w-[357px]'>
-                    Вы можете задать вопросы, уточнить детали маршрутов и оформить бронирование
-                    удобным способом.
+                    {contactForm.questions}
                 </p>
             </div>
 
@@ -23,11 +24,11 @@ const ContactForm: FC<IProps> = ({}) => {
                         style={{ borderBottom: '1.5px solid rgba(14, 14, 14, 0.20)' }}
                         className='flex flex-col gap-[10px] w-full pb-[10px]'
                     >
-                        <label className='text-lg w-full'>Ваше имя</label>
+                        <label className='text-lg w-full'>{contactForm.name}</label>
                         <input
                             name='name'
                             type='text'
-                            placeholder='Ваше имя'
+                            placeholder={contactForm.name}
                             required
                             autoComplete='name'
                             className='w-full outline-none numeric bg-inherit'
@@ -37,11 +38,11 @@ const ContactForm: FC<IProps> = ({}) => {
                         style={{ borderBottom: '1.5px solid rgba(14, 14, 14, 0.20)' }}
                         className='flex flex-col gap-[10px] w-full pb-[10px]'
                     >
-                        <label className='text-lg w-full'>Ваш номер телефона</label>
+                        <label className='text-lg w-full'>{contactForm.phone}</label>
                         <input
                             name='phone'
                             type='tel'
-                            placeholder='Введите номер телефона'
+                            placeholder={contactForm.enterPhone}
                             required
                             autoComplete='tel'
                             className='w-full outline-none numeric bg-inherit'
@@ -51,11 +52,11 @@ const ContactForm: FC<IProps> = ({}) => {
                         style={{ borderBottom: '1.5px solid rgba(14, 14, 14, 0.20)' }}
                         className='flex flex-col gap-[10px] w-full pb-[10px]'
                     >
-                        <label className='text-lg w-full'>Ваш e-mail</label>
+                        <label className='text-lg w-full'>{contactForm.email}</label>
                         <input
                             name='email'
                             type='email'
-                            placeholder='Ваш e-mail'
+                            placeholder={contactForm.email}
                             required
                             autoComplete='email'
                             className='w-full outline-none numeric bg-inherit'
@@ -65,13 +66,13 @@ const ContactForm: FC<IProps> = ({}) => {
                         style={{ borderBottom: '1.5px solid rgba(14, 14, 14, 0.20)' }}
                         className='flex flex-col gap-[10px] w-full pb-[10px]'
                     >
-                        <label className='text-lg w-full'>Сообщение</label>
+                        <label className='text-lg w-full'>{contactForm.message}</label>
                         <textarea
                             name='message'
                             required
                             autoComplete='off'
                             className='w-full outline-none min-h-[20px] numeric bg-inherit'
-                            placeholder='Напишите сообщение'
+                            placeholder={contactForm.enterMessage}
                         ></textarea>
                     </div>
                     <Button
@@ -79,7 +80,7 @@ const ContactForm: FC<IProps> = ({}) => {
                         variant={'yellow'}
                         className='my-8 w-full rounded-3xl p-6'
                     >
-                        Отправить
+                        {contactForm.send}
                     </Button>
                 </form>
             </div>

@@ -1,5 +1,7 @@
 'use client';
-import { Link } from '@/i18n/routing';
+import { Link, usePathname } from '@/i18n/routing';
+import { PAGES } from '@/lib';
+import clsx from 'clsx';
 import Image from 'next/image';
 import type { FC } from 'react';
 import { useFooterUseCase } from './use-cases/useFooterUseCase';
@@ -17,15 +19,19 @@ interface IProps {
 
 const Footer: FC<IProps> = () => {
 	const { viewModel } = useFooterUseCase();
+	const path = usePathname();
 
 	return (
 		<footer
 			id="footer"
-			className={'bg-background_4 py-[60px] pl-[60px] lg:pt-20 lg:px-5 lg:pb-24'}
+			className={clsx(
+				'bg-background_4 py-[60px] pl-[60px] lg:pt-20 lg:px-5 lg:pb-24',
+				path.startsWith(PAGES.DASHBOARD) ? 'hidden' : '',
+			)}
 		>
-			<div className="max-w-[1320px] m-auto flex flex-col gap-[30px]">
-				<div className="flex gap-[10px] justify-between lg:flex-col lg:gap-[50px]">
-					<div className="flex flex-col gap-[25px]">
+			<div className="max-w-[1320px] m-auto flex flex-col lg:gap-[30px]">
+				<div className="flex gap-4 lg:flex-col lg:gap-[50px]">
+					<div className="flex flex-col gap-[25px] w-[433px] lg:w-auto">
 						<Image src={'/logo.svg'} alt="logo" width={120} height={90} />
 						<p className="font-medium text-[15px] max-w-[340px]">
 							{viewModel.footer.text}
@@ -33,8 +39,8 @@ const Footer: FC<IProps> = () => {
 					</div>
 					<div className="flex gap-[50px] lg:flex-col">
 						{viewModel.footer.menu.map((section) => (
-							<div key={section.title} className="flex flex-col gap-6 w-40">
-								<p className="uppercase text-[15px] font-medium opacity-60">
+							<div key={section.title} className="flex flex-col gap-6 min-w-56">
+								<p className="uppercase text-[15px] font-medium opacity-60 whitespace-nowrap">
 									{section.title}
 								</p>
 								<ul className="flex flex-col gap-[10px] font-normal text-base">
@@ -44,7 +50,7 @@ const Footer: FC<IProps> = () => {
 											href={'#'}
 											className="hover:text-yellow max-w-max"
 										>
-											<li>{item}</li>
+											<li className="whitespace-nowrap">{item}</li>
 										</Link>
 									))}
 								</ul>
@@ -64,9 +70,9 @@ const Footer: FC<IProps> = () => {
 							</div>
 						))}
 					</div>
-					<p className="text-[12px] font-semibold text-foreground_1 max-w-[100px] numeric lg:hidden">
+					{/* <p className="text-[12px] font-semibold text-foreground_1 max-w-[100px] numeric lg:hidden">
 						2024 Kyrgyzstan, Bishkek 81063
-					</p>
+					</p> */}
 				</div>
 			</div>
 		</footer>

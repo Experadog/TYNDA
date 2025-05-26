@@ -16,9 +16,11 @@ const iconPaths = [
     '/tariffs/facebookIcon.svg',
 ];
 
-interface IProps { }
+interface IProps {
+    touristicPlanViewModel: ViewModel['Tariffs']['touristicPlan']
+ }
 
-const TouristicPlan: FC<IProps> = ({ }) => {
+const TouristicPlan: FC<IProps> = ({ touristicPlanViewModel}) => {
     return (
         <div className='mt-[60px] h-[477px] lg:h-auto bg-yellow bg-no-repeat flex gap-[46px] lg:gap-[30px] justify-between lg:flex-col lg:items-center p-[50px] lg:px-[17px] lg:py-[34px] rounded-[35px] relative'>
             <div className='flex items-center'>
@@ -34,9 +36,9 @@ const TouristicPlan: FC<IProps> = ({ }) => {
                         />
                     </div>
                     <div className='flex flex-col gap-[15px] max-w-[272px]'>
-                        <h3 className='text-3xl font-semibold text-white'>TOURISTIC PLAN</h3>
+                        <h3 className='text-3xl font-semibold text-white'>{touristicPlanViewModel.title}</h3>
                         <p className='text-xl font-medium text-white'>
-                            Туристическая клубная карта
+                            {touristicPlanViewModel.description}
                         </p>
                     </div>
                     <div className='w-[367px] h-[329px] hidden lg:block'>
@@ -50,13 +52,13 @@ const TouristicPlan: FC<IProps> = ({ }) => {
                         />
                     </div>
                     <div className='flex flex-col gap-5 lg:gap-14 max-w-[352px]'>
-                        <Button className='text-base font-bold py-[17px] h-[56px] rounded-[25px]'>
-                            Приобрести клубную карту
+                        <Button className='text-base font-bold py-[17px] h-[56px] rounded-[25px] z-10'>
+                            {touristicPlanViewModel.buyCard}
                         </Button>
                         <div className='flex flex-col gap-[10px] px-[15px]'>
-                            <p className='text-lg font-bold text-white text-center'>10.00 $/нед.</p>
+                            <p className='text-lg font-bold text-white text-center'>{touristicPlanViewModel.costPerWeek}</p>
                             <p className='text-sm font-medium text-white opacity-90 text-center max-w-[352px]'>
-                                Продлевается автоматически. Можно отменить в любое время
+                                {touristicPlanViewModel.autoRenewed}
                             </p>
                         </div>
                     </div>
@@ -79,7 +81,7 @@ const TouristicPlan: FC<IProps> = ({ }) => {
                         <FiCheckCircle className='text-yellow w-6 h-6' />
                     </div>
                     <p className='text-foreground_1 text-base font-medium'>
-                        Дополнительные бонусы и привилегии
+                        {touristicPlanViewModel.additionalBonuses}
                     </p>
                 </div>
                 <div className='flex items-center gap-[10px] px-1 py-[10px]'>
@@ -87,7 +89,7 @@ const TouristicPlan: FC<IProps> = ({ }) => {
                         <TbCoins className='text-yellow w-6 h-6' />
                     </div>
                     <p className='text-foreground_1 text-base font-medium'>
-                        Простота использования и накопление баллов
+                        {touristicPlanViewModel.simpleUse}
                     </p>
                 </div>
                 <div className='flex items-center gap-[10px] px-1 py-[10px]'>
@@ -95,7 +97,7 @@ const TouristicPlan: FC<IProps> = ({ }) => {
                         <PiHandHeart className='text-yellow w-6 h-6' />
                     </div>
                     <p className='text-foreground_1 text-base font-medium'>
-                        Эксклюзивные скидки и специальные предложения
+                        {touristicPlanViewModel.exclusiveDiscounts}
                     </p>
                 </div>
 
@@ -105,7 +107,7 @@ const TouristicPlan: FC<IProps> = ({ }) => {
                             <LuGrid2X2 className='text-yellow w-6 h-6' />
                         </div>
                         <p className='text-foreground_1 text-base font-medium'>
-                            Наши партнеры-предприятия:
+                            {touristicPlanViewModel.ourPartners}
                         </p>
                     </div>
 
