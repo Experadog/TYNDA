@@ -38,13 +38,15 @@ export const useLoginUseCase = () => {
 		messages: viewModel.Toast.GoogleLogin,
 	});
 
-	const navigate = (role: UserRole) => {
-		if (role === UserRole.ESTABLISHER) {
+	const navigate = (role: UserRole, isSuperUser: boolean) => {
+		if (isSuperUser || role === UserRole.ESTABLISHER || role === UserRole.ESTABLISHER_WORKER) {
 			router.push(PAGES.DASHBOARD);
+			return;
 		}
 
 		if (role === UserRole.CLIENT) {
 			router.push(PAGES.PROFILE);
+			return;
 		}
 	};
 
@@ -52,7 +54,7 @@ export const useLoginUseCase = () => {
 		requestAction: login,
 		onSuccess: (response) => {
 			setUser(response.data.user);
-			navigate(response.data.user.role);
+			navigate(response.data.user.role, response.data.user.is_superuser);
 		},
 	});
 
@@ -60,7 +62,7 @@ export const useLoginUseCase = () => {
 		requestAction: sendAndLoginByGoogle,
 		onSuccess: (response) => {
 			setUser(response.data.user);
-			navigate(response.data.user.role);
+			navigate(response.data.user.role, response.data.user.is_superuser);
 		},
 		onError: () => {
 			router.push(PAGES.LOGIN);

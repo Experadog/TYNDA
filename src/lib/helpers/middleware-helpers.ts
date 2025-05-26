@@ -8,7 +8,11 @@ import { PAGES } from '../config/pages';
 import { decryptData } from './decryptData';
 
 const PUBLIC_FILE = /\.(.*)$/;
-const protectedClientRoutes = [PAGES.PROFILE];
+const PROTECTED_CLIENT_ROUTES = [PAGES.PROFILE, PAGES.DASHBOARD];
+
+const PROTECTED_ESTABLISHER_WORKER_ROUTES = [PAGES.DASHBOARD_CHAT, PAGES.ROLES];
+const PROTECTED_ESTABLISHER_ROUTES = [PAGES.USERS, PAGES.ROLES];
+const PROTECTED_SUPER_USER_ROUTES = [PAGES.STAFF];
 
 export function isStaticOrApiRequest(pathname: string): boolean {
 	return (
@@ -42,14 +46,22 @@ export function getValidLocale(req: NextRequest): SupportedLanguages {
 	return 'ru';
 }
 
-export function updateLocaleCookiesIfNeeded(req: NextRequest, res: NextResponse): NextResponse {
+export function updateLocaleCookiesIfNeeded(
+	req: NextRequest,
+	res: NextResponse,
+	shouldChangeBasePath: boolean,
+): NextResponse {
 	const currentPathLocale = getLocaleFromPath(req.nextUrl.pathname);
 	const cookieLocale = req.cookies.get(COOKIES.NEXT_LOCALE)?.value;
 	const locales = routing.locales;
 
 	if (!currentPathLocale || !locales.includes(currentPathLocale)) {
 		const url = req.nextUrl.clone();
-		url.pathname = `/${cookieLocale || 'ru'}`;
+		if (shouldChangeBasePath) {
+			url.pathname = `/${cookieLocale}${PAGES.DASHBOARD}`;
+		} else {
+			url.pathname = `/${cookieLocale || 'ru'}`;
+		}
 		return NextResponse.redirect(url);
 	}
 
@@ -65,20 +77,68 @@ export function getSessionData(req: NextRequest): Session | null {
 	return sessionCookie ? decryptData(sessionCookie) : null;
 }
 
-export function isProtectedRoute(pathname: string): boolean {
+export function isProtectedClientRoute(pathname: string): boolean {
 	const basePath = pathname.replace(/^\/(ru|kg)\//, '/') as PAGES;
 	return (
-		protectedClientRoutes.includes(basePath) ||
-		protectedClientRoutes.some((route) => basePath.includes(route))
+		PROTECTED_CLIENT_ROUTES.includes(basePath) ||
+		PROTECTED_CLIENT_ROUTES.some((route) => basePath.includes(route))
 	);
 }
 
-export function checkRoleAccess(basePath: string, userRole?: UserRole): string | null {
-	if (basePath.startsWith(PAGES.DASHBOARD) && userRole !== UserRole.ESTABLISHER) {
-		return PAGES.HOME;
+function dashboardRoleGuardian(basePath: string, isSuperUser: boolean, userRole: UserRole) {
+	const checkIsProtectedRouteMatch = (protectedPath: string) =>
+		basePath.startsWith(protectedPath) || basePath.includes(protectedPath);
+
+	const isEstablisher = userRole === UserRole.ESTABLISHER;
+	const isWorker = userRole === UserRole.ESTABLISHER_WORKER;
+
+	const isWorkerProtected = PROTECTED_ESTABLISHER_WORKER_ROUTES.some(checkIsProtectedRouteMatch);
+	const isEstablisherProtected = PROTECTED_ESTABLISHER_ROUTES.some(checkIsProtectedRouteMatch);
+	const isSuperUserProtected = PROTECTED_SUPER_USER_ROUTES.some(checkIsProtectedRouteMatch);
+
+	if (isWorker && isWorkerProtected) {
+		return false;
 	}
 
-	if (basePath.startsWith(PAGES.PROFILE) && userRole !== UserRole.CLIENT) {
+	if (isEstablisher && isEstablisherProtected) {
+		return false;
+	}
+
+	if (isSuperUser && isSuperUserProtected) {
+		return false;
+	}
+
+	return true;
+}
+
+export function checkRoleAccess(
+	basePath: string,
+	isSuperUser: boolean,
+	userRole?: UserRole,
+): string | null {
+	if (
+		(userRole && isSuperUser) ||
+		userRole === UserRole.ESTABLISHER ||
+		userRole === UserRole.ESTABLISHER_WORKER
+	) {
+		if (basePath.includes(PAGES.DASHBOARD)) {
+			if (basePath === PAGES.DASHBOARD) return null;
+
+			const isAllow = dashboardRoleGuardian(basePath, isSuperUser, userRole);
+
+			if (isAllow) return null;
+
+			return PAGES.DASHBOARD;
+		}
+
+		return PAGES.DASHBOARD;
+	}
+
+	if (basePath === PAGES.PROFILE) {
+		if (userRole === UserRole.CLIENT && !isSuperUser) {
+			return null;
+		}
+
 		return PAGES.HOME;
 	}
 
@@ -98,7 +158,7 @@ export function handleAuthRedirection(
 		return NextResponse.redirect(redirectUrl);
 	}
 
-	if (isProtectedRoute(pathname) && !sessionData) {
+	if (isProtectedClientRoute(pathname) && !sessionData) {
 		const redirectUrl = new URL(`/${pathLocale}${PAGES.LOGIN}`, req.url);
 		return NextResponse.redirect(redirectUrl);
 	}

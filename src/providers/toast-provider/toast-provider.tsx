@@ -6,6 +6,7 @@ export const ToastClientProvider = ({ theme }: { theme: string }) => {
 	return (
 		<Toaster
 			position="bottom-right"
+			containerStyle={{ zIndex: 999999999 }}
 			toastOptions={{
 				style: {
 					background: theme === 'dark' ? '#333' : '#f5f5f5',

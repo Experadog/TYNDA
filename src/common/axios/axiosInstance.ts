@@ -1,7 +1,7 @@
 import { API_URL, COOKIES, LOGGER, PAGES, getTokensFromSession } from '@/lib';
 import axios, { type AxiosError, type AxiosInstance, type AxiosResponse } from 'axios';
-import { permanentRedirect } from 'next/navigation';
 import { clearCookie } from '../actions/clear-cookie';
+import { forceRedirect } from '../actions/forceRedirect';
 import type { Params } from '../types/http.types';
 import type { CommonResponse } from '../types/responses.types';
 
@@ -18,6 +18,7 @@ axiosInstance.interceptors.request.use(async (config) => {
 	const tokens = getTokensFromSession(sessionCookie?.value);
 
 	if (config.data) {
+		LOGGER.warning(config.method?.toLocaleUpperCase());
 		LOGGER.info(config.data);
 	}
 
@@ -39,11 +40,16 @@ axiosInstance.interceptors.response.use(
 		const { response } = error;
 		const data = response?.data as CommonResponse<null>;
 
-		LOGGER.error(`Error in ${response?.config.url}, errors: message: '${data.msg}'`);
+		LOGGER.error(
+			`Error in ${response?.config.url}, errors: message: '${data.msg}(${data.code})'`,
+		);
 
-		if (response?.status === 401 || data?.code === 401) {
+		if (
+			response?.statusText === 'Unauthorized' ||
+			response?.statusText === 'Token has expired'
+		) {
 			await clearCookie(COOKIES.SESSION);
-			permanentRedirect(PAGES.HOME);
+			forceRedirect(PAGES.LOGIN);
 		}
 
 		throw error;

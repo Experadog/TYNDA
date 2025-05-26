@@ -6,12 +6,16 @@ import {
 	type EstablishmentDetailedDefaultValue,
 } from '@/business-entities/establishment/EstablishmentEntity';
 import { SOCIAL_MEDIAS } from '@/lib';
+import { useUser } from '@/providers/user/user-provider';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { createTranslatesShape, emptyToNull, fileOrString } from '../common/common-rules';
 
 const establishmentFormShape = (messages: ViewModel['Validation']) => {
+	const { user } = useUser();
+	const isSuperUser = user?.is_superuser || false;
+
 	const baseTranslateShape = {
 		name: z
 			.string({ message: messages.required })
@@ -34,6 +38,8 @@ const establishmentFormShape = (messages: ViewModel['Validation']) => {
 				],
 				{ required_error: messages.required },
 			),
+
+			establisher: z.string().optional(),
 
 			contacts: z
 				.object(
@@ -123,7 +129,26 @@ const establishmentFormShape = (messages: ViewModel['Validation']) => {
 		.transform((data) => ({
 			...data,
 			name: data.translates?.ru?.name ?? '',
-		}));
+		}))
+		.superRefine((data, ctx) => {
+			if (isSuperUser) {
+				if (!data.establisher) {
+					ctx.addIssue({
+						code: z.ZodIssueCode.custom,
+						message: messages.required,
+						path: ['establisher'],
+					});
+				}
+			} else {
+				if ('establisher' in data) {
+					ctx.addIssue({
+						code: z.ZodIssueCode.custom,
+						message: 'Establisher must not be present for non-superusers',
+						path: ['establisher'],
+					});
+				}
+			}
+		});
 };
 
 export const createEstablishmentSchema = (

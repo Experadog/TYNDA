@@ -1,4 +1,5 @@
 export const CRYPTO_KEY = process.env.NEXT_PUBLIC_CRYPTO_KEY || '';
+
 export const TIMES = [
 	'00:00',
 	'00:30',
@@ -94,4 +95,10 @@ export const SOCIAL_MEDIAS = {
 		title: 'Phone',
 		icon: '/sm/phone.svg',
 	},
+};
+
+export const ROLE_DEFAULT_IDS = {
+	EST_WORKER: '22222222-2222-2222-2222-222222222223',
+	CLIENT: '22222222-2222-2222-2222-222222222222',
+	EST: '22222222-2222-2222-2222-222222222221',
 };

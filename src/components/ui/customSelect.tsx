@@ -1,6 +1,9 @@
 import clsx from 'clsx';
 import type { Control, FieldValues, Path } from 'react-hook-form';
+import { MdSearchOff } from 'react-icons/md';
+import { CustomAutocomplete } from './customAutoComplete';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from './form';
+import MultipleSelector from './multi-select';
 import {
 	Select,
 	SelectContent,
@@ -13,6 +16,7 @@ import {
 type SelectItemType = {
 	value: string;
 	label: string;
+	avatar?: string;
 };
 
 type Props<T extends FieldValues> = {
@@ -23,6 +27,10 @@ type Props<T extends FieldValues> = {
 	control: Control<T>;
 	label?: string;
 	ErrorClassName?: string;
+	isMulti?: boolean;
+	multiMaxCount?: number;
+	isAutoComplete?: boolean;
+	showAvatar?: boolean;
 };
 
 const CustomSelect = <T extends FieldValues>({
@@ -33,6 +41,10 @@ const CustomSelect = <T extends FieldValues>({
 	control,
 	label,
 	ErrorClassName,
+	isMulti = false,
+	multiMaxCount,
+	isAutoComplete,
+	showAvatar,
 }: Props<T>) => {
 	return (
 		<FormField
@@ -50,30 +62,56 @@ const CustomSelect = <T extends FieldValues>({
 					)}
 
 					<FormControl>
-						<Select value={field?.value} onValueChange={field.onChange}>
-							<SelectTrigger
+						{isMulti ? (
+							<MultipleSelector
+								{...field}
+								options={data}
+								placeholder={placeholder}
 								className={clsx(
 									'outline-none border border-light_gray numeric h-full shadow-none rounded-xl bg-input_bg font-normal font-roboto',
-									field.value ? 'text-foreground_1' : 'text-placeholder',
 									className,
 								)}
-							>
-								<SelectValue placeholder={placeholder} />
-							</SelectTrigger>
-							<SelectContent className="bg-background_1 border border-input_bg max-h-52 overflow-y-scroll">
-								<SelectGroup>
-									{data.map((item) => (
-										<SelectItem
-											key={item.value}
-											value={item.value}
-											className="hover:bg-light_gray cursor-pointer font-normal numeric font-roboto"
-										>
-											{item.label}
-										</SelectItem>
-									))}
-								</SelectGroup>
-							</SelectContent>
-						</Select>
+								maxSelected={multiMaxCount}
+								emptyIndicator={
+									<MdSearchOff size={45} className="text-gray m-3 mx-auto" />
+								}
+							/>
+						) : isAutoComplete ? (
+							<CustomAutocomplete
+								value={field?.value}
+								onChange={(item) => field.onChange(item?.value)}
+								data={data}
+								isLoading={false}
+								placeholder={placeholder}
+								className={className}
+								showAvatar={showAvatar}
+							/>
+						) : (
+							<Select value={field?.value} onValueChange={field.onChange}>
+								<SelectTrigger
+									className={clsx(
+										'outline-none border border-light_gray numeric h-full shadow-none rounded-xl bg-input_bg font-normal font-roboto',
+										field.value ? 'text-foreground_1' : 'text-placeholder',
+										className,
+									)}
+								>
+									<SelectValue placeholder={placeholder} />
+								</SelectTrigger>
+								<SelectContent className="bg-background_1 border border-input_bg max-h-52 overflow-y-scroll">
+									<SelectGroup>
+										{data.map((item) => (
+											<SelectItem
+												key={item.value}
+												value={item.value}
+												className="hover:bg-light_gray cursor-pointer font-normal numeric font-roboto"
+											>
+												{item.label}
+											</SelectItem>
+										))}
+									</SelectGroup>
+								</SelectContent>
+							</Select>
+						)}
 					</FormControl>
 
 					<div className="flex justify-end w-full text-xs">

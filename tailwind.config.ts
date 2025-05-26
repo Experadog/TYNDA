@@ -34,7 +34,7 @@ export default {
 				gradient: 'var(--gradient)',
 
 				//static
-				darkBlue: 'var(--darkBlue)',
+				orange: 'var(--orange)',
 				yellow: 'var(--yellow)',
 				error: 'var(--error)',
 				success: 'var(--success)',

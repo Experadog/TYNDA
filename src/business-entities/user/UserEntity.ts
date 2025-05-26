@@ -1,3 +1,5 @@
+import type { EstablishmentDetailed } from '../establishment/EstablishmentEntity';
+
 export type User = {
 	id: string;
 	first_name?: string;
@@ -17,12 +19,15 @@ export type User = {
 	cached_permission_groups: {
 		establishment: Partial<'crud'>;
 		user: Partial<'crud'>;
+		card: Partial<'crud'>;
 	};
+	staff_establishment: EstablishmentDetailed | null;
 };
 
 export enum UserRole {
 	CLIENT = 'client',
 	ESTABLISHER = 'establisher',
+	ESTABLISHER_WORKER = 'establishment_worker',
 }
 
 export type Credentials = {

@@ -1,7 +1,5 @@
 'use client';
-import { Link, usePathname } from '@/i18n/routing';
-import { PAGES } from '@/lib';
-import clsx from 'clsx';
+import { Link } from '@/i18n/routing';
 import Image from 'next/image';
 import type { FC } from 'react';
 import { useFooterUseCase } from './use-cases/useFooterUseCase';
@@ -19,15 +17,11 @@ interface IProps {
 
 const Footer: FC<IProps> = () => {
 	const { viewModel } = useFooterUseCase();
-	const path = usePathname();
 
 	return (
 		<footer
 			id="footer"
-			className={clsx(
-				'bg-background_4 py-[60px] pl-[60px] lg:pt-20 lg:px-5 lg:pb-24',
-				path.startsWith(PAGES.DASHBOARD) ? 'hidden' : '',
-			)}
+			className={'bg-background_4 py-[60px] pl-[60px] lg:pt-20 lg:px-5 lg:pb-24'}
 		>
 			<div className="max-w-[1320px] m-auto flex flex-col gap-[30px]">
 				<div className="flex gap-[10px] justify-between lg:flex-col lg:gap-[50px]">

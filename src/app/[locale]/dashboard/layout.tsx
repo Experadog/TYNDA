@@ -1,29 +1,42 @@
-import { getEstablishmentAllEstablisher } from '@/services';
 import type { FC, ReactNode } from 'react';
 import { UpdateProfileProvider } from '../profile/update-profile/use-case/useUpdateProfileUseCase';
-import { EstablishmentContextProvider } from './(establishments)/use-case/establishment-context-provider';
+import DashboardBreadcrumbs from './_components/dashboard-breadcrumbs';
 import Sidebar from './_components/sidebar';
+import { executeDefaultRoleRequests } from './actions';
+import { EstablishmentContextProvider } from './establishments/use-case/establishment-context-provider';
+import { RolesContextProvider } from './roles/context/roles-context-provider';
+import { UsersContextProvider } from './users/context/users-context-provider';
 
 interface IProps {
 	children: ReactNode;
 }
 
 const DashboardLayout: FC<IProps> = async ({ children }) => {
-	const establishmentsResponse = await getEstablishmentAllEstablisher({ page: '1', size: '10' });
+	const { establishmentsResponse, rolesResponse, usersResponse } =
+		await executeDefaultRoleRequests();
 
 	return (
-		<EstablishmentContextProvider establishments={establishmentsResponse.data}>
-			<UpdateProfileProvider>
-				<div className="flex full-height">
-					<div className="flex-[1] bg-background_6 p-6 border-r border-r-light_gray">
-						<Sidebar />
-					</div>
-					<div className="flex-[5] p-6  bg-background_2 full-height-max min-w-0 pb-10">
-						{children}
-					</div>
-				</div>
-			</UpdateProfileProvider>
-		</EstablishmentContextProvider>
+		<UsersContextProvider usersResponse={usersResponse}>
+			<RolesContextProvider roles={rolesResponse}>
+				<EstablishmentContextProvider establishments={establishmentsResponse}>
+					<UpdateProfileProvider>
+						<div className="flex h-screen font-roboto">
+							<div className="flex-[1] bg-background_6 p-6 border-r border-r-light_gray overflow-y-auto">
+								<Sidebar />
+							</div>
+
+							<div className="flex-[5] flex flex-col bg-background_2 min-w-0">
+								<div className="shrink-0 border-b border-b-light_gray bg-background_6 p-6">
+									<DashboardBreadcrumbs />
+								</div>
+
+								<div className="flex-1 overflow-y-auto p-6">{children}</div>
+							</div>
+						</div>
+					</UpdateProfileProvider>
+				</EstablishmentContextProvider>
+			</RolesContextProvider>
+		</UsersContextProvider>
 	);
 };
 

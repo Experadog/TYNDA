@@ -2,7 +2,7 @@
 
 import { createFetchAction } from '@/common/actions/createFetchAction';
 import { PAGES, URL_ENTITIES, isSuccessResponse } from '@/lib';
-import { AXIOS_DELETE, AXIOS_PATCH, AXIOS_POST, type Params } from '@common';
+import { AXIOS_DELETE, AXIOS_PATCH, AXIOS_POST, type Params, isSuperUser } from '@common';
 import { permanentRedirect } from 'next/navigation.js';
 import type {
 	EstablishmentCreationRequestModel,
@@ -28,12 +28,19 @@ class EstablishmentService {
 		return response;
 	}
 
-	static async getEstablishmentAllEstablisher(params: Params) {
+	static async getEstablishmentAll(params: Params) {
+		const isSuper = await isSuperUser();
+
 		const response = await createFetchAction<GetEstablishmentAllClientResponseModel>({
-			endpoint: URL_ENTITIES.ESTABLISHMENT_ALL_ESTABLISHER,
+			endpoint: isSuper
+				? URL_ENTITIES.ESTABLISHMENT_ALL_ADMIN
+				: URL_ENTITIES.ESTABLISHMENT_ALL_ESTABLISHER,
 			shouldBeAuthorized: true,
 			params,
-			revalidateTags: [URL_ENTITIES.ESTABLISHMENT_ALL_ESTABLISHER],
+			revalidateTags: [
+				URL_ENTITIES.ESTABLISHMENT_ALL_ESTABLISHER,
+				URL_ENTITIES.ESTABLISHMENT_ALL_ADMIN,
+			],
 		});
 
 		return response;
@@ -94,7 +101,7 @@ export const {
 	getEstablishmentAllClient,
 	getEstablishmentDetail,
 	createEstablishment,
-	getEstablishmentAllEstablisher,
+	getEstablishmentAll,
 	deleteEstablishment,
 	updateEstablishment,
 } = EstablishmentService;

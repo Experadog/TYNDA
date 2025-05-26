@@ -6,6 +6,7 @@ import {
 	isStaticOrApiRequest,
 	updateLocaleCookiesIfNeeded,
 } from '@/lib';
+import { UserRole } from '@business-entities';
 import createMiddleware from 'next-intl/middleware';
 import { type NextRequest, NextResponse } from 'next/server';
 import { supportedLanguages } from './i18n/routing';
@@ -25,14 +26,21 @@ export default async function middleware(req: NextRequest): Promise<NextResponse
 
 	let response = nextIntlMiddleware(req);
 
-	// Локализация и куки
-	response = updateLocaleCookiesIfNeeded(req, response);
-
-	// Аутентификация
+	// Аутентификация + Локализация и куки
 	const sessionData = getSessionData(req);
 
+	response = updateLocaleCookiesIfNeeded(
+		req,
+		response,
+		Boolean(sessionData?.user.is_superuser || sessionData?.user.role === UserRole.ESTABLISHER),
+	);
+
 	const basePath = pathname.replace(/^\/(ru|kg)\//, '/') as PAGES;
-	const roleRedirectPath = checkRoleAccess(basePath, sessionData?.user.role);
+	const roleRedirectPath = checkRoleAccess(
+		basePath,
+		sessionData?.user.is_superuser || false,
+		sessionData?.user.role,
+	);
 
 	if (roleRedirectPath) {
 		return NextResponse.redirect(new URL(roleRedirectPath, req.url));
