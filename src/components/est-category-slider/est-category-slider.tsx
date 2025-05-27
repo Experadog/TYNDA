@@ -6,6 +6,7 @@ import { useMemo } from 'react';
 import type { IconType } from 'react-icons/lib';
 import {
 	LuBaby,
+	LuBadgePercent,
 	LuBus,
 	LuCalendar,
 	LuChevronLeft,
@@ -33,6 +34,7 @@ const icons = [
 	LuBus,
 	LuMapPinned,
 	LuRoute,
+	LuBadgePercent,
 ];
 
 type Props = {

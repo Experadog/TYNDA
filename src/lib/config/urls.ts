@@ -10,6 +10,7 @@ export enum URL_ENTITIES {
 	PROFILE = '/sys/users/me',
 	ACTIVATE_ACCOUNT = '/sys/users/activate',
 	PHONE_PRE_VERIFY = '/sys/users/pre-verify-phone-telegram',
+	VERIFY_PHONE = '/sys/users/verify-phone',
 	UPDATE_CREDENTIALS = '/sys/users/password/reset',
 
 	//biz

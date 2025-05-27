@@ -14,3 +14,8 @@ export type CredentialsUpdateRequestModel = {
 	old_password: string;
 	confirm_password: string;
 };
+
+export type PhoneSecondStepVerificationRequestModel = {
+	code: string;
+	request_id: string;
+};

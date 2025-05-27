@@ -10,4 +10,5 @@ export type Params = {
 	format?: string;
 	limit?: string;
 	q?: string;
+	request_id?: string;
 };

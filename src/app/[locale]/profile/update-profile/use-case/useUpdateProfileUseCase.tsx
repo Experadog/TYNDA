@@ -7,11 +7,14 @@ import { useUser } from '@/providers/user/user-provider';
 import {
 	type CredentialsUpdateRequestModel,
 	type CredentialsUpdateResponseModel,
+	PhoneFirstStepVerificationResponseModel,
+	PhoneSecondStepVerificationRequestModel,
 	type ProfileUpdateResponseModel,
 	logout,
 } from '@/services';
 import {
 	firstStepPhoneVerification,
+	secondStepPhoneVerification,
 	updateCredentials,
 	updateProfile,
 } from '@/services/profile/profileService';
@@ -25,7 +28,7 @@ import {
 	pushCommonToast,
 	useAsyncAction,
 } from '@common';
-import { type ReactNode, createContext, useContext, useState } from 'react';
+import { Dispatch, type ReactNode, SetStateAction, createContext, useContext, useState } from 'react';
 
 interface UpdateProfileContextType {
 	states: {
@@ -43,6 +46,7 @@ interface UpdateProfileContextType {
 				isOpen: boolean;
 				isExecuted: boolean;
 				isLoading: boolean;
+				requestId: string;
 			};
 		};
 	};
@@ -54,6 +58,15 @@ interface UpdateProfileContextType {
 			preVerification: {
 				start: () => Promise<void>;
 				open: () => void;
+				close: () => void;
+			};
+			verificationCode: {
+				code: string[];
+				setCode: Dispatch<SetStateAction<string[]>>;
+				error: string | null;
+				setError: Dispatch<SetStateAction<string | null>>;
+				isLoading: boolean;
+				start: (code: string, requestId: string) => Promise<void>;
 				close: () => void;
 			};
 		};
@@ -73,6 +86,11 @@ export const UpdateProfileProvider: React.FC<{ children: ReactNode }> = ({ child
 
 	const [isPreVerificationOpen, setIsPreVerificationOpen] = useState(false);
 	const [isPreVerificationExecuted, setIsPreVerificationExecuted] = useState(false);
+	const [code, setCode] = useState('');
+	const [requestId, setRequestId] = useState<string>('');
+	const [verificationCode, setVerificationCode] = useState<string[]>(Array(6).fill(''));
+	const [verificationError, setVerificationError] = useState<string | null>(null);
+
 
 	const updateProfileForm = createProfileSchema({
 		message: {
@@ -101,13 +119,11 @@ export const UpdateProfileProvider: React.FC<{ children: ReactNode }> = ({ child
 		}),
 
 		phone: {
-			preVerification: useAsyncAction<CommonDataStringResponse, [unknown]>({}),
+			preVerification: useAsyncAction<PhoneFirstStepVerificationResponseModel, [unknown]>({}),
+			verificationCode: useAsyncAction<CommonDataStringResponse, [PhoneSecondStepVerificationRequestModel]>({}),
 		},
 
-		updateCredentials: useAsyncAction<
-			CredentialsUpdateResponseModel,
-			[CredentialsUpdateRequestModel]
-		>({
+		updateCredentials: useAsyncAction<CredentialsUpdateResponseModel, [CredentialsUpdateRequestModel]>({
 			messages: viewModel.UpdateCredentials,
 		}),
 
@@ -124,9 +140,23 @@ export const UpdateProfileProvider: React.FC<{ children: ReactNode }> = ({ child
 		phone: {
 			preVerification: createAction({
 				requestAction: firstStepPhoneVerification,
-				onSuccess: () => setIsPreVerificationExecuted(true),
+				onSuccess: (data) => {
+					setRequestId(data.data);
+					setIsPreVerificationExecuted(true);
+				},
 				onError: () =>
 					pushCommonToast('Ошибка при попытке подтвердить номер телефона', 'error'),
+			}),
+			verifyCode: () => Promise<void>,
+			verificationCode: createAction({
+				requestAction: secondStepPhoneVerification,
+				onSuccess: () => {
+					pushCommonToast('Телефон успешно подтверждён', 'success');
+					setIsPreVerificationOpen(false);
+					setRequestId('');
+					setCode('');
+				},
+				onError: () => pushCommonToast('Ошибка при подтверждении кода', 'error'),
 			}),
 		},
 
@@ -166,6 +196,23 @@ export const UpdateProfileProvider: React.FC<{ children: ReactNode }> = ({ child
 				open: () => setIsPreVerificationOpen(true),
 				close: () => setIsPreVerificationOpen(false),
 			},
+			verificationCode: {
+				code: verificationCode,
+				setCode: setVerificationCode,
+				isLoading: action_executes.phone.verificationCode.isLoading,
+				error: verificationError,
+				setError: setVerificationError,
+				start: async (code: string, requestId: string) => {
+					await action_executes.phone.verificationCode.execute(
+						actions.phone.verificationCode,
+						{ code, request_id: requestId }
+					);
+				},
+				close: () => {
+					setVerificationCode(Array(6).fill(''));
+					setVerificationError(null);
+				},
+			},
 		},
 
 		onUpdateCredentials: async (data: CredentialsUpdateRequestModel) => {
@@ -188,6 +235,7 @@ export const UpdateProfileProvider: React.FC<{ children: ReactNode }> = ({ child
 				isOpen: isPreVerificationOpen,
 				isExecuted: isPreVerificationExecuted,
 				isLoading: action_executes.phone.preVerification.isLoading,
+				requestId,
 			},
 		},
 	};
