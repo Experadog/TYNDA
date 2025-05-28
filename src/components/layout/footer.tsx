@@ -25,7 +25,7 @@ const Footer: FC<IProps> = () => {
 		<footer
 			id="footer"
 			className={clsx(
-				'bg-background_4 py-[82px] pl-[60px] lg:pt-20 lg:px-5 lg:pb-24',
+				'bg-background_4 py-[60px] pl-[60px] lg:pt-20 lg:px-5 lg:pb-24',
 				path.startsWith(PAGES.DASHBOARD) ? 'hidden' : '',
 			)}
 		>

@@ -1,8 +1,9 @@
 'use server';
 
-import { API_URL, COOKIES, LOGGER, getTokensFromSession } from '@/lib';
+import { API_URL, COOKIES, LOGGER, getTokensFromSession, isEmptyObject } from '@/lib';
 import { cookies } from 'next/headers';
 import type { Params } from '../types/http.types';
+import { clearCookie } from './clear-cookie';
 
 type Props = {
 	endpoint: string;
@@ -28,7 +29,8 @@ export async function createFetchAction<T>({
 
 	const url = new URL(`${cleanBaseUrl}/${pathWithPostfix}`);
 
-	if (params) {
+	if (params && !isEmptyObject(params)) {
+		LOGGER.info(params);
 		for (const [key, value] of Object.entries(params)) {
 			if (value !== undefined) {
 				url.searchParams.append(key, String(value));
@@ -57,13 +59,16 @@ export async function createFetchAction<T>({
 		});
 
 		if (!response.ok) {
-			LOGGER.error(`Fetch failed: ${response.statusText} ${url}`);
+			if (response.status === 401) {
+				await clearCookie(COOKIES.SESSION);
+			}
+
+			LOGGER.error(`Fetch failed: ${response.statusText}(${response.status}) ${url}`);
 			return {} as T;
 		}
 
 		const data: T = await response.json();
 		LOGGER.success(`Received data from: ${cleanEndpoint} `);
-		// LOGGER.success(`Received data: ${JSON.stringify(data, null, 2)}`);
 
 		return data;
 	} catch (error) {

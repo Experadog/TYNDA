@@ -25,7 +25,7 @@
 
 		--gradient: linear-gradient(to bottom, #ffffff, #f0f0f3, #e4e6eb);
 
-		--darkBlue: #2c3258;
+		--orange: #f97316;
 		--yellow: #f4a900;
 		--error: #d20035;
 	}
@@ -46,6 +46,7 @@
 
 		--yellow: #cb8e00;
 		--error: #e34242;
+		--orange: #c2410c;
 
 		--gradient: linear-gradient(to bottom, #0f0f11, #1a1b1e, #1a1a1c);
 
@@ -58,9 +59,9 @@
 }
 
 /* disable animation on low FPS */
-.reduce-motion * {
+/* .reduce-motion * {
 	animation: none !important;
-}
+} */
 
 body {
 	font-family: var(--font-raleway), sans-serif;
@@ -123,7 +124,6 @@ html {
 .full-height-max {
 	max-height: calc(100vh - 88px);
 	min-height: calc(100vh - 88px);
-	height: 100%;
 	overflow-y: scroll;
 }
 

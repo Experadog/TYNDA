@@ -7,30 +7,31 @@ import { UserRole } from '@business-entities';
 import { useMemo } from 'react';
 
 export function useNavbarUseCase() {
-    const viewModel = useViewModel(['Layout']);
-    const { user } = useUser();
-    const router = useRouter();
-    const pathname = usePathname();
+	const viewModel = useViewModel(['Layout']);
+	const { user } = useUser();
+	const router = useRouter();
+	const pathname = usePathname();
 
-    const navigateToAuthOrProfile = () => {
-        let route = PAGES.LOGIN;
+	const navigateToAuthOrProfile = () => {
+		if (!user) {
+			router.push(PAGES.LOGIN);
+			return;
+		}
 
-        if (user?.role === UserRole.CLIENT) {
-            route = PAGES.PROFILE;
-        }
+		if (user.is_superuser || user.role === UserRole.ESTABLISHER) {
+			router.push(PAGES.DASHBOARD);
+		} else if (user.role === UserRole.CLIENT) {
+			router.push(PAGES.PROFILE);
+		} else {
+			router.push(PAGES.LOGIN);
+		}
+	};
 
-        if (user?.role === UserRole.ESTABLISHER) {
-            route = PAGES.DASHBOARD;
-        }
+	const shouldHighlightLink = useMemo(() => (path: string) => path === pathname, [pathname]);
+	const shouldHighlightBtn = useMemo(
+		() => pathname.startsWith('/auth') || pathname.startsWith(PAGES.PROFILE),
+		[pathname],
+	);
 
-        router.push(route);
-    };
-
-    const shouldHighlightLink = useMemo(() => (path: string) => path === pathname, [pathname]);
-    const shouldHighlightBtn = useMemo(
-        () => pathname.startsWith('/auth') || pathname.startsWith(PAGES.PROFILE),
-        [pathname],
-    );
-
-    return { viewModel, user, navigateToAuthOrProfile, shouldHighlightLink, shouldHighlightBtn };
+	return { viewModel, user, navigateToAuthOrProfile, shouldHighlightLink, shouldHighlightBtn };
 }

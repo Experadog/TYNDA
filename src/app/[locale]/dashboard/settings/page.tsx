@@ -1,9 +1,7 @@
-import { FC } from 'react';
+import SettingsView from './view/settings-view';
 
-interface IProps {}
-
-const Page: FC<IProps> = ({}) => {
-    return <div>Page</div>;
+const Page = () => {
+	return <SettingsView />;
 };
 
 export default Page;

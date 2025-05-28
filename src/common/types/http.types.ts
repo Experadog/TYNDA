@@ -1,3 +1,5 @@
+import type { PermissionScopeKey } from '@business-entities';
+
 export type Params = {
 	page?: string;
 	size?: string;
@@ -10,5 +12,7 @@ export type Params = {
 	format?: string;
 	limit?: string;
 	q?: string;
+	scope?: PermissionScopeKey;
+	staff_establishment_id?: string;
 	request_id?: string;
 };

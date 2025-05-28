@@ -1,7 +1,13 @@
 'use client';
 
 import clsx from 'clsx';
-import { type CSSProperties, type HTMLInputTypeAttribute, type Ref, useState } from 'react';
+import {
+	type CSSProperties,
+	type HTMLInputTypeAttribute,
+	type ReactNode,
+	type Ref,
+	useState,
+} from 'react';
 import type { Control, FieldValues, Path } from 'react-hook-form';
 import { IoEye, IoEyeOff } from 'react-icons/io5';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from './form';
@@ -22,6 +28,7 @@ interface IProps<T extends FieldValues> {
 	TextAreaClassName?: string;
 	max?: number;
 	min?: number;
+	postfix?: ReactNode;
 }
 
 export const CustomFormField = <T extends FieldValues>({
@@ -39,6 +46,7 @@ export const CustomFormField = <T extends FieldValues>({
 	TextAreaClassName,
 	max,
 	min,
+	postfix,
 }: IProps<T>) => {
 	const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
@@ -51,7 +59,7 @@ export const CustomFormField = <T extends FieldValues>({
 					{label && (
 						<FormLabel
 							htmlFor={name}
-							className="block mb-2 text-sm font-medium text-gray-700"
+							className="block mb-2 text-sm font-normal text-gray"
 						>
 							{label}
 						</FormLabel>
@@ -88,6 +96,8 @@ export const CustomFormField = <T extends FieldValues>({
 										placeholder={placeholder}
 										ref={ref}
 									/>
+
+									{postfix ? postfix : null}
 
 									{type === 'password' && (
 										<button

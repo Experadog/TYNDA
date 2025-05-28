@@ -12,6 +12,10 @@ export enum URL_ENTITIES {
 	PHONE_PRE_VERIFY = '/sys/users/pre-verify-phone-telegram',
 	VERIFY_PHONE = '/sys/users/verify-phone',
 	UPDATE_CREDENTIALS = '/sys/users/password/reset',
+	PERMISSIONS = '/sys/perm',
+	ROLES = '/sys/permission_groups',
+	STAFF = '/sys/establishment_staff',
+	USERS = '/sys/users',
 
 	//biz
 	CARD_HISTORY = '/biz/card_history/client-history',
@@ -22,6 +26,7 @@ export enum URL_ENTITIES {
 	//org
 	ESTABLISHMENT_ALL_CLIENT = '/org/establishment/all-client',
 	ESTABLISHMENT_ALL_ESTABLISHER = '/org/establishment/all-establisher',
+	ESTABLISHMENT_ALL_ADMIN = '/org/establishment/all',
 	ESTABLISHMENT_DETAIL = '/org/establishment/detail',
 
 	ESTABLISHMENT_CREATION = '/org/establishment',

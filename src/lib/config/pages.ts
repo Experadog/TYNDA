@@ -1,3 +1,5 @@
+import { Building2, MessageCircle, Percent, Settings, ShieldCheck, Users } from 'lucide-react';
+
 export enum PAGES {
 	HOME = '/',
 	BENEFITS_MAP = '/benefits-map',
@@ -8,6 +10,7 @@ export enum PAGES {
 	CALLBACK = '/callback',
 	DASHBOARD = '/dashboard',
 	SERVICES = '/services',
+	ENTERPRISES_ALL = 'all-enterprises',
 
 	// nested auth
 	LOGIN = '/auth/login',
@@ -21,13 +24,20 @@ export enum PAGES {
 	PROFILE_CHAT = '/profile/update-profile/chat',
 
 	//nested dashboard
-	CHAT = '/dashboard/chat',
+	DASHBOARD_CHAT = '/dashboard/chat',
 	DISCOUNTS = '/dashboard/discounts',
 	SETTINGS = '/dashboard/settings',
-	ESTABLISHMENT_CREATION = '/dashboard/creation',
+
+	ESTABLISHMENT = '/dashboard/establishments',
+	ESTABLISHMENT_CREATION = '/dashboard/establishments/creation',
+
+	STAFF = '/staff',
+
+	USERS = '/dashboard/users',
+
+	ROLES = '/dashboard/roles',
 
 	//Enterprises
-	ENTERPRISES_ALL = '/all-enterprises',
 }
 
 export const NAV_LINKS = [PAGES.HOME, PAGES.BENEFITS_MAP, PAGES.ABOUT, PAGES.SERVICE, PAGES.CONTACTS];
@@ -38,4 +48,47 @@ export const PROFILE_LINKS = [
 	PAGES.PROFILE_CHAT,
 ];
 
-export const DASHBOARD_LINKS = [PAGES.DASHBOARD, PAGES.CHAT, PAGES.DISCOUNTS, PAGES.SETTINGS];
+export const DASHBOARD_LINKS = {
+	super_user: [
+		{
+			key: 'ESTABLISHMENT',
+			link: PAGES.ESTABLISHMENT,
+			icon: Building2,
+		},
+		{
+			key: 'USERS',
+			link: PAGES.USERS,
+			icon: Users,
+		},
+		{
+			key: 'ROLES',
+			link: PAGES.ROLES,
+			icon: ShieldCheck,
+		},
+		{
+			key: 'DASHBOARD_CHAT',
+			link: PAGES.DASHBOARD_CHAT,
+			icon: MessageCircle,
+		},
+		{
+			key: 'DISCOUNTS',
+			link: PAGES.DISCOUNTS,
+			icon: Percent,
+		},
+		{
+			key: 'SETTINGS',
+			link: PAGES.SETTINGS,
+			icon: Settings,
+		},
+	],
+	establisher: [
+		{ key: 'ESTABLISHMENT', link: PAGES.ESTABLISHMENT, icon: Building2 },
+		{ key: 'DASHBOARD_CHAT', link: PAGES.DASHBOARD_CHAT, icon: MessageCircle },
+		{ key: 'DISCOUNTS', link: PAGES.DISCOUNTS, icon: Percent },
+		{ key: 'SETTINGS', link: PAGES.SETTINGS, icon: Settings },
+	],
+	establishment_worker: [
+		{ key: 'ESTABLISHMENT', link: PAGES.ESTABLISHMENT, icon: Building2 },
+		{ key: 'SETTINGS', link: PAGES.SETTINGS, icon: Settings },
+	],
+} as const;

@@ -34,6 +34,9 @@ class AuthService {
 
 		if (isSuccessResponse(response)) {
 			const encryptedSessionData = encryptData(response.data);
+
+			console.log(response.data);
+
 			cookieStore.set(
 				COOKIES.SESSION,
 				encryptedSessionData,
