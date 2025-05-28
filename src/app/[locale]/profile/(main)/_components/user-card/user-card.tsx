@@ -4,18 +4,15 @@ import { Link } from '@/i18n/routing';
 import { PAGES, phoneFormatter } from '@/lib';
 import { useUser } from '@/providers/user/user-provider';
 import { Button, TariffCard, Translate } from '@components';
-import type { FC } from 'react';
 import { SlPencil } from 'react-icons/sl';
-import { useProfileUseCase } from '../../../use-case/profile-use-case';
+import { useProfileSettingsUseCase } from '../../../use-case/profile-use-case';
 import AvatarUpdating from '../avatar-updating/avatar-updating';
 
-type IProps = {};
-
-const UserCard: FC<IProps> = ({}) => {
+const UserCard = () => {
 	const { user } = useUser();
 	const {
 		actions: { openAvatarUpdating },
-	} = useProfileUseCase();
+	} = useProfileSettingsUseCase();
 
 	const avatar = user?.avatar || '/other/avatar-placeholder.webp';
 

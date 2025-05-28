@@ -15,10 +15,10 @@ import {
 	updateCredentials,
 	updateProfile,
 } from '@/services/profile/profileService';
-import type { User } from '@business-entities';
 import {
 	type CommonDataStringResponse,
 	type CommonResponse,
+	type ProfileFormValues,
 	createAction,
 	createCredentialsSchema,
 	createProfileSchema,
@@ -48,7 +48,7 @@ interface UpdateProfileContextType {
 	};
 
 	actions: {
-		onUpdateProfile: (payload: Partial<User>) => Promise<void>;
+		onUpdateProfile: (payload: ProfileFormValues) => Promise<void>;
 
 		phone: {
 			preVerification: {
@@ -65,7 +65,7 @@ interface UpdateProfileContextType {
 const UpdateProfileContext = createContext<UpdateProfileContextType | undefined>(undefined);
 
 export const UpdateProfileProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-	const viewModel = useViewModel(['Toast']);
+	const viewModel = useViewModel(['Toast', 'Validation']);
 
 	const { user } = useUser();
 
@@ -75,29 +75,22 @@ export const UpdateProfileProvider: React.FC<{ children: ReactNode }> = ({ child
 	const [isPreVerificationExecuted, setIsPreVerificationExecuted] = useState(false);
 
 	const updateProfileForm = createProfileSchema({
-		message: {
-			first_name: 'Введите корректное имя',
-			last_name: 'Введите корректный номер',
-			phone: 'Введите корректный номер',
-		},
+		message: viewModel.Validation,
 		defaultValues: {
 			first_name: user?.first_name || '',
 			last_name: user?.last_name || '',
 			phone: phoneFormatter(user?.phone || ''),
+			avatar: '',
 		},
 	});
 
 	const credentialsForm = createCredentialsSchema({
-		message: {
-			confirm_password: 'Пароли не совпадают',
-			new_password: 'Обязательное поле',
-			old_password: 'Обязательное поле',
-		},
+		message: viewModel.Validation,
 	});
 
 	const action_executes = {
-		updateProfile: useAsyncAction<ProfileUpdateResponseModel, [Partial<User>]>({
-			messages: viewModel.UpdateProfile,
+		updateProfile: useAsyncAction<ProfileUpdateResponseModel, [ProfileFormValues]>({
+			messages: viewModel.Toast.UpdateProfile,
 		}),
 
 		phone: {
@@ -108,11 +101,11 @@ export const UpdateProfileProvider: React.FC<{ children: ReactNode }> = ({ child
 			CredentialsUpdateResponseModel,
 			[CredentialsUpdateRequestModel]
 		>({
-			messages: viewModel.UpdateCredentials,
+			messages: viewModel.Toast.UpdateCredentials,
 		}),
 
 		logout: useAsyncAction<CommonResponse<null>, [string]>({
-			messages: viewModel.Logout,
+			messages: viewModel.Toast.Logout,
 		}),
 	};
 
@@ -146,7 +139,7 @@ export const UpdateProfileProvider: React.FC<{ children: ReactNode }> = ({ child
 	};
 
 	const handlers: UpdateProfileContextType['actions'] = {
-		onUpdateProfile: async (payload: Partial<User>) => {
+		onUpdateProfile: async (payload: ProfileFormValues) => {
 			const { phone, ...rest } = payload;
 			const payloadData = phone ? payload : rest;
 			await action_executes.updateProfile.execute(actions.updateProfileAction, payloadData);

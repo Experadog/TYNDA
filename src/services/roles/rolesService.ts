@@ -1,8 +1,8 @@
 'use server';
 
 import { createFetchAction } from '@/common/actions/createFetchAction';
-import { URL_ENTITIES } from '@/lib';
-import type { Params } from '@common';
+import { PAGES, URL_ENTITIES, isSuccessResponse } from '@/lib';
+import { type Params, forceRedirect } from '@common';
 import type { GetDetailedRolesResponseModel, GetRolesResponseModel } from './roleServiceTypes';
 
 class RolesService {
@@ -24,6 +24,9 @@ class RolesService {
 			postfix: [id],
 			revalidateTags: [URL_ENTITIES.ROLES],
 		});
+		if (!isSuccessResponse(response)) {
+			return await forceRedirect(PAGES.ROLES);
+		}
 
 		return response;
 	}

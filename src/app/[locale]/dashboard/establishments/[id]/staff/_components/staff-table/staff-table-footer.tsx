@@ -8,7 +8,7 @@ const StaffTableFooter = () => {
 	const {
 		pagination: {
 			actions: { onGoNextPage, setPage },
-			states: { allPages, currentPage, isFirstPage, hasNextPage, isLoading, staffList },
+			states: { allPages, currentPage, isFirstPage, hasNextPage, isLoading, data },
 		},
 	} = useStaffContext();
 
@@ -35,7 +35,7 @@ const StaffTableFooter = () => {
 				>
 					<div className="flex items-center justify-between w-full">
 						<div className="flex items-center gap-2">
-							{staffList.length && totalLoadedPages.length
+							{data.length && totalLoadedPages.length
 								? totalLoadedPages.map((page) => (
 										<Button
 											key={page}

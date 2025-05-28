@@ -69,6 +69,7 @@ export async function createFetchAction<T>({
 
 		const data: T = await response.json();
 		LOGGER.success(`Received data from: ${cleanEndpoint} `);
+		LOGGER.info(params);
 
 		return data;
 	} catch (error) {

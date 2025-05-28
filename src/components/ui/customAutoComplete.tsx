@@ -105,6 +105,7 @@ export function CustomAutocomplete<T extends ItemBase>({
 							setInputValue(val);
 							onInputChange?.(val);
 						}}
+						className="p-6"
 					/>
 
 					<CommandList className="min-h-[150px]" key={inputValue}>

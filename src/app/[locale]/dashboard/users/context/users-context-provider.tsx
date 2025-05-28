@@ -1,12 +1,12 @@
 'use client';
 
-import type { GetUsersResponseModel } from '@/services';
+import type { UsersRetrievalResponseModel } from '@/services';
 import { type FC, type ReactNode, createContext, useContext } from 'react';
 import { type UseUsersUseCaseType, useUserUseCase } from '../use-cases/useUsersUseCase';
 
 type Props = {
 	children: ReactNode;
-	usersResponse?: GetUsersResponseModel;
+	usersResponse?: UsersRetrievalResponseModel;
 };
 
 const UsersContext = createContext<UseUsersUseCaseType | null>(null);

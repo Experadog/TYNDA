@@ -12,7 +12,10 @@ export type GetEstablishmentDetailedResponseModel = CommonResponse<{
 }>;
 
 export type EstablishmentCreationRequestModel = Omit<
-	Omit<EstablishmentFormValues, 'cover' | 'images' | 'work_time_start' | 'work_time_end'>,
+	Omit<
+		EstablishmentFormValues,
+		'cover' | 'images' | 'work_time_start' | 'work_time_end' | 'establisher' | 'establisher_id'
+	>,
 	never
 > & {
 	cover: string;
@@ -21,6 +24,11 @@ export type EstablishmentCreationRequestModel = Omit<
 };
 
 export type EstablishmentCreationResponseModel = CommonResponse<string>;
+
+export type EstablishmentAdminCreationRequestModel = {
+	obj: EstablishmentCreationRequestModel;
+	establisher?: EstablishmentFormValues['establisher'];
+};
 
 export type EstablishmentDeletionRequestModel = { id: string };
 export type EstablishmentDeletionResponseModel = CommonResponse<string>;

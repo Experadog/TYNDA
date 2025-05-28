@@ -29,6 +29,7 @@ interface IProps<T extends FieldValues> {
 	max?: number;
 	min?: number;
 	postfix?: ReactNode;
+	showError?: boolean;
 }
 
 export const CustomFormField = <T extends FieldValues>({
@@ -46,6 +47,7 @@ export const CustomFormField = <T extends FieldValues>({
 	TextAreaClassName,
 	max,
 	min,
+	showError = true,
 	postfix,
 }: IProps<T>) => {
 	const [isPasswordHidden, setIsPasswordHidden] = useState(true);
@@ -81,9 +83,12 @@ export const CustomFormField = <T extends FieldValues>({
 										min={min}
 										value={field.value ?? ''}
 										className={clsx(
-											'outline-none placeholder:text-placeholder placeholder:font-normal rounded-2xl px-4 py-6 numeric border border-light_gray font-normal',
+											'outline-none placeholder:text-placeholder placeholder:font-normal rounded-xl px-4 py-6 numeric border border-light_gray font-normal',
 											type === 'password' ? 'pr-10' : '',
 											InputClassName,
+											!showError &&
+												control.getFieldState(field.name).error &&
+												'border border-error',
 										)}
 										style={inputStyles}
 										type={
@@ -117,14 +122,16 @@ export const CustomFormField = <T extends FieldValues>({
 						</div>
 					</FormControl>
 
-					<div className="flex justify-end w-full text-xs">
-						<FormMessage
-							className={clsx(
-								'text-error numeric font-roboto text-end',
-								ErrorClassName,
-							)}
-						/>
-					</div>
+					{showError && (
+						<div className="flex justify-end w-full text-xs">
+							<FormMessage
+								className={clsx(
+									'text-error numeric font-roboto text-end',
+									ErrorClassName,
+								)}
+							/>
+						</div>
+					)}
 				</FormItem>
 			)}
 		/>

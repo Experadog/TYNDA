@@ -5,37 +5,33 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 interface CreateCredentialsSchemaProps {
-    message: {
-        old_password: string;
-        new_password: string;
-        confirm_password: string;
-    };
+	message: ViewModel['Validation'];
 }
 
 const defaultValues = {
-    old_password: '',
-    new_password: '',
-    confirm_password: '',
+	old_password: '',
+	new_password: '',
+	confirm_password: '',
 };
 
 export const createCredentialsSchema = ({ message }: CreateCredentialsSchemaProps) => {
-    const schema = z
-        .object({
-            old_password: z.string().min(1, message.old_password),
-            new_password: z.string().min(1, message.new_password),
-            confirm_password: z.string().min(1, message.confirm_password),
-        })
-        .refine((data) => data.new_password === data.confirm_password, {
-            message: message.confirm_password,
-            path: ['confirm_password'],
-        });
+	const schema = z
+		.object({
+			old_password: z.string().min(1, message.required),
+			new_password: z.string().min(1, message.required),
+			confirm_password: z.string().min(1, message.required),
+		})
+		.refine((data) => data.new_password === data.confirm_password, {
+			message: message.password_not_math,
+			path: ['confirm_password'],
+		});
 
-    type FormValues = z.infer<typeof schema>;
+	type FormValues = z.infer<typeof schema>;
 
-    const form = useForm<FormValues>({
-        resolver: zodResolver(schema),
-        defaultValues,
-    });
+	const form = useForm<FormValues>({
+		resolver: zodResolver(schema),
+		defaultValues,
+	});
 
-    return form;
+	return form;
 };

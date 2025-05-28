@@ -19,7 +19,7 @@ const MoreRecsCard: FC<IProps> = ({
 	imageClassName = '',
 	imageContainer = '',
 	mainClassName = '',
-	descriptionClassName = 'line-clamp-1'
+	descriptionClassName = 'line-clamp-1',
 }) => {
 	return (
 		<Link href={`${PAGES.ENTERPRISES_ALL}/${establishment.id}`}>
@@ -37,10 +37,8 @@ const MoreRecsCard: FC<IProps> = ({
 					/>
 				</div>
 				<div className="px-[14px] lg:px-1 flex flex-col justify-between h-full">
-					<div className='flex flex-col gap-[10px]'>
-						<h4
-							className="font-semibold text-lg uppercase lg:text-base lg:font-medium line-clamp-1 "
-						>
+					<div className="flex flex-col gap-[10px]">
+						<h4 className="font-semibold text-lg uppercase lg:text-base lg:font-medium line-clamp-1 ">
 							{establishment.translates?.ru?.name}
 						</h4>
 						<p className={`font-normal text-sm lg:text-xs ${descriptionClassName}`}>

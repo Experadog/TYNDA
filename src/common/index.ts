@@ -11,6 +11,7 @@ export * from './schemas/profile/profile.schema';
 export * from './schemas/register/register.client.schema';
 export * from './schemas/register/register.establisher.schema';
 export * from './schemas/staff/staff.schema';
+export * from './schemas/user/user.schema';
 
 // Axios
 export * from './axios/axiosInstance';
@@ -18,6 +19,7 @@ export * from './axios/axiosInstance';
 //Hooks
 export * from './hooks/useAsyncAction';
 export * from './hooks/useDebounce';
+export * from './hooks/usePagination';
 export * from './hooks/usePrepareBreadCrumbs';
 
 // Actions

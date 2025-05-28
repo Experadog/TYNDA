@@ -35,8 +35,6 @@ export function useStaffCreationUseCase({ onCloseModal, refetch }: Props) {
 			staff_establishment_id: establishment_id,
 		};
 
-		console.log(data);
-
 		await execute(action, data);
 	};
 

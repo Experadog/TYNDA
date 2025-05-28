@@ -1,6 +1,6 @@
 import type { EstablishmentDetailed } from '@business-entities';
 import { type EstablishmentFormValues, createEstablishmentSchema } from '@common';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
 type Props = {
 	defaultValue: EstablishmentDetailed | undefined;
@@ -8,6 +8,8 @@ type Props = {
 };
 
 export function useEstablishmentSchemaUseCase({ defaultValue, viewModel }: Props) {
+	const [shouldValidateEstablisherID, setShouldValidateEstablisherID] = useState(true);
+
 	const prepareDataForSchema = useCallback(
 		(establishment: EstablishmentDetailed | undefined): EstablishmentFormValues | undefined => {
 			if (!establishment) return undefined;
@@ -18,6 +20,8 @@ export function useEstablishmentSchemaUseCase({ defaultValue, viewModel }: Props
 				...establishment,
 				work_time_end,
 				work_time_start,
+				establisher: undefined,
+				establisher_id: undefined,
 			};
 		},
 		[],
@@ -25,7 +29,11 @@ export function useEstablishmentSchemaUseCase({ defaultValue, viewModel }: Props
 
 	const preparedDefaultValues = prepareDataForSchema(defaultValue);
 
-	const schema = createEstablishmentSchema(viewModel, preparedDefaultValues);
+	const schema = createEstablishmentSchema(
+		viewModel,
+		shouldValidateEstablisherID,
+		preparedDefaultValues,
+	);
 
-	return schema;
+	return { schema, setShouldValidateEstablisherID };
 }

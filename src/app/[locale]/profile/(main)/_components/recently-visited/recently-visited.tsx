@@ -1,12 +1,12 @@
 'use client';
 
 import { Slider, Translate } from '@components';
-import { useProfileUseCase } from '../../../use-case/profile-use-case';
+import { useProfileSettingsUseCase } from '../../../use-case/profile-use-case';
 import Empty from './empty';
 import RecentlyVisitedCard from './recently-visited-card';
 
 const RecentlyVisited = () => {
-	const { states, actions } = useProfileUseCase();
+	const { states, actions } = useProfileSettingsUseCase();
 	const { clientHistory } = states;
 	const { moveToNextClientHistory } = actions;
 

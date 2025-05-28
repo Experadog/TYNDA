@@ -10,13 +10,13 @@ import {
 } from '@components';
 import { useRef, useState } from 'react';
 import { PiDownloadSimpleLight } from 'react-icons/pi';
-import { useProfileUseCase } from '../../../use-case/profile-use-case';
+import { useProfileSettingsUseCase } from '../../../use-case/profile-use-case';
 
 const AvatarUpdating = () => {
 	const {
 		states: { isAvatarUpdating },
 		actions: { closeAvatarUpdating, onUpdateAvatar },
-	} = useProfileUseCase();
+	} = useProfileSettingsUseCase();
 
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const [preview, setPreview] = useState<string | null>(null);

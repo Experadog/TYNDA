@@ -6,20 +6,20 @@ import StaffLoadingRow from './variants/staff-loading-row';
 const StaffTableBody = () => {
 	const { modal, pagination, deletion } = useStaffContext();
 	const {
-		states: { staffList, isLoading },
+		states: { data, isLoading },
 	} = pagination;
 
 	if (isLoading) {
 		return <StaffLoadingRow />;
 	}
 
-	if (!staffList.length) {
+	if (!data.length) {
 		return <StaffEmptyRow />;
 	}
 
 	return (
 		<StaffDataRow
-			data={staffList}
+			data={data}
 			onDelete={deletion.confirmModal.open}
 			onUpdate={modal.actions.onOpen}
 		/>

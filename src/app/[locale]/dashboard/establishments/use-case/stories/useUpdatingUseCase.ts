@@ -19,7 +19,7 @@ import {
 type Props = {
 	viewModel: {
 		loadFile: ViewModel['Toast']['LoadFile'];
-		creation: ViewModel['Toast']['EstablishmentCreation'];
+		updating: ViewModel['Toast']['EstablishmentUpdating'];
 	};
 };
 
@@ -30,7 +30,7 @@ export function useUpdatingUseCase({ viewModel }: Props) {
 		EstablishmentUpdatingResponseModel,
 		[EstablishmentUpdatingRequestModel]
 	>({
-		messages: viewModel.creation,
+		messages: viewModel.updating,
 	});
 
 	const establishmentUpdatingAction = createAction({

@@ -1,5 +1,6 @@
 import {
-	type PAGES,
+	COOKIES,
+	PAGES,
 	checkRoleAccess,
 	getSessionData,
 	handleAuthRedirection,
@@ -7,8 +8,11 @@ import {
 	updateLocaleCookiesIfNeeded,
 } from '@/lib';
 import { UserRole } from '@business-entities';
+import { getCookie } from '@common';
 import createMiddleware from 'next-intl/middleware';
 import { type NextRequest, NextResponse } from 'next/server';
+import { setDefaultSettings } from './app/[locale]/dashboard/page-settings-actions';
+import { clearCookie } from './common/actions/clear-cookie';
 import { supportedLanguages } from './i18n/routing';
 
 const nextIntlMiddleware = createMiddleware({
@@ -49,6 +53,15 @@ export default async function middleware(req: NextRequest): Promise<NextResponse
 	const authRedirect = handleAuthRedirection(req, sessionData);
 	if (authRedirect) {
 		return authRedirect;
+	}
+
+	if (basePath.startsWith(PAGES.DASHBOARD)) {
+		const settings = await getCookie(COOKIES.USER_SETTINGS, true);
+		if (!settings) {
+			await setDefaultSettings();
+		}
+	} else {
+		await clearCookie(COOKIES.USER_SETTINGS);
 	}
 
 	return response;

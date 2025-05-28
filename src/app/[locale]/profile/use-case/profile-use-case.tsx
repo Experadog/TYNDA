@@ -102,10 +102,10 @@ export const ProfileContextProvider: FC<ContextProps> = ({ children, clientHisto
 	);
 };
 
-export const useProfileUseCase = (): ProfileContextType => {
+export const useProfileSettingsUseCase = (): ProfileContextType => {
 	const context = useContext(ProfileContext);
 	if (!context) {
-		throw new Error('useProfileUseCase must be used within a RegisterProvider');
+		throw new Error('useProfileSettingsUseCase must be used within a RegisterProvider');
 	}
 
 	return context;

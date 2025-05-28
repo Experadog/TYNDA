@@ -50,3 +50,12 @@ export type AsyncPageRule<T> = {
 	rules: [keyof T & string, ValueTypeFrom<T>];
 	path: PAGES;
 };
+
+// Page Setting
+
+export type PageSettings = {
+	isGrayscale: boolean;
+	fontSize: 'small' | 'medium' | 'large';
+	isUnderlineLinks: boolean;
+	borderRadius: 'none' | 'medium' | 'large';
+};

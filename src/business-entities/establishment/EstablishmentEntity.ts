@@ -41,6 +41,8 @@ export type EstablishmentDetailedDefaultValue = {
 	images: Array<never>;
 	cover: undefined;
 	discount: undefined;
+	establisher: undefined;
+	establisher_id: undefined;
 };
 
 export type EstablishmentListItem = {

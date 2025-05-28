@@ -20,7 +20,6 @@ export function useGeolocationUseCase({ schema }: Props) {
 
 	const setSchemaValue = useCallback(
 		(value: EstablishmentFormValues['coordinates']) => {
-			console.log(value);
 			schema.setValue('coordinates', value, { shouldDirty: true });
 		},
 		[schema.setValue],

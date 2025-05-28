@@ -1,20 +1,16 @@
 'use client';
 
-import UnderDevelopment from '@/components/underDevelopment/UnderDevelopment';
 import { useViewModel } from '@/i18n/getTranslate';
-import { FC } from 'react';
+import { UnderDevelopment } from '@components';
 
-interface IProps { }
+const BenefitsMapView = () => {
+	const viewModel = useViewModel(['BenefitsMap']);
 
-const BenefitsMapView: FC<IProps> = ({ }) => {
-    const viewModel = useViewModel(['BenefitsMap']);
-
-    return (
-        <div>
-            <UnderDevelopment title={viewModel.title} />
-        </div>
-    )
-
+	return (
+		<div>
+			<UnderDevelopment title={viewModel.title} />
+		</div>
+	);
 };
 
 export default BenefitsMapView;

@@ -3,13 +3,14 @@
 import { clearCookie } from '@/common/actions/clear-cookie';
 import { createFetchAction } from '@/common/actions/createFetchAction';
 import { COOKIES, URL_ENTITIES, encryptData, isSuccessResponse, parseISOStringToDate } from '@/lib';
-import type { Session, User } from '@business-entities';
+import type { Session } from '@business-entities';
 import {
 	AXIOS_GET,
 	AXIOS_PATCH,
 	AXIOS_POST,
 	type CommonDataStringResponse,
 	type Params,
+	type ProfileFormValues,
 	getCookie,
 	setCookie,
 } from '@common';
@@ -41,7 +42,7 @@ class ProfileService {
 		return response;
 	}
 
-	static async updateProfile(payload: Partial<User>) {
+	static async updateProfile(payload: ProfileFormValues) {
 		const response = await AXIOS_PATCH<ProfileUpdateResponseModel>({
 			url: URL_ENTITIES.PROFILE,
 			data: payload,
@@ -58,9 +59,11 @@ class ProfileService {
 				};
 			}
 
+			const avatar = payload.avatar instanceof File ? '' : payload.avatar || '';
+
 			const newSession: Session = {
 				...session,
-				user: { ...session?.user, ...payload },
+				user: { ...session?.user, ...payload, avatar },
 			};
 
 			setCookie(

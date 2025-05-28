@@ -5,6 +5,7 @@ import { PAGES, URL_ENTITIES, isSuccessResponse } from '@/lib';
 import { AXIOS_DELETE, AXIOS_PATCH, AXIOS_POST, type Params, isSuperUser } from '@common';
 import { permanentRedirect } from 'next/navigation.js';
 import type {
+	EstablishmentAdminCreationRequestModel,
 	EstablishmentCreationRequestModel,
 	EstablishmentCreationResponseModel,
 	EstablishmentDeletionRequestModel,
@@ -65,15 +66,23 @@ class EstablishmentService {
 	}
 
 	static async createEstablishment(
-		data: EstablishmentCreationRequestModel,
+		data: EstablishmentCreationRequestModel | EstablishmentAdminCreationRequestModel,
+		params?: Params,
 	): Promise<EstablishmentCreationResponseModel> {
+		const url = (await isSuperUser())
+			? URL_ENTITIES.ESTABLISHMENT_CREATION_ADMIN
+			: URL_ENTITIES.ESTABLISHMENT_CREATION;
+
 		const response = await AXIOS_POST<EstablishmentCreationResponseModel>({
-			url: URL_ENTITIES.ESTABLISHMENT_CREATION,
+			url,
 			data,
+			params,
 		});
 
 		return response;
 	}
+
+	static async createAdminEstablishment() {}
 
 	static async deleteEstablishment(
 		data: EstablishmentDeletionRequestModel,

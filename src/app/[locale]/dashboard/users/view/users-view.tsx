@@ -1,5 +1,15 @@
+'use client';
+
+import UsersModal from '../_component/modal/users-modal';
+import UsersTable from '../_component/users-table/users-table';
+
 const UsersView = () => {
-	return <div>UsersView</div>;
+	return (
+		<>
+			<UsersTable />
+			<UsersModal />
+		</>
+	);
 };
 
 export default UsersView;

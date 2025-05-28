@@ -3,7 +3,6 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { type SupportedLanguages, routing } from '@/i18n/routing';
 import { type Session, UserRole } from '@business-entities';
 import { COOKIES } from '../config/cookies';
-import { googleGuardUrlPath } from '../config/oauth';
 import { PAGES } from '../config/pages';
 import { decryptData } from './decryptData';
 
@@ -163,7 +162,16 @@ export function handleAuthRedirection(
 		return NextResponse.redirect(redirectUrl);
 	}
 
-	if (basePath.includes('/callback') && !searchParams.toString().includes(googleGuardUrlPath)) {
+	if (
+		sessionData?.user.role === UserRole.CLIENT &&
+		!sessionData.user.is_superuser &&
+		basePath.startsWith(PAGES.DASHBOARD)
+	) {
+		const redirectUrl = new URL(`/${pathLocale}${PAGES.PROFILE}`, req.url);
+		return NextResponse.redirect(redirectUrl);
+	}
+
+	if (basePath.includes('/callback') && !searchParams.toString().includes('googleGuardUrlPath')) {
 		const redirectUrl = new URL(`/${pathLocale}`, req.url);
 		return NextResponse.redirect(redirectUrl);
 	}

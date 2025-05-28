@@ -7,7 +7,7 @@ import { z } from 'zod';
 export const createLoginSchema = (message: ValidationMessages) => {
 	const schema = z.object({
 		email: z.string().email(message.email),
-		password: z.string().min(6, message.password),
+		password: z.string().min(1, message.password),
 	});
 
 	const defaultValues: DefaultValues = {

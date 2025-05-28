@@ -4,7 +4,7 @@ import { COOKIES, PAGES, PAGINATION } from '@/lib';
 import {
 	type GetEstablishmentAllClientResponseModel,
 	type GetRolesResponseModel,
-	type GetUsersResponseModel,
+	type UsersRetrievalResponseModel,
 	getEstablishmentAll,
 	getRoles,
 	getUsers,
@@ -15,7 +15,7 @@ import { forceRedirect, getCookie } from '@common';
 type Exposes = {
 	establishmentsResponse?: GetEstablishmentAllClientResponseModel;
 	rolesResponse?: GetRolesResponseModel;
-	usersResponse?: GetUsersResponseModel;
+	usersResponse?: UsersRetrievalResponseModel;
 };
 
 async function getCommonData(): Promise<Exposes> {
@@ -48,8 +48,6 @@ export async function executeDefaultRoleRequests(): Promise<Exposes> {
 	const establisher = role === UserRole.ESTABLISHER ? await getEstablisherData() : {};
 
 	const superUser = is_superuser ? await getSuperUserData() : {};
-
-	console.log(common, establisher, superUser);
 
 	return {
 		...common,

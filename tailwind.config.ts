@@ -12,6 +12,20 @@ export default {
 			fontFamily: {
 				roboto: 'var(--font-roboto)',
 			},
+
+			fontSize: {
+				sm: 'var(--font-sm)',
+				base: 'var(--font-base)',
+				lg: 'var(--font-lg)',
+			},
+			borderRadius: {
+				DEFAULT: 'var(--radius-base)',
+				md: 'var(--radius-md)',
+				lg: 'var(--radius-lg)',
+				xl: 'var(--radius-xl)',
+				'2xl': 'var(--radius-2xl)',
+			},
+
 			colors: {
 				//dynamic
 				background_1: 'var(--background-1)',

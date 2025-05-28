@@ -1,3 +1,4 @@
+import type { EntityStatus } from '@common';
 import type { EstablishmentDetailed } from '../establishment/EstablishmentEntity';
 
 export type User = {
@@ -22,6 +23,19 @@ export type User = {
 		card: Partial<'crud'>;
 	};
 	staff_establishment: EstablishmentDetailed | null;
+};
+
+export type UserListItem = {
+	first_name: string | null;
+	last_name: string | null;
+	avatar: string | null;
+	id: string;
+	email: string;
+	status: EntityStatus;
+	is_staff: boolean;
+	is_multi_login: boolean;
+	created_time: string;
+	last_login_time: string | null;
 };
 
 export enum UserRole {

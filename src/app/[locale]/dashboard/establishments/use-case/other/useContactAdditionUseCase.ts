@@ -1,9 +1,9 @@
-import type { SocialMedia, SocialMediaKey, createEstablishmentSchema } from '@common';
+import type { EstablishmentSchema, SocialMedia, SocialMediaKey } from '@common';
 import { useEffect, useState } from 'react';
 import { useWatch } from 'react-hook-form';
 
 type Props = {
-	schema: ReturnType<typeof createEstablishmentSchema>;
+	schema: EstablishmentSchema;
 };
 
 export function useContactAdditionUseCase({ schema }: Props) {

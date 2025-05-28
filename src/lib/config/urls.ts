@@ -15,6 +15,7 @@ export enum URL_ENTITIES {
 	ROLES = '/sys/permission_groups',
 	STAFF = '/sys/establishment_staff',
 	USERS = '/sys/users',
+	CREATE_USER_ADMIN = '/sys/users/admin-add-user',
 
 	//biz
 	CARD_HISTORY = '/biz/card_history/client-history',
@@ -27,6 +28,7 @@ export enum URL_ENTITIES {
 	ESTABLISHMENT_ALL_ESTABLISHER = '/org/establishment/all-establisher',
 	ESTABLISHMENT_ALL_ADMIN = '/org/establishment/all',
 	ESTABLISHMENT_DETAIL = '/org/establishment/detail',
+	ESTABLISHMENT_CREATION_ADMIN = '/org/establishment/admin',
 
 	ESTABLISHMENT_CREATION = '/org/establishment',
 	ESTABLISHMENT_DELETION = '/org/establishment',

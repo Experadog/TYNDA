@@ -12,10 +12,11 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { createTranslatesShape, emptyToNull, fileOrString } from '../common/common-rules';
 
-const establishmentFormShape = (messages: ViewModel['Validation']) => {
-	const { user } = useUser();
-	const isSuperUser = user?.is_superuser || false;
-
+const establishmentFormShape = (
+	messages: ViewModel['Validation'],
+	shouldValidEst: boolean,
+	shouldValidEstID: boolean,
+) => {
 	const baseTranslateShape = {
 		name: z
 			.string({ message: messages.required })
@@ -23,6 +24,14 @@ const establishmentFormShape = (messages: ViewModel['Validation']) => {
 			.max(100, messages.max_100),
 		description: z.string({ message: messages.required }).min(20, messages.min_20),
 	};
+
+	const establisherSchema = z.object({
+		email: z.string({ required_error: messages.required }).email(messages.invalid_email),
+		password: z.string({ required_error: messages.required }).min(6, messages.min_3),
+		first_name: z.preprocess(emptyToNull, z.string().nullable().optional()),
+		last_name: z.preprocess(emptyToNull, z.string().nullable().optional()),
+		permission_groups: z.array(z.string()).optional(),
+	});
 
 	const translates = createTranslatesShape(baseTranslateShape);
 
@@ -39,7 +48,14 @@ const establishmentFormShape = (messages: ViewModel['Validation']) => {
 				{ required_error: messages.required },
 			),
 
-			establisher: z.string().optional(),
+			establisher_id:
+				shouldValidEst && shouldValidEstID
+					? z.string({ required_error: messages.create_or_select_establisher })
+					: z.string().optional(),
+			establisher:
+				shouldValidEst && !shouldValidEstID
+					? establisherSchema
+					: establisherSchema.partial().optional(),
 
 			contacts: z
 				.object(
@@ -126,42 +142,31 @@ const establishmentFormShape = (messages: ViewModel['Validation']) => {
 				.refine((val) => val > 0, { message: messages.gt_0 })
 				.refine((val) => val < 100, { message: messages.lt_100 }),
 		})
+
 		.transform((data) => ({
 			...data,
 			name: data.translates?.ru?.name ?? '',
-		}))
-		.superRefine((data, ctx) => {
-			if (isSuperUser) {
-				if (!data.establisher) {
-					ctx.addIssue({
-						code: z.ZodIssueCode.custom,
-						message: messages.required,
-						path: ['establisher'],
-					});
-				}
-			} else {
-				if ('establisher' in data) {
-					ctx.addIssue({
-						code: z.ZodIssueCode.custom,
-						message: 'Establisher must not be present for non-superusers',
-						path: ['establisher'],
-					});
-				}
-			}
-		});
+		}));
 };
 
 export const createEstablishmentSchema = (
 	messages: ViewModel['Validation'],
-	detailedDefaultValue?: EstablishmentFormValues | undefined,
+	shouldValidateEstablisherID: boolean,
+	detailedDefaultValue?: EstablishmentFormValues,
 ) => {
-	const schema = establishmentFormShape(messages);
+	const { user } = useUser();
 
-	type FormValues = z.infer<typeof schema>;
+	const shouldValidateEstablisher = Boolean(!detailedDefaultValue && user?.is_superuser);
 
-	const form = useForm<FormValues>({
+	const schema = establishmentFormShape(
+		messages,
+		shouldValidateEstablisher,
+		shouldValidateEstablisherID,
+	);
+
+	const form = useForm<z.infer<typeof schema>>({
 		resolver: zodResolver(schema),
-		defaultValues: detailedDefaultValue ?? defaultValue,
+		defaultValues: detailedDefaultValue || defaultValue,
 		reValidateMode: 'onChange',
 	});
 
@@ -183,6 +188,8 @@ export const defaultValue: EstablishmentDetailedDefaultValue = {
 	images: [],
 	cover: undefined,
 	discount: undefined,
+	establisher: undefined,
+	establisher_id: undefined,
 };
 
 export type EstablishmentFormValues = z.infer<ReturnType<typeof establishmentFormShape>>;

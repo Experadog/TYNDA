@@ -10,11 +10,11 @@ import { useEstablishmentSchemaUseCase } from '../../use-case/other/useEstablish
 import { useCreationUseCase } from '../../use-case/stories/useCreationUseCase';
 import { useUpdatingUseCase } from '../../use-case/stories/useUpdatingUseCase';
 import ContactsBlock from './_components/blocks/contacts-block';
+import EstablisherBlock from './_components/blocks/establisher-block';
 import FooterBlock from './_components/blocks/footer-block';
 import GeolocationBlock from './_components/blocks/geolocation-block';
 import ImagesBlock from './_components/blocks/images-block';
 import MainInfoBlock from './_components/blocks/main-info-block';
-import UsersBlock from './_components/blocks/users-block';
 import BlockWrapper from './_components/ui/block-wrapper';
 
 type Props = {
@@ -28,6 +28,13 @@ const EstablishmentForm = ({ establishment }: Props) => {
 		states: { viewModel },
 	} = useEstablishmentContext();
 
+	const updatingUseCase = useUpdatingUseCase({
+		viewModel: {
+			updating: viewModel.Toast.EstablishmentUpdating,
+			loadFile: viewModel.Toast.LoadFile,
+		},
+	});
+
 	const creationUseCase = useCreationUseCase({
 		viewModel: {
 			creation: viewModel.Toast.EstablishmentCreation,
@@ -35,14 +42,7 @@ const EstablishmentForm = ({ establishment }: Props) => {
 		},
 	});
 
-	const updatingUseCase = useUpdatingUseCase({
-		viewModel: {
-			creation: viewModel.Toast.EstablishmentUpdating,
-			loadFile: viewModel.Toast.LoadFile,
-		},
-	});
-
-	const schema = useEstablishmentSchemaUseCase({
+	const { schema, setShouldValidateEstablisherID } = useEstablishmentSchemaUseCase({
 		defaultValue: establishment,
 		viewModel: viewModel.Validation,
 	});
@@ -79,7 +79,12 @@ const EstablishmentForm = ({ establishment }: Props) => {
 
 					{user?.is_superuser && (
 						<BlockWrapper>
-							<UsersBlock schema={schema} />
+							<EstablisherBlock
+								schema={schema}
+								onChangeEstIdValidation={(should) =>
+									setShouldValidateEstablisherID(should)
+								}
+							/>
 						</BlockWrapper>
 					)}
 

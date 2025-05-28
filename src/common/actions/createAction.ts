@@ -1,43 +1,39 @@
 import { isCommonResponse, isSuccessResponse } from '@/lib';
-import type { CommonResponse } from '../types/responses.types';
 
-interface ActionFactoryOptions<TRequest, TResponse> {
-	requestAction: (values: TRequest) => Promise<TResponse>;
-	onSuccess?: (response: TResponse) => void;
-	onError?: (error?: Error | CommonResponse<unknown>) => void;
+export interface ActionFactoryOptions<TArgs extends unknown[], TResponse> {
+	requestAction: (...args: TArgs) => Promise<TResponse>;
+	onSuccess?: (response: TResponse) => void | Promise<void>;
+	onError?: (error: unknown) => void | Promise<void>;
 }
 
-export function createAction<TRequest, TResponse>({
+export function createAction<TArgs extends unknown[], TResponse>({
 	requestAction,
 	onSuccess,
 	onError,
-}: ActionFactoryOptions<TRequest, TResponse>) {
-	return async (values: TRequest): Promise<TResponse> => {
+}: ActionFactoryOptions<TArgs, TResponse>): (...args: TArgs) => Promise<TResponse> {
+	return async (...args: TArgs): Promise<TResponse> => {
 		try {
-			const response = await requestAction(values);
+			const response = await requestAction(...args);
 
 			if (!response) {
-				throw new Error();
+				throw new Error('Empty response');
 			}
 
 			if (onSuccess && isSuccessResponse(response)) {
-				onSuccess(response);
-			} else {
-				if (isCommonResponse(response)) {
-					if (onError) {
-						onError(response);
-					}
-				} else {
-					new Error('Unexpected response format');
+				await onSuccess(response);
+			} else if (isCommonResponse(response)) {
+				if (onError) {
+					await onError(response);
 				}
+			} else {
+				throw new Error('Unexpected response format');
 			}
 
 			return response;
 		} catch (error) {
 			if (onError) {
-				onError(error as Error);
+				await onError(error);
 			}
-
 			throw error;
 		}
 	};

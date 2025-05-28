@@ -1,7 +1,7 @@
 import type { StaffRetrievalResponseModel } from '@/services';
 import { useStaffModalUseCase } from './modal/useStaffModalUseCase';
 import { useStaffPaginationUseCase } from './pagination/useStaffPaginationUseCase';
-import { useStaffFromUseCase } from './schema/useStaffFormUseCase';
+import { useStaffFormUseCase } from './schema/useStaffFormUseCase';
 import { useStaffCreationUseCase } from './stories/useStaffCreationUseCase';
 import { useStaffDeletionUseCase } from './stories/useStaffDeletionUseCase';
 import { useStaffUpdatingUseCase } from './stories/useStaffUpdatingUseCase';
@@ -11,7 +11,7 @@ type Props = {
 };
 
 export function useStaffUseCase({ staff }: Props) {
-	const schema = useStaffFromUseCase();
+	const schema = useStaffFormUseCase();
 	const pagination = useStaffPaginationUseCase(staff);
 
 	const modal = useStaffModalUseCase({ schema });

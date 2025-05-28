@@ -1,4 +1,7 @@
-import type { User } from '@business-entities';
-import type { CommonResponse, Paginated } from '@common';
+import type { UserListItem } from '@business-entities';
+import type { CommonResponse, Paginated, UserFormValues } from '@common';
 
-export type GetUsersResponseModel = CommonResponse<Paginated<User>>;
+export type UsersRetrievalResponseModel = CommonResponse<Paginated<UserListItem>>;
+
+export type UserCreationResponseModel = CommonResponse<string>;
+export type UserCreationRequestModel = UserFormValues;

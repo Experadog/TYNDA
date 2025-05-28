@@ -29,7 +29,6 @@ const ImgUploader = ({
 }: Props) => {
 	const inputRef = useRef<HTMLInputElement | null>(null);
 	const [preview, setPreview] = useState<string | null>(defaultValue ?? null);
-	const id = useRef(`img-upload-${Math.random().toString(36).slice(2, 9)}`);
 
 	useEffect(() => {
 		setPreview(defaultValue ?? null);
@@ -57,9 +56,9 @@ const ImgUploader = ({
 	return (
 		<div className={clsx('mx-auto', className)}>
 			<label
-				htmlFor={id.current}
+				htmlFor={'img-upload'}
 				className={clsx(
-					'relative border border-dashed border-muted-foreground hover:border-yellow transition cursor-pointer bg-muted overflow-hidden flex items-center justify-center text-muted-foreground group',
+					'relative border border-dashed border-muted-foreground hover:border-yellow transition cursor-pointer bg-muted overflow-hidden flex items-center justify-center text-muted-foreground group p-1',
 					sizeMap[size],
 					circle ? 'rounded-full' : 'rounded-2xl',
 				)}
@@ -98,7 +97,7 @@ const ImgUploader = ({
 			<input
 				ref={inputRef}
 				type="file"
-				id={id.current}
+				id={'img-upload'}
 				accept="image/*"
 				onChange={handleFileChange}
 				className="hidden"

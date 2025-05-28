@@ -56,8 +56,6 @@ const DashboardBreadcrumbs = () => {
 		dynamicLabels,
 	});
 
-	console.log(breadCrumbs);
-
 	return (
 		<ExtendedBreadCrumbs paths={breadCrumbs.paths} home={breadCrumbs.home} hideSingle={true} />
 	);

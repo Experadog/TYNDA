@@ -5,7 +5,7 @@ export type PaginationKeys = 'staff' | 'establishment' | 'role' | 'user';
 export const PAGINATION: Record<PaginationKeys, Pick<Params, 'size' | 'page'>> = {
 	staff: {
 		page: '1',
-		size: '20',
+		size: '2',
 	},
 	establishment: {
 		page: '1',
