@@ -77,7 +77,7 @@ const EstablishmentForm = ({ establishment }: Props) => {
 						<GeolocationBlock schema={schema} />
 					</BlockWrapper>
 
-					{user?.is_superuser && (
+					{user?.is_superuser && !establishment && (
 						<BlockWrapper>
 							<EstablisherBlock
 								schema={schema}

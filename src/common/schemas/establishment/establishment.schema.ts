@@ -31,6 +31,7 @@ const establishmentFormShape = (
 		first_name: z.preprocess(emptyToNull, z.string().nullable().optional()),
 		last_name: z.preprocess(emptyToNull, z.string().nullable().optional()),
 		permission_groups: z.array(z.string()).optional(),
+		staff_establishment_id: z.string().optional(),
 	});
 
 	const translates = createTranslatesShape(baseTranslateShape);

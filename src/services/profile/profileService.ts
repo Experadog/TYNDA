@@ -84,6 +84,15 @@ class ProfileService {
 		return response;
 	}
 
+	static async secondStepPhoneVerification(params: Params) {
+		const response = await AXIOS_POST<CommonDataStringResponse>({
+			url: URL_ENTITIES.VERIFY_PHONE,
+			params,
+		});
+	
+		return response;
+	}
+
 	static async updateCredentials(data: CredentialsUpdateRequestModel) {
 		const response = await AXIOS_POST<CredentialsUpdateResponseModel>({
 			url: URL_ENTITIES.UPDATE_CREDENTIALS,
@@ -100,6 +109,7 @@ class ProfileService {
 
 export const {
 	firstStepPhoneVerification,
+	secondStepPhoneVerification,
 	getClientHistory,
 	getProfileInfo,
 	updateProfile,

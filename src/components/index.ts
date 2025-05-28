@@ -1,10 +1,10 @@
-export { default as AnimationTracker } from './animation/animation-tracker/animation-tracker';
 export { default as Fade } from './animation/fade/fade';
 export { default as Translate } from './animation/translate/translate';
 export { default as Avatar } from './avatar/avatar';
 export { default as DeletionConfirmModal } from './deletion-confirm-modal/deletion-confirm-modal';
 export { default as EntityStatusComponent } from './entity-status/entity-status';
 export { default as EstCategorySlider } from './est-category-slider/est-category-slider';
+export { default as GoogleAnalytics } from './google-analytics/google-analytics';
 export { default as ImgMask } from './img-mask/img-mask';
 export { default as ImgUploader } from './img-uploader/img-uploader';
 export { default as Layout } from './layout/layout';

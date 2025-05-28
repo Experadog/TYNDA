@@ -30,6 +30,17 @@ export default async function middleware(req: NextRequest): Promise<NextResponse
 
 	let response = nextIntlMiddleware(req);
 
+	const cookieHeader = req.headers.get('cookie') || '';
+	const themeCookieMatch = cookieHeader.match(/theme=(dark|light)/);
+	const theme = themeCookieMatch ? themeCookieMatch[1] : 'light';
+
+	response.cookies.set({
+		name: COOKIES.THEME,
+		value: theme,
+		path: '/',
+		sameSite: 'lax',
+	});
+
 	// Аутентификация + Локализация и куки
 	const sessionData = getSessionData(req);
 

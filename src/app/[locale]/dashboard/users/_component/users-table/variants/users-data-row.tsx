@@ -31,8 +31,7 @@ const UsersDataRow = ({ data }: Props) => {
 						{formatDate(item.created_time, { showTime: true })}
 					</BodyCell>
 					<BodyCell className="w-44 text-gray">
-						{formatDate(item.last_login_time, { showTime: true }) ||
-							'Вход не осуществлен'}
+						{formatDate(item.last_login_time, { showTime: true }) || 'Отсутствует'}
 					</BodyCell>
 					<BodyCell className="w-28" align="center">
 						<EntityStatusComponent status={item.status} />

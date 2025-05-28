@@ -103,11 +103,6 @@ html.rounded-large {
 	--radius-2xl: 2.5rem;
 }
 
-/* disable animation on low FPS */
-/* .reduce-motion * {
-	animation: none !important;
-} */
-
 html.font-size-small {
 	--font-sm: 0.75rem;
 	--font-base: 0.875rem;
@@ -163,17 +158,17 @@ html {
 
 	::-webkit-scrollbar-track {
 		background: var(--background-1);
-		border-radius: 10px;
+		border-radius: 6px;
 	}
 
 	::-webkit-scrollbar-thumb {
 		background-color: #747474;
-		border-radius: 10px;
+		border-radius: 6px;
 		border: 2px solid #f0f0f0;
 	}
 
 	scrollbar-width: thin;
-	scrollbar-color: #747474 #f0f0f0;
+	scrollbar-color: #747474 var(--background-1);
 }
 
 .numeric {

@@ -43,7 +43,6 @@ export const useLoginUseCase = () => {
 			router.push(PAGES.DASHBOARD);
 			return;
 		}
-
 		if (role === UserRole.CLIENT) {
 			router.push(PAGES.PROFILE);
 			return;

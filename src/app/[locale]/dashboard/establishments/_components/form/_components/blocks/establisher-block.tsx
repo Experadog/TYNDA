@@ -19,7 +19,7 @@ const EstablisherBlock = ({ schema, onChangeEstIdValidation }: Props) => {
 	const {
 		actions: { activateCreation, deactivateCreation },
 		states: { isEstablisherCreation },
-	} = useEstablisherAdditionUseCase({ onChangeEstIdValidation });
+	} = useEstablisherAdditionUseCase({ onChangeEstIdValidation, schema });
 
 	return (
 		<div className="flex flex-col gap-4 font-roboto w-full">

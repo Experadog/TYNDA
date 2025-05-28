@@ -15,4 +15,5 @@ export type Params = {
 	scope?: PermissionScopeKey;
 	staff_establishment_id?: string;
 	establisher_id?: string;
+	request_id?: string;
 };

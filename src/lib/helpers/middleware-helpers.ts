@@ -171,7 +171,7 @@ export function handleAuthRedirection(
 		return NextResponse.redirect(redirectUrl);
 	}
 
-	if (basePath.includes('/callback') && !searchParams.toString().includes('googleGuardUrlPath')) {
+	if (basePath.includes('/callback') && !searchParams.toString().includes('www.googleapis.com')) {
 		const redirectUrl = new URL(`/${pathLocale}`, req.url);
 		return NextResponse.redirect(redirectUrl);
 	}

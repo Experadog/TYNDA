@@ -67,6 +67,7 @@ export const ESTABLISHMENTS_CATEGORIES = {
 	transfer: 'transfer',
 	tour_company: 'tour_company',
 	guides: 'guides',
+	discounts_and_promotions: 'discounts_and_promotions',
 } as const;
 
 export type EstablishmentCategory = keyof typeof ESTABLISHMENTS_CATEGORIES;
