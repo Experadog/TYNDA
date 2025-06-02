@@ -18,6 +18,6 @@ export const PAGINATION: Record<PaginationKeys, Pick<Params, 'size' | 'page'>> =
 	},
 	user: {
 		page: '1',
-		size: '15',
+		size: '20',
 	},
 } as const;

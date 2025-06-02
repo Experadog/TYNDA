@@ -13,6 +13,7 @@ export * from './helpers/createDynamicCallbackUrl';
 export * from './helpers/createRandomID';
 export * from './helpers/decryptData';
 export * from './helpers/defaultCookieConfig';
+export * from './helpers/divideChatToNewAndExisting';
 export * from './helpers/encryptData';
 export * from './helpers/formateDate';
 export * from './helpers/getTokensFromSession';

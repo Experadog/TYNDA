@@ -21,12 +21,15 @@ const Footer: FC<IProps> = () => {
 	const { viewModel } = useFooterUseCase();
 	const path = usePathname();
 
+	const className =
+		path.startsWith(PAGES.UPDATE_PROFILE) || path === PAGES.DASHBOARD ? 'hidden' : '';
+
 	return (
 		<footer
 			id="footer"
 			className={clsx(
 				'bg-background_4 py-[60px] pl-[60px] lg:pt-20 lg:px-5 lg:pb-24',
-				path.startsWith(PAGES.DASHBOARD) ? 'hidden' : '',
+				className,
 			)}
 		>
 			<div className="max-w-[1320px] m-auto flex flex-col lg:gap-[30px]">

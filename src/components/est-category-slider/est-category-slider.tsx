@@ -18,7 +18,7 @@ import {
 	LuMapPinned,
 	LuRoute,
 	LuShoppingBag,
-	LuUtensils
+	LuUtensils,
 } from 'react-icons/lu';
 import Slider from '../slider/slider';
 
@@ -93,12 +93,14 @@ const EstCategorySlider = ({ viewModel, slidesPerView, spacing, onSelect }: Prop
 				})}
 			</Slider>
 			<button
+				type="button"
 				className="category-slider-prev absolute left-0 lg:left-[-10px] top-[40%] -translate-y-1/2 z-10"
 				aria-label="Previous"
 			>
 				<LuChevronLeft className="w-6 h-6 text-gray-600" />
 			</button>
 			<button
+				type="button"
 				className="category-slider-next absolute right-0 lg:right-[-10px] top-[40%] -translate-y-1/2 z-10"
 				aria-label="Next"
 			>

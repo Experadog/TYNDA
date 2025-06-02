@@ -1,3 +1,5 @@
+'use client';
+
 import clsx from 'clsx';
 import type { Control, FieldValues, Path } from 'react-hook-form';
 import { MdSearchOff } from 'react-icons/md';
@@ -31,6 +33,11 @@ type Props<T extends FieldValues> = {
 	multiMaxCount?: number;
 	isAutoComplete?: boolean;
 	showAvatar?: boolean;
+	isInfinityScroll?: boolean;
+	onReachEnd?: () => Promise<void>;
+	isLoading?: boolean;
+	isPaginationLoading?: boolean;
+	isEnd?: boolean;
 };
 
 const CustomSelect = <T extends FieldValues>({
@@ -45,7 +52,22 @@ const CustomSelect = <T extends FieldValues>({
 	multiMaxCount,
 	isAutoComplete,
 	showAvatar,
+	isInfinityScroll,
+	onReachEnd,
+	isPaginationLoading,
+	isEnd,
 }: Props<T>) => {
+	const handleScroll = async (e: React.UIEvent<HTMLDivElement>) => {
+		if (!isInfinityScroll) return;
+
+		const target = e.currentTarget;
+		const nearBottom = target.scrollTop + target.clientHeight >= target.scrollHeight - 5;
+
+		if (nearBottom && !isEnd) {
+			await onReachEnd?.();
+		}
+	};
+
 	return (
 		<FormField
 			control={control}
@@ -78,6 +100,8 @@ const CustomSelect = <T extends FieldValues>({
 							/>
 						) : isAutoComplete ? (
 							<CustomAutocomplete
+								isPaginationLoading={isPaginationLoading}
+								onScroll={handleScroll}
 								value={field?.value}
 								onChange={(item) => field.onChange(item?.value)}
 								data={data}

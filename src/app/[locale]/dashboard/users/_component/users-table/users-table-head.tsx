@@ -9,12 +9,13 @@ const UsersTableHead = () => {
 		<thead>
 			<tr className="bg-background_2">
 				<HeaderCell className="border-l-0 w-20">Аватар</HeaderCell>
-				<HeaderCell className="w-40">ФИО</HeaderCell>
+				<HeaderCell className="w-36">ФИО</HeaderCell>
 				<HeaderCell className="w-52">Почта</HeaderCell>
 
 				<HeaderCell className="w-44">Создан</HeaderCell>
 				<HeaderCell className="w-44">Взаимодействие</HeaderCell>
 				<HeaderCell className="w-28">Статус</HeaderCell>
+				<HeaderCell className="w-24">Роль</HeaderCell>
 
 				<HeaderCell className="border-r-0 w-36 text-center" align="center">
 					<Button

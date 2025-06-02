@@ -7,7 +7,7 @@ interface IProps {
 }
 
 const ProfileView: FC<IProps> = ({ children }) => {
-	return <div className="h-full px-12 py-7">{children}</div>;
+	return <div className="h-full">{children}</div>;
 };
 
 export default ProfileView;

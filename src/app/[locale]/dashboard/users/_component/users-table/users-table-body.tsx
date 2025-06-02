@@ -6,7 +6,9 @@ import UsersLoadingRow from './variants/users-loading-row';
 const StaffTableBody = () => {
 	const { pagination } = useUsersContext();
 	const {
-		states: { data, isLoading },
+		table_params: {
+			states: { data, isLoading },
+		},
 	} = pagination;
 
 	if (isLoading) {

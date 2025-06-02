@@ -18,7 +18,12 @@ const Sidebar = () => {
 		actions: { onLogout },
 	} = useUpdateProfileUseCase();
 
-	const icons = [<LuUserRound />, <LuShieldHalf />, <FiCreditCard />, <HiOutlineChatAlt />];
+	const icons = [
+		<LuUserRound key={'1'} />,
+		<LuShieldHalf key={'2'} />,
+		<FiCreditCard key={'3'} />,
+		<HiOutlineChatAlt key={'3'} />,
+	];
 	const labels = [
 		'Личный данные',
 		'Вход и безопасность',
@@ -29,7 +34,7 @@ const Sidebar = () => {
 	const shouldHighlightLink = useMemo(() => (path: string) => path === pathname, [pathname]);
 
 	return (
-		<div className="flex flex-col gap-5 rounded-3xl shadow-md p-6 bg-background_1">
+		<div className="flex flex-col gap-5 p-6 bg-background_1 static h-full">
 			<div className="flex flex-col gap-6">
 				{PROFILE_LINKS.map((link, index) => (
 					<Link

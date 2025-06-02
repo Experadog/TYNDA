@@ -1,29 +1,38 @@
 'use client';
 
 import { PAGINATION, isSuccessResponse } from '@/lib';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { Params } from '../types/http.types';
 import type { CommonResponse, Paginated } from '../types/responses.types';
 
 type FetchFunction<T> = (params: Params) => Promise<CommonResponse<Paginated<T>>>;
 
-export function usePagination<T>(
-	initialData: Paginated<T>,
-	fetchFn: FetchFunction<T>,
-	entity: keyof typeof PAGINATION,
-) {
-	const [pages, setPages] = useState<Record<number, T[]>>({
-		[initialData.page]: initialData.items,
-	});
+type UsePaginationParams<T> = {
+	initialData?: Paginated<T>;
+	fetchFn: FetchFunction<T>;
+	entity: keyof typeof PAGINATION;
+	params?: Params;
+};
 
-	const [page, setPage] = useState(Number(initialData.page));
-	const [isLoading, setIsLoading] = useState(false);
+export function usePagination<T>({
+	initialData,
+	fetchFn,
+	entity,
+	params = {},
+}: UsePaginationParams<T>) {
+	const [pages, setPages] = useState<Record<number, T[]>>(
+		initialData ? { [initialData.page]: initialData.items } : {},
+	);
+
+	const [page, setPage] = useState(initialData ? Number(initialData.page) : 1);
+	const [isLoading, setIsLoading] = useState(!initialData);
 
 	const fetchPage = async (pageToFetch: number): Promise<boolean> => {
 		setIsLoading(true);
 		const response = await fetchFn({
 			page: String(pageToFetch),
 			size: PAGINATION[entity].size,
+			...params,
 		});
 
 		let success = false;
@@ -79,20 +88,54 @@ export function usePagination<T>(
 		await fetchPage(page);
 	};
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
-		setPages((prev) => ({
-			...prev,
-			[initialData.page]: initialData.items,
-		}));
-	}, [initialData.page, initialData.items]);
+		if (!initialData) {
+			fetchPage(page);
+		}
+	}, []);
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	useEffect(() => {
+		if (!initialData) return;
+
+		setPages((prev) => {
+			const existing = prev[initialData.page];
+
+			const isSame =
+				existing &&
+				existing.length === initialData.items.length &&
+				existing.every((item, idx) => item === initialData.items[idx]);
+
+			if (isSame) return prev;
+
+			return {
+				...prev,
+				[initialData.page]: initialData.items,
+			};
+		});
+	}, [initialData?.page, initialData?.items]);
+
+	const items = useMemo(() => {
+		const flatItems = Object.values(pages).flat();
+		const seen = new Set();
+		return flatItems.filter((item: T) => {
+			const key = JSON.stringify(item);
+			if (seen.has(key)) return false;
+			seen.add(key);
+			return true;
+		});
+	}, [pages]);
 
 	const states = {
 		currentPage: page,
 		data: pages[page] || [],
 		isLoading,
 		isFirstPage: page === 1,
-		hasNextPage: initialData.total_pages !== 0 && page !== initialData.total_pages,
+		hasNextPage:
+			!!initialData && initialData.total_pages !== 0 && page !== initialData.total_pages,
 		allPages: pages,
+		list: items,
 	};
 
 	const actions = {

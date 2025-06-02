@@ -52,7 +52,6 @@ export type AsyncPageRule<T> = {
 };
 
 // Page Setting
-
 export type PageSettings = {
 	isGrayscale: boolean;
 	fontSize: 'small' | 'medium' | 'large';

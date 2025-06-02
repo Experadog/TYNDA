@@ -34,9 +34,16 @@ export enum URL_ENTITIES {
 	ESTABLISHMENT_CREATION = '/org/establishment',
 	ESTABLISHMENT_DELETION = '/org/establishment',
 	ESTABLISHMENT_UPDATING = '/org/establishment',
+
+	//mes
+	CHAT_MY = '/mes/chat/my',
+	CHAT = '/mes/chat',
+	CHAT_ESTABLISHMENT = '/mes/chat/establishment',
 }
 
 export enum URL_LOCAL_ENTITIES {
 	CLEAR_SESSION = '/clear-session',
 	REFRESH_SESSION = '/refresh-session',
 }
+
+export const WEBSOCKET_API = 'wss://soyuz.kg/skgapi/v1/mes/chat/ws?token=';

@@ -36,6 +36,8 @@ type Props<T extends ItemBase> = {
 	isLoading?: boolean;
 	className?: string;
 	showAvatar?: boolean;
+	onScroll: (e: React.UIEvent<HTMLDivElement>) => void;
+	isPaginationLoading?: boolean;
 };
 
 export function CustomAutocomplete<T extends ItemBase>({
@@ -47,6 +49,8 @@ export function CustomAutocomplete<T extends ItemBase>({
 	isLoading,
 	showAvatar,
 	className,
+	onScroll,
+	isPaginationLoading,
 }: Props<T>) {
 	const [open, setOpen] = React.useState(false);
 	const [inputValue, setInputValue] = React.useState('');
@@ -108,7 +112,7 @@ export function CustomAutocomplete<T extends ItemBase>({
 						className="p-6"
 					/>
 
-					<CommandList className="min-h-[150px]" key={inputValue}>
+					<CommandList className="min-h-[150px]" key={inputValue} onScroll={onScroll}>
 						{!filteredData.length && !isLoading && (
 							<CommandEmpty className="bg-red-200a absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
 								<MdOutlineSearchOff className="size-8 text-muted-foreground hover:text-foreground" />
@@ -118,37 +122,48 @@ export function CustomAutocomplete<T extends ItemBase>({
 						<CommandGroup>
 							{isLoading ? (
 								<CommandLoading>
-									<LoadingSpinner />
+									<div className="flex justify-center py-2">
+										<LoadingSpinner />
+									</div>
 								</CommandLoading>
 							) : (
-								filteredData.map((item) => (
-									<CommandItem
-										key={item.value}
-										value={item.label}
-										onSelect={() => {
-											onChange?.(item);
-											setInputValue(item.label);
-											setOpen(false);
-										}}
-										className="cursor-pointer hover:bg-orange"
-									>
-										{showAvatar && (
-											<Avatar
-												src={item?.avatar}
-												size="small"
-												className="rounded-full"
-											/>
-										)}
-
-										{item.label}
-										<Check
-											className={cn(
-												'ml-auto',
-												value === item.value ? 'opacity-100' : 'opacity-0',
+								<>
+									{filteredData.map((item) => (
+										<CommandItem
+											key={item.value}
+											value={item.label}
+											onSelect={() => {
+												onChange?.(item);
+												setInputValue(item.label);
+												setOpen(false);
+											}}
+											className="cursor-pointer hover:bg-orange"
+										>
+											{showAvatar && (
+												<Avatar
+													src={item?.avatar}
+													size="small"
+													className="rounded-full"
+												/>
 											)}
-										/>
-									</CommandItem>
-								))
+											{item.label}
+											<Check
+												className={cn(
+													'ml-auto',
+													value === item.value
+														? 'opacity-100'
+														: 'opacity-0',
+												)}
+											/>
+										</CommandItem>
+									))}
+
+									{isPaginationLoading && (
+										<div className="flex justify-center py-2">
+											<LoadingSpinner />
+										</div>
+									)}
+								</>
 							)}
 						</CommandGroup>
 					</CommandList>

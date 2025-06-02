@@ -31,3 +31,7 @@ export * from './user/userServiceTypes';
 //Roles
 export * from './roles/roleServiceTypes';
 export * from './roles/rolesService';
+
+//Chat
+export * from './chat/chatService';
+export * from './chat/chatServiceTypes';
