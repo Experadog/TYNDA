@@ -7,9 +7,11 @@ import type { FC } from 'react';
 import { navbarIcons } from './navbar';
 import { useNavbarUseCase } from './use-cases/useNavbarUseCase';
 
-type IProps = {};
+type IProps = {
+	onClose: (e: boolean) => void;
+};
 
-const MobileNavbar: FC<IProps> = ({}) => {
+const MobileNavbar: FC<IProps> = ({onClose}) => {
 	const { viewModel, navigateToAuthOrProfile, user, shouldHighlightLink, shouldHighlightBtn } =
 		useNavbarUseCase();
 
@@ -20,6 +22,7 @@ const MobileNavbar: FC<IProps> = ({}) => {
 					<Link
 						key={path}
 						href={path}
+						onClick={() => onClose(false)}
 						className={clsx(
 							'font-semibold uppercase text-sm sm:text-xs hover:text-yellow',
 							shouldHighlightLink(path) && 'text-yellow',

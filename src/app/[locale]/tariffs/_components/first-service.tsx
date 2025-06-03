@@ -19,7 +19,7 @@ const FirstService: FC<IProps> = ({ firstService }) => {
                             width={69}
                             height={66}
                         />
-                        <p className='text-yellow text-6xl font-bold uppercase'>S-CLUB</p>
+                        <p className='text-yellow text-6xl font-bold uppercase'>TYNDA</p>
                     </div>
                     <p className='text-base font-semibold text-foreground_1'>
                         {firstService.text1}

@@ -50,7 +50,7 @@ export default async function middleware(req: NextRequest): Promise<NextResponse
 		Boolean(sessionData?.user.is_superuser || sessionData?.user.role === UserRole.ESTABLISHER),
 	);
 
-	const basePath = pathname.replace(/^\/(ru|kg)\//, '/') as PAGES;
+	const basePath = pathname.replace(/^\/(ru|kg|en)\//, '/') as PAGES;
 	const roleRedirectPath = checkRoleAccess(
 		basePath,
 		sessionData?.user.is_superuser || false,

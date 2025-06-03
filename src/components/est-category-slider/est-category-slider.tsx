@@ -8,6 +8,7 @@ import {
 	LuBaby,
 	LuBadgePercent,
 	LuBus,
+	LuCake,
 	LuCalendar,
 	LuChevronLeft,
 	LuChevronRight,
@@ -15,7 +16,9 @@ import {
 	LuHouse,
 	LuKeyRound,
 	LuLandmark,
+	LuMap,
 	LuMapPinned,
+	LuMountain,
 	LuRoute,
 	LuShoppingBag,
 	LuUtensils,
@@ -31,10 +34,13 @@ const icons = [
 	LuLandmark,
 	LuCalendar,
 	LuBaby,
+	LuMountain,
+	LuBadgePercent,
+	LuCake,
+	LuMap,
 	LuBus,
 	LuMapPinned,
 	LuRoute,
-	LuBadgePercent,
 ];
 
 type Props = {

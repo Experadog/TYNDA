@@ -77,7 +77,7 @@ export function getSessionData(req: NextRequest): Session | null {
 }
 
 export function isProtectedClientRoute(pathname: string): boolean {
-	const basePath = pathname.replace(/^\/(ru|kg)\//, '/') as PAGES;
+	const basePath = pathname.replace(/^\/(ru|kg|en)\//, '/') as PAGES;
 	return (
 		PROTECTED_CLIENT_ROUTES.includes(basePath) ||
 		PROTECTED_CLIENT_ROUTES.some((route) => basePath.includes(route))
@@ -149,7 +149,7 @@ export function handleAuthRedirection(
 	sessionData: Session | null,
 ): NextResponse | null {
 	const { pathname, searchParams } = req.nextUrl;
-	const basePath = pathname.replace(/^\/(ru|kg)\//, '/') as PAGES;
+	const basePath = pathname.replace(/^\/(ru|kg|en)\//, '/') as PAGES;
 	const pathLocale = getLocaleFromPath(pathname) || 'ru';
 
 	if (sessionData && basePath.startsWith('/auth')) {

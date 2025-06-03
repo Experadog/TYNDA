@@ -52,6 +52,7 @@ export const metadata: Metadata = {
 		languages: {
 			ru: 'https://tynda.kg/ru',
 			ky: 'https://tynda.kg/kg',
+			en: 'https://tynda.kg/en',
 		},
 	},
 };
