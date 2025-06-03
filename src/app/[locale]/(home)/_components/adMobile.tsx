@@ -11,10 +11,10 @@ const AdMobile: FC<IProps> = ({ adMobileViewModel }) => {
 	return (
 		<div className="mt-[120px] lg:mt-[60px] grid grid-cols-2 lg:grid-cols-1 gap-[40px]">
 			<Translate direction="right" distance={100} animateOnce={false}>
-				<div className="bg-[var(--yellow)] rounded-[45px] pt-[25px] px-[39px]">
+				<div className="bg-[var(--yellow)] rounded-[45px] pt-[25px] pl-[39px] pr-[22px] flex items-end justify-center">
 					<Image
 						priority
-						src={'/home/mobileImg.webp'}
+						src={'/home/telImg.webp'}
 						alt="phone"
 						width={540}
 						height={699}
