@@ -13,9 +13,9 @@ const MoreRecs: FC<IProps> = ({ establishments, moreRecsViewModel }) => {
 	return (
 		<Translate direction="right" distance={100} animateOnce={false}>
 			<div className="mt-[120px] lg:mt-[60px] flex flex-col items-center justify-center gap-[20px] ">
-				<h3 className="text-lg lg:text-base font-semibold uppercase">
+				{/* <h3 className="text-lg lg:text-base font-semibold uppercase">
 					{moreRecsViewModel.title}
-				</h3>
+				</h3> */}
 				<h2 className="text-[34px] lg:text-2xl font-medium">
 					{moreRecsViewModel.description}
 				</h2>

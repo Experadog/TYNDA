@@ -1,10 +1,10 @@
 'use client';
 import type { EstablishmentCategory, EstablishmentListItem } from '@/business-entities/establishment/EstablishmentEntity';
 import type { Paginated } from '@common';
-import { Button, EstCategorySlider } from '@components';
+import { EstCategorySlider } from '@components';
 import { useState, type FC } from 'react';
-import { MdKeyboardArrowDown } from 'react-icons/md';
-import { TbFilter } from 'react-icons/tb';
+// import { MdKeyboardArrowDown } from 'react-icons/md';
+// import { TbFilter } from 'react-icons/tb';
 import { useMediaQuery } from 'react-responsive';
 import RecommendationCard from '../../(home)/_components/recommendationCard';
 import { useAllEnterprisesUseCase } from '../use-cases/useAllEnterprisesUseCase';
@@ -37,7 +37,7 @@ const EnterprisesFilter: FC<IProps> = ({ data, categoriesViewModel }) => {
 				spacing={itemsSpacing}
 				viewModel={categoriesViewModel}
 			/>
-			<div className="flex items-center gap-5 lg:hidden">
+			{/* <div className="flex items-center gap-5 lg:hidden">
 				<Button className="bg-background_5 hover:bg-yellow text-white flex items-center gap-1 rounded-[22px] w-36 h-10">
 					{viewModel.enterprisesFilter.button1} <MdKeyboardArrowDown />
 				</Button>
@@ -56,7 +56,7 @@ const EnterprisesFilter: FC<IProps> = ({ data, categoriesViewModel }) => {
 					<TbFilter />
 					{viewModel.enterprisesFilter.button1}
 				</Button>
-			</div>
+			</div> */}
 			{filteredEstablishments.length ? (<div className="grid grid-cols-4 lg:grid-cols-2 mt-[60px] lg:mt-[30px] gap-x-5 gap-y-[34px] lg:gap-x-[10px] lg:gap-y-[20px]">
 				{filteredEstablishments.map((establishment) => (
 					<RecommendationCard

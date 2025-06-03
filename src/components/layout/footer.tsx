@@ -10,7 +10,6 @@ const icons = [
 	{ id: 0, src: '/sm/telegram.svg', alt: 'telegram icon' },
 	{ id: 1, src: '/sm/whatsapp.svg', alt: 'whatsapp icon' },
 	{ id: 2, src: '/sm/instagram.svg', alt: 'instagram icon' },
-	{ id: 3, src: '/sm/tiktok.svg', alt: 'tiktok icon' },
 ];
 
 interface IProps {

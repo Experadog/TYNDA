@@ -47,7 +47,7 @@
 	},
 	"Home": {
 		"hero": {
-			"title": "TYNDA - Tourism & Leisure",
+			"title": "Tourism & Leisure",
 			"description": "Join and subscribe to TYNDA. Let’s unite and make life in Kyrgyzstan brighter and more exciting!",
 			"button": "Join Us"
 		},
@@ -76,8 +76,9 @@
 		},
 		"adMobile": {
 			"title": "TYNDA Mobile App",
-			"description1": "Our platform aims to provide everything you need to organize and conduct football matches and tournaments. Whether it's booking venues or ordering services—we make it simple and professional.",
-			"description2": "With TYNDA, you can not only live and travel in Kyrgyzstan but also earn with us. Join our club and participate in our events or order a turnkey event.",
+			"description1": "On our platform, we aim to provide everything you need for a comfortable and safe trip around Kyrgyzstan. From information about attractions to booking accommodation and transport - everything in one place, with maximum simplicity and convenience.",
+			"description2": "TYNDA is your personal guide, assistant and service. You can get legal support, learn about upcoming events, sign up for excursions or find travel companions. We have combined useful things with opportunities to earn money: join our community and offer your own services or events.",
+			"description3": "With TYNDA you don’t just travel – you discover Kyrgyzstan in a new way.",
 			"links": "Available on"
 		},
 		"about": {
@@ -338,7 +339,7 @@
 			"banquet_halls": "Banquet halls / Toykana",
 			"tourist_attractions_and_routes": "Tourist places and routes",
 			"transfer": "Transfer",
-			"tour_company": "Tour Company",
+			"tour_company": "Tour Companies",
 			"guides": "Guides"
 		},
 		"permission_scopes": {
@@ -383,6 +384,30 @@
 		"hero": {
 			"home": "Home",
 			"about": "About the company"
+		},
+		"Conductor": {
+			"title": "Tynda is your guide to the world of real Kyrgyzstan, as you saw it.",
+			"description1": "From cozy yurts under the starry sky to luxurious VIP tours - everything is in our app.",
+			"description2": "Tynda is the first and only online platform for tourism and recreation in Kyrgyzstan, where authenticity and modern comfort harmoniously combine. Here you will find any travel options - from a soulful rest in a traditional yurt to elite glamping and individual premium tours."
+		},
+		"WhyTynda": {
+			"question1": "Why Tynda?",
+			"question2": "Who is Tynda for?",
+			"whyLeftCards": [
+				"There's something for everyone - budget treks, cozy guest houses, boutique hotels and luxury residences.",
+				"Convenient booking - easy search, instant confirmation and secure payments."
+			],
+			"whyRightCards": [
+				"Unique experiences – horseback riding tours, trekking, gastronomic tours, SPA holidays and private excursions.",
+				"Personal approach - selection of the ideal option for your style and budget."
+			],
+			"forWhomCards": [
+				"For romantics - a night in a yurt under the endless sky, the sounds of nature and the aroma of a smoking fireplace.",
+				"For those who appreciate comfort, there are modern hotels with panoramic views and a high level of service.",
+				"For those who love luxury - private villas, individual guides and exclusive routes."
+			],
+			"openForYou": "Discover the land of mountains through a new level of travel!",
+			"yourWay": "Tynda is your perfect path to the perfect journey."
 		}
 	}
 }
