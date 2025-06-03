@@ -11,7 +11,7 @@ type Props = {
 	children: ReactNode;
 	scope: ChatScope;
 	chats: ChatPreparingViewType;
-	onClick: (chatId: string) => Promise<void>;
+	onClick?: (chatId: string) => Promise<void>;
 };
 
 const ChatCustomLayout = ({ children, scope, chats, onClick }: Props) => {

@@ -2,15 +2,15 @@
 
 import { createFetchAction } from '@/common/actions/createFetchAction';
 import { PAGES, URL_ENTITIES, isSuccessResponse } from '@/lib';
-import type { ChatScope } from '@business-entities';
-import { AXIOS_POST, type Params, forceRedirect } from '@common';
+import type { ChatListItem, ChatScope } from '@business-entities';
+import { AXIOS_POST, type CommonResponse, type Params, forceRedirect } from '@common';
 import type {
 	ChatListRetrievalResponseModel,
 	ChatRetrievalResponseModel,
 } from './chatServiceTypes';
 
 class ChatService {
-	static async getChatList(): Promise<ChatListRetrievalResponseModel> {
+	static async getUserChatList(): Promise<ChatListRetrievalResponseModel> {
 		const response = await createFetchAction<ChatListRetrievalResponseModel>({
 			endpoint: URL_ENTITIES.CHAT_MY,
 			shouldBeAuthorized: true,
@@ -21,20 +21,10 @@ class ChatService {
 		return response;
 	}
 
-	static async createChat(params: Params) {
-		const response = await AXIOS_POST({
-			url: URL_ENTITIES.CHAT,
+	static async createChat(params: Params): Promise<CommonResponse<ChatListItem>> {
+		const response = await AXIOS_POST<CommonResponse<ChatListItem>>({
+			url: URL_ENTITIES.ESTABLISHMENT_CHAT,
 			params,
-		});
-
-		return response;
-	}
-
-	static async getChats(params: Params): Promise<ChatListRetrievalResponseModel> {
-		const response = await createFetchAction<ChatListRetrievalResponseModel>({
-			endpoint: URL_ENTITIES.CHAT,
-			params,
-			shouldBeAuthorized: true,
 		});
 
 		return response;
@@ -45,38 +35,40 @@ class ChatService {
 		scope: ChatScope,
 	): Promise<ChatRetrievalResponseModel> {
 		const response = await createFetchAction<ChatRetrievalResponseModel>({
-			endpoint: URL_ENTITIES.CHAT,
+			endpoint: URL_ENTITIES.CHAT_DETAILED,
 			postfix: [params?.chat_id || ''],
 			shouldBeAuthorized: true,
+			revalidateTags: [URL_ENTITIES.CHAT_DETAILED],
 		});
 
 		if (!isSuccessResponse(response)) {
 			if (scope === 'profile') {
 				await forceRedirect(PAGES.PROFILE_CHAT);
-			} else {
+			} else if (scope === 'dashboard') {
 				await forceRedirect(PAGES.DASHBOARD_CHAT);
+			} else {
+				await forceRedirect(PAGES.ESTABLISHMENT);
 			}
 		}
 
 		return response;
 	}
 
-	static async getEstablishmentChat(params: Params) {
-		const response = await createFetchAction<ChatRetrievalResponseModel>({
+	static async getEstablishmentChatList(params: Params) {
+		const response = await createFetchAction<ChatListRetrievalResponseModel>({
 			endpoint: URL_ENTITIES.CHAT_ESTABLISHMENT,
 			params,
 			shouldBeAuthorized: true,
+			revalidateTags: [URL_ENTITIES.CHAT_ESTABLISHMENT],
 		});
 
-		// console.log(response);
-
-		// if (!isSuccessResponse(response)) {
-		// await forceRedirect(PAGES.DASHBOARD_CHAT);
-		// }
+		if (!isSuccessResponse(response)) {
+			await forceRedirect(PAGES.ESTABLISHMENT);
+		}
 
 		return response;
 	}
 }
 
-export const { getChatList, createChat, getDetailedChat, getEstablishmentChat, getChats } =
+export const { getUserChatList, createChat, getDetailedChat, getEstablishmentChatList } =
 	ChatService;

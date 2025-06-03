@@ -1,9 +1,10 @@
 'use server';
 
-import { API_URL, COOKIES, LOGGER, getTokensFromSession, isEmptyObject } from '@/lib';
+import { API_URL, COOKIES, LOGGER, PAGES, getTokensFromSession, isEmptyObject } from '@/lib';
 import { cookies } from 'next/headers';
 import type { Params } from '../types/http.types';
 import { clearCookie } from './clear-cookie';
+import { forceRedirect } from './forceRedirect';
 
 type Props = {
 	endpoint: string;
@@ -61,16 +62,15 @@ export async function createFetchAction<T>({
 		if (!response.ok) {
 			if (response.status === 401) {
 				await clearCookie(COOKIES.SESSION);
+				await forceRedirect(PAGES.LOGIN);
 			}
 
-			LOGGER.error(`Fetch failed: ${response.statusText}(${response.status}) ${url}`);
+			LOGGER.error(`Fetch failed: ${response.statusText}(${response.status}) ${endpoint}`);
 			return {} as T;
 		}
 
 		const data: T = await response.json();
 		LOGGER.success(`Received data from: ${cleanEndpoint} `);
-		LOGGER.info(params);
-		LOGGER.info(postfix);
 
 		return data;
 	} catch (error) {

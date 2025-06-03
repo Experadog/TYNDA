@@ -1,5 +1,6 @@
 import { formatDate } from '@/lib';
 import type { Message } from '@business-entities';
+import clsx from 'clsx';
 
 type Props = {
 	item: Message;
@@ -7,34 +8,25 @@ type Props = {
 };
 
 const MessageItem = ({ item, isMyMessage }: Props) => {
-	const { message } = item;
+	const { content_type, content, created_time } = item;
 
-	if (message.content_type !== 'text') {
+	if (content_type !== 'text') {
 		return null;
 	}
 
 	return (
 		<div className={`flex mb-2 ${isMyMessage ? 'justify-end' : 'justify-start'}`}>
 			<div
-				className={`
-          max-w-[70%] px-4 py-2
-          rounded-xl
-          break-words
-          whitespace-pre-wrap
-          ${
-				isMyMessage
-					? 'bg-green-600 text-white rounded-br-none'
-					: 'bg-background_6 text-gray-900 rounded-bl-none'
-			}
-        `}
+				className={clsx(
+					'max-w-[70%] min-w-[12%] border border-background_4 px-4 py-1 flex flex-col rounded-xl break-words whitespace-pre-wrap shadow-sm',
+					isMyMessage
+						? 'bg-chat_my text-foreground_1 rounded-tr-none'
+						: 'bg-chat_incoming text-gray-900 rounded-tl-none',
+				)}
 			>
-				<div>{message.content}</div>
-				<div
-					className={`text-xs mt-1 ${
-						isMyMessage ? 'text-green-100' : 'text-gray-600'
-					} text-right`}
-				>
-					{formatDate(message.created_time, { showTime: true, timeOnly: true })}
+				<p className="text-foreground_1 text-sm">{content}</p>
+				<div className={'text-xs text-gray text-right'}>
+					{formatDate(created_time, { showTime: true, timeOnly: true })}
 				</div>
 			</div>
 		</div>

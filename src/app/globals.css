@@ -23,7 +23,7 @@
 		--input-bg: #f0f0f0;
 		--success: #16a34a;
 
-		--gradient: linear-gradient(to bottom, #ffffff, #f0f0f3, #e4e6eb);
+		--gradient: linear-gradient(to bottom, #ffffff, #f0f0f3, #dfe0e3);
 
 		--orange: #f97316;
 		--yellow: #f4a900;
@@ -38,6 +38,9 @@
 		--radius-lg: 0.5rem;
 		--radius-xl: 0.75rem;
 		--radius-2xl: 1rem;
+
+		--chat-my: #d9fdd3;
+		--chat-incoming: white;
 	}
 
 	.dark {
@@ -58,13 +61,16 @@
 		--error: #e34242;
 		--orange: #c2410c;
 
-		--gradient: linear-gradient(to bottom, #0f0f11, #1a1b1e, #1a1a1c);
+		--gradient: linear-gradient(to bottom, #0f0f11, #1a1b1e, #111112);
 
 		--gray: #a0a0a0;
 		--shade-gray: #707070;
 		--light-gray: #3a3a3a;
 		--placeholder: #888888e5;
 		--input-bg: #1f1f1f;
+
+		--chat-my: #144d37;
+		--chat-incoming: #242626;
 
 		.leaflet-layer,
 		.leaflet-control-zoom-in,

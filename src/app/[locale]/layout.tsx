@@ -1,5 +1,6 @@
 import { GoogleAnalytics, Layout } from '@components';
 
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata, Viewport } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
 import { Raleway, Roboto } from 'next/font/google';
@@ -120,6 +121,7 @@ export default async function RootLayout({
 				<NextIntlClientProvider>
 					<CollectedProviders>
 						<Layout>{children}</Layout>
+						<SpeedInsights />
 					</CollectedProviders>
 				</NextIntlClientProvider>
 			</body>

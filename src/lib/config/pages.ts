@@ -31,11 +31,11 @@ export enum PAGES {
 	ESTABLISHMENT = '/dashboard/establishments',
 	ESTABLISHMENT_CREATION = '/dashboard/establishments/creation',
 
-	STAFF = '/staff',
-
 	USERS = '/dashboard/users',
-
 	ROLES = '/dashboard/roles',
+
+	STAFF = '/staff',
+	ESTABLISHMENT_CHAT = '/establishment-chat',
 
 	//Enterprises
 }
@@ -87,12 +87,13 @@ export const DASHBOARD_LINKS = {
 			icon: Settings,
 		},
 	],
+
 	establisher: [
 		{ key: 'ESTABLISHMENT', link: PAGES.ESTABLISHMENT, icon: Building2 },
-		{ key: 'DASHBOARD_CHAT', link: PAGES.DASHBOARD_CHAT, icon: MessageCircle },
 		{ key: 'DISCOUNTS', link: PAGES.DISCOUNTS, icon: Percent },
 		{ key: 'SETTINGS', link: PAGES.SETTINGS, icon: Settings },
 	],
+
 	establishment_worker: [
 		{ key: 'ESTABLISHMENT', link: PAGES.ESTABLISHMENT, icon: Building2 },
 		{ key: 'SETTINGS', link: PAGES.SETTINGS, icon: Settings },

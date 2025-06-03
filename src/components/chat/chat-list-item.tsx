@@ -14,9 +14,9 @@ type Props = {
 };
 
 const ChatItem = ({ scope, item }: Props) => {
-	const { id } = useParams();
+	const { id, chat_id } = useParams();
 
-	const isActive = item.id === id;
+	const isActive = item.id === id || item.id === chat_id;
 
 	const commonPath = useMemo(() => {
 		switch (scope) {
@@ -24,10 +24,26 @@ const ChatItem = ({ scope, item }: Props) => {
 				return PAGES.PROFILE_CHAT;
 			case 'dashboard':
 				return PAGES.DASHBOARD_CHAT;
+			case 'establishment':
+				return `${PAGES.ESTABLISHMENT}/${item.establishment.id}/${PAGES.ESTABLISHMENT_CHAT}`;
 			default:
 				return '';
 		}
 	}, [scope]);
+
+	console.log(
+		`${PAGES.ESTABLISHMENT}/${item.establishment.id}${PAGES.ESTABLISHMENT_CHAT}/${item.id}`,
+	);
+
+	const { avatar, name } = useMemo(() => {
+		const avatar = scope === 'establishment' ? item.client?.avatar : item.establishment.cover;
+		const name =
+			scope === 'establishment'
+				? item.client.first_name
+				: item.establishment.translates.ru.name;
+
+		return { avatar, name };
+	}, [item.id, scope]);
 
 	return (
 		<Link
@@ -38,14 +54,12 @@ const ChatItem = ({ scope, item }: Props) => {
 			)}
 		>
 			<Avatar
-				src={item.establishment.cover || '/other/avatar-placeholder.webp'}
+				src={avatar}
 				className="rounded-full size-12 border border-light_gray shrink-0"
 			/>
 			<div className="flex flex-col justify-center flex-1 overflow-hidden">
 				<div className="flex items-center justify-between gap-2">
-					<p className="text-base text-foreground_1 truncate w-full">
-						{item.establishment.translates.ru.name}
-					</p>
+					<p className="text-base text-foreground_1 truncate w-full">{name}</p>
 					<p className="text-foreground_2 text-xs">
 						{/* {item?.last_message_time || '11:03'} */}
 					</p>

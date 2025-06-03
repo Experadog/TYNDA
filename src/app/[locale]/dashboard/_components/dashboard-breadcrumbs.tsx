@@ -5,7 +5,13 @@ import { usePathname } from '@/i18n/routing';
 import { PAGES } from '@/lib';
 import { createDynamicLabels } from '@/lib/helpers/createDynamicLabels';
 import { useLocale } from '@/providers/locale/locale-provider';
-import type { ChatListItem, EstablishmentListItem, Role } from '@business-entities';
+import { useUser } from '@/providers/user/user-provider';
+import {
+	type ChatListItem,
+	type EstablishmentListItem,
+	type Role,
+	UserRole,
+} from '@business-entities';
 import { usePrepareBreadCrumbs } from '@common';
 import { ExtendedBreadCrumbs } from '@components';
 import { useMemo } from 'react';
@@ -18,8 +24,12 @@ const DashboardBreadcrumbs = () => {
 	const viewModel = useViewModel(['Shared']);
 	const { locale } = useLocale();
 
+	const { user } = useUser();
+
 	const {
-		states: { establishments },
+		pagination: {
+			states: { items: establishment },
+		},
 	} = useEstablishmentContext();
 
 	const {
@@ -33,7 +43,7 @@ const DashboardBreadcrumbs = () => {
 			async_pages: [
 				{
 					isAsyncData: true,
-					data: establishments?.items || [],
+					data: establishment || [],
 					path: PAGES.ESTABLISHMENT,
 					rules: ['id', `translates.${locale}.name`],
 				},
@@ -49,7 +59,12 @@ const DashboardBreadcrumbs = () => {
 					isAsyncData: true,
 					data: chatList?.items || [],
 					path: PAGES.DASHBOARD_CHAT,
-					rules: ['id', 'establishment.translates.ru.name'],
+					rules: [
+						'id',
+						user?.role === UserRole.ESTABLISHER
+							? ['client.first_name', 'client.last_name']
+							: 'establishment.translates.ru.name',
+					],
 				},
 			],
 			static_pages: {
@@ -57,7 +72,7 @@ const DashboardBreadcrumbs = () => {
 				keys: ['permission_scopes'],
 			},
 		});
-	}, [establishments?.items, roles?.items, chatList.items, locale, viewModel]);
+	}, [establishment, roles?.items, chatList.items, locale, viewModel]);
 
 	const breadCrumbs = usePrepareBreadCrumbs({
 		pathname,

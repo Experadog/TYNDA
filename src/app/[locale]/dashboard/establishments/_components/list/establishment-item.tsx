@@ -7,7 +7,7 @@ import { Button } from '@components';
 import clsx from 'clsx';
 import { Trash } from 'lucide-react';
 import Image from 'next/image';
-import { IoSettingsOutline } from 'react-icons/io5';
+import { IoChatbubbleEllipsesOutline, IoSettingsOutline } from 'react-icons/io5';
 import { LiaUsersCogSolid } from 'react-icons/lia';
 
 type Props = {
@@ -67,11 +67,14 @@ const EstablishmentItem = ({ item, locale, viewModel, onDelete, isSuperUser }: P
 					<Link
 						href={`${PAGES.ESTABLISHMENT}/${item.id}/${PAGES.STAFF}`}
 						className={clsx(
-							'group flex items-center gap-1 rounded-md bg-orange px-3 py-1.5 text-sm text-white transition hover:brightness-90',
+							'group flex items-center gap-1 rounded-md bg-yellow px-3 py-1.5 text-sm text-white transition hover:brightness-90',
 							isSuperUser && 'opacity-70 pointer-events-none',
 						)}
 					>
-						<LiaUsersCogSolid size={20} />
+						<LiaUsersCogSolid
+							size={20}
+							className="transition-transform duration-300 group-hover:rotate-45"
+						/>
 					</Link>
 
 					<Link
@@ -80,7 +83,17 @@ const EstablishmentItem = ({ item, locale, viewModel, onDelete, isSuperUser }: P
 					>
 						<IoSettingsOutline
 							size={20}
-							className="transition-transform duration-300 group-hover:rotate-90"
+							className="transition-transform duration-300 group-hover:rotate-45"
+						/>
+					</Link>
+
+					<Link
+						href={`${PAGES.ESTABLISHMENT}/${item.id}/${PAGES.ESTABLISHMENT_CHAT}`}
+						className="group flex items-center gap-1 rounded-md bg-orange px-3 py-1.5 text-sm text-white transition hover:brightness-90"
+					>
+						<IoChatbubbleEllipsesOutline
+							size={20}
+							className="transition-transform duration-300 group-hover:rotate-45"
 						/>
 					</Link>
 				</div>

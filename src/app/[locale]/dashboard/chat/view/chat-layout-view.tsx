@@ -13,13 +13,15 @@ const ChatLayoutView = ({ children }: Props) => {
 	const { chatList, onCreate } = useChatContext();
 
 	const {
-		states: { establishments },
+		pagination: {
+			states: { items },
+		},
 	} = useEstablishmentContext();
 
 	return (
 		<ChatCustomLayout
 			scope="dashboard"
-			chats={divideChatToNewAndExisting(establishments.items, chatList.items)}
+			chats={divideChatToNewAndExisting(items, chatList.items)}
 			onClick={onCreate}
 		>
 			{children}

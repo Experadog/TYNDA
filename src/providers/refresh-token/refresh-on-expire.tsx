@@ -34,8 +34,6 @@ const RefreshOnExpire: FC<IProps> = ({ children, initialSession }) => {
 
 	const isValidSession = !!access.current && !!refresh.current && !!expires.current;
 
-	console.log(decrypted);
-
 	const clearRefreshTimer = useCallback(() => {
 		if (refreshTimer.current) {
 			clearTimeout(refreshTimer.current);

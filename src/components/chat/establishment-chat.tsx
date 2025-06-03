@@ -1,39 +1,15 @@
-import { PAGES } from '@/lib';
-import type { ChatScope, EstablishmentListItem } from '@business-entities';
+import type { EstablishmentListItem } from '@business-entities';
 import clsx from 'clsx';
-import { useMemo } from 'react';
 import Avatar from '../avatar/avatar';
 import { Button } from '../ui/button';
 
 type Props = {
-	scope: ChatScope;
 	item: EstablishmentListItem;
-	onClick: (chatId: string) => Promise<void>;
+	onClick?: (chatId: string) => Promise<void>;
 	isCollapsed: boolean;
 };
 
-const EstablishmentChatItem = ({ scope, item, onClick, isCollapsed }: Props) => {
-	const commonPath = useMemo(() => {
-		let path = '';
-
-		switch (scope) {
-			case 'profile':
-				path = PAGES.PROFILE_CHAT;
-				break;
-
-			case 'dashboard':
-				path = PAGES.DASHBOARD_CHAT;
-				break;
-
-			default:
-				break;
-		}
-
-		return path;
-	}, [scope]);
-
-	//		href={`${commonPath}/${item.id}`}
-
+const EstablishmentChatItem = ({ item, onClick, isCollapsed }: Props) => {
 	return (
 		<Button
 			disableAnimation
@@ -41,7 +17,7 @@ const EstablishmentChatItem = ({ scope, item, onClick, isCollapsed }: Props) => 
 				'hover:bg-light_gray flex items-center gap-3 rounded-lg p-2 transition-all group shadow-none h-max',
 				isCollapsed ? 'justify-center' : 'justify-start',
 			)}
-			onClick={() => onClick(item.id)}
+			onClick={() => onClick?.(item.id)}
 		>
 			<Avatar
 				src={item.cover || '/other/avatar-placeholder.webp'}

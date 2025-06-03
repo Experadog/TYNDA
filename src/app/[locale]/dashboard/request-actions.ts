@@ -1,14 +1,15 @@
 'use server';
 
+import { clearCookie } from '@/common/actions/clear-cookie';
 import { COOKIES, PAGES, PAGINATION } from '@/lib';
 import {
 	type ChatListRetrievalResponseModel,
 	type GetEstablishmentAllClientResponseModel,
 	type GetRolesResponseModel,
 	type UsersRetrievalResponseModel,
-	getChatList,
 	getEstablishmentAll,
 	getRoles,
+	getUserChatList,
 	getUsers,
 } from '@/services';
 import { type Session, UserRole } from '@business-entities';
@@ -23,8 +24,12 @@ type Exposes = {
 
 async function getCommonData(): Promise<Exposes> {
 	const establishmentsResponse = await getEstablishmentAll(PAGINATION.establishment);
-	const chatResponse = await getChatList();
-	return { establishmentsResponse, chatResponse };
+	return { establishmentsResponse };
+}
+
+async function getClientData(): Promise<Pick<Exposes, 'chatResponse'>> {
+	const chatResponse = await getUserChatList();
+	return { chatResponse };
 }
 
 async function getEstablisherData(): Promise<Exposes> {
@@ -32,18 +37,26 @@ async function getEstablisherData(): Promise<Exposes> {
 	return { rolesResponse };
 }
 
-async function getSuperUserData(): Promise<Pick<Exposes, 'rolesResponse' | 'usersResponse'>> {
-	const [rolesResponse, usersResponse] = await Promise.all([
+async function getSuperUserData(): Promise<
+	Pick<Exposes, 'rolesResponse' | 'usersResponse' | 'chatResponse'>
+> {
+	const [rolesResponse, usersResponse, chatResponse] = await Promise.all([
 		getRoles(PAGINATION.role),
 		getUsers(PAGINATION.user),
+		getUserChatList(),
 	]);
 
-	return { rolesResponse, usersResponse };
+	return { rolesResponse, usersResponse, chatResponse };
 }
 
 export async function executeDefaultRoleRequests(): Promise<Exposes> {
 	const session = await getCookie<Session>(COOKIES.SESSION, true);
-	if (!session) return forceRedirect(PAGES.LOGIN);
+
+	if (!session) {
+		await clearCookie(COOKIES.SESSION);
+		await clearCookie(COOKIES.USER_SETTINGS);
+		return forceRedirect(PAGES.LOGIN);
+	}
 
 	const { role, is_superuser } = session.user;
 
@@ -53,9 +66,12 @@ export async function executeDefaultRoleRequests(): Promise<Exposes> {
 
 	const superUser = is_superuser ? await getSuperUserData() : {};
 
+	const client = role === UserRole.CLIENT && !is_superuser ? await getClientData() : {};
+
 	return {
 		...common,
 		...establisher,
 		...superUser,
+		...client,
 	};
 }
