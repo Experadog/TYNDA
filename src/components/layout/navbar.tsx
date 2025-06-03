@@ -4,7 +4,6 @@ import { Button, ToggleLocale, ToggleTheme } from '@components';
 import clsx from 'clsx';
 import Image from 'next/image';
 import { type FC, useState } from 'react';
-import { AiOutlineFileProtect } from 'react-icons/ai';
 import { CgInfo } from 'react-icons/cg';
 import { IoClose } from 'react-icons/io5';
 import { LiaPhoneSolid } from 'react-icons/lia';
@@ -26,7 +25,7 @@ export const navbarIcons = [
 	<CgInfo className="w-[18px] h-[18px]" />,
 	<LiaPhoneSolid className="w-[18px] h-[18px]" />,
 	<LuCreditCard className="w-[18px] h-[18px]" />,
-	<AiOutlineFileProtect className="w-[18px] h-[18px]" />,
+	// <AiOutlineFileProtect className="w-[18px] h-[18px]" />,
 ];
 
 const Navbar: FC<IProps> = () => {
@@ -108,7 +107,7 @@ const Navbar: FC<IProps> = () => {
 				</nav>
 			</div>
 
-			{isMenuOpen && <MobileNavbar />}
+			{isMenuOpen && <MobileNavbar onClose={setIsMenuOpen} />}
 		</header>
 	);
 };

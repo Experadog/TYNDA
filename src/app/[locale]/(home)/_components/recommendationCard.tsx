@@ -34,10 +34,10 @@ const RecommendationCard: FC<IProps> = ({
 				</div>
 				<div className="px-[14px] md:px-1 h-full flex flex-col justify-between">
 					<div className="">
-						<h4 className="font-semibold text-lg uppercase md:text-base md:font-medium line-clamp-2">
+						<h4 className="font-semibold text-lg uppercase md:text-base md:font-medium line-clamp-2 numeric">
 							{getTranslateByKey(locale, establishment.translates, 'name')}
 						</h4>
-						<p className="font-normal text-sm line-clamp-2 md:text-xs">
+						<p className="font-normal text-sm line-clamp-2 md:text-xs numeric">
 							{getTranslateByKey(locale, establishment.translates, 'description')}
 						</p>
 					</div>

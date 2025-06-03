@@ -64,10 +64,13 @@ export const ESTABLISHMENTS_CATEGORIES = {
 	culture_and_history: 'culture_and_history',
 	events_and_entertainment: 'events_and_entertainment',
 	for_family_vacations: 'for_family_vacations',
+	ski_resorts: 'ski_resorts',
+	discounts_and_promotions: 'discounts_and_promotions',
+	banquet_halls: 'banquet_halls',
+	tourist_attractions_and_routes: 'tourist_attractions_and_routes',
 	transfer: 'transfer',
 	tour_company: 'tour_company',
 	guides: 'guides',
-	discounts_and_promotions: 'discounts_and_promotions',
 } as const;
 
 export type EstablishmentCategory = keyof typeof ESTABLISHMENTS_CATEGORIES;

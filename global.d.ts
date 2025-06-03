@@ -1,7 +1,8 @@
 type RuMessages = typeof import('./messages/ru.json');
 type KgMessages = typeof import('./messages/kg.json');
+type EnMessages = typeof import('./messages/en.json');
 
-declare interface ViewModel extends RuMessages, KgMessages {}
+declare interface ViewModel extends RuMessages, KgMessages, EnMessages {}
 
 type PickMessagesByNamespaces<T extends string[]> = T extends (infer U)[]
 	? U extends keyof ViewModel
@@ -17,7 +18,7 @@ type CapitalizedKeys<T> = {
 		: never;
 }[keyof T];
 
-declare type IntlNamespaces = CapitalizedKeys<RuMessages> | CapitalizedKeys<KgMessages>;
+declare type IntlNamespaces = CapitalizedKeys<RuMessages> | CapitalizedKeys<KgMessages> | CapitalizedKeys<EnMessages>;
 
 declare type Locale = 'ru' | 'kg' | 'en';
 declare type Theme = 'dark' | 'light';

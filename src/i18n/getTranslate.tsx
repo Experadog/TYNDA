@@ -1,11 +1,12 @@
 'use client';
 import { useLocale } from '@/providers/locale/locale-provider';
+import en from '@messages/en.json';
 import kg from '@messages/kg.json';
 import ru from '@messages/ru.json';
 
 import { useMemo } from 'react';
 
-const messages = { ru, kg } as const;
+const messages = { ru, kg, en } as const;
 
 type Messages = typeof messages.ru;
 type IntlNamespaces = keyof Messages;
@@ -20,7 +21,7 @@ export function useViewModel<T extends IntlNamespaces[]>(namespaces: [...T]): Vi
 	const { locale } = useLocale();
 
 	return useMemo(() => {
-		const localeMessages = messages[locale as keyof typeof messages];
+		const localeMessages = messages[locale as keyof typeof messages] as Messages;
 
 		if (namespaces.length === 1) {
 			return localeMessages[namespaces[0]] as ViewModelReturn<T>;

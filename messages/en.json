@@ -1,0 +1,388 @@
+{
+	"Layout": {
+		"navbar": {
+			"links": [
+				"Home",
+				"Map",
+				"About",
+				"Contacts",
+				"Services"
+			],
+			"button1": "Log In",
+			"button2": "Download App",
+			"button3": "Available on"
+		},
+		"footer": {
+			"text": "",
+			"menu": [
+				{
+					"title": "Pages",
+					"items": [
+						"Home",
+						"Accounts",
+						"Subscriptions",
+						"About Us",
+						"Log In",
+						"Sign Up"
+					]
+				},
+				{
+					"title": "Useful Information",
+					"items": [
+						"News",
+						"About Us",
+						"Delivery & Payment",
+						"Our Contacts"
+					]
+				},
+				{
+					"title": "Account",
+					"items": [
+						"Log In",
+						"Sign Up"
+					]
+				}
+			]
+		}
+	},
+	"Home": {
+		"hero": {
+			"title": "TYNDA - Tourism & Leisure",
+			"description": "Join and subscribe to TYNDA. Let’s unite and make life in Kyrgyzstan brighter and more exciting!",
+			"button": "Join Us"
+		},
+		"recommendation": {
+			"title": "Recommended",
+			"description": "Choose your favorite categories and start your adventure!",
+			"button": "Show All Businesses",
+			"links": [
+				"Food",
+				"Rentals",
+				"Health & Beauty",
+				"Shopping & Souvenirs",
+				"Culture & History",
+				"Events & Entertainment",
+				"Family Leisure",
+				"Tour Transfers",
+				"Food",
+				"Rentals",
+				"Health & Beauty",
+				"Shopping & Souvenirs",
+				"Culture & History",
+				"Events & Entertainment",
+				"Family Leisure",
+				"Tour Transfers"
+			]
+		},
+		"adMobile": {
+			"title": "TYNDA Mobile App",
+			"description1": "Our platform aims to provide everything you need to organize and conduct football matches and tournaments. Whether it's booking venues or ordering services—we make it simple and professional.",
+			"description2": "With TYNDA, you can not only live and travel in Kyrgyzstan but also earn with us. Join our club and participate in our events or order a turnkey event.",
+			"links": "Available on"
+		},
+		"about": {
+			"title": "About Company",
+			"title1": "Fulfill",
+			"title2": "your dreams and goals",
+			"title3": "with",
+			"title4": "TYNDA",
+			"description1": "Our project’s club format offers special tools for participants and corporate discounts from our partners.",
+			"description2": "With TYNDA, you can not only live and travel in Kyrgyzstan but also earn with us. Join our club and participate in our events or order a turnkey event.",
+			"stats1": "support & assistance",
+			"stats2": "unique routes",
+			"stats3": "satisfied clients"
+		},
+		"moreRecs": {
+			"title": "We Recommend",
+			"description": "More Recommendations"
+		}
+	},
+	"BenefitsMap": {
+		"title": "Map"
+	},
+	"About": {
+		"title": "About Company"
+	},
+	"Login": {
+		"title": "Log In"
+	},
+	"Toast": {
+		"Login": {
+			"loading": "Logging in...",
+			"success": "Logged in successfully!",
+			"error": {
+				"401": "Incorrect email or password",
+				"404": "Incorrect email or password"
+			}
+		},
+		"Register": {
+			"loading": "Registering...",
+			"success": "Check your email!",
+			"error": {
+				"409": "This email is already registered!"
+			}
+		},
+		"GoogleLogin": {
+			"loading": "Logging in...",
+			"success": "Logged in successfully!",
+			"error": "Error logging in"
+		},
+		"Logout": {
+			"loading": "Logging out...",
+			"success": "Logged out successfully!",
+			"error": "Error logging out"
+		},
+		"ActivateAccount": {
+			"loading": "Activating account...",
+			"success": "Account activated!",
+			"error": {
+				"400": "Invalid activation code"
+			}
+		},
+		"UpdateProfile": {
+			"loading": "Updating profile...",
+			"success": "Profile updated!",
+			"error": "Error updating profile"
+		},
+		"UpdateCredentials": {
+			"loading": "Updating password...",
+			"success": "Password updated!",
+			"error": {
+				"400": "Old password is incorrect."
+			}
+		},
+		"EstablishmentCreation": {
+			"loading": "Creating business...",
+			"error": {
+				"404": "Owner not found",
+				"409": "Owner with this email already exists",
+				"default": "Error creating business"
+			},
+			"success": "Business created!"
+		},
+		"EstablishmentDeletion": {
+			"loading": "Deleting business...",
+			"error": "Error deleting business",
+			"success": "Business deleted!"
+		},
+		"EstablishmentUpdating": {
+			"loading": "Updating business...",
+			"error": "Error updating business",
+			"success": "Changes saved!"
+		},
+		"LoadFile": {
+			"loading": "Uploading files...",
+			"error": "Error uploading files",
+			"success": "Files uploaded!"
+		},
+		"StaffCreation": {
+			"loading": "Creating staff...",
+			"error": {
+				"409": "Staff with this email already exists",
+				"default": "Error creating staff"
+			},
+			"success": "Staff created!"
+		},
+		"StaffUpdating": {
+			"loading": "Updating staff...",
+			"error": "Error updating staff",
+			"success": "Changes saved!"
+		},
+		"StaffDeletion": {
+			"loading": "Deleting staff...",
+			"error": "Error deleting staff",
+			"success": "Staff deleted!"
+		},
+		"UserCreation": {
+			"loading": "Creating user...",
+			"error": {
+				"409": "User with this email already exists",
+				"default": "Error creating user"
+			},
+			"success": "User created!"
+		}
+	},
+	"AllEnterprises": {
+		"hero": {
+			"home": "Home",
+			"allEnterprises": "All Businesses",
+			"explore": "Explore",
+			"openNew": "Discover new travel horizons with our unique routes. Book now!"
+		},
+		"enterprisesFilter": {
+			"button1": "Filter",
+			"button2": "Average Bill",
+			"button3": "Distance"
+		}
+	},
+	"DetailEnterprise": {
+		"hero": {
+			"home": "Home",
+			"address": "Address",
+			"contacts": "Contacts",
+			"workTime": "Working Hours",
+			"aboutEnterprise": "About Business",
+			"button1": "Message",
+			"button2": "Show on Map",
+			"social_media": "Social Media",
+			"hide_text": "Hide",
+			"show_text": "Show Full Text"
+		},
+		"allPhoto": {
+			"photo": "All Photos"
+		},
+		"weAdvise": {
+			"weAdvise": "We Recommend",
+			"similarEnterprise": "Similar Businesses"
+		}
+	},
+	"Tariffs": {
+		"hero": {
+			"title": "Choose Your Plan",
+			"description": "We have an offer for everyone. Select a club card plan that suits you, save on fees, spend wisely, and earn generous rewards."
+		},
+		"moreAboutPlans": {
+			"more": "More About Plans",
+			"download": "Download App",
+			"availableAt": "Available on"
+		},
+		"touristicPlan": {
+			"title": "TOURISTIC PLAN",
+			"description": "Tourist Club Card",
+			"buyCard": "Buy Club Card",
+			"costPerWeek": "$10.00/week",
+			"autoRenewed": "Auto-renewal. Cancel anytime.",
+			"additionalBonuses": "Extra bonuses & privileges",
+			"simpleUse": "Easy to use & earn points",
+			"exclusiveDiscounts": "Exclusive discounts & offers",
+			"ourPartners": "Our Partner Businesses:"
+		},
+		"touristClub": {
+			"title": "What Does the Tourist Club Card Offer?",
+			"whatIncluded": "Subscription Inclusions ($10 for 15 days)",
+			"text": [
+				"Interactive tourist map—routes, attractions, partners.",
+				"Safety—SOS button, legal support, insurance.",
+				"Bonuses—hotels, restaurants, car rentals.",
+				"Convenience—all essential services in one app.",
+				"Tourist assistant—tour operators, guides, transfers.",
+				"Savings—partner discounts will cover the subscription cost.",
+				"Legal support—help in difficult situations.",
+				"24/7 digital assistant—quick answers."
+			]
+		},
+		"firstService": {
+			"text1": "TYNDA—the first service of this",
+			"text2": "level in Kyrgyzstan!",
+			"text3": "Subscribe today and",
+			"text4": "travel comfortably & affordably!"
+		}
+	},
+	"Contacts": {
+		"hero": {
+			"home": "Home",
+			"title": "Contacts"
+		},
+		"contactDetails": [
+			"Address",
+			"Phone",
+			"Email",
+			"Contact",
+			"Consultation"
+		],
+		"address": {
+			"ourAddress": "Our Address",
+			"onMap": "Find Us on Map"
+		},
+		"contactForm": {
+			"contactUs": "Contact Us—we’re here to help!",
+			"questions": "Ask questions, clarify route details, or book services conveniently.",
+			"name": "Your Name",
+			"phone": "Your Phone",
+			"enterPhone": "Enter Phone",
+			"email": "Your Email",
+			"message": "Message",
+			"enterMessage": "Type your message",
+			"send": "Send"
+		}
+	},
+	"Validation": {
+		"min_3": "Minimum length—3 characters",
+		"min_20": "Description must be at least 20 characters",
+		"required": "This field is required",
+		"gt_0": "Value must be greater than 0",
+		"max_100": "Max length—100 characters",
+		"max_255": "Max length—255 characters",
+		"max_800": "Max length—800 characters",
+		"invalid_email": "Please enter a valid email",
+		"invalid_url": "Please enter a valid URL",
+		"cover_required": "Please add a cover image",
+		"images_required": "Please add images",
+		"coordinates_required": "Please mark your business on the map",
+		"lt_100": "Value must be less than 100",
+		"create_or_select_establisher": "Select or create an owner",
+		"password_not_math": "Passwords don’t match"
+	},
+	"Shared": {
+		"establishment_categories": {
+			"accommodation": "Accommodation",
+			"nutrition": "Eat & drink",
+			"rent": "Rentals",
+			"health_and_beauty": "Health & Beauty",
+			"shopping_and_souvenirs": "Shopping & Souvenirs",
+			"culture_and_history": "Culture & History",
+			"events_and_entertainment": "Events & Entertainment",
+			"for_family_vacations": "Family Leisure",
+			"ski_resorts": "Ski resorts",
+			"discounts_and_promotions": "Discounts & Promotions",
+			"banquet_halls": "Banquet halls / Toykana",
+			"tourist_attractions_and_routes": "Tourist places and routes",
+			"transfer": "Transfer",
+			"tour_company": "Tour Company",
+			"guides": "Guides"
+		},
+		"permission_scopes": {
+			"user": {
+				"label": "Staff",
+				"description": "Manages staff members: create, edit, or delete."
+			},
+			"establishment": {
+				"label": "Businesses",
+				"description": "Manages businesses: add, edit, or delete."
+			},
+			"permission": {
+				"label": "Permissions",
+				"description": "Manages user permissions: create, edit, or delete."
+			}
+		},
+		"breadCrumbs": {
+			"HOME": "Home",
+			"DASHBOARD": "Dashboard",
+			"ROLES": "Roles",
+			"ESTABLISHMENT": "Businesses",
+			"ESTABLISHMENT_CREATION": "Create Business",
+			"STAFF": "Staff",
+			"DASHBOARD_CHAT": "Chat",
+			"USERS": "Users",
+			"SETTINGS": "Settings",
+			"DISCOUNTS": "Discounts"
+		},
+		"EntityStatus": {
+			"enable": "Active",
+			"disable": "Inactive"
+		}
+	},
+	"UnderDevelopment": {
+		"title1": "Section",
+		"title2": "Under Development",
+		"description": "We’re working on this section",
+		"soon": "New content coming soon!",
+		"ourTeam": "Our team is building this section. Stay tuned for updates!"
+	},
+	"AboutCompany": {
+		"hero": {
+			"home": "Home",
+			"about": "О компании"
+		}
+	}
+}

@@ -1,6 +1,7 @@
 import type { EstablishmentListItem } from '@/business-entities/establishment/EstablishmentEntity';
 import { Link } from '@/i18n/routing';
-import { PAGES } from '@/lib';
+import { getTranslateByKey, PAGES } from '@/lib';
+import { useLocale } from '@/providers/locale/locale-provider';
 import { Button } from '@components';
 import Image from 'next/image';
 import type { FC } from 'react';
@@ -21,6 +22,9 @@ const MoreRecsCard: FC<IProps> = ({
 	mainClassName = '',
 	descriptionClassName = 'line-clamp-1',
 }) => {
+
+	const { locale } = useLocale();
+
 	return (
 		<Link href={`${PAGES.ENTERPRISES_ALL}/${establishment.id}`}>
 			<div
@@ -38,11 +42,11 @@ const MoreRecsCard: FC<IProps> = ({
 				</div>
 				<div className="px-[14px] lg:px-1 flex flex-col justify-between h-full">
 					<div className="flex flex-col gap-[10px]">
-						<h4 className="font-semibold text-lg uppercase lg:text-base lg:font-medium line-clamp-1 ">
-							{establishment.translates?.ru?.name}
+						<h4 className="font-semibold text-lg uppercase lg:text-base lg:font-medium line-clamp-1 numeric">
+							{getTranslateByKey(locale, establishment.translates, 'name')}
 						</h4>
-						<p className={`font-normal text-sm lg:text-xs ${descriptionClassName}`}>
-							{establishment.translates?.ru?.description}
+						<p className={`font-normal text-sm lg:text-xs numeric ${descriptionClassName}`}>
+							{getTranslateByKey(locale, establishment.translates, 'description')}
 						</p>
 					</div>
 					<div className="flex justify-between mt-[18px] lg:mt-3">

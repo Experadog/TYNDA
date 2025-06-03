@@ -12,8 +12,14 @@ const ToggleLocale = () => {
 	const pathname = usePathname();
 	const params = useParams();
 
+	const supportedLocales = ['ru', 'kg', 'en'];
+	const getNextLocale = (current: string) => {
+		const index = supportedLocales.indexOf(current);
+		return supportedLocales[(index + 1) % supportedLocales.length];
+	};
+
 	const onToggle = async () => {
-		const newLocale = locale === 'ru' ? 'kg' : 'ru';
+		const newLocale = getNextLocale(locale);
 		startTransition(() => {
 			router.replace({ pathname, ...params }, { locale: newLocale });
 		});

@@ -7,7 +7,7 @@ import type {
 import { Link } from '@/i18n/routing';
 import { Button, EstCategorySlider, Translate } from '@components';
 import { type FC, useState } from 'react';
-import { GoArrowRight } from 'react-icons/go';
+import { FiArrowRight } from "react-icons/fi";
 import { useMediaQuery } from 'react-responsive';
 import RecommendationCard from './recommendationCard';
 
@@ -39,9 +39,9 @@ const Recommendation: FC<IProps> = ({
 		<div className="mt-[75px] lg:mt-[60px]">
 			<Translate direction="right" distance={100} animateOnce={false}>
 				<div className="flex flex-col items-center justify-center gap-5 lg:px-5">
-					<h3 className="uppercase text-lg font-semibold">
+					{/* <h3 className="uppercase text-lg font-semibold">
 						{recommendationViewModel.title}
-					</h3>
+					</h3> */}
 					<Translate direction="right" distance={100} animateOnce={false}>
 						<h2 className="font-medium text-4xl md:text-2xl exs:text-lg max-w-[830px] text-center">
 							{recommendationViewModel.description}
@@ -82,8 +82,9 @@ const Recommendation: FC<IProps> = ({
 						className="mt-[34px] rounded-[42px] px-[22px] py-[14px] h-[52px] flex items-center"
 					>
 						{recommendationViewModel.button}
-						<GoArrowRight />
-					</Button></Link>
+						<FiArrowRight width={24} height={24} />
+					</Button>
+				</Link>
 			</div>
 		</div>
 	);
