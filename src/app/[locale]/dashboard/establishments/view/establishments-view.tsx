@@ -6,19 +6,14 @@ import { useLocale } from '@/providers/locale/locale-provider';
 import EmptyView from '../_components/empty-view';
 import EstablishmentList from '../_components/list/establishment-list';
 import { useEstablishmentContext } from '../use-case/establishment-context-provider';
-import { useRetrievalUseCase } from '../use-case/stories/useRetrievalUseCase';
 
 const EstablishmentsView = () => {
-	const {
-		states: { establishments, viewModel },
-	} = useEstablishmentContext();
-
-	const retrievalUseCase = useRetrievalUseCase(establishments);
+	const { pagination, viewModel } = useEstablishmentContext();
 
 	const {
 		states: { items, totalItems, isLoading },
 		actions: { onLoadMore },
-	} = retrievalUseCase;
+	} = pagination;
 
 	const { locale } = useLocale();
 

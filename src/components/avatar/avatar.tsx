@@ -6,7 +6,7 @@ import { type FC, useMemo } from 'react';
 
 interface IProps {
 	size?: 'large' | 'medium' | 'small';
-	src: string | undefined;
+	src: string | undefined | null;
 	className?: string;
 }
 

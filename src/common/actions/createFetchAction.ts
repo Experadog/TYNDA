@@ -65,14 +65,12 @@ export async function createFetchAction<T>({
 				await forceRedirect(PAGES.LOGIN);
 			}
 
-			LOGGER.error(`Fetch failed: ${response.statusText}(${response.status}) ${url}`);
+			LOGGER.error(`Fetch failed: ${response.statusText}(${response.status}) ${endpoint}`);
 			return {} as T;
 		}
 
 		const data: T = await response.json();
 		LOGGER.success(`Received data from: ${cleanEndpoint} `);
-		LOGGER.info(params);
-		LOGGER.info(postfix);
 
 		return data;
 	} catch (error) {

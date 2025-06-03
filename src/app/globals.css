@@ -38,6 +38,9 @@
 		--radius-lg: 0.5rem;
 		--radius-xl: 0.75rem;
 		--radius-2xl: 1rem;
+
+		--chat-my: #d9fdd3;
+		--chat-incoming: white;
 	}
 
 	.dark {
@@ -65,6 +68,9 @@
 		--light-gray: #3a3a3a;
 		--placeholder: #888888e5;
 		--input-bg: #1f1f1f;
+
+		--chat-my: #144d37;
+		--chat-incoming: #242626;
 
 		.leaflet-layer,
 		.leaflet-control-zoom-in,

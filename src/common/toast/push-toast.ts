@@ -22,6 +22,10 @@ export function pushToast<T>(
 				return options.error;
 			}
 
+			if (statusCode === 500) {
+				return 'Ошибка сервера, повторите попытку позже';
+			}
+
 			if (typeof options.error === 'object' && options.error !== null) {
 				return options.error[statusCode] || `Неизвестная ошибка: ${statusCode}`;
 			}

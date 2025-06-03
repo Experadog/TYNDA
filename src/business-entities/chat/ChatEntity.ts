@@ -5,6 +5,7 @@ export type ChatType = {
 		first_name: string;
 		last_name: string;
 		phone: string | null;
+		avatar: string | null;
 	};
 
 	establishment: EstablishmentListItem;
@@ -13,6 +14,17 @@ export type ChatType = {
 };
 
 export type Message = {
+	id: string;
+	content_type: 'text' | 'file' | 'exclusive_order';
+	content: string;
+	created_time: string;
+	chat_id: string;
+	sender_id: string;
+	data?: object;
+	is_system?: boolean;
+};
+
+export type WebSocketMessage = {
 	message: {
 		id: string;
 		content_type: 'text' | 'file' | 'exclusive_order';
@@ -21,8 +33,8 @@ export type Message = {
 		chat_id: string;
 		sender_id: string;
 	};
-	data: object;
 	is_system: boolean;
+	data: object;
 };
 
 export type ChatListItem = {
@@ -30,6 +42,7 @@ export type ChatListItem = {
 		first_name: string;
 		last_name: string;
 		phone: string | null;
+		avatar: string | null;
 	};
 
 	establishment: EstablishmentListItem;
@@ -41,4 +54,4 @@ export type ChatPreparingViewType = {
 	new_chats: EstablishmentListItem[];
 };
 
-export type ChatScope = 'profile' | 'dashboard';
+export type ChatScope = 'profile' | 'dashboard' | 'establishment';

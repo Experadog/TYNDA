@@ -37,7 +37,8 @@ export enum URL_ENTITIES {
 
 	//mes
 	CHAT_MY = '/mes/chat/my',
-	CHAT = '/mes/chat',
+	ESTABLISHMENT_CHAT = '/mes/chat',
+	CHAT_DETAILED = '/mes/chat',
 	CHAT_ESTABLISHMENT = '/mes/chat/establishment',
 }
 

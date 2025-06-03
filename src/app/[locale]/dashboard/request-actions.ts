@@ -7,9 +7,9 @@ import {
 	type GetEstablishmentAllClientResponseModel,
 	type GetRolesResponseModel,
 	type UsersRetrievalResponseModel,
-	getChatList,
 	getEstablishmentAll,
 	getRoles,
+	getUserChatList,
 	getUsers,
 } from '@/services';
 import { type Session, UserRole } from '@business-entities';
@@ -24,8 +24,12 @@ type Exposes = {
 
 async function getCommonData(): Promise<Exposes> {
 	const establishmentsResponse = await getEstablishmentAll(PAGINATION.establishment);
-	const chatResponse = await getChatList();
-	return { establishmentsResponse, chatResponse };
+	return { establishmentsResponse };
+}
+
+async function getClientData(): Promise<Pick<Exposes, 'chatResponse'>> {
+	const chatResponse = await getUserChatList();
+	return { chatResponse };
 }
 
 async function getEstablisherData(): Promise<Exposes> {
@@ -33,13 +37,16 @@ async function getEstablisherData(): Promise<Exposes> {
 	return { rolesResponse };
 }
 
-async function getSuperUserData(): Promise<Pick<Exposes, 'rolesResponse' | 'usersResponse'>> {
-	const [rolesResponse, usersResponse] = await Promise.all([
+async function getSuperUserData(): Promise<
+	Pick<Exposes, 'rolesResponse' | 'usersResponse' | 'chatResponse'>
+> {
+	const [rolesResponse, usersResponse, chatResponse] = await Promise.all([
 		getRoles(PAGINATION.role),
 		getUsers(PAGINATION.user),
+		getUserChatList(),
 	]);
 
-	return { rolesResponse, usersResponse };
+	return { rolesResponse, usersResponse, chatResponse };
 }
 
 export async function executeDefaultRoleRequests(): Promise<Exposes> {
@@ -59,9 +66,12 @@ export async function executeDefaultRoleRequests(): Promise<Exposes> {
 
 	const superUser = is_superuser ? await getSuperUserData() : {};
 
+	const client = role === UserRole.CLIENT && !is_superuser ? await getClientData() : {};
+
 	return {
 		...common,
 		...establisher,
 		...superUser,
+		...client,
 	};
 }

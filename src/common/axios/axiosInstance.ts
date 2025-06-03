@@ -22,6 +22,11 @@ axiosInstance.interceptors.request.use(async (config) => {
 		LOGGER.info(config.data);
 	}
 
+	if (config.params) {
+		LOGGER.warning(config.method?.toLocaleUpperCase());
+		LOGGER.info(config.params);
+	}
+
 	if (tokens) {
 		LOGGER.warning('Adding cookie to request...');
 		config.headers.set('Cookie', tokens);
@@ -46,7 +51,8 @@ axiosInstance.interceptors.response.use(
 
 		if (
 			response?.statusText === 'Unauthorized' ||
-			response?.statusText === 'Token has expired'
+			response?.statusText === 'Token has expired' ||
+			response?.statusText === 'Bad Gateway'
 		) {
 			await clearCookie(COOKIES.SESSION);
 			forceRedirect(PAGES.LOGIN);

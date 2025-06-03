@@ -47,11 +47,13 @@ export default {
 
 				gradient: 'var(--gradient)',
 
-				//static
 				orange: 'var(--orange)',
 				yellow: 'var(--yellow)',
 				error: 'var(--error)',
 				success: 'var(--success)',
+
+				chat_my: 'var(--chat-my)',
+				chat_incoming: 'var(--chat-incoming)',
 			},
 
 			screens: {

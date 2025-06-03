@@ -9,7 +9,7 @@ export const PAGINATION: Record<PaginationKeys, Pick<Params, 'size' | 'page'>> =
 	},
 	establishment: {
 		page: '1',
-		size: '20',
+		size: '2',
 	},
 
 	role: {

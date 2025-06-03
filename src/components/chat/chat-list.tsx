@@ -4,7 +4,7 @@ import EstablishmentChatItem from './establishment-chat';
 
 type Props = {
 	scope: ChatScope;
-	onClick: (chatId: string) => Promise<void>;
+	onClick?: (chatId: string) => Promise<void>;
 	chats: ChatPreparingViewType;
 	isCollapsed: boolean;
 };
@@ -19,7 +19,6 @@ const ChatList = ({ scope, chats, onClick, isCollapsed }: Props) => {
 			<br />
 			{chats.new_chats?.map((item) => (
 				<EstablishmentChatItem
-					scope={scope}
 					item={item}
 					key={item.id}
 					onClick={onClick}

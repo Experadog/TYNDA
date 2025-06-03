@@ -2,6 +2,7 @@
 
 import { useViewModel } from '@/i18n/getTranslate';
 import type { GetEstablishmentAllClientResponseModel } from '@/services';
+import { useRetrievalUseCase } from './stories/useRetrievalUseCase';
 
 type Props = {
 	establishments: GetEstablishmentAllClientResponseModel;
@@ -9,12 +10,9 @@ type Props = {
 
 export function useEstablishmentUseCase({ establishments }: Props) {
 	const viewModel = useViewModel(['Validation', 'Toast', 'Shared']);
-	const data = establishments?.data;
+	const pagination = useRetrievalUseCase(establishments.data);
 
-	const states = { viewModel, establishments: data };
-	const actions = {};
-
-	return { states, actions };
+	return { pagination, viewModel };
 }
 
 export type UseEstablishmentUseCaseType = ReturnType<typeof useEstablishmentUseCase>;

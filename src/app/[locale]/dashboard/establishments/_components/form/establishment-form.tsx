@@ -24,9 +24,7 @@ type Props = {
 const EstablishmentForm = ({ establishment }: Props) => {
 	const { user } = useUser();
 
-	const {
-		states: { viewModel },
-	} = useEstablishmentContext();
+	const { viewModel } = useEstablishmentContext();
 
 	const updatingUseCase = useUpdatingUseCase({
 		viewModel: {

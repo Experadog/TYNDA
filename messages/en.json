@@ -1,13 +1,7 @@
 {
 	"Layout": {
 		"navbar": {
-			"links": [
-				"Home",
-				"Map",
-				"About",
-				"Contacts",
-				"Services"
-			],
+			"links": ["Home", "Map", "About", "Contacts", "Services"],
 			"button1": "Log In",
 			"button2": "Download App",
 			"button3": "Available on"
@@ -17,30 +11,15 @@
 			"menu": [
 				{
 					"title": "Pages",
-					"items": [
-						"Home",
-						"Accounts",
-						"Subscriptions",
-						"About Us",
-						"Log In",
-						"Sign Up"
-					]
+					"items": ["Home", "Accounts", "Subscriptions", "About Us", "Log In", "Sign Up"]
 				},
 				{
 					"title": "Useful Information",
-					"items": [
-						"News",
-						"About Us",
-						"Delivery & Payment",
-						"Our Contacts"
-					]
+					"items": ["News", "About Us", "Delivery & Payment", "Our Contacts"]
 				},
 				{
 					"title": "Account",
-					"items": [
-						"Log In",
-						"Sign Up"
-					]
+					"items": ["Log In", "Sign Up"]
 				}
 			]
 		}
@@ -283,13 +262,7 @@
 			"home": "Home",
 			"title": "Contacts"
 		},
-		"contactDetails": [
-			"Address",
-			"Phone",
-			"Email",
-			"Contact",
-			"Consultation"
-		],
+		"contactDetails": ["Address", "Phone", "Email", "Contact", "Consultation"],
 		"address": {
 			"ourAddress": "Our Address",
 			"onMap": "Find Us on Map"
@@ -365,7 +338,8 @@
 			"DASHBOARD_CHAT": "Chat",
 			"USERS": "Users",
 			"SETTINGS": "Settings",
-			"DISCOUNTS": "Discounts"
+			"DISCOUNTS": "Discounts",
+			"ESTABLISHMENT_CHAT": "Chat"
 		},
 		"EntityStatus": {
 			"enable": "Active",

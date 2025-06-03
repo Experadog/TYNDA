@@ -1,5 +1,5 @@
 import type { SupportedLanguages } from '@/i18n/routing';
-import type { PAGES, SOCIAL_MEDIAS } from '@/lib';
+import type { SOCIAL_MEDIAS } from '@/lib';
 
 export type EntityStatus = 'enable' | 'disable';
 
@@ -44,11 +44,17 @@ export type Paths<T, D extends number = 3> = [D] extends [never]
 
 export type ValueTypeFrom<T> = Paths<T>;
 
+type Path<T> = T extends object
+	? {
+			[K in keyof T & string]: T[K] extends object ? `${K}` | `${K}.${Path<T[K]>}` : `${K}`;
+		}[keyof T & string]
+	: never;
+
 export type AsyncPageRule<T> = {
 	isAsyncData: true;
 	data: T[];
-	rules: [keyof T & string, ValueTypeFrom<T>];
-	path: PAGES;
+	path: string;
+	rules: [Path<T>, Path<T> | Path<T>[]];
 };
 
 // Page Setting

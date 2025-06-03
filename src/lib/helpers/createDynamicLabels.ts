@@ -22,7 +22,20 @@ export function createDynamicLabels<Types extends unknown[]>({
 
 		for (const item of page.data) {
 			const key = getNestedValue(item, keyField);
-			const value = getNestedValue(item, valueField);
+
+			let value: string | null = null;
+
+			if (Array.isArray(valueField)) {
+				const parts = valueField
+					.map((field) => getNestedValue(item, field))
+					.filter((val) => typeof val === 'string') as string[];
+				value = parts.join(' ');
+			} else {
+				const single = getNestedValue(item, valueField);
+				if (typeof single === 'string') {
+					value = single;
+				}
+			}
 
 			if (typeof key === 'string' && typeof value === 'string') {
 				dynamicLabels[key] = value;

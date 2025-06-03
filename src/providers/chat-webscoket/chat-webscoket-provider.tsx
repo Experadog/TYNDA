@@ -2,10 +2,12 @@
 
 import { useRouter } from '@/i18n/routing';
 import { PAGES, WEBSOCKET_API, decryptData } from '@/lib';
-import { type Message, UserRole } from '@business-entities';
+import { type Message, UserRole, type WebSocketMessage } from '@business-entities';
 import { pushCommonToast } from '@common';
 import {
+	type Dispatch,
 	type ReactNode,
+	type SetStateAction,
 	createContext,
 	useCallback,
 	useContext,
@@ -17,7 +19,7 @@ import {
 type SendMessageRequest = {
 	message: {
 		content: string;
-		content_type: Message['message']['content_type'];
+		content_type: WebSocketMessage['message']['content_type'];
 		chat_id: string;
 	};
 };
@@ -27,6 +29,7 @@ interface WebSocketContextValue {
 	messages: Message[];
 	sendMessage: (data: SendMessageRequest) => void;
 	reconnect: () => void;
+	setEstablishmentID: Dispatch<SetStateAction<string>>;
 }
 
 const WebSocketContext = createContext<WebSocketContextValue | undefined>(undefined);
@@ -41,6 +44,7 @@ export const ChatWebSocketProvider = ({ session, children }: ChatWebSocketProvid
 	const socketRef = useRef<WebSocket | null>(null);
 	const [isConnected, setIsConnected] = useState(false);
 	const [messages, setMessages] = useState<Message[]>([]);
+	const [establishmentID, setEstablishmentID] = useState('');
 
 	const reconnectAttempts = useRef(0);
 	const maxReconnectAttempts = 5;
@@ -57,13 +61,18 @@ export const ChatWebSocketProvider = ({ session, children }: ChatWebSocketProvid
 			user: { role, is_superuser },
 		} = data;
 
-		//in testing
-		if (role === UserRole.ESTABLISHER) {
-			console.log('Веб-Сокет пока не доступен для владельца');
-			return;
+		if (role === UserRole.ESTABLISHER && !establishmentID) return;
+
+		function buildWSUrl() {
+			let url = WEBSOCKET_API + access_token;
+			if (role === UserRole.ESTABLISHER && establishmentID) {
+				url += `&establishment_id=${establishmentID}`;
+			}
+
+			return url;
 		}
 
-		const ws = new WebSocket(WEBSOCKET_API + access_token);
+		const ws = new WebSocket(buildWSUrl());
 
 		socketRef.current = ws;
 
@@ -75,9 +84,9 @@ export const ChatWebSocketProvider = ({ session, children }: ChatWebSocketProvid
 
 		ws.onmessage = (event) => {
 			try {
-				const data: Message = JSON.parse(event.data);
-				console.log('📨 Получено сообщение:', data);
-				if (data.is_system) {
+				const response: WebSocketMessage = JSON.parse(event.data);
+				console.log('📨 Получено сообщение:', response);
+				if (response.is_system) {
 					if (role === UserRole.CLIENT && !is_superuser) {
 						router.push(PAGES.PROFILE_CHAT);
 					}
@@ -90,7 +99,9 @@ export const ChatWebSocketProvider = ({ session, children }: ChatWebSocketProvid
 					return;
 				}
 
-				setMessages((prev) => [...prev, data]);
+				const { message, data, is_system } = response;
+
+				setMessages((prev) => [...prev, { ...message, data, is_system }]);
 			} catch (error) {
 				console.error('Ошибка парсинга сообщения:', error);
 			}
@@ -114,7 +125,7 @@ export const ChatWebSocketProvider = ({ session, children }: ChatWebSocketProvid
 				console.warn('🚫 Достигнут лимит попыток переподключения');
 			}
 		};
-	}, [session]);
+	}, [session, establishmentID]);
 
 	useEffect(() => {
 		connectWebSocket();
@@ -151,6 +162,7 @@ export const ChatWebSocketProvider = ({ session, children }: ChatWebSocketProvid
 		messages,
 		sendMessage,
 		reconnect,
+		setEstablishmentID,
 	};
 
 	return <WebSocketContext.Provider value={value}>{children}</WebSocketContext.Provider>;

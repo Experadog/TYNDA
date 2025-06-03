@@ -12,11 +12,16 @@ type Props = {
 const ChatContext = createContext<UseChatUseCaseType | null>(null);
 
 export const ChatContextProvider: FC<Props> = ({ children, chatResponse }) => {
-	if (!chatResponse?.data) {
-		return <>{children}</>;
-	}
-
-	const value = useChatUseCase({ chatList: chatResponse.data });
+	const value = useChatUseCase({
+		chatList: chatResponse?.data || {
+			items: [],
+			links: { first: '', last: '', self: '' },
+			page: 1,
+			size: 10,
+			total: 0,
+			total_pages: 1,
+		},
+	});
 
 	return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
 };

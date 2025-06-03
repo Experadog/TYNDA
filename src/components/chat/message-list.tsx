@@ -6,14 +6,13 @@ import MessageItem from './message-item';
 
 type Props = {
 	messages: Message[];
-	history: Message[];
 };
 
 function groupMessagesByDate(messages: Message[]) {
 	const groups: { date: string; messages: Message[] }[] = [];
 
 	for (const msg of messages) {
-		const date = formatDate(msg.message.created_time);
+		const date = formatDate(msg.created_time);
 		const lastGroup = groups[groups.length - 1];
 
 		if (!lastGroup || lastGroup.date !== date) {
@@ -26,20 +25,18 @@ function groupMessagesByDate(messages: Message[]) {
 	return groups;
 }
 
-const MessageList = ({ messages, history }: Props) => {
+const MessageList = ({ messages }: Props) => {
 	const { user } = useUser();
 
 	const scrollRef = useRef<HTMLDivElement | null>(null);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: scroll on new messages
+	const allMessages = messages.sort(
+		(a, b) => new Date(a.created_time).getTime() - new Date(b.created_time).getTime(),
+	);
+
 	useEffect(() => {
 		scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
 	}, [messages]);
-
-	const allMessages = [...history, ...messages].sort(
-		(a, b) =>
-			new Date(a.message.created_time).getTime() - new Date(b.message.created_time).getTime(),
-	);
 
 	const grouped = groupMessagesByDate(allMessages);
 
@@ -55,9 +52,9 @@ const MessageList = ({ messages, history }: Props) => {
 
 					{group.messages.map((item) => (
 						<MessageItem
-							key={item.message.id}
+							key={item.id}
 							item={item}
-							isMyMessage={user?.id === item.message.sender_id}
+							isMyMessage={user?.id === item.sender_id}
 						/>
 					))}
 				</div>
