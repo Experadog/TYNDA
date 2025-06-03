@@ -81,14 +81,6 @@ interface IProps {
 const TouristClub: FC<IProps> = ({ touristClubViewModel }) => {
     return (
         <div className='mt-[108px] lg:mt-[40px] lg:px-5 max-w-[1340px] m-auto'>
-            <div className='flex flex-col items-center gap-10'>
-                <h3 className='text-5xl lg:text-2xl font-semibold text-center'>
-                    {touristClubViewModel.title}
-                </h3>
-                {/* <p className='text-lg lg:text-base font-semibold text-center numeric'>
-                    {touristClubViewModel.whatIncluded}
-                </p> */}
-            </div>
             <div className='grid grid-cols-4 lg:grid-cols-1 gap-4 mt-[58px]'>
                 {clubFeatures.map((column, colIndex) => (
                     <div

@@ -13,25 +13,20 @@
 			"button3": "Available on"
 		},
 		"footer": {
-			"text": "",
 			"menu": [
 				{
 					"title": "Pages",
 					"items": [
 						"Home",
-						"Accounts",
-						"Subscriptions",
 						"About Us",
-						"Log In",
-						"Sign Up"
+						"Contacts",
+						"Services"
 					]
 				},
 				{
 					"title": "Useful Information",
 					"items": [
-						"News",
 						"About Us",
-						"Delivery & Payment",
 						"Our Contacts"
 					]
 				},
@@ -248,19 +243,49 @@
 			"availableAt": "Available on"
 		},
 		"touristicPlan": {
-			"title": "TOURISTIC PLAN",
+			"title": "What Does the Tourist Club Card Offer?",
+			"titleBlock": "TOURISTIC PLAN",
 			"description": "Tourist Club Card",
 			"buyCard": "Buy Club Card",
 			"costPerWeek": "$10.00/week",
 			"autoRenewed": "Auto-renewal. Cancel anytime.",
-			"additionalBonuses": "Extra bonuses & privileges",
-			"simpleUse": "Easy to use & earn points",
-			"exclusiveDiscounts": "Exclusive discounts & offers",
-			"ourPartners": "Our Partner Businesses:"
+			"bonuses": [
+				"Smart search + personalized recommendations",
+				"Offline maps of Kyrgyzstan",
+				"Elite selection of verified locations",
+				"Discounts and deals up to 30% from partners",
+				"Free privileges (welcome drinks, etc.)",
+				"Concierge support 24/7",
+				"Early access to new Tynda features",
+				"Ad-free interface",
+				"Route import to calendar",
+				"Travel and budget statistics",
+				"Bonuses and quests for activity",
+				"VIP community of Tynda Club"
+			],
+			"modalText": "Payment is not available yet"
+		},
+		"businessPlan": {
+			"title1": "What does",
+			"title2": "BUSINESS PLAN",
+			"title3": "give you?",
+			"titleBlock": "BUSINESS PLAN",
+			"description": "BUSINESS PLAN card",
+			"buyCard": "Purchase club card",
+			"autoRenewed": "Auto-renewed. Can be cancelled anytime",
+			"bonuses": [
+				"TOP positions in search and categories",
+				"Promotion in special sections: Top Places, Weekly Deals",
+				"Ad banners and push notifications to attract customers",
+				"Online booking and payment (integration with your system)",
+				"Full analytics (views, clicks, conversions)",
+				"Placement of promotions, discounts, and promo codes",
+				"Extended gallery (up to 20 photos + video)",
+				"Verified status (Tynda Verified badge)"
+			],
+			"modalText": "Payment is not available yet"
 		},
 		"touristClub": {
-			"title": "What Does the Tourist Club Card Offer?",
-			"whatIncluded": "Subscription Inclusions ($10 for 15 days)",
 			"text": [
 				"Interactive tourist map—routes, attractions, partners.",
 				"Safety—SOS button, legal support, insurance.",

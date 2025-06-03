@@ -42,7 +42,7 @@ const About: FC<IProps> = ({ aboutViewModel }) => {
 						/>
 						<Image
 							priority
-							src={'/home/waterfall.webp'}
+							src={'/home/mount.webp'}
 							alt="nature"
 							width={228}
 							height={258}
@@ -57,7 +57,7 @@ const About: FC<IProps> = ({ aboutViewModel }) => {
 					<div className="flex items-center justify-center">
 						<Image
 							priority
-							src={'/home/humanMount.webp'}
+							src={'/home/natureMount.webp'}
 							alt="nature"
 							width={545}
 							height={258}
