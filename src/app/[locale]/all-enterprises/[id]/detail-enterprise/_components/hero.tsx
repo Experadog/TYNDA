@@ -5,6 +5,7 @@ import { Link } from '@/i18n/routing';
 import { SOCIAL_MEDIAS, getTranslateByKey } from '@/lib';
 import { useLocale } from '@/providers/locale/locale-provider';
 import type { SocialMediaKey } from '@common';
+import clsx from 'clsx';
 import Image from 'next/image';
 import { type FC, useState } from 'react';
 import { BsGeoAlt } from 'react-icons/bs';
@@ -22,9 +23,15 @@ const Hero: FC<IProps> = ({ viewModel, item, categoriesViewModel }) => {
 
 	const { locale } = useLocale();
 
+	const description = getTranslateByKey(locale, item.translates, 'description');
+	const isLongText = description.length > 300;
+
 	return (
 		<div className="mt-[50px] lg:mt-[30px]">
-			<BreadCrumbs home={viewModel.hero.home} pageName={getTranslateByKey(locale, item.translates, 'name')} />
+			<BreadCrumbs
+				home={viewModel.hero.home}
+				pageName={getTranslateByKey(locale, item.translates, 'name')}
+			/>
 			<div className="grid grid-cols-2 lg:grid-cols-1 items-start lg:items-center justify-between gap-7 mt-5">
 				<div className="flex flex-col items-center justify-center gap-4">
 					<Image
@@ -138,27 +145,34 @@ const Hero: FC<IProps> = ({ viewModel, item, categoriesViewModel }) => {
 						</div>
 					</div>
 
-					<div className="max-w-[650px]">
+					<div className="w-full">
 						<h3 className="text-lg font-semibold uppercase lg:text-2xl">
 							{viewModel.hero.aboutEnterprise}
 						</h3>
 
-						{item?.translates?.ru?.description && (
-							<>
-								<p className="text-base font-normal whitespace-pre-line">
-									{shouldShowAllText
-										? getTranslateByKey(locale, item.translates, 'description')
-										: `${getTranslateByKey(locale, item.translates, 'description').slice(0, 300)}...`}
-								</p>
-								<button
-									type="button"
-									onClick={() => setShouldShowAllText((prev) => !prev)}
-									className="mt-2 text-yellow font-medium hover:underline"
-								>
-									{shouldShowAllText ? `${viewModel.hero.hide_text}` : `${viewModel.hero.show_text}`}
-								</button>
-							</>
-						)}
+						<p
+							className={clsx(
+								'text-base font-normal whitespace-pre-line max-w-full overflow-hidden',
+								isLongText && !shouldShowAllText && 'truncate',
+							)}
+						>
+							{isLongText
+								? shouldShowAllText
+									? description
+									: `${description.slice(0, 300)}...`
+								: description}
+						</p>
+						<button
+							type="button"
+							onClick={() => setShouldShowAllText((prev) => !prev)}
+							className="mt-2 text-yellow font-medium hover:underline"
+						>
+							{isLongText
+								? shouldShowAllText
+									? `${viewModel.hero.hide_text}`
+									: `${viewModel.hero.show_text}`
+								: null}
+						</button>
 					</div>
 					{/* <div className='flex items-center justify-between w-full gap-3 lg:hidden'>
                         <Button className='rounded-[25px] w-full text-yellow bg-background_1 border  border-yellow hover:text-white hover:bg-yellow h-12 text-lg font-semibold'>{viewModel.hero.button1}</Button>

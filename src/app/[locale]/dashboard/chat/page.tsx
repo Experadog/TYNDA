@@ -1,5 +1,7 @@
+import ChatGreetingLayout from './view/chat-greeting-layout';
+
 const Page = () => {
-	return <div>Page</div>;
+	return <ChatGreetingLayout />;
 };
 
 export default Page;

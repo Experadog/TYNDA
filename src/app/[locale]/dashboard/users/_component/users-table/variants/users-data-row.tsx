@@ -1,6 +1,14 @@
 import { formatDate } from '@/lib';
 import type { UserListItem } from '@business-entities';
-import { Avatar, Button, EntityStatusComponent } from '@components';
+import {
+	Avatar,
+	Button,
+	EntityRoleComponent,
+	EntityStatusComponent,
+	Tooltip,
+	TooltipContent,
+	TooltipTrigger,
+} from '@components';
 import clsx from 'clsx';
 import { Edit, Trash } from 'lucide-react';
 import type { ReactNode } from 'react';
@@ -21,12 +29,21 @@ const UsersDataRow = ({ data }: Props) => {
 							className="rounded-full border border-shade_gray"
 						/>
 					</BodyCell>
-					<BodyCell className="w-40">
+					<BodyCell className="w-36">
 						{item.first_name || item.last_name
 							? `${item.first_name || ''} ${item.last_name || ''}`
 							: 'Не указано'}
 					</BodyCell>
-					<BodyCell className="w-52">{item.email}</BodyCell>
+					<BodyCell className="w-52">
+						<Tooltip>
+							<TooltipTrigger asChild>
+								<div className="truncate w-full">{item.email}</div>
+							</TooltipTrigger>
+							<TooltipContent className="bg-background_6 p-2 text-base font-sem">
+								{item.email}
+							</TooltipContent>
+						</Tooltip>
+					</BodyCell>
 					<BodyCell className="w-44 text-gray">
 						{formatDate(item.created_time, { showTime: true })}
 					</BodyCell>
@@ -35,6 +52,14 @@ const UsersDataRow = ({ data }: Props) => {
 					</BodyCell>
 					<BodyCell className="w-28" align="center">
 						<EntityStatusComponent status={item.status} />
+					</BodyCell>
+
+					<BodyCell className="w-24" align="center">
+						<EntityRoleComponent
+							is_superuser={false}
+							role={item.role}
+							className="text-sm text-orange italic"
+						/>
 					</BodyCell>
 
 					<BodyCell className="border-r-0 w-36" align="center">

@@ -1,11 +1,11 @@
-import type { PermissionScopeKey } from '@business-entities';
+import type { PermissionScopeKey, UserRole } from '@business-entities';
 
 export type Params = {
 	page?: string;
 	size?: string;
 	email?: string;
 	code?: string;
-	role?: string;
+	role?: UserRole;
 	state?: Locale;
 	category?: string;
 	id?: string;
@@ -16,4 +16,7 @@ export type Params = {
 	staff_establishment_id?: string;
 	establisher_id?: string;
 	request_id?: string;
+	establishment_id?: string;
+	chat_id?: string;
+	user_id?: string;
 };

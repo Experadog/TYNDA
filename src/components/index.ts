@@ -1,9 +1,15 @@
 export { default as Fade } from './animation/fade/fade';
 export { default as Translate } from './animation/translate/translate';
 export { default as Avatar } from './avatar/avatar';
+export { default as Chat } from './chat/chat';
+export { default as ChatCustomLayout } from './chat/chat-custom-layout';
+export { default as ChatList } from './chat/chat-list';
+
 export { default as DeletionConfirmModal } from './deletion-confirm-modal/deletion-confirm-modal';
+export { default as EntityRoleComponent } from './entity-role/entity-role';
 export { default as EntityStatusComponent } from './entity-status/entity-status';
 export { default as EstCategorySlider } from './est-category-slider/est-category-slider';
+export { default as EstablishmentCategoryComponent } from './establishment-category/establishment-category';
 export { default as GoogleAnalytics } from './google-analytics/google-analytics';
 export { default as ImgMask } from './img-mask/img-mask';
 export { default as ImgUploader } from './img-uploader/img-uploader';

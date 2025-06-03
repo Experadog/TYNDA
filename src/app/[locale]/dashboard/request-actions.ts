@@ -2,9 +2,11 @@
 
 import { COOKIES, PAGES, PAGINATION } from '@/lib';
 import {
+	type ChatListRetrievalResponseModel,
 	type GetEstablishmentAllClientResponseModel,
 	type GetRolesResponseModel,
 	type UsersRetrievalResponseModel,
+	getChatList,
 	getEstablishmentAll,
 	getRoles,
 	getUsers,
@@ -16,11 +18,13 @@ type Exposes = {
 	establishmentsResponse?: GetEstablishmentAllClientResponseModel;
 	rolesResponse?: GetRolesResponseModel;
 	usersResponse?: UsersRetrievalResponseModel;
+	chatResponse?: ChatListRetrievalResponseModel;
 };
 
 async function getCommonData(): Promise<Exposes> {
 	const establishmentsResponse = await getEstablishmentAll(PAGINATION.establishment);
-	return { establishmentsResponse };
+	const chatResponse = await getChatList();
+	return { establishmentsResponse, chatResponse };
 }
 
 async function getEstablisherData(): Promise<Exposes> {

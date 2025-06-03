@@ -1,5 +1,6 @@
 type Props = {
 	showTime?: boolean;
+	timeOnly?: boolean;
 };
 
 export function formatDate(dateInput: string | Date | null, options: Props = {}): string {
@@ -12,6 +13,12 @@ export function formatDate(dateInput: string | Date | null, options: Props = {})
 	const year = date.getFullYear();
 
 	const formattedDate = `${day}.${month}.${year}`;
+
+	if (options.showTime && options.timeOnly) {
+		const hours = String(date.getHours()).padStart(2, '0');
+		const minutes = String(date.getMinutes()).padStart(2, '0');
+		return `${hours}:${minutes}`;
+	}
 
 	if (options.showTime) {
 		const hours = String(date.getHours()).padStart(2, '0');

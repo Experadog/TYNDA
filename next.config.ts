@@ -57,7 +57,8 @@ const nextConfig: NextConfig = {
 		font-src 'self';
 		connect-src 'self' 
 			https://tile.openstreetmap.org 
-			https://www.google-analytics.com;
+			https://www.google-analytics.com
+			wss://soyuz.kg;
 	`
 							.replace(/\s{2,}/g, ' ')
 							.trim(),

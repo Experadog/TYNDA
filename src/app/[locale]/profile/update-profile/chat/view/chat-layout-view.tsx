@@ -1,34 +1,22 @@
 'use client';
-import { useRouter } from '@/i18n/routing';
-import type { FC, ReactNode } from 'react';
-import List from '../_components/chat-list/list';
 
-interface IProps {
+import type { ChatPreparingViewType } from '@business-entities';
+import { ChatCustomLayout } from '@components';
+import type { ReactNode } from 'react';
+import { useChatUseCase } from '../use-cases/useChatUseCase';
+
+interface Props {
 	children: ReactNode;
+	chats: ChatPreparingViewType;
 }
 
-const ChatLayoutView: FC<IProps> = ({ children }) => {
-	const router = useRouter();
+const ChatLayoutView = ({ children, chats }: Props) => {
+	const { onCreate } = useChatUseCase();
 
 	return (
-		<div className="flex flex-col gap-4 h-full min-h-[800px]">
-			<div className="p-5 rounded-3xl shadow-md bg-background_1">
-				<p className="text-lg">
-					Сообщения{' '}
-					<span className="bg-[#DAF0FF] text-black rounded-2xl text-sm px-3 py-2 numeric">
-						12
-					</span>
-				</p>
-			</div>
-			<div className="flex gap-4 h-full">
-				<div className="flex-[1] p-5 rounded-3xl shadow-md bg-background_1">
-					<List />
-				</div>
-				<div className="flex-[2.5] p-5 rounded-3xl shadow-md bg-background_1">
-					{children}
-				</div>
-			</div>
-		</div>
+		<ChatCustomLayout scope="profile" chats={chats} onClick={onCreate}>
+			{children}
+		</ChatCustomLayout>
 	);
 };
 

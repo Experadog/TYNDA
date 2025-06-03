@@ -7,8 +7,10 @@ import { useUsersContext } from '../../context/users-context-provider';
 const UsersTableFooter = () => {
 	const {
 		pagination: {
-			actions: { onGoNextPage, setPage },
-			states: { allPages, currentPage, isFirstPage, hasNextPage, isLoading, data },
+			table_params: {
+				actions: { onGoNextPage, setPage },
+				states: { allPages, currentPage, isFirstPage, hasNextPage, isLoading, data },
+			},
 		},
 	} = useUsersContext();
 

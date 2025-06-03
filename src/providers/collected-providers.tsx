@@ -3,6 +3,7 @@ import { COOKIES } from '@/lib';
 import { TooltipProvider } from '@components';
 import { cookies } from 'next/headers';
 import type { FC, ReactNode } from 'react';
+import { ChatWebSocketProvider } from './chat-webscoket/chat-webscoket-provider';
 import { LocaleProvider } from './locale/locale-provider';
 import OAuthProvider from './oAuth/oAuth-provider';
 import RefreshOnExpire from './refresh-token/refresh-on-expire';
@@ -31,10 +32,12 @@ const CollectedProviders: FC<IProps> = async ({ children }) => {
 			<OAuthProvider>
 				<LocaleProvider locale={locale}>
 					<UserProvider session={session}>
-						<RefreshOnExpire initialSession={session}>
-							<ToastClientProvider theme={theme} />
-							<TooltipProvider>{children}</TooltipProvider>
-						</RefreshOnExpire>
+						<ChatWebSocketProvider session={session}>
+							<RefreshOnExpire initialSession={session}>
+								<ToastClientProvider theme={theme} />
+								<TooltipProvider>{children}</TooltipProvider>
+							</RefreshOnExpire>
+						</ChatWebSocketProvider>
 					</UserProvider>
 				</LocaleProvider>
 			</OAuthProvider>

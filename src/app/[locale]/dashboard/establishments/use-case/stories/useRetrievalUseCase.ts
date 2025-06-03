@@ -7,8 +7,11 @@ export function useRetrievalUseCase(data: GetEstablishmentAllClientResponseModel
 	const {
 		states: { allPages, isLoading },
 		actions: { onGoNextPage },
-	} = usePagination<EstablishmentListItem>(data, getEstablishmentAll, 'establishment');
-
+	} = usePagination<EstablishmentListItem>({
+		initialData: data,
+		entity: 'establishment',
+		fetchFn: getEstablishmentAll,
+	});
 	const items = useMemo(() => {
 		return Object.values(allPages).flat();
 	}, [allPages]);

@@ -3,7 +3,11 @@ import type { Staff } from '@business-entities';
 import { usePagination } from '@common';
 
 export function useStaffPaginationUseCase(initialData: StaffRetrievalResponseModel['data']) {
-	const params = usePagination<Staff>(initialData, getStaff, 'staff');
+	const params = usePagination<Staff>({
+		initialData,
+		entity: 'staff',
+		fetchFn: getStaff,
+	});
 
 	return params;
 }

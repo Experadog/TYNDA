@@ -14,7 +14,7 @@ export function useUserUseCase({ data }: Props) {
 	const modal = useUsersModalUseCase();
 	const creation = useUsersCreationUseCase({
 		onCloseModal: modal.actions.onClose,
-		refetch: pagination.actions.refetchCurrentPage,
+		refetch: pagination.table_params.actions.refetchCurrentPage,
 	});
 
 	return { pagination, modal, schema, creation };

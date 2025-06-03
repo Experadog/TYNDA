@@ -56,7 +56,7 @@ const UserCard = () => {
 				</div>
 
 				<div className="flex flex-col gap-3 items-center w-full mt-5">
-					<TariffCard isActive={true} data={{}} />
+					<TariffCard isActive={true} />
 					<div className="flex flex-col gap-1 w-full px-3">
 						<div className="flex items-center justify-between">
 							<span className="text-foreground_1 text-base font-semibold">

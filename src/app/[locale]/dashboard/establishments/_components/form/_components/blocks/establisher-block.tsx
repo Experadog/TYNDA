@@ -12,7 +12,14 @@ type Props = {
 const EstablisherBlock = ({ schema, onChangeEstIdValidation }: Props) => {
 	const {
 		pagination: {
-			states: { data },
+			selection_params: {
+				states: { list, isLoading, hasNextPage },
+				actions: { onGoNextPage },
+			},
+
+			table_params: {
+				states: { list: tableList },
+			},
 		},
 	} = useUsersContext();
 
@@ -71,11 +78,15 @@ const EstablisherBlock = ({ schema, onChangeEstIdValidation }: Props) => {
 				<CustomSelect
 					control={schema.control}
 					name="establisher_id"
-					data={data.map((user) => ({
+					data={list.map((user) => ({
 						label: user.email,
 						value: user?.id,
 						avatar: user.avatar || '',
 					}))}
+					isEnd={!hasNextPage}
+					isInfinityScroll={true}
+					isPaginationLoading={isLoading}
+					onReachEnd={onGoNextPage}
 					showAvatar
 					placeholder="Выберите владельца предприятия"
 					isAutoComplete

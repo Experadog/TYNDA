@@ -36,6 +36,7 @@ export type UserListItem = {
 	is_multi_login: boolean;
 	created_time: string;
 	last_login_time: string | null;
+	role: UserRole;
 };
 
 export enum UserRole {

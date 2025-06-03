@@ -40,6 +40,7 @@ const Avatar: FC<IProps> = ({ size = 'medium', src, className }) => {
 		<Image
 			alt="avatar"
 			width={width}
+			priority
 			height={height}
 			src={validSrc}
 			className={clsx('object-cover aspect-square rounded-full', className)}
