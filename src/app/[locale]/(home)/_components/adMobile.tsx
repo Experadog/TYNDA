@@ -14,7 +14,7 @@ const AdMobile: FC<IProps> = ({ adMobileViewModel }) => {
 				<div className="bg-[var(--yellow)] rounded-[45px] pt-[25px] pl-[39px] pr-[22px] flex items-end justify-center">
 					<Image
 						priority
-						src={'/home/telImg.webp'}
+						src={'/home/phoneImage.webp'}
 						alt="phone"
 						width={540}
 						height={699}

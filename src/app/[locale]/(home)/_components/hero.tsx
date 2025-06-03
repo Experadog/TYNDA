@@ -22,11 +22,11 @@ const Hero: FC<IProps> = ({ heroViewModel }) => {
 							{heroViewModel.title}
 						</h1>
 					</Translate>
-					<Translate direction="right" distance={200} animateOnce={false}>
+					{/* <Translate direction="right" distance={200} animateOnce={false}>
 						<p className="text-white text-base md:text-sm font-medium">
 							{heroViewModel.description}
 						</p>
-					</Translate>
+					</Translate> */}
 					<Translate direction="left" distance={60} animateOnce={false}>
 						<Link href={`/${PAGES.ENTERPRISES_ALL}`}>
 							<Button
