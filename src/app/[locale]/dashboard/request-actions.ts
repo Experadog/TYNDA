@@ -1,5 +1,6 @@
 'use server';
 
+import { clearCookie } from '@/common/actions/clear-cookie';
 import { COOKIES, PAGES, PAGINATION } from '@/lib';
 import {
 	type ChatListRetrievalResponseModel,
@@ -43,7 +44,12 @@ async function getSuperUserData(): Promise<Pick<Exposes, 'rolesResponse' | 'user
 
 export async function executeDefaultRoleRequests(): Promise<Exposes> {
 	const session = await getCookie<Session>(COOKIES.SESSION, true);
-	if (!session) return forceRedirect(PAGES.LOGIN);
+
+	if (!session) {
+		await clearCookie(COOKIES.SESSION);
+		await clearCookie(COOKIES.USER_SETTINGS);
+		return forceRedirect(PAGES.LOGIN);
+	}
 
 	const { role, is_superuser } = session.user;
 

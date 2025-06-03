@@ -83,7 +83,7 @@ const UserCard = () => {
 					className="bg-yellow text-white rounded-2xl text-base font-semibold w-full  mt-auto p-3 text-center flex items-center gap-2 justify-center"
 				>
 					<SlPencil />
-					Редактировать профиль
+					Управление
 				</Link>
 			</div>
 		</Translate>

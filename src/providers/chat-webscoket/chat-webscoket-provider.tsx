@@ -46,7 +46,6 @@ export const ChatWebSocketProvider = ({ session, children }: ChatWebSocketProvid
 	const maxReconnectAttempts = 5;
 	const reconnectDelay = 2000;
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	const connectWebSocket = useCallback(() => {
 		if (!session) return;
 
