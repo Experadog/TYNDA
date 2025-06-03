@@ -3,12 +3,13 @@ import { Button } from '@components';
 import { FC } from 'react';
 
 interface IProps {
-    contactForm: ViewModel['Contacts']['contactForm']
+    contactForm: ViewModel['Contacts']['contactForm'];
+    classNameForm?: string;
 }
 
-const ContactForm: FC<IProps> = ({ contactForm }) => {
+const ContactForm: FC<IProps> = ({ contactForm, classNameForm }) => {
     return (
-        <div className='my-[100px] lg:my-[60px] flex flex-col gap-[60px]'>
+        <div className={`my-[100px] lg:my-[60px] flex flex-col gap-[60px] ${classNameForm}`}>
             <div className='flex lg:flex-wrap items-center gap-8'>
                 <h3 className='text-4xl lg:text-2xl font-medium'>
                     {contactForm.contactUs}

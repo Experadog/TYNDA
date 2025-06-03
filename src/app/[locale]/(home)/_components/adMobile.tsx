@@ -14,7 +14,7 @@ const AdMobile: FC<IProps> = ({ adMobileViewModel }) => {
 				<div className="bg-[var(--yellow)] rounded-[45px] pt-[25px] pl-[39px] pr-[22px] flex items-end justify-center">
 					<Image
 						priority
-						src={'/home/telImg.webp'}
+						src={'/home/phoneImage.webp'}
 						alt="phone"
 						width={540}
 						height={699}
@@ -31,12 +31,17 @@ const AdMobile: FC<IProps> = ({ adMobileViewModel }) => {
 					<h2 className="font-medium text-[34px] lg:text-2xl uppercase">
 						{adMobileViewModel.title}
 					</h2>
-					<p className="text-base lg:text-sm font-normal">
-						{adMobileViewModel.description1}
-					</p>
-					<p className="text-base lg:text-sm font-normal">
-						{adMobileViewModel.description2}
-					</p>
+					<div className='flex flex-col gap-5 lg:items-center lg:justify-center lg:gap-3'>
+						<p className="text-base lg:text-sm font-normal">
+							{adMobileViewModel.description1}
+						</p>
+						<p className="text-base lg:text-sm font-normal">
+							{adMobileViewModel.description2}
+						</p>
+						<p className="text-base lg:text-sm font-normal">
+							{adMobileViewModel.description3}
+						</p>
+					</div>
 					<Translate direction="up" distance={50} animateOnce={false}>
 						<div className="flex flex-col gap-[10px] mt-[30px] lg:mt-0 lg:justify-center lg:items-center">
 							<p className="text-lg font-medium pr-[90px] lg:text-center lg:pr-0">
