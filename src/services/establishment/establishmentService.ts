@@ -2,8 +2,14 @@
 
 import { createFetchAction } from '@/common/actions/createFetchAction';
 import { PAGES, URL_ENTITIES, isSuccessResponse } from '@/lib';
-import { AXIOS_DELETE, AXIOS_PATCH, AXIOS_POST, type Params, isSuperUser } from '@common';
-import { permanentRedirect } from 'next/navigation.js';
+import {
+	AXIOS_DELETE,
+	AXIOS_PATCH,
+	AXIOS_POST,
+	type Params,
+	forceRedirect,
+	isSuperUser,
+} from '@common';
 import type {
 	EstablishmentAdminCreationRequestModel,
 	EstablishmentCreationRequestModel,
@@ -59,7 +65,7 @@ class EstablishmentService {
 		});
 
 		if (!isSuccessResponse(response)) {
-			permanentRedirect(isDashboard ? PAGES.DASHBOARD : PAGES.ENTERPRISES_ALL);
+			await forceRedirect(isDashboard ? PAGES.DASHBOARD : PAGES.ENTERPRISES_ALL);
 		}
 
 		return response;
