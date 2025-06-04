@@ -1,4 +1,4 @@
-import type { Session, UserRole } from '@business-entities';
+import type { Session } from '@business-entities';
 import type { CommonResponse } from '@common';
 
 // Login
@@ -6,7 +6,7 @@ export type LoginRequestModel = { email: string; password: string };
 export type LoginResponseModel = CommonResponse<Session>;
 
 // Login via
-export type GoogleLoginRequestModel = { role: UserRole; code: string; locale: Locale };
+export type GoogleLoginRequestModel = { code: string; locale: Locale };
 export type GoogleLoginResponseModel = LoginResponseModel;
 
 // Register establisher

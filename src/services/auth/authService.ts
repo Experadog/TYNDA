@@ -59,14 +59,12 @@ class AuthService {
 
 	static async sendAndLoginByGoogle({
 		code,
-		role,
 		locale,
 	}: GoogleLoginRequestModel): Promise<GoogleLoginResponseModel> {
 		const response = await AXIOS_GET<GoogleLoginResponseModel>({
 			url: URL_ENTITIES.CALLBACK_GOOGLE,
 			params: {
 				code,
-				role,
 				state: locale,
 			},
 		});
