@@ -1,8 +1,7 @@
 'use client';
 
 import { useLocale } from '@/providers/locale/locale-provider';
-import { UserRole } from '@business-entities';
-import { Fade } from '@components';
+import { Avatar, LoadingSpinner, Translate } from '@components';
 import { useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { useLoginUseCase } from '../login/use-case/useLoginUseCase';
@@ -14,15 +13,17 @@ const Callback = () => {
 
 	useEffect(() => {
 		const code = params.get('code') || '';
-		onSendGoogleCode({ code, role: UserRole.CLIENT, locale });
+		onSendGoogleCode({ code, locale });
 	}, []);
 
 	return (
-		<div className="fixed inset-0 bg-background_1  flex items-center justify-center p-10">
-			<Fade className="flex flex-col gap-1 items-center">
-				<span className="text-foreground_1 text-lg">Пожалуйста, подождите</span>
-				<span className="text-gray animate-pulse duration-1000">Идет авторизация...</span>
-			</Fade>
+		<div className="">
+			<Translate direction="up" animateOnce className="flex flex-col gap-3 items-center">
+				<Avatar src={'/logo.svg'} className="size-24" />
+				<h3 className="text-foreground_1 text-2xl font-semibold">Tynda KG</h3>
+				<h4 className="text-foreground_2 text-md font-normal">Идет авторизация...</h4>
+				<LoadingSpinner className="size-5 text-yellow" />
+			</Translate>
 		</div>
 	);
 };
