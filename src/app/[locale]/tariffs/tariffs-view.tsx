@@ -18,6 +18,10 @@ const FirstService = dynamic(() => import("./_components/first-service"), {
   ssr: true,
 });
 
+const BusinessPlan = dynamic(() => import("./_components/business-plan"), {
+  ssr: true,
+});
+
 interface IProps { }
 
 const TariffsView: FC<IProps> = ({ }) => {
@@ -29,7 +33,8 @@ const TariffsView: FC<IProps> = ({ }) => {
       <Hero heroViewModel={tariffs.hero} />
       <MoreAboutPlans moreAboutPlansViewModel={tariffs.moreAboutPlans} />
       <div className="max-w-[1340px] m-auto lg:w-full">
-        <TouristicPlan touristicPlanViewModel={tariffs.touristicPlan}/>
+        <TouristicPlan touristicPlanViewModel={tariffs.touristicPlan} />
+        <BusinessPlan businessPlanViewModel={tariffs.businessPlan} />
       </div>
       <TouristClub touristClubViewModel={tariffs.touristClub} />
       <FirstService firstService={tariffs.firstService} />

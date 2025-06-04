@@ -72,9 +72,6 @@ const Footer: FC<IProps> = () => {
 							</div>
 						))}
 					</div>
-					{/* <p className="text-[12px] font-semibold text-foreground_1 max-w-[100px] numeric lg:hidden">
-						2024 Kyrgyzstan, Bishkek 81063
-					</p> */}
 				</div>
 			</div>
 		</footer>
