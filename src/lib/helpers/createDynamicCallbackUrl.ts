@@ -1,6 +1,5 @@
-import { ORIGIN } from '../config/oauth';
 import { PAGES } from '../config/pages';
 
 export function createDynamicCallbackUrl(locale: Locale) {
-	return `${ORIGIN}/${locale}/auth${PAGES.CALLBACK}`;
+	return `www.tynda.kg/${locale}/auth${PAGES.CALLBACK}`;
 }

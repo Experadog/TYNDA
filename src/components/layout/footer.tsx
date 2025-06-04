@@ -35,9 +35,6 @@ const Footer: FC<IProps> = () => {
 				<div className="flex gap-4 lg:flex-col lg:gap-[50px]">
 					<div className="flex flex-col gap-[25px] w-[433px] lg:w-auto">
 						<Image src={'/logo.svg'} alt="logo" width={120} height={90} />
-						<p className="font-medium text-[15px] max-w-[340px]">
-							{viewModel.footer.text}
-						</p>
 					</div>
 					<div className="flex gap-[50px] lg:flex-col">
 						{viewModel.footer.menu.map((section) => (
@@ -72,9 +69,6 @@ const Footer: FC<IProps> = () => {
 							</div>
 						))}
 					</div>
-					{/* <p className="text-[12px] font-semibold text-foreground_1 max-w-[100px] numeric lg:hidden">
-						2024 Kyrgyzstan, Bishkek 81063
-					</p> */}
 				</div>
 			</div>
 		</footer>
