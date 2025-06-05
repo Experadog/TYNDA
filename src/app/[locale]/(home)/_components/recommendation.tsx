@@ -32,16 +32,15 @@ const Recommendation: FC<IProps> = ({
 	const [selectedCategory, setSelectedCategory] = useState<EstablishmentCategory | null>(null);
 
 	const filteredEstablishments = selectedCategory
-		? establishments.filter((establishment) => establishment.category === selectedCategory)
-		: establishments;
+	? selectedCategory === 'discount'
+		? establishments.filter((establishment) => establishment.discount === true)
+		: establishments.filter((establishment) => establishment.category === selectedCategory)
+	: establishments;
 
 	return (
 		<div className="mt-[75px] lg:mt-[60px]">
 			<Translate direction="right" distance={100} animateOnce={false}>
 				<div className="flex flex-col items-center justify-center gap-5 lg:px-5">
-					{/* <h3 className="uppercase text-lg font-semibold">
-						{recommendationViewModel.title}
-					</h3> */}
 					<Translate direction="right" distance={100} animateOnce={false}>
 						<h2 className="font-medium text-4xl md:text-2xl exs:text-lg max-w-[830px] text-center">
 							{recommendationViewModel.description}

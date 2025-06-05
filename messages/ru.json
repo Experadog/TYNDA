@@ -256,7 +256,7 @@
 			"titleBlock": "TOURISTIC PLAN",
 			"description": "Туристическая клубная карта",
 			"buyCard": "Приобрести клубную карту",
-			"costPerWeek": "10.00 $/нед.",
+			"costPerWeek": "3$",
 			"autoRenewed": "Продлевается автоматически. Можно отменить в любое время",
 			"bonuses": [
 				"Умный поиск + персональные рекомендации",
@@ -363,7 +363,7 @@
 			"events_and_entertainment": "События и развлечения",
 			"for_family_vacations": "Для семейного отдыха",
 			"ski_resorts": "Горнолыжные базы",
-			"discounts_and_promotions": "Скидки и акции",
+			"discount": "Скидки и акции",
 			"banquet_halls": "Банкетные залы / Тойкана",
 			"tourist_attractions_and_routes": "Туристические места и маршруты",
 			"transfer": "Трансфер",
