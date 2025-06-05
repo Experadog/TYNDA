@@ -28,10 +28,10 @@ const RecommendationCard: FC<IProps> = ({ establishment }) => {
 				</div>
 				<div className="px-[14px] md:px-2 h-full flex flex-col justify-between">
 					<div className="">
-						<h4 className="font-semibold text-lg uppercase md:text-sm md:font-medium  truncate numeric">
+						<h4 className="font-semibold text-lg uppercase md:text-sm md:font-medium line-clamp-2 numeric">
 							{getTranslateByKey(locale, establishment.translates, 'name')}
 						</h4>
-						<p className="font-normal text-gray text-sm truncate md:text-xs numeric">
+						<p className="font-normal text-gray text-sm line-clamp-2 md:text-xs numeric">
 							{getTranslateByKey(locale, establishment.translates, 'description')}
 						</p>
 					</div>

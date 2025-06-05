@@ -256,7 +256,7 @@
 			"titleBlock": "TOURISTIC PLAN",
 			"description": "Туристтик клуб картасы",
 			"buyCard": "Клуб картасын сатып алыңыз",
-			"costPerWeek": "10.00 $/жума",
+			"costPerWeek": "3$",
 			"autoRenewed": "Автоматтык түрдө жаңыланат. Каалаган убакта жокко чыгарыңыз",
 			"bonuses": [
 				"Акылдуу издөө + жеке сунуштар",
@@ -363,7 +363,7 @@
 			"events_and_entertainment": "Иш-чаралар жана көңүл ачуу",
 			"for_family_vacations": "Үй-бүлөлүк эс алууга",
 			"ski_resorts": "Лыжа базалары",
-			"discounts_and_promotions": "Арзандатуулар жана акциялар",
+			"discount": "Арзандатуулар жана акциялар",
 			"banquet_halls": "Банкет залдары / Тойкана",
 			"tourist_attractions_and_routes": "Туристтик жерлер жана маршруттар",
 			"transfer": "Трансфер",

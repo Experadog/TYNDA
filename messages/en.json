@@ -238,7 +238,7 @@
 			"titleBlock": "TOURISTIC PLAN",
 			"description": "Tourist Club Card",
 			"buyCard": "Buy Club Card",
-			"costPerWeek": "$10.00/week",
+			"costPerWeek": "3$",
 			"autoRenewed": "Auto-renewal. Cancel anytime.",
 			"bonuses": [
 				"Smart search + personalized recommendations",
@@ -345,7 +345,7 @@
 			"events_and_entertainment": "Events & Entertainment",
 			"for_family_vacations": "Family Leisure",
 			"ski_resorts": "Ski resorts",
-			"discounts_and_promotions": "Discounts & Promotions",
+			"discount": "Discounts & Promotions",
 			"banquet_halls": "Banquet halls / Toykana",
 			"tourist_attractions_and_routes": "Tourist places and routes",
 			"transfer": "Transfer",

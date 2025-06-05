@@ -50,7 +50,7 @@ export type EstablishmentListItem = {
 	id: string;
 	category: EstablishmentCategory;
 	status: EntityStatus;
-	discount: number;
+	discount: boolean;
 	cover: string;
 	average_bill: number;
 };
@@ -65,7 +65,7 @@ export const ESTABLISHMENTS_CATEGORIES = {
 	events_and_entertainment: 'events_and_entertainment',
 	for_family_vacations: 'for_family_vacations',
 	ski_resorts: 'ski_resorts',
-	discounts_and_promotions: 'discounts_and_promotions',
+	discount: 'discount',
 	banquet_halls: 'banquet_halls',
 	tourist_attractions_and_routes: 'tourist_attractions_and_routes',
 	transfer: 'transfer',
