@@ -1,20 +1,31 @@
 'use client';
 
-import type { ChatPreparingViewType } from '@business-entities';
+import {
+	type ChatListRetrievalResponseModel,
+	type GetEstablishmentAllClientResponseModel,
+	getUserChatList,
+} from '@/services';
+import { usePagination } from '@common';
 import { ChatCustomLayout } from '@components';
 import type { ReactNode } from 'react';
-import { useChatUseCase } from '../use-cases/useChatUseCase';
 
 interface Props {
 	children: ReactNode;
-	chats: ChatPreparingViewType;
+	chats: ChatListRetrievalResponseModel['data'];
+	establishments: GetEstablishmentAllClientResponseModel['data'];
 }
 
-const ChatLayoutView = ({ children, chats }: Props) => {
-	const { onCreate } = useChatUseCase();
+const ChatLayoutView = ({ children, chats, establishments }: Props) => {
+	const {
+		states: { list },
+	} = usePagination({
+		entity: 'chat',
+		fetchFn: getUserChatList,
+		initialData: chats,
+	});
 
 	return (
-		<ChatCustomLayout scope="profile" chats={chats} onClick={onCreate}>
+		<ChatCustomLayout scope="profile" chats={list} establishments={establishments}>
 			{children}
 		</ChatCustomLayout>
 	);

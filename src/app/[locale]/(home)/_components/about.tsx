@@ -38,7 +38,7 @@ const About: FC<IProps> = ({ aboutViewModel }) => {
 							alt="nature"
 							width={318}
 							height={398}
-							className="rounded-2xl lg:w-[355px]"
+							className="rounded-2xl lg:w-[355px] lg:h-[298px] object-cover"
 						/>
 						<Image
 							priority
@@ -46,7 +46,7 @@ const About: FC<IProps> = ({ aboutViewModel }) => {
 							alt="nature"
 							width={228}
 							height={258}
-							className="h-[258px] rounded-2xl lg:hidden"
+							className="h-[258px] rounded-2xl lg:hidden object-cover"
 						/>
 					</div>
 				</Translate>
@@ -60,8 +60,8 @@ const About: FC<IProps> = ({ aboutViewModel }) => {
 							src={'/home/natureMount.webp'}
 							alt="nature"
 							width={545}
-							height={258}
-							className="h-[258px] rounded-2xl lg:w-[355px]"
+							height={358}
+							className="h-[358px] rounded-2xl lg:w-[355px] lg:h-[258px] object-cover"
 						/>
 					</div>
 					<div className="flex flex-wrap lg:flex-col items-center lg:items-start justify-center gap-4">

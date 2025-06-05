@@ -6,11 +6,11 @@ import type { ChatScope, ChatType } from '@business-entities';
 import { revalidateByTags } from '@common';
 import { useEffect, useMemo, useState } from 'react';
 import { IoSend } from 'react-icons/io5';
-import Avatar from '../avatar/avatar';
-import EstablishmentCategoryComponent from '../establishment-category/establishment-category';
-import { Button } from '../ui/button';
-import CustomInput from '../ui/customInput';
-import MessageList from './message-list';
+import Avatar from '../../avatar/avatar';
+import EstablishmentCategoryComponent from '../../establishment-category/establishment-category';
+import { Button } from '../../ui/button';
+import CustomInput from '../../ui/customInput';
+import MessageList from '../messages/message-list';
 
 type Props = {
 	chat: ChatType;
@@ -22,8 +22,8 @@ const Chat = ({ chat, scope }: Props) => {
 	const [content, setContent] = useState('');
 
 	const webscoketMessages = useMemo(
-		() => messages.filter((m) => m.chat_id === chat.id),
-		[chat.id, messages],
+		() => messages.filter((m) => m.chat_id === chat.id && m.id),
+		[chat.id, messages?.length],
 	);
 
 	const { avatar, name } = useMemo(() => {
@@ -70,7 +70,7 @@ const Chat = ({ chat, scope }: Props) => {
 			</div>
 
 			<div className="bg-background_1 h-full overflow-y-scroll relative px-5 py-3">
-				<MessageList messages={[...webscoketMessages, ...chat.messages]} />
+				<MessageList messages={[...chat.messages, ...webscoketMessages]} />
 			</div>
 
 			<div className="bg-background_1 w-full flex items-center gap-3 p-3">

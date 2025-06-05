@@ -66,7 +66,7 @@ class ProfileService {
 				user: { ...session?.user, ...payload, avatar },
 			};
 
-			setCookie(
+			await setCookie(
 				COOKIES.SESSION,
 				encryptData(newSession),
 				parseISOStringToDate(session.refresh_token_expire_time),
@@ -89,7 +89,7 @@ class ProfileService {
 			url: URL_ENTITIES.VERIFY_PHONE,
 			params,
 		});
-	
+
 		return response;
 	}
 

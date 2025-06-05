@@ -10,12 +10,12 @@ import type {
 } from './chatServiceTypes';
 
 class ChatService {
-	static async getUserChatList(): Promise<ChatListRetrievalResponseModel> {
+	static async getUserChatList(params: Params): Promise<ChatListRetrievalResponseModel> {
 		const response = await createFetchAction<ChatListRetrievalResponseModel>({
 			endpoint: URL_ENTITIES.CHAT_MY,
 			shouldBeAuthorized: true,
 			revalidateTags: [URL_ENTITIES.CHAT_MY],
-			params: { page: '1', size: '20' },
+			params,
 		});
 
 		return response;

@@ -2,7 +2,7 @@
 
 import clsx from 'clsx';
 import 'keen-slider/keen-slider.min.css';
-import { KeenSliderPlugin, useKeenSlider } from 'keen-slider/react';
+import { type KeenSliderPlugin, useKeenSlider } from 'keen-slider/react';
 import { type FC, type ReactNode, useEffect, useState } from 'react';
 import type { ClassNameValue } from 'tailwind-merge';
 
@@ -28,17 +28,19 @@ interface SliderProps {
 }
 
 // Плагин для навигации
-const NavigationPlugin: KeenSliderPlugin = (slider) => {
-	const nextButton = document.querySelector('.category-slider-next');
-	const prevButton = document.querySelector('.category-slider-prev');
+const NavigationPlugin = (navigation?: NavigationOptions): KeenSliderPlugin => {
+	return (slider) => {
+		const nextButton = document.querySelector(navigation?.nextEl || '.category-slider-next');
+		const prevButton = document.querySelector(navigation?.prevEl || '.category-slider-prev');
 
-	if (nextButton) {
-		nextButton.addEventListener('click', () => slider.next());
-	}
+		if (nextButton) {
+			nextButton.addEventListener('click', () => slider.next());
+		}
 
-	if (prevButton) {
-		prevButton.addEventListener('click', () => slider.prev());
-	}
+		if (prevButton) {
+			prevButton.addEventListener('click', () => slider.prev());
+		}
+	};
 };
 
 const Slider: FC<SliderProps> = ({
@@ -59,37 +61,40 @@ const Slider: FC<SliderProps> = ({
 	// Добавляем плагины в зависимости от наличия навигации
 	const plugins = [];
 	if (navigation) {
-		plugins.push(NavigationPlugin);
+		plugins.push(NavigationPlugin(typeof navigation === 'boolean' ? undefined : navigation));
 	}
 
-	const [sliderRef] = useKeenSlider({
-		mode: 'free',
-		slides: {
-			perView: slidesPerView,
-			spacing,
-			number: total ? number : undefined,
-		},
-		loop,
-		drag: true,
-		rubberband,
+	const [sliderRef] = useKeenSlider(
+		{
+			mode: 'free',
+			slides: {
+				perView: slidesPerView,
+				spacing,
+				number: total ? number : undefined,
+			},
+			loop,
+			drag: true,
+			rubberband,
 
-		created() {
-			setIsLoaded(true);
-		},
+			created() {
+				setIsLoaded(true);
+			},
 
-		async slideChanged(s) {
-			const isEnd = s.track.details.rel === s.track.details.maxIdx;
+			async slideChanged(s) {
+				const isEnd = s.track.details.rel === s.track.details.maxIdx;
 
-			if (isEnd && onReachEnd) {
-				if (total && children.length < total) {
-					await onReachEnd();
-					setNumber((prev) => prev + 1.1);
-				} else {
-					setNumber(children.length);
+				if (isEnd && onReachEnd) {
+					if (total && children.length < total) {
+						await onReachEnd();
+						setNumber((prev) => prev + 1.1);
+					} else {
+						setNumber(children.length);
+					}
 				}
-			}
+			},
 		},
-	}, plugins);
+		plugins,
+	);
 
 	useEffect(() => {
 		if (total && children.length === total) {

@@ -7,10 +7,13 @@ export async function getCookie<T>(name: COOKIES, isEncrypted?: boolean) {
 	const cookieStore = await cookies();
 	const value = cookieStore.get(name)?.value || '';
 
+	if (!value) return null;
+
 	try {
 		if (isEncrypted) {
 			return decryptData(value) as T;
 		}
+
 		return JSON.parse(value) as T;
 	} catch (error) {
 		return null;

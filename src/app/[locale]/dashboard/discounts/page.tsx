@@ -1,9 +1,7 @@
-import { FC } from 'react';
+import { UnderDevelopment } from '@components';
 
-interface IProps {}
-
-const Page: FC<IProps> = ({}) => {
-    return <div>Page</div>;
+const Page = () => {
+	return <UnderDevelopment title="Скидки и акции" />;
 };
 
 export default Page;

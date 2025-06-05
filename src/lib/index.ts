@@ -5,6 +5,7 @@ export * from './config/cookies';
 export * from './config/oauth';
 export * from './config/pages';
 export * from './config/pagination';
+export * from './config/params';
 export * from './config/urls';
 
 // helpers

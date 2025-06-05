@@ -68,7 +68,7 @@ const EstablishmentItem = ({ item, locale, viewModel, onDelete, isSuperUser }: P
 						href={`${PAGES.ESTABLISHMENT}/${item.id}/${PAGES.STAFF}`}
 						className={clsx(
 							'group flex items-center gap-1 rounded-md bg-yellow px-3 py-1.5 text-sm text-white transition hover:brightness-90',
-							isSuperUser && 'opacity-70 pointer-events-none',
+							isSuperUser && 'hidden',
 						)}
 					>
 						<LiaUsersCogSolid
@@ -89,7 +89,11 @@ const EstablishmentItem = ({ item, locale, viewModel, onDelete, isSuperUser }: P
 
 					<Link
 						href={`${PAGES.ESTABLISHMENT}/${item.id}/${PAGES.ESTABLISHMENT_CHAT}`}
-						className="group flex items-center gap-1 rounded-md bg-orange px-3 py-1.5 text-sm text-white transition hover:brightness-90"
+						className={clsx(
+							'group flex items-center gap-1 rounded-md bg-orange px-3 py-1.5 text-sm text-white transition hover:brightness-90',
+
+							isSuperUser && 'hidden',
+						)}
 					>
 						<IoChatbubbleEllipsesOutline
 							size={20}

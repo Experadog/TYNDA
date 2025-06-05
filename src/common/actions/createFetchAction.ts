@@ -54,7 +54,7 @@ export async function createFetchAction<T>({
 		const response = await fetch(url.toString(), {
 			method: 'GET',
 			credentials: 'include',
-			cache: revalidate ? 'no-store' : 'force-cache',
+			cache: revalidate ? 'default' : 'force-cache',
 			headers,
 			next: { tags: revalidateTags },
 		});

@@ -1,4 +1,4 @@
-import { divideChatToNewAndExisting } from '@/lib';
+import { PAGINATION } from '@/lib';
 import { getEstablishmentAllClient, getUserChatList } from '@/services';
 import type { FC, ReactNode } from 'react';
 import ChatLayoutView from './view/chat-layout-view';
@@ -8,12 +8,14 @@ interface IProps {
 }
 
 const Layout: FC<IProps> = async ({ children }) => {
-	const establishments = await getEstablishmentAllClient({});
-	const response = await getUserChatList();
+	const chatResponse = await getUserChatList(PAGINATION.chat);
+	const establishmentResponse = await getEstablishmentAllClient(PAGINATION.establishment);
 
-	const chats = divideChatToNewAndExisting(establishments.data.items, response.data.items);
-
-	return <ChatLayoutView chats={chats}>{children}</ChatLayoutView>;
+	return (
+		<ChatLayoutView chats={chatResponse.data} establishments={establishmentResponse.data}>
+			{children}
+		</ChatLayoutView>
+	);
 };
 
 export default Layout;

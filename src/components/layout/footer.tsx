@@ -17,7 +17,7 @@ interface IProps {
 }
 
 const Footer: FC<IProps> = () => {
-	const { viewModel } = useFooterUseCase();
+	const { viewModel, sectionUrls } = useFooterUseCase();
 	const path = usePathname();
 
 	const className =
@@ -37,16 +37,16 @@ const Footer: FC<IProps> = () => {
 						<Image src={'/logo.svg'} alt="logo" width={120} height={90} />
 					</div>
 					<div className="flex gap-[50px] lg:flex-col">
-						{viewModel.footer.menu.map((section) => (
+						{viewModel.footer.menu.map((section, sectionIndex) => (
 							<div key={section.title} className="flex flex-col gap-6 min-w-56">
 								<p className="uppercase text-[15px] font-medium opacity-60 whitespace-nowrap">
 									{section.title}
 								</p>
 								<ul className="flex flex-col gap-[10px] font-normal text-base">
-									{section.items.map((item) => (
+									{section.items.map((item, itemIndex) => (
 										<Link
 											key={item}
-											href={'#'}
+											href={sectionUrls[sectionIndex][itemIndex]}
 											className="hover:text-yellow max-w-max"
 										>
 											<li className="whitespace-nowrap">{item}</li>

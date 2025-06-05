@@ -1,21 +1,24 @@
 'use client';
 
-import type { ChatPreparingViewType, ChatScope } from '@business-entities';
+import type { GetEstablishmentAllClientResponseModel } from '@/services';
+import type { ChatListItem, ChatScope } from '@business-entities';
 import clsx from 'clsx';
-import { type ReactNode, useState } from 'react';
+import { type ReactNode, useRef, useState } from 'react';
 import { MdArrowBackIosNew, MdArrowForwardIos } from 'react-icons/md';
 import { Button } from '../ui/button';
-import ChatList from './chat-list';
+import ChatList from './list/chat-list';
 
 type Props = {
 	children: ReactNode;
 	scope: ChatScope;
-	chats: ChatPreparingViewType;
-	onClick?: (chatId: string) => Promise<void>;
+	chats: ChatListItem[];
+	establishments?: GetEstablishmentAllClientResponseModel['data'];
 };
 
-const ChatCustomLayout = ({ children, scope, chats, onClick }: Props) => {
+const ChatCustomLayout = ({ children, scope, chats, establishments }: Props) => {
 	const [isCollapsed, setIsCollapsed] = useState(true);
+
+	const scrollContainerRef = useRef<HTMLDivElement>(null);
 
 	return (
 		<div className="flex h-full font-roboto">
@@ -37,12 +40,15 @@ const ChatCustomLayout = ({ children, scope, chats, onClick }: Props) => {
 					<div className="absolute top-0 left-0 right-0 h-3 bg-gradient-to-b from-background_2 to-transparent pointer-events-none z-10" />
 					<div className="absolute bottom-0 left-0 right-0 h-3 bg-gradient-to-t from-background_2 to-transparent pointer-events-none z-10" />
 
-					<div className="flex flex-col overflow-y-auto h-full py-3 pr-2">
+					<div
+						className="flex flex-col overflow-y-auto h-full py-3 pr-2"
+						ref={scrollContainerRef}
+					>
 						<ChatList
 							scope={scope}
 							chats={chats}
-							onClick={onClick}
 							isCollapsed={isCollapsed}
+							establishments={establishments}
 						/>
 					</div>
 				</div>

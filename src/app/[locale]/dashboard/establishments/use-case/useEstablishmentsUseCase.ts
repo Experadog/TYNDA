@@ -5,12 +5,12 @@ import type { GetEstablishmentAllClientResponseModel } from '@/services';
 import { useRetrievalUseCase } from './stories/useRetrievalUseCase';
 
 type Props = {
-	establishments: GetEstablishmentAllClientResponseModel;
+	establishments: GetEstablishmentAllClientResponseModel['data'];
 };
 
 export function useEstablishmentUseCase({ establishments }: Props) {
 	const viewModel = useViewModel(['Validation', 'Toast', 'Shared']);
-	const pagination = useRetrievalUseCase(establishments.data);
+	const pagination = useRetrievalUseCase(establishments);
 
 	return { pagination, viewModel };
 }

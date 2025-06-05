@@ -1,9 +1,9 @@
 export { default as Fade } from './animation/fade/fade';
 export { default as Translate } from './animation/translate/translate';
 export { default as Avatar } from './avatar/avatar';
-export { default as Chat } from './chat/chat';
 export { default as ChatCustomLayout } from './chat/chat-custom-layout';
-export { default as ChatList } from './chat/chat-list';
+export { default as ChatList } from './chat/list/chat-list';
+export { default as Chat } from './chat/opened-chat/chat';
 
 export { default as DeletionConfirmModal } from './deletion-confirm-modal/deletion-confirm-modal';
 export { default as EntityRoleComponent } from './entity-role/entity-role';
@@ -13,6 +13,7 @@ export { default as EstablishmentCategoryComponent } from './establishment-categ
 export { default as GoogleAnalytics } from './google-analytics/google-analytics';
 export { default as ImgMask } from './img-mask/img-mask';
 export { default as ImgUploader } from './img-uploader/img-uploader';
+export { default as InfinityScroll } from './infinity-scroll/infinity-scroll';
 export { default as Layout } from './layout/layout';
 export { default as Slider } from './slider/slider';
 export { default as TariffCard } from './tariff-card/tariff-card';
