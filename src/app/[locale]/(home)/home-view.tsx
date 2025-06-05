@@ -27,12 +27,13 @@ const HomeView: FC<IProps> = ({ establishments }) => {
 	return (
 		<>
 			<Hero heroViewModel={home.hero} />
-			<div className="lg:px-5 max-w-[1340px] m-auto">
+			<div className="lg:px-5 mx-auto px-6">
 				<Recommendation
 					recommendationViewModel={home.recommendation}
 					sharedViewModel={shared}
 					establishments={establishments}
 				/>
+
 				<AdMobile adMobileViewModel={home.adMobile} />
 				<MoreRecs moreRecsViewModel={home.moreRecs} establishments={establishments} />
 				<About aboutViewModel={home.about} />

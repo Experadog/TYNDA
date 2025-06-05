@@ -12,6 +12,7 @@ type UsePaginationParams<T> = {
 	fetchFn: FetchFunction<T>;
 	entity: keyof typeof PAGINATION;
 	params?: Params;
+	keys?: Array<string | null | undefined | number | boolean>;
 };
 
 export function usePagination<T>({
@@ -19,6 +20,7 @@ export function usePagination<T>({
 	fetchFn,
 	entity,
 	params = {},
+	keys = [],
 }: UsePaginationParams<T>) {
 	const [pages, setPages] = useState<Record<number, T[]>>(
 		initialData ? { [initialData.page]: initialData.items } : {},
@@ -88,14 +90,12 @@ export function usePagination<T>({
 		await fetchPage(page);
 	};
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		if (!initialData) {
 			fetchPage(page);
 		}
 	}, []);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		if (!initialData) return;
 
@@ -115,6 +115,16 @@ export function usePagination<T>({
 			};
 		});
 	}, [initialData?.page, initialData?.items]);
+
+	useEffect(() => {
+		setPages(initialData ? { [initialData.page]: initialData.items } : {});
+		setPage(initialData ? Number(initialData.page) : 1);
+		setIsLoading(!initialData);
+
+		if (!initialData) {
+			fetchPage(1);
+		}
+	}, [JSON.stringify(keys)]);
 
 	const items = useMemo(() => {
 		const flatItems = Object.values(pages).flat();
@@ -136,6 +146,7 @@ export function usePagination<T>({
 			!!initialData && initialData.total_pages !== 0 && page !== initialData.total_pages,
 		allPages: pages,
 		list: items,
+		total: initialData?.total || 0,
 	};
 
 	const actions = {

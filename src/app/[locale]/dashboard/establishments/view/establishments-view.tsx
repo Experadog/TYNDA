@@ -11,13 +11,13 @@ const EstablishmentsView = () => {
 	const { pagination, viewModel } = useEstablishmentContext();
 
 	const {
-		states: { items, totalItems, isLoading },
-		actions: { onLoadMore },
+		states: { list, total, isLoading, hasNextPage },
+		actions: { onGoNextPage },
 	} = pagination;
 
 	const { locale } = useLocale();
 
-	return items.length ? (
+	return list.length ? (
 		<div className="flex flex-col gap-4">
 			<div className="flex items-center justify-between">
 				<Link
@@ -28,10 +28,11 @@ const EstablishmentsView = () => {
 				</Link>
 			</div>
 			<EstablishmentList
-				items={items}
+				items={list}
 				locale={locale}
-				onLoadMore={onLoadMore}
-				totalItems={totalItems}
+				onLoadMore={onGoNextPage}
+				totalItems={total}
+				isEnd={!hasNextPage}
 				viewModel={{
 					deletionViewModel: viewModel.Toast.EstablishmentDeletion,
 					categoriesViewModel: viewModel.Shared.establishment_categories,

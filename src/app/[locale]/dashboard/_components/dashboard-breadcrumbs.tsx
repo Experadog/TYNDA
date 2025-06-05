@@ -28,7 +28,7 @@ const DashboardBreadcrumbs = () => {
 
 	const {
 		pagination: {
-			states: { items: establishment },
+			states: { data },
 		},
 	} = useEstablishmentContext();
 
@@ -36,14 +36,14 @@ const DashboardBreadcrumbs = () => {
 		states: { roles },
 	} = useRolesContext();
 
-	const { chatList } = useChatContext();
+	const { chatList, establishmentChats } = useChatContext();
 
 	const dynamicLabels = useMemo(() => {
 		return createDynamicLabels<[EstablishmentListItem, Role, ChatListItem]>({
 			async_pages: [
 				{
 					isAsyncData: true,
-					data: establishment || [],
+					data: data || [],
 					path: PAGES.ESTABLISHMENT,
 					rules: ['id', `translates.${locale}.name`],
 				},
@@ -57,7 +57,7 @@ const DashboardBreadcrumbs = () => {
 
 				{
 					isAsyncData: true,
-					data: chatList?.items || [],
+					data: [...chatList.items, ...establishmentChats.items],
 					path: PAGES.DASHBOARD_CHAT,
 					rules: [
 						'id',
@@ -72,7 +72,7 @@ const DashboardBreadcrumbs = () => {
 				keys: ['permission_scopes'],
 			},
 		});
-	}, [establishment, roles?.items, chatList.items, locale, viewModel]);
+	}, [data, roles?.items, chatList.items, locale, viewModel]);
 
 	const breadCrumbs = usePrepareBreadCrumbs({
 		pathname,

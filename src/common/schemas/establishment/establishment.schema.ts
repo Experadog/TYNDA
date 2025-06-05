@@ -134,14 +134,20 @@ const establishmentFormShape = (
 
 			discount: z
 				.preprocess(
-					(val) => (val === '' || val === undefined ? undefined : Number(val)),
-					z.number({
-						required_error: messages.required,
-						invalid_type_error: messages.gt_0,
-					}),
+					(val) => {
+						if (val === '' || val === undefined || val === null) {
+							return 0;
+						}
+						return Number(val);
+					},
+					z
+						.number({
+							invalid_type_error: messages.gt_0,
+						})
+						.refine((val) => val >= 0, { message: messages.gt_0 }) // теперь >=0, чтобы 0 тоже прошло
+						.refine((val) => val < 100, { message: messages.lt_100 }),
 				)
-				.refine((val) => val > 0, { message: messages.gt_0 })
-				.refine((val) => val < 100, { message: messages.lt_100 }),
+				.optional(),
 		})
 
 		.transform((data) => ({

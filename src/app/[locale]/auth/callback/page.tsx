@@ -12,9 +12,13 @@ const Callback = () => {
 	const { locale } = useLocale();
 
 	useEffect(() => {
-		const code = params.get('code') || '';
-		onSendGoogleCode({ code, locale });
-	}, []);
+		if (!params) return;
+
+		const code = params.get('code');
+		if (code) {
+			onSendGoogleCode({ code, locale });
+		}
+	}, [params, locale]);
 
 	return (
 		<div className="">

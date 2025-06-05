@@ -1,23 +1,23 @@
+'use client';
+
 import type { EstablishmentListItem } from '@business-entities';
 import clsx from 'clsx';
-import Avatar from '../avatar/avatar';
-import { Button } from '../ui/button';
+import Avatar from '../../avatar/avatar';
+import { Button } from '../../ui/button';
 
 type Props = {
 	item: EstablishmentListItem;
-	onClick?: (chatId: string) => Promise<void>;
-	isCollapsed: boolean;
+	onClick: (chatId: string) => Promise<void>;
 };
 
-const EstablishmentChatItem = ({ item, onClick, isCollapsed }: Props) => {
+const EstablishmentChatItem = ({ item, onClick }: Props) => {
 	return (
 		<Button
 			disableAnimation
 			className={clsx(
-				'hover:bg-light_gray flex items-center gap-3 rounded-lg p-2 transition-all group shadow-none h-max',
-				isCollapsed ? 'justify-center' : 'justify-start',
+				'hover:bg-light_gray flex  bg-transparent  w-full items-center gap-3 rounded-lg p-2 transition-all group shadow-none h-max',
 			)}
-			onClick={() => onClick?.(item.id)}
+			onClick={() => onClick(item.id)}
 		>
 			<Avatar
 				src={item.cover || '/other/avatar-placeholder.webp'}
@@ -29,13 +29,7 @@ const EstablishmentChatItem = ({ item, onClick, isCollapsed }: Props) => {
 					<p className="text-base text-foreground_1 truncate w-max">
 						{item.translates.ru.name}
 					</p>
-					<p className="text-foreground_2 text-xs">
-						{/* {item?.last_message_time || '11:03'} */}
-					</p>
 				</div>
-				<p className="text-gray text-xs truncate whitespace-nowrap overflow-hidden">
-					{/* {item?.last_message || 'Привет'} */}
-				</p>
 			</div>
 		</Button>
 	);

@@ -1,29 +1,30 @@
 'use client';
-import { divideChatToNewAndExisting } from '@/lib';
+import {
+	type ChatListRetrievalResponseModel,
+	type GetEstablishmentAllClientResponseModel,
+	getUserChatList,
+} from '@/services';
+import { usePagination } from '@common';
 import { ChatCustomLayout } from '@components';
 import type { ReactNode } from 'react';
-import { useEstablishmentContext } from '../../establishments/use-case/establishment-context-provider';
-import { useChatContext } from '../context/chat-context-provider';
 
 type Props = {
 	children: ReactNode;
+	chatsResponse: ChatListRetrievalResponseModel['data'];
+	establishmentResponse: GetEstablishmentAllClientResponseModel['data'];
 };
 
-const ChatLayoutView = ({ children }: Props) => {
-	const { chatList, onCreate } = useChatContext();
-
+const ChatLayoutView = ({ children, chatsResponse, establishmentResponse }: Props) => {
 	const {
-		pagination: {
-			states: { items },
-		},
-	} = useEstablishmentContext();
+		states: { list },
+	} = usePagination({
+		entity: 'chat',
+		fetchFn: getUserChatList,
+		initialData: chatsResponse,
+	});
 
 	return (
-		<ChatCustomLayout
-			scope="dashboard"
-			chats={divideChatToNewAndExisting(items, chatList.items)}
-			onClick={onCreate}
-		>
+		<ChatCustomLayout scope="dashboard" chats={list} establishments={establishmentResponse}>
 			{children}
 		</ChatCustomLayout>
 	);

@@ -1,4 +1,4 @@
-import { PAGES } from '@/lib';
+import { PAGES, PAGINATION } from '@/lib';
 import {
 	getEstablishmentAllClient,
 	getEstablishmentDetail,
@@ -19,7 +19,7 @@ const Page = async ({ params }: { params: Params }) => {
 
 	const [detailedResponse, listResponse] = await Promise.all([
 		getEstablishmentDetail(id),
-		getEstablishmentAllClient({}),
+		getEstablishmentAllClient(PAGINATION.establishment),
 	]);
 
 	return (

@@ -24,7 +24,18 @@ const GeolocationBlock = ({ schema }: Props) => {
 	return (
 		<div className="flex flex-col gap-3 font-roboto w-full max-w-full">
 			<div className="flex items-center justify-between">
-				<p className="text-foreground_1 text-base font-medium">Укажите объект на карте</p>
+				<p className="text-foreground_1 text-base font-medium">
+					{defaultMarkerCoordinates?.length ? (
+						<>
+							Объект указан:{' '}
+							<span className="text-yellow text-sm">
+								{defaultMarkerCoordinates.join('; ')}
+							</span>
+						</>
+					) : (
+						'Укажите объект на карте'
+					)}
+				</p>
 				<Button
 					type="button"
 					variant={'yellow'}

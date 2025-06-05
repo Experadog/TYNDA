@@ -5,9 +5,7 @@ import { PAGES, WEBSOCKET_API, decryptData } from '@/lib';
 import { type Message, UserRole, type WebSocketMessage } from '@business-entities';
 import { pushCommonToast } from '@common';
 import {
-	type Dispatch,
 	type ReactNode,
-	type SetStateAction,
 	createContext,
 	useCallback,
 	useContext,
@@ -28,8 +26,7 @@ interface WebSocketContextValue {
 	isConnected: boolean;
 	messages: Message[];
 	sendMessage: (data: SendMessageRequest) => void;
-	reconnect: () => void;
-	setEstablishmentID: Dispatch<SetStateAction<string>>;
+	connectWebSocket: (establishmentID?: string) => void;
 }
 
 const WebSocketContext = createContext<WebSocketContextValue | undefined>(undefined);
@@ -44,88 +41,92 @@ export const ChatWebSocketProvider = ({ session, children }: ChatWebSocketProvid
 	const socketRef = useRef<WebSocket | null>(null);
 	const [isConnected, setIsConnected] = useState(false);
 	const [messages, setMessages] = useState<Message[]>([]);
-	const [establishmentID, setEstablishmentID] = useState('');
 
 	const reconnectAttempts = useRef(0);
 	const maxReconnectAttempts = 5;
 	const reconnectDelay = 2000;
 
-	const connectWebSocket = useCallback(() => {
-		if (!session) return;
+	const connectWebSocket = useCallback(
+		(establishmentID?: string) => {
+			if (!session) return;
 
-		const data = decryptData(session);
-		if (!data) return;
+			const data = decryptData(session);
 
-		const {
-			access_token,
-			user: { role, is_superuser },
-		} = data;
+			if (!data) return;
 
-		if (role === UserRole.ESTABLISHER && !establishmentID) return;
+			const {
+				access_token,
+				user: { role, is_superuser },
+			} = data;
 
-		function buildWSUrl() {
-			let url = WEBSOCKET_API + access_token;
-			if (role === UserRole.ESTABLISHER && establishmentID) {
-				url += `&establishment_id=${establishmentID}`;
-			}
+			if (role === UserRole.ESTABLISHER && !establishmentID) return;
 
-			return url;
-		}
-
-		const ws = new WebSocket(buildWSUrl());
-
-		socketRef.current = ws;
-
-		ws.onopen = () => {
-			console.log('✅ WebSocket подключен');
-			setIsConnected(true);
-			reconnectAttempts.current = 0;
-		};
-
-		ws.onmessage = (event) => {
-			try {
-				const response: WebSocketMessage = JSON.parse(event.data);
-				console.log('📨 Получено сообщение:', response);
-				if (response.is_system) {
-					if (role === UserRole.CLIENT && !is_superuser) {
-						router.push(PAGES.PROFILE_CHAT);
-					}
-
-					if (is_superuser) {
-						router.push(PAGES.DASHBOARD_CHAT);
-					}
-
-					pushCommonToast('Произошла системная ошибка', 'error');
-					return;
+			function buildWSUrl() {
+				let url = WEBSOCKET_API + access_token;
+				if (role === UserRole.ESTABLISHER && establishmentID) {
+					url += `&establishment_id=${establishmentID}`;
 				}
 
-				const { message, data, is_system } = response;
-
-				setMessages((prev) => [...prev, { ...message, data, is_system }]);
-			} catch (error) {
-				console.error('Ошибка парсинга сообщения:', error);
+				return url;
 			}
-		};
 
-		ws.onerror = (error) => {
-			console.error('WebSocket ошибка:', error);
-		};
+			const ws = new WebSocket(buildWSUrl());
 
-		ws.onclose = () => {
-			console.log('❌ WebSocket закрыт');
-			setIsConnected(false);
+			socketRef.current = ws;
 
-			if (reconnectAttempts.current < maxReconnectAttempts) {
-				reconnectAttempts.current += 1;
-				setTimeout(() => {
-					console.log(`🔁 Попытка переподключения #${reconnectAttempts.current}`);
-					connectWebSocket();
-				}, reconnectDelay * reconnectAttempts.current);
-			} else {
-				console.warn('🚫 Достигнут лимит попыток переподключения');
-			}
-		};
-	}, [session, establishmentID]);
+			ws.onopen = () => {
+				console.log('✅ WebSocket подключен');
+				setIsConnected(true);
+				reconnectAttempts.current = 0;
+			};
+
+			ws.onmessage = (event) => {
+				try {
+					const response: WebSocketMessage = JSON.parse(event.data);
+					console.log('📨 Получено сообщение:', response);
+					if (response.is_system) {
+						if (role === UserRole.CLIENT && !is_superuser) {
+							router.push(PAGES.PROFILE_CHAT);
+						}
+
+						if (is_superuser) {
+							router.push(PAGES.DASHBOARD_CHAT);
+						}
+
+						pushCommonToast('Произошла системная ошибка', 'error');
+						return;
+					}
+
+					const { message, data, is_system } = response;
+
+					setMessages((prev) => [...prev, { ...message, data, is_system }]);
+				} catch (error) {
+					console.error('Ошибка парсинга сообщения:', error);
+				}
+			};
+
+			ws.onerror = (error) => {
+				console.error('WebSocket ошибка:', error);
+			};
+
+			ws.onclose = () => {
+				console.log('❌ WebSocket закрыт');
+
+				setIsConnected(false);
+
+				if (reconnectAttempts.current < maxReconnectAttempts) {
+					reconnectAttempts.current += 1;
+					setTimeout(() => {
+						console.log(`🔁 Попытка переподключения #${reconnectAttempts.current}`);
+						connectWebSocket();
+					}, reconnectDelay * reconnectAttempts.current);
+				} else {
+					console.warn('🚫 Достигнут лимит попыток переподключения');
+				}
+			};
+		},
+		[session],
+	);
 
 	useEffect(() => {
 		connectWebSocket();
@@ -142,27 +143,11 @@ export const ChatWebSocketProvider = ({ session, children }: ChatWebSocketProvid
 		}
 	}, []);
 
-	const reconnect = useCallback(() => {
-		console.log('🔄 Ручное переподключение WebSocket...');
-
-		if (socketRef.current) {
-			socketRef.current.onclose = () => {
-				console.log('🔌 Старое соединение закрыто, подключаем новое...');
-				setIsConnected(false);
-				connectWebSocket();
-			};
-			socketRef.current.close();
-		} else {
-			connectWebSocket();
-		}
-	}, [connectWebSocket]);
-
 	const value = {
 		isConnected,
 		messages,
 		sendMessage,
-		reconnect,
-		setEstablishmentID,
+		connectWebSocket,
 	};
 
 	return <WebSocketContext.Provider value={value}>{children}</WebSocketContext.Provider>;
