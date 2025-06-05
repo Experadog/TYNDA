@@ -13,9 +13,9 @@ const Hero: FC<IProps> = ({ heroViewModel }) => {
 	return (
 		<div className="w-full">
 			<div
-				className="w-full h-[400px] lg:h-[300px] pl-10 lg:pl-5 flex flex-col justify-end gap-9 lg:gap-8 pb-[25px] lg:pb-8
-		bg-cover bg-no-repeat bg-fixed xl:bg-scroll relative overflow-hidden"
-				style={{ backgroundImage: `url('/home/hero.webp')` }}
+				className="w-full h-[500px] lg:h-[300px] pl-10 lg:pl-5 flex flex-col justify-end gap-9 lg:gap-8 pb-[25px] lg:pb-8
+		bg-cover bg-no-repeat bg-fixed xl:bg-scroll relative overflow-hidden bg-top"
+				style={{ backgroundImage: `url('/home/herobg.webp')` }}
 			>
 				<ImgMask />
 				<div className="flex flex-col gap-[20px] max-w-[964px] pr-[250px] lg:pr-5 ">
@@ -33,7 +33,7 @@ const Hero: FC<IProps> = ({ heroViewModel }) => {
 							<Button
 								disableAnimation
 								variant={'yellow'}
-								className="h-[48px] px-[22px] py-[14px]  rounded-2xl flex items-center gap-2"
+								className="h-[48px] lg:h-[38px] px-[22px] py-[14px] rounded-2xl flex items-center gap-2"
 							>
 								{heroViewModel.button}
 								<FiArrowRight

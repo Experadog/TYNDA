@@ -27,7 +27,7 @@ const HomeView: FC<IProps> = ({ establishments }) => {
 	return (
 		<>
 			<Hero heroViewModel={home.hero} />
-			<div className="lg:px-5 mx-auto px-6">
+			<div className="lg:px-5 mx-auto px-6 max-w-[1340px]">
 				<Recommendation
 					recommendationViewModel={home.recommendation}
 					sharedViewModel={shared}
