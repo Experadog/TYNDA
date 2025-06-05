@@ -75,7 +75,7 @@ const TouristicPlan: FC<IProps> = ({ touristicPlanViewModel }) => {
                                 {touristicPlanViewModel.buyCard}
                             </Button>
                             <div className='flex flex-col gap-[10px] px-[15px]'>
-                                <p className='text-lg font-bold text-white text-center'>{touristicPlanViewModel.costPerWeek}</p>
+                                <p className='text-lg font-bold text-white text-center numeric'>{touristicPlanViewModel.costPerWeek}</p>
                                 <p className='text-sm font-medium text-white opacity-90 text-center max-w-[352px]'>
                                     {touristicPlanViewModel.autoRenewed}
                                 </p>

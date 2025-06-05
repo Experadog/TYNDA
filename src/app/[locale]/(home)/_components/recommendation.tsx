@@ -75,7 +75,7 @@ const Recommendation: FC<IProps> = ({
 			</Translate>
 
 			{establishments.length ? (
-				<div className="grid  grid-cols-4  xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 xs:grid-cols-2 gap-4  justify-items-center">
+				<div className="grid grid-cols-4 xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 xs:grid-cols-2 gap-4 lg:gap-2 justify-items-center">
 					{establishments.map((establishment) => (
 						<RecommendationCard key={establishment.id} establishment={establishment} />
 					))}

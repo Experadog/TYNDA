@@ -11,7 +11,7 @@ type IProps = {
 	onClose: (e: boolean) => void;
 };
 
-const MobileNavbar: FC<IProps> = ({onClose}) => {
+const MobileNavbar: FC<IProps> = ({ onClose }) => {
 	const { viewModel, navigateToAuthOrProfile, user, shouldHighlightLink, shouldHighlightBtn } =
 		useNavbarUseCase();
 
@@ -36,7 +36,10 @@ const MobileNavbar: FC<IProps> = ({onClose}) => {
 				))}
 				<div className="flex items-center justify-center w-full">
 					<Button
-						onClick={navigateToAuthOrProfile}
+						onClick={() => {
+							onClose(false);
+							navigateToAuthOrProfile();
+						}}
 						className={clsx(
 							'bg-transparent uppercase text-foreground_1 font-semibold shadow-none p-5 rounded-3xl border-foreground_1  border cursor-pointer hover:bg-yellow hover:border-background_1 hover:text-white xs:w-full numeric',
 							shouldHighlightBtn && 'bg-yellow  border-background_1 text-white',
@@ -48,7 +51,7 @@ const MobileNavbar: FC<IProps> = ({onClose}) => {
 			</nav>
 			<div className="flex items-center gap-8 justify-center sm:flex-col">
 				<div className="bg-[var(--yellow)] rounded-[45px] pt-[25px] px-[39px] mt-10 flex items-center justify-center">
-					<Image src={'/home/mobileImg.webp'} alt="phone" width={186} height={241} />
+					<Image src={'/home/phoneImage.webp'} alt="phone" width={186} height={241} />
 				</div>
 				<div className="flex flex-col items-center">
 					<div className="flex items-center justify-center">
