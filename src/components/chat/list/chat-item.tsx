@@ -6,7 +6,7 @@ import type { ChatListItem, ChatScope } from '@business-entities';
 import clsx from 'clsx';
 import { useParams } from 'next/navigation';
 import { useMemo } from 'react';
-import Avatar from '../avatar/avatar';
+import Avatar from '../../avatar/avatar';
 
 type Props = {
 	scope: ChatScope;
@@ -31,15 +31,11 @@ const ChatItem = ({ scope, item }: Props) => {
 		}
 	}, [scope]);
 
-	console.log(
-		`${PAGES.ESTABLISHMENT}/${item.establishment.id}${PAGES.ESTABLISHMENT_CHAT}/${item.id}`,
-	);
-
 	const { avatar, name } = useMemo(() => {
 		const avatar = scope === 'establishment' ? item.client?.avatar : item.establishment.cover;
 		const name =
 			scope === 'establishment'
-				? item.client.first_name
+				? item.client.first_name || item.client.last_name || item.client.phone
 				: item.establishment.translates.ru.name;
 
 		return { avatar, name };

@@ -16,6 +16,7 @@ type Props = {
 	onLoadMore: () => Promise<void>;
 	totalItems: number;
 	isLoading: boolean;
+	isEnd: boolean;
 };
 
 const EstablishmentList = ({
@@ -25,6 +26,7 @@ const EstablishmentList = ({
 	onLoadMore,
 	totalItems,
 	isLoading,
+	isEnd,
 }: Props) => {
 	const { user } = useUser();
 	const deletionUseCase = useDeletionUseCase({ viewModel: viewModel.deletionViewModel });
@@ -46,7 +48,7 @@ const EstablishmentList = ({
 			{isLoading ? (
 				<LoadingSpinner className="mx-auto size-14 text-yellow" />
 			) : (
-				items.length !== totalItems && (
+				!isEnd && (
 					<Button
 						className="py-5 max-w-[400px] w-full mx-auto mt-auto rounded-xl"
 						variant={'yellow'}

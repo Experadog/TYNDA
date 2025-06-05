@@ -1,6 +1,6 @@
 'use server';
 
-import type { FC, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { UpdateProfileProvider } from '../profile/update-profile/use-case/useUpdateProfileUseCase';
 import DashboardBreadcrumbs from './_components/dashboard-breadcrumbs';
 import Sidebar from './_components/sidebar';
@@ -16,12 +16,11 @@ interface IProps {
 	children: ReactNode;
 }
 
-const DashboardLayout: FC<IProps> = async ({ children }) => {
+export default async function DashboardLayout({ children }: IProps) {
 	const { establishmentsResponse, rolesResponse, usersResponse, chatResponse } =
 		await executeDefaultRoleRequests();
 
 	const settings = await getSettings();
-
 	return (
 		<ChatContextProvider chatResponse={chatResponse}>
 			<SettingsContextProvider settings={settings}>
@@ -49,6 +48,4 @@ const DashboardLayout: FC<IProps> = async ({ children }) => {
 			</SettingsContextProvider>
 		</ChatContextProvider>
 	);
-};
-
-export default DashboardLayout;
+}

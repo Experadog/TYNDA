@@ -1,11 +1,10 @@
 import type { EstablishmentListItem } from '@/business-entities/establishment/EstablishmentEntity';
 import { Link } from '@/i18n/routing';
-import { getTranslateByKey, PAGES } from '@/lib';
+import { PAGES, getTranslateByKey } from '@/lib';
 import { useLocale } from '@/providers/locale/locale-provider';
 import { Button } from '@components';
 import Image from 'next/image';
 import type { FC } from 'react';
-import { IoStar } from 'react-icons/io5';
 
 interface IProps {
 	establishment: EstablishmentListItem;
@@ -22,13 +21,12 @@ const MoreRecsCard: FC<IProps> = ({
 	mainClassName = '',
 	descriptionClassName = 'line-clamp-1',
 }) => {
-
 	const { locale } = useLocale();
 
 	return (
 		<Link href={`${PAGES.ENTERPRISES_ALL}/${establishment.id}`}>
 			<div
-				className={`flex flex-col gap-[14px] lg:gap-2 lg:pb-2 pb-[14px] shadow-md rounded-[20px] bg-background_1 cursor-pointer ${mainClassName}`}
+				className={`flex flex-col gap-[14px] lg:gap-2 lg:pb-2 pb-[14px] shadow-md rounded-[20px] bg-background_1 cursor-pointer border border-light_gray ${mainClassName}`}
 			>
 				<div className={`${imageContainer}`}>
 					<Image
@@ -45,7 +43,9 @@ const MoreRecsCard: FC<IProps> = ({
 						<h4 className="font-semibold text-lg uppercase lg:text-base lg:font-medium line-clamp-1 numeric">
 							{getTranslateByKey(locale, establishment.translates, 'name')}
 						</h4>
-						<p className={`font-normal text-sm lg:text-xs numeric ${descriptionClassName}`}>
+						<p
+							className={`font-normal text-gray text-sm lg:text-xs numeric ${descriptionClassName}`}
+						>
 							{getTranslateByKey(locale, establishment.translates, 'description')}
 						</p>
 					</div>
@@ -56,10 +56,10 @@ const MoreRecsCard: FC<IProps> = ({
 						>
 							{establishment?.average_bill} c
 						</Button>
-						<div className={'flex gap-1 items-center'}>
+						{/* <div className={'flex gap-1 items-center'}>
 							<p className="numeric text-base font-semibold lg:text-sm">0</p>
 							<IoStar className="text-[var(--yellow)] lg:text-sm" />
-						</div>
+						</div> */}
 					</div>
 				</div>
 			</div>

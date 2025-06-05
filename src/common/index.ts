@@ -18,9 +18,11 @@ export * from './axios/axiosInstance';
 
 //Hooks
 export * from './hooks/useAsyncAction';
+export * from './hooks/useCacheRevalidate';
 export * from './hooks/useDebounce';
 export * from './hooks/usePagination';
 export * from './hooks/usePrepareBreadCrumbs';
+export * from './hooks/useSearch';
 
 // Actions
 export * from './actions/createAction';

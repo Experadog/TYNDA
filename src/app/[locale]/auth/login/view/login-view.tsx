@@ -12,8 +12,8 @@ const LoginView: FC = () => {
 		<div className="flex flex-col">
 			<Translate direction="right" distance={100}>
 				<div className="flex flex-col gap-3">
-					<h1 className="text-foreground_1 text-2xl font-semibold">Добро пожаловать!</h1>
-					<span className="text-gray">
+					<h1 className="text-white text-2xl font-semibold">Добро пожаловать!</h1>
+					<span className="text-shade_gray">
 						У вас нет аккаунта?{' '}
 						<Link href={PAGES.REGISTER} className="text-yellow font-semibold ml-2">
 							Зарегистрируйтесь

@@ -17,9 +17,7 @@ const AllEnterprisesView: FC<IProps> = ({ data }) => {
 
 	return (
 		<>
-			<Hero
-				heroViewModel={viewModel.AllEnterprises.hero}
-			/>
+			<Hero heroViewModel={viewModel.AllEnterprises.hero} />
 			<div className="lg:px-5 max-w-[1340px] m-auto">
 				<EnterprisesFilter
 					categoriesViewModel={viewModel.Shared.establishment_categories}

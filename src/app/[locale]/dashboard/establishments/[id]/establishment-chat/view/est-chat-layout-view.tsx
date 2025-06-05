@@ -12,19 +12,16 @@ type Props = {
 };
 
 const EstChatLayoutView = ({ children, chatResponse, establishment_id }: Props) => {
-	const { setEstablishmentID } = useChatWebSocket();
-	const { setData } = useChatContext();
+	const { connectWebSocket } = useChatWebSocket();
+	const { setEstablishmentChats } = useChatContext();
 
 	useEffect(() => {
-		setEstablishmentID(establishment_id);
-		setData(chatResponse);
+		connectWebSocket(establishment_id);
+		setEstablishmentChats(chatResponse);
 	}, [establishment_id]);
 
 	return (
-		<ChatCustomLayout
-			scope="establishment"
-			chats={{ existing_chats: chatResponse.items, new_chats: [] }}
-		>
+		<ChatCustomLayout scope="establishment" chats={chatResponse.items}>
 			{children}
 		</ChatCustomLayout>
 	);

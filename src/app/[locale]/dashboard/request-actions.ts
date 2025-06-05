@@ -1,6 +1,5 @@
 'use server';
 
-import { clearCookie } from '@/common/actions/clear-cookie';
 import { COOKIES, PAGES, PAGINATION } from '@/lib';
 import {
 	type ChatListRetrievalResponseModel,
@@ -28,7 +27,7 @@ async function getCommonData(): Promise<Exposes> {
 }
 
 async function getClientData(): Promise<Pick<Exposes, 'chatResponse'>> {
-	const chatResponse = await getUserChatList();
+	const chatResponse = await getUserChatList(PAGINATION.chat);
 	return { chatResponse };
 }
 
@@ -43,7 +42,7 @@ async function getSuperUserData(): Promise<
 	const [rolesResponse, usersResponse, chatResponse] = await Promise.all([
 		getRoles(PAGINATION.role),
 		getUsers(PAGINATION.user),
-		getUserChatList(),
+		getUserChatList(PAGINATION.chat),
 	]);
 
 	return { rolesResponse, usersResponse, chatResponse };
@@ -53,8 +52,6 @@ export async function executeDefaultRoleRequests(): Promise<Exposes> {
 	const session = await getCookie<Session>(COOKIES.SESSION, true);
 
 	if (!session) {
-		await clearCookie(COOKIES.SESSION);
-		await clearCookie(COOKIES.USER_SETTINGS);
 		return forceRedirect(PAGES.LOGIN);
 	}
 

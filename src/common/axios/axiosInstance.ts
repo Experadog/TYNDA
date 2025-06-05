@@ -1,3 +1,5 @@
+'use server';
+
 import { API_URL, COOKIES, LOGGER, PAGES, getTokensFromSession } from '@/lib';
 import axios, { type AxiosError, type AxiosInstance, type AxiosResponse } from 'axios';
 import { clearCookie } from '../actions/clear-cookie';
@@ -55,7 +57,7 @@ axiosInstance.interceptors.response.use(
 			response?.statusText === 'Bad Gateway'
 		) {
 			await clearCookie(COOKIES.SESSION);
-			forceRedirect(PAGES.LOGIN);
+			await forceRedirect(PAGES.LOGIN);
 		}
 
 		throw error;
