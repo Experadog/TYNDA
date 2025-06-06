@@ -12,17 +12,34 @@ type IProps = {
 };
 
 const MobileNavbar: FC<IProps> = ({ onClose }) => {
-	const { viewModel, navigateToAuthOrProfile, user, shouldHighlightLink, shouldHighlightBtn } =
-		useNavbarUseCase();
+	const {
+		viewModel,
+		navigateToAuthOrProfile,
+		user,
+		shouldHighlightLink,
+		shouldHighlightBtn,
+		handleTouchStart,
+		handleTouchEnd,
+	} = useNavbarUseCase(onClose);
+
+	const handleClose = () => {
+		setTimeout(() => {
+			onClose(false);
+		}, 0);
+	};
 
 	return (
-		<div className="fixed inset-x-0 top-[87px] h-[calc(100vh-87px)] bg-background_1 px-5 py-10 flex flex-col overflow-y-auto">
-			<nav className={clsx('flex flex-wrap justify-around md:flex-col md:items-start gap-8')}>
+		<div onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+			<nav
+				className={clsx(
+					'flex flex-wrap justify-around md:flex-col md:items-start gap-8 no-doc-scroll ',
+				)}
+			>
 				{NAV_LINKS.map((path, index) => (
 					<Link
 						key={path}
 						href={path}
-						onClick={() => onClose(false)}
+						onClick={handleClose}
 						className={clsx(
 							'font-semibold uppercase text-sm sm:text-xs hover:text-yellow',
 							shouldHighlightLink(path) && 'text-yellow',
@@ -40,6 +57,7 @@ const MobileNavbar: FC<IProps> = ({ onClose }) => {
 							onClose(false);
 							navigateToAuthOrProfile();
 						}}
+						disableAnimation
 						className={clsx(
 							'bg-transparent uppercase text-foreground_1 font-semibold shadow-none p-5 rounded-3xl border-foreground_1  border cursor-pointer hover:bg-yellow hover:border-background_1 hover:text-white xs:w-full numeric',
 							shouldHighlightBtn && 'bg-yellow  border-background_1 text-white',

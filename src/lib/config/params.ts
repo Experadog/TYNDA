@@ -1,4 +1,5 @@
 import { ESTABLISHMENTS_CATEGORIES, type EstablishmentCategory } from '@business-entities';
+import type { Params } from '@common';
 
 export const SEARCH_PARAMS = {
 	category: {
@@ -13,17 +14,9 @@ export const SEARCH_PARAMS = {
 	},
 } as const;
 
-type ValidatedParams = {
-	[K in keyof typeof SEARCH_PARAMS]?: (typeof SEARCH_PARAMS)[K] extends {
-		validate: (value: unknown) => value is infer R;
-	}
-		? R
-		: never;
-};
-
 export type SearchParamsType = Record<string, string | string[] | undefined>;
 
-export function parseSearchParams(params: Record<string, unknown>): ValidatedParams {
+export function parseSearchParams(params: Record<string, unknown>): Params {
 	const tempResult: {
 		[key: string]: unknown;
 	} = {};
@@ -37,5 +30,5 @@ export function parseSearchParams(params: Record<string, unknown>): ValidatedPar
 		}
 	}
 
-	return tempResult as ValidatedParams;
+	return tempResult as Params;
 }

@@ -31,6 +31,7 @@ export function usePagination<T>({
 
 	const fetchPage = async (pageToFetch: number): Promise<boolean> => {
 		setIsLoading(true);
+
 		const response = await fetchFn({
 			page: String(pageToFetch),
 			size: PAGINATION[entity].size,

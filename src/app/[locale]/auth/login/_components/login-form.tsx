@@ -13,6 +13,7 @@ const LoginForm = () => {
 					type="email"
 					name="email"
 					className="mb-5"
+					InputClassName="xs:py-5 xs:rounded-lg text-white"
 				/>
 
 				<CustomFormField
@@ -20,13 +21,15 @@ const LoginForm = () => {
 					placeholder="Введите ваш пароль"
 					type="password"
 					name="password"
+					InputClassName="xs:py-5 xs:rounded-lg text-white"
 				/>
 
 				<Button
 					disabled={!!Object.values(form.formState.errors).length || isCommonLoginLoading}
 					type="submit"
 					variant={'yellow'}
-					className="my-8 w-full rounded-3xl p-6"
+					disableAnimation
+					className="my-8 w-full rounded-3xl p-6 xs:py-2 xs:rounded-md"
 				>
 					Войти
 				</Button>

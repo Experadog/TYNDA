@@ -9,7 +9,7 @@ import LoginVia from '../_components/login-via';
 
 const LoginView: FC = () => {
 	return (
-		<div className="flex flex-col">
+		<div className="flex flex-col xs:text-sm">
 			<Translate direction="right" distance={100}>
 				<div className="flex flex-col gap-3">
 					<h1 className="text-white text-2xl font-semibold">Добро пожаловать!</h1>

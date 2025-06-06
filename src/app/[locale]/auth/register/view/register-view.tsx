@@ -16,15 +16,15 @@ const RegisterView = () => {
 	const { onChangeRole } = actions;
 
 	return (
-		<div className="flex flex-col gap-10">
+		<div className="flex flex-col gap-10 xs:gap-3">
 			<Translate direction="right" distance={100}>
 				<div className="flex flex-col gap-3">
-					<h1 className="text-foreground_1 text-2xl font-semibold">
+					<h1 className="text-white text-2xl font-semibold">
 						Создайте новую учетную запись
 					</h1>
-					<span className="text-gray">
+					<span className="text-shade_gray">
 						У вас уже есть существующий аккаунт?{' '}
-						<Link href={PAGES.LOGIN} className="text-yellow font-semibold ml-2">
+						<Link href={PAGES.LOGIN} className="text-yellow font-semibold ml-2 xs:ml-0">
 							Войти
 						</Link>
 					</span>

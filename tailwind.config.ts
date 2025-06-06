@@ -58,12 +58,13 @@ export default {
 
 			screens: {
 				exs: { max: '375px' },
-				xs: { max: '480px' },
+				xs: { max: '550px' },
 				sm: { max: '640px' },
 				md: { max: '768px' },
 				lg: { max: '1024px' },
 				xl: { max: '1280px' },
 				xxl: { max: '1440px' },
+				xxxl: { max: '1920px' },
 			},
 		},
 	},

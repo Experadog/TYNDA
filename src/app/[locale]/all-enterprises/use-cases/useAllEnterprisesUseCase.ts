@@ -1,27 +1,22 @@
 'use client';
 import { useViewModel } from '@/i18n/getTranslate';
-import { SEARCH_PARAMS } from '@/lib';
 import { type GetEstablishmentAllClientResponseModel, getEstablishmentAllClient } from '@/services';
-import type { EstablishmentCategory } from '@business-entities';
-import { usePagination } from '@common';
-import { useSearchParams } from 'next/navigation';
+import { type Params, usePagination } from '@common';
 
 type Props = {
 	initialData: GetEstablishmentAllClientResponseModel['data'];
+	params: Params;
 };
 
-export function useAllEnterprisesUseCase({ initialData }: Props) {
-	const viewModel = useViewModel(['AllEnterprises']);
-
-	const searchParams = useSearchParams();
-	const category = searchParams.get(SEARCH_PARAMS.category.key) as EstablishmentCategory;
+export function useAllEnterprisesUseCase({ initialData, params }: Props) {
+	const viewModel = useViewModel(['AllEnterprises', 'Shared']);
 
 	const pagination = usePagination({
 		entity: 'establishment',
 		fetchFn: getEstablishmentAllClient,
+		params,
 		initialData,
-		params: { category },
-		keys: [category],
+		keys: [JSON.stringify(params)],
 	});
 
 	return { viewModel, pagination };

@@ -1,19 +1,24 @@
 'use client';
 import type { EstablishmentListItem } from '@/business-entities/establishment/EstablishmentEntity';
-import { useViewModel } from '@/i18n/getTranslate';
-import type { Paginated } from '@common';
+import type { Paginated, Params } from '@common';
 import dynamic from 'next/dynamic';
 import type { FC } from 'react';
 import Hero from './_components/hero';
+import { useAllEnterprisesUseCase } from './use-cases/useAllEnterprisesUseCase';
 
 const EnterprisesFilter = dynamic(() => import('./_components/enterprises-filter'), { ssr: true });
 
 interface IProps {
 	data: Paginated<EstablishmentListItem>;
+	params: Params;
 }
 
-const AllEnterprisesView: FC<IProps> = ({ data }) => {
-	const viewModel = useViewModel(['AllEnterprises', 'Shared']);
+const AllEnterprisesView: FC<IProps> = ({ data, params }) => {
+	const { viewModel, pagination } = useAllEnterprisesUseCase({ initialData: data, params });
+	const {
+		actions: { onGoNextPage },
+		states: { list, hasNextPage, isLoading },
+	} = pagination;
 
 	return (
 		<>
@@ -22,7 +27,10 @@ const AllEnterprisesView: FC<IProps> = ({ data }) => {
 				<EnterprisesFilter
 					categoriesViewModel={viewModel.Shared.establishment_categories}
 					viewModel={viewModel.AllEnterprises.enterprisesFilter}
-					data={data}
+					isLoading={isLoading}
+					list={list}
+					onGoNextPage={onGoNextPage}
+					hasNextPage={hasNextPage}
 				/>
 			</div>
 		</>

@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { FaLock } from 'react-icons/fa';
 import { MapContainer, Marker, Popup, TileLayer, useMap, useMapEvents } from 'react-leaflet';
 import { Button } from '../ui/button';
 import SearchControl from './SearchControl';
@@ -12,10 +13,12 @@ type Props = {
 	defaultPosition: [number, number];
 	zoom?: number;
 	className?: string;
-	onMark: (coords: [number, number]) => void;
+	onMark?: (coords: [number, number]) => void;
 	onDelete?: () => void;
 	isSearch?: boolean;
 	defaultMarkerCoordinates?: [number, number] | null;
+	protectedScroll?: boolean;
+	isStaticMark?: boolean;
 };
 
 const CustomMap = ({
@@ -26,11 +29,16 @@ const CustomMap = ({
 	onDelete,
 	isSearch,
 	defaultMarkerCoordinates = null,
+	protectedScroll = true,
+	isStaticMark = false,
 }: Props) => {
 	const [position, setPosition] = useState<[number, number] | null>(defaultMarkerCoordinates);
 
 	const [mapSearchCoords, setMapSearchCoords] = useState<[number, number] | null>(null);
 	const mapRef = useRef<L.Map | null>(null);
+
+	const [isLocked, setIsLocked] = useState(protectedScroll ?? false);
+	const containerRef = useRef<HTMLDivElement | null>(null);
 
 	const popupJustClosed = useRef(false);
 
@@ -52,6 +60,27 @@ const CustomMap = ({
 		});
 	}, []);
 
+	useEffect(() => {
+		if (!protectedScroll || !containerRef.current) return;
+
+		const observer = new IntersectionObserver(
+			(entries) => {
+				const entry = entries[0];
+				if (!entry.isIntersecting) {
+					setIsLocked(true);
+				}
+			},
+			{
+				root: null,
+				threshold: 0.1,
+			},
+		);
+
+		observer.observe(containerRef.current);
+
+		return () => observer.disconnect();
+	}, [protectedScroll]);
+
 	const MapClickHandler = () => {
 		const map = useMap();
 
@@ -71,14 +100,14 @@ const CustomMap = ({
 
 		useMapEvents({
 			click(e) {
-				if (popupJustClosed.current) {
+				if (popupJustClosed.current || isStaticMark) {
 					popupJustClosed.current = false;
 					return;
 				}
 
 				const coords: [number, number] = [e.latlng.lat, e.latlng.lng];
 				setPosition(coords);
-				onMark(coords);
+				onMark?.(coords);
 			},
 		});
 		return null;
@@ -98,12 +127,35 @@ const CustomMap = ({
 		if (mapSearchCoords?.length) {
 			setPosition(mapSearchCoords);
 			flyTo(mapSearchCoords, 15);
-			onMark(mapSearchCoords);
+			onMark?.(mapSearchCoords);
 		}
 	}, [mapSearchCoords, flyTo, onMark]);
 
 	return (
-		<div className="w-full h-full relative">
+		<div className="w-full h-full relative" ref={containerRef}>
+			{isLocked && protectedScroll && (
+				<div
+					className="absolute inset-0 z-[998] bg-[rgba(31,31,31,0.88)] backdrop-blur-sm flex items-center justify-center cursor-pointer"
+					onClick={() => setIsLocked(false)}
+				>
+					<p className="text-xs text-center p-4 bg-background_1 shadow rounded-xl font-semibold text-foreground_1">
+						Нажмите, чтобы активировать карту
+					</p>
+				</div>
+			)}
+
+			{protectedScroll && !isLocked && (
+				<Button
+					size={'icon'}
+					variant={'yellow'}
+					disableAnimation
+					onClick={() => setIsLocked(true)}
+					className="absolute top-2 right-2 z-[998] rounded-full"
+				>
+					<FaLock className="text-white" />
+				</Button>
+			)}
+
 			{isSearch && (
 				<div className="flex flex-col gap-1 z-[999] absolute right-4 top-4">
 					<SearchControl
@@ -154,16 +206,20 @@ const CustomMap = ({
 						<Popup className="p-0">
 							<div className="space-y-2 text-foreground_1">
 								<div>
-									Вы выбрали: <br />
-									{position[0].toFixed(5)}, {position[1].toFixed(5)}
+									Координаты:
+									<p className="text-yellow font-semibold text-xs">
+										{position[0].toFixed(5)}, {position[1].toFixed(5)}
+									</p>
 								</div>
-								<button
-									type="button"
-									onClick={handleDeleteMark}
-									className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition-colors text-sm"
-								>
-									Удалить маркер
-								</button>
+								{!isStaticMark && (
+									<button
+										type="button"
+										onClick={handleDeleteMark}
+										className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition-colors text-sm"
+									>
+										Удалить маркер
+									</button>
+								)}
 							</div>
 						</Popup>
 					</Marker>
