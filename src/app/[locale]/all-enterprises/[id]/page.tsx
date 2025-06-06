@@ -17,15 +17,18 @@ const Page = async ({ params }: { params: Params }) => {
 		permanentRedirect(PAGES.HOME);
 	}
 
-	const [detailedResponse, listResponse] = await Promise.all([
-		getEstablishmentDetail(id),
-		getEstablishmentAllClient(PAGINATION.establishment),
-	]);
+	const detailedResponse = await getEstablishmentDetail(id);
+	const category = detailedResponse.data.establishment.category;
+
+	const listResponse = await getEstablishmentAllClient({
+		...PAGINATION.establishment,
+		category,
+	});
 
 	return (
 		<DetailEnterpriseView
 			item={detailedResponse?.data.establishment}
-			list={listResponse.data.items}
+			data={listResponse.data}
 		/>
 	);
 };

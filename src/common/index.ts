@@ -22,7 +22,9 @@ export * from './hooks/useCacheRevalidate';
 export * from './hooks/useDebounce';
 export * from './hooks/usePagination';
 export * from './hooks/usePrepareBreadCrumbs';
+export * from './hooks/usePreventAutoFocus';
 export * from './hooks/useSearch';
+export * from './hooks/useSetParams';
 
 // Actions
 export * from './actions/createAction';

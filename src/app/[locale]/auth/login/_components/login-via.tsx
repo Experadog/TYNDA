@@ -13,9 +13,9 @@ const AuthButton: FC<IButtonProps> = ({ imageSrc, altText, onClick }) => {
 		<button
 			type="button"
 			onClick={onClick}
-			className="bg-transparent border border-light_gray flex items-center justify-center rounded-xl px-4 py-3 flex-1 hover:bg-background_5"
+			className="bg-transparent border border-light_gray flex items-center justify-center rounded-xl px-4 py-3 flex-1 hover:bg-background_5 xs:px-3 xs:py-2 xs:rounded-lg"
 		>
-			<Image src={imageSrc} alt={altText} width={30} height={30} />
+			<Image src={imageSrc} alt={altText} width={30} height={30} className="xs:size-5" />
 		</button>
 	);
 };

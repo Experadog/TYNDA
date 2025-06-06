@@ -1,10 +1,7 @@
 import { Button, CustomFormField, Form } from '@components';
-import type { FC } from 'react';
 import { useRegisterUseCase } from '../use-case/useRegisterUseCase';
 
-type IProps = {};
-
-const RegisterEstablisherForm: FC<IProps> = ({}) => {
+const RegisterEstablisherForm = () => {
 	const { states, actions } = useRegisterUseCase();
 	const { partnerForm } = states;
 	const { openAndTriggerConfirmModal } = actions;
@@ -16,6 +13,7 @@ const RegisterEstablisherForm: FC<IProps> = ({}) => {
 					<CustomFormField
 						control={partnerForm.control}
 						placeholder="Введите ваше имя"
+						InputClassName="xs:py-5 xs:rounded-lg text-white"
 						type="text"
 						name="first_name"
 					/>
@@ -23,6 +21,7 @@ const RegisterEstablisherForm: FC<IProps> = ({}) => {
 					<CustomFormField
 						control={partnerForm.control}
 						placeholder="Введите вашу фамилию"
+						InputClassName="xs:py-5 xs:rounded-lg text-white"
 						type="text"
 						name="last_name"
 					/>
@@ -30,6 +29,7 @@ const RegisterEstablisherForm: FC<IProps> = ({}) => {
 				<CustomFormField
 					control={partnerForm.control}
 					placeholder="Введите вашу почту"
+					InputClassName="xs:py-5 xs:rounded-lg text-white"
 					type="email"
 					name="email"
 				/>
@@ -37,6 +37,7 @@ const RegisterEstablisherForm: FC<IProps> = ({}) => {
 				<CustomFormField
 					control={partnerForm.control}
 					placeholder="Введите ваш пароль"
+					InputClassName="xs:py-5 xs:rounded-lg text-white"
 					type="password"
 					name="password"
 				/>
@@ -44,6 +45,7 @@ const RegisterEstablisherForm: FC<IProps> = ({}) => {
 				<CustomFormField
 					control={partnerForm.control}
 					placeholder="Подтвердите ваш пароль"
+					InputClassName="xs:py-5 xs:rounded-lg text-white"
 					type="password"
 					name="confirm_password"
 				/>
@@ -52,7 +54,7 @@ const RegisterEstablisherForm: FC<IProps> = ({}) => {
 					onClick={openAndTriggerConfirmModal}
 					type="button"
 					variant={'yellow'}
-					className="w-full rounded-3xl p-6"
+					className="w-full rounded-3xl p-6 xs:py-2 xs:rounded-md xs:my-3"
 				>
 					Далее
 				</Button>

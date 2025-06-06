@@ -56,7 +56,7 @@ const Hero: FC<IProps> = ({ viewModel, item, categoriesViewModel }) => {
 	};
 
 	return (
-		<div className="mt-[50px] lg:mt-6">
+		<div className="mt-[50px] lg:mt-6 font-roboto">
 			<BreadCrumbs
 				home={viewModel.hero.home}
 				pageName={getTranslateByKey(locale, item.translates, 'name')}
@@ -65,7 +65,7 @@ const Hero: FC<IProps> = ({ viewModel, item, categoriesViewModel }) => {
 			<div className="grid grid-cols-2 lg:grid-cols-1 items-start justify-between gap-7 mt-5">
 				<div className="order-2 lg:order-1 flex flex-col gap-6 relative">
 					<Button
-						className="shadow-none fixed right-5 z-20 bottom-5 rounded-full size-12 lg:size-10"
+						className="shadow-none fixed right-6 z-[999] bottom-6 rounded-full size-12 lg:size-10"
 						variant={'yellow'}
 						onClick={onCreateChat}
 						size={'icon'}
@@ -88,23 +88,31 @@ const Hero: FC<IProps> = ({ viewModel, item, categoriesViewModel }) => {
 						{item.address}
 					</p>
 
-					<div className="flex flex-col gap-4 p-5 lg:p-3 shadow-[0_0_15px_2px_rgba(41,53,61,0.20)] rounded-[15px] bg-background_1 text-sm">
-						<p className="flex items-center gap-3 numeric">
-							<BsGeoAlt className="w-5 h-5 text-yellow" />
-							<span className="font-medium">{viewModel.hero.address}:</span>
-							<span className="opacity-70">{item.address}</span>
+					<div className="flex flex-col gap-4 p-5 lg:p-3 shadow-md rounded-[15px] bg-background_1 text-sm">
+						<p className="flex items-start gap-3 numeric">
+							<BsGeoAlt className="size-5 text-yellow" />
+							<span className="font-medium sm:text-xs">
+								{viewModel.hero.address}:
+							</span>
+							<span className="opacity-70 sm:text-xs">{item.address}</span>
 						</p>
-						<p className="flex items-center gap-3 numeric">
-							<LiaPhoneSolid className="w-5 h-5 text-yellow" />
-							<span className="font-medium">{viewModel.hero.contacts}:</span>
-							<span className="opacity-70">
+						<p className="flex items-start gap-3 numeric">
+							<LiaPhoneSolid className="size-5 text-yellow" />
+							<span className="font-medium sm:text-xs">
+								{viewModel.hero.contacts}:
+							</span>
+							<span className="opacity-70 sm:text-xs">
 								{item.contacts.phone?.split(';').join('')}
 							</span>
 						</p>
-						<p className="flex items-center gap-3 numeric">
-							<GoClock className="w-5 h-5 text-yellow" />
-							<span className="font-medium">{viewModel.hero.workTime}:</span>
-							<span className="opacity-70">{item.work_time}</span>
+						<p className="flex items-start gap-3 numeric">
+							<GoClock className="size-5 text-yellow" />
+							<span className="font-medium sm:text-xs">
+								{viewModel.hero.workTime}:
+							</span>
+							<span className="opacity-70 sm:text-xs">
+								{item.work_time === '00:00-00:00' ? '24/7' : item.work_time}
+							</span>
 						</p>
 
 						<div className="flex flex-wrap items-center gap-2">

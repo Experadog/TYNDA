@@ -74,6 +74,7 @@ const nextConfig: NextConfig = {
 					// { key: 'Cross-Origin-Embedder-Policy', value: 'require-corp' },
 
 					{ key: 'Access-Control-Allow-Origin', value: 'https://soyuz.kg' },
+					{ key: 'X-XSS-Protection', value: '1; mode=block' },
 				],
 			},
 		];

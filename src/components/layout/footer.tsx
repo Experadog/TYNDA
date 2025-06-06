@@ -31,8 +31,8 @@ const Footer: FC<IProps> = () => {
 				className,
 			)}
 		>
-			<div className="max-w-[1320px] m-auto flex flex-col lg:gap-[30px]">
-				<div className="flex gap-4 lg:flex-col lg:gap-[50px]">
+			<div className="max-w-[1920px] m-auto flex flex-col lg:gap-[30px]">
+				<div className="flex justify-between gap-4 lg:flex-col lg:gap-[50px]">
 					<div className="flex flex-col gap-[25px] w-[433px] lg:w-auto">
 						<Image src={'/logo.svg'} alt="logo" width={120} height={90} />
 					</div>

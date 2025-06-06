@@ -1,55 +1,48 @@
 'use client';
-import type { EstablishmentCategory } from '@/business-entities/establishment/EstablishmentEntity';
-import { useRouter } from '@/i18n/routing';
-import { SEARCH_PARAMS } from '@/lib';
-import type { GetEstablishmentAllClientResponseModel } from '@/services';
+import type {
+	EstablishmentCategory,
+	EstablishmentListItem,
+} from '@/business-entities/establishment/EstablishmentEntity';
+import { useSetParams } from '@common';
 import { Button, EstCategorySlider, LoadingSpinner } from '@components';
-import { useSearchParams } from 'next/navigation';
-import { type FC, useState } from 'react';
+import { type FC, useMemo } from 'react';
 // import { MdKeyboardArrowDown } from 'react-icons/md';
 // import { TbFilter } from 'react-icons/tb';
 import { useMediaQuery } from 'react-responsive';
 import RecommendationCard from '../../(home)/_components/recommendationCard';
-import { useAllEnterprisesUseCase } from '../use-cases/useAllEnterprisesUseCase';
 
 interface IProps {
 	viewModel: ViewModel['AllEnterprises']['enterprisesFilter'];
 	categoriesViewModel: ViewModel['Shared']['establishment_categories'];
-	data: GetEstablishmentAllClientResponseModel['data'];
+	list: EstablishmentListItem[];
+	isLoading: boolean;
+	hasNextPage: boolean;
+	onGoNextPage: () => Promise<void>;
 }
 
-const EnterprisesFilter: FC<IProps> = ({ data, categoriesViewModel }) => {
-	const { viewModel, pagination } = useAllEnterprisesUseCase({ initialData: data });
-	const {
-		states: { list, isLoading },
-		actions: { onGoNextPage },
-	} = pagination;
+const EnterprisesFilter: FC<IProps> = ({
+	list,
+	categoriesViewModel,
+	isLoading,
+	onGoNextPage,
+	hasNextPage,
+}) => {
 	const isLargeScreen = useMediaQuery({ minWidth: 1025 });
 	const isSmallScreen = useMediaQuery({ minWidth: 440 });
 
 	const itemsCount = isLargeScreen ? 7 : isSmallScreen ? 4 : 3;
 	const itemsSpacing = isLargeScreen ? 15 : 20;
-	const router = useRouter();
-	const searchParams = useSearchParams();
 
-	const [selectedCategory, setSelectedCategory] = useState<EstablishmentCategory | null>(
-		searchParams.get(SEARCH_PARAMS.category.key) as EstablishmentCategory,
-	);
+	const { setParam, removeParam, getParam } = useSetParams();
+
+	const selectedCategory = useMemo(() => getParam('category') || null, [getParam]);
 
 	const onSelectCategory = (selected: EstablishmentCategory) => {
 		if (selectedCategory === selected) {
-			setSelectedCategory(null);
-
-			const params = new URLSearchParams(searchParams.toString());
-			params.delete(SEARCH_PARAMS.category.key);
-			router.replace(`?${params.toString()}`, { scroll: false });
-			return;
+			removeParam('category');
+		} else {
+			setParam('category', selected);
 		}
-
-		setSelectedCategory(selected);
-		const params = new URLSearchParams(searchParams.toString());
-		params.set(SEARCH_PARAMS.category.key, selected);
-		router.replace(`?${params.toString()}`, { scroll: false });
 	};
 
 	return (
@@ -64,7 +57,7 @@ const EnterprisesFilter: FC<IProps> = ({ data, categoriesViewModel }) => {
 
 			{list.length ? (
 				<div className="flex flex-col gap-5">
-					<div className="grid grid-cols-4 lg:grid-cols-2 mt-[60px] lg:mt-[30px] gap-x-5 gap-y-[34px] lg:gap-x-[10px] lg:gap-y-[20px]">
+					<div className="grid grid-cols-4 md:grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 gap-4 justify-items-center">
 						{list.map((establishment) => (
 							<RecommendationCard
 								key={establishment.id}
@@ -73,19 +66,16 @@ const EnterprisesFilter: FC<IProps> = ({ data, categoriesViewModel }) => {
 						))}
 					</div>
 
-					{isLoading ? (
-						<LoadingSpinner className="mx-auto size-10 text-yellow" />
-					) : (
-						list.length !== data.total && (
-							<Button
-								className="py-5 max-w-[400px] w-full mx-auto mt-auto rounded-xl"
-								variant={'yellow'}
-								disableAnimation
-								onClick={onGoNextPage}
-							>
-								Загрузить еще
-							</Button>
-						)
+					{hasNextPage && (
+						<Button
+							className="py-5 my-5 max-w-[400px] w-full mx-auto rounded-xl"
+							variant={'yellow'}
+							disableAnimation
+							onClick={onGoNextPage}
+							disabled={isLoading}
+						>
+							{isLoading ? <LoadingSpinner /> : 'Загрузить еще'}
+						</Button>
 					)}
 				</div>
 			) : (

@@ -31,7 +31,13 @@ export const metadata: Metadata = {
 	icons: '/page-icon.ico',
 	robots: 'index, follow',
 	keywords:
-		'юридические вопросы, малый бизнес, документы, туризм, средний бизнес, Кыргызстан, образовательные программы, миграционные вопросы, реклама, отдых, кыргызстан, глэмпинг, туры',
+		'юридические вопросы, малый бизнес, документы, туризм, средний бизнес, Кыргызстан, образовательные программы, миграционные вопросы, реклама, отдых, кыргызстан, глэмпинг, туры, legal issues, small business, tourism, Kyrgyzstan, glamping, travel, migration, vacation, nomadic culture, yurt, eco tourism, premium tours, mountain travel, nature tours, adventure Kyrgyzstan',
+
+	metadataBase: new URL('https://tynda.kg'),
+
+	authors: { name: 'Команда Tynda.kg' },
+	publisher: 'Tynda.kg',
+
 	openGraph: {
 		title: 'Tynda.kg',
 		description:
@@ -39,15 +45,17 @@ export const metadata: Metadata = {
 		images: ['/page-icon.ico'],
 		url: 'https://tynda.kg',
 		type: 'website',
+		locale: 'ru_RU',
+		siteName: 'Tynda.kg',
 	},
 	twitter: {
 		card: 'summary_large_image',
 		title: 'Tynda.kg',
 		description:
 			'Tynda.kg — первая и единственная онлайн-платформа для туризма и отдыха в Кыргызстане, где гармонично сочетаются аутентичность и современный комфорт. Здесь вы найдёте любые варианты путешествий — от душевного отдыха в традиционной юрте до элитных глэмпингов и индивидуальных туров премиум-класса.',
-		images: ['/home/hero.webp'],
+		images: ['/home/herobg.webp'],
+		creator: '@TyndaKG',
 	},
-	metadataBase: new URL('https://tynda.kg'),
 	alternates: {
 		canonical: 'https://tynda.kg',
 		languages: {
@@ -56,12 +64,17 @@ export const metadata: Metadata = {
 			en: 'https://tynda.kg/en',
 		},
 	},
+	verification: {
+		google: '9lHV1DEx2SzxWVdBRj49hHbvp9EM3xEbfp7mPRpm4nQ',
+		yandex: '1a655a87476c0739',
+	},
 };
 
 export const viewport: Viewport = {
 	width: 'device-width',
 	initialScale: 1.0,
 	maximumScale: 1.0,
+	themeColor: '#f4a900',
 };
 
 export default async function RootLayout({

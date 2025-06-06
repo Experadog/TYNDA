@@ -20,7 +20,15 @@ import {
 	useAsyncAction,
 } from '@common';
 import type React from 'react';
-import { type ReactNode, type RefObject, createContext, useContext, useRef, useState } from 'react';
+import {
+	type ReactNode,
+	type RefObject,
+	createContext,
+	useContext,
+	useEffect,
+	useRef,
+	useState,
+} from 'react';
 
 interface RegisterContextType {
 	states: {
@@ -43,7 +51,8 @@ interface RegisterContextType {
 		onConfirm: () => Promise<void>;
 		openAndTriggerConfirmModal: () => Promise<void>;
 		handleChange: (index: number, value: string) => void;
-		handleKeyDown: (index: number, e: React.KeyboardEvent) => void;
+		handleKeyDown: (index: number, e: React.KeyboardEvent<HTMLInputElement>) => void;
+		handlePaste: (e: React.ClipboardEvent<HTMLInputElement>) => void;
 	};
 }
 
@@ -53,7 +62,12 @@ export const RegisterProvider: React.FC<{ children: ReactNode }> = ({ children }
 	const [isConfirmModal, setIsConfirmModal] = useState(false);
 	const [isActivating, setIsActivating] = useState(false);
 	const [role, setRole] = useState<UserRole>(UserRole.CLIENT);
-	const [code, setCode] = useState(Array(6).fill(''));
+
+	const CODE_LENGTH = 6;
+	const [code, setCode] = useState<string[]>(Array(CODE_LENGTH).fill(''));
+	const [focusIndex, setFocusIndex] = useState<number | null>(null);
+
+	const inputsRef = useRef<Array<HTMLInputElement | null>>([]);
 
 	const viewModel = useViewModel(['Toast']);
 	const router = useRouter();
@@ -68,8 +82,6 @@ export const RegisterProvider: React.FC<{ children: ReactNode }> = ({ children }
 		messages: viewModel.ActivateAccount,
 	});
 
-	const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
-
 	const onChangeRole = (newRole: UserRole) => setRole(newRole);
 
 	const openConfirmModal = () => setIsConfirmModal(true);
@@ -77,13 +89,16 @@ export const RegisterProvider: React.FC<{ children: ReactNode }> = ({ children }
 	const closeConfirmModal = () => {
 		setIsConfirmModal(false);
 		setIsActivating(false);
+		setCode([]);
 	};
 
 	const handleChange = (index: number, value: string) => {
 		if (!/^\d*$/.test(value)) return;
 
 		const newCode = [...code];
-		newCode[index] = value.slice(-1);
+		const newValue = typeof Number(value.slice(-1)) === 'number' ? value.slice(-1) : '';
+		console.log(newValue);
+		newCode[index] = newValue;
 		setCode(newCode);
 
 		if (value && index < inputsRef.current.length - 1) {
@@ -91,11 +106,71 @@ export const RegisterProvider: React.FC<{ children: ReactNode }> = ({ children }
 		}
 	};
 
-	const handleKeyDown = (index: number, e: React.KeyboardEvent) => {
-		if (e.key === 'Backspace' && !code[index] && index > 0) {
-			inputsRef.current[index - 1]?.focus();
+	const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+		const isNumberKey = /^[0-9]$/.test(e.key);
+		const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab'];
+
+		if (!isNumberKey && !allowedKeys.includes(e.key)) {
+			e.preventDefault();
+		}
+
+		if (e.key === 'Backspace') {
+			e.preventDefault();
+
+			const newCode = [...code];
+
+			if (code[index]) {
+				newCode[index] = '';
+				setCode(newCode);
+				setFocusIndex(index);
+			} else if (index > 0) {
+				newCode[index - 1] = '';
+				setCode(newCode);
+				setFocusIndex(index - 1);
+			} else {
+				setFocusIndex(index);
+			}
+		}
+
+		if (e.key === 'ArrowLeft') {
+			e.preventDefault();
+			if (index > 0) {
+				setFocusIndex(index - 1);
+			}
+		}
+		if (e.key === 'ArrowRight') {
+			e.preventDefault();
+			if (index < inputsRef.current.length - 1) {
+				setFocusIndex(index + 1);
+			}
 		}
 	};
+
+	const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+		const pasted = e.clipboardData.getData('Text').replace(/\D/g, '').slice(0, CODE_LENGTH);
+		if (!pasted) return;
+
+		const newCode = [...code];
+		for (let i = 0; i < CODE_LENGTH; i++) {
+			newCode[i] = pasted[i] || '';
+			const input = inputsRef.current[i];
+
+			if (input) {
+				input.value = pasted[i].length > 1 ? pasted[i][0] : '';
+			}
+		}
+		setCode(newCode);
+
+		const nextIndex = pasted.length < CODE_LENGTH ? pasted.length : CODE_LENGTH - 1;
+		inputsRef.current[nextIndex]?.focus();
+	};
+
+	useEffect(() => {
+		if (focusIndex !== null) {
+			inputsRef.current[focusIndex]?.focus();
+			setFocusIndex(null); // сброс чтобы не зацикливать
+		}
+	}, [focusIndex]);
 
 	const clientForm = createRegisterClientSchema({
 		email: 'Почта является не корректной',
@@ -198,6 +273,7 @@ export const RegisterProvider: React.FC<{ children: ReactNode }> = ({ children }
 					openAndTriggerConfirmModal,
 					handleChange,
 					handleKeyDown,
+					handlePaste,
 				},
 			}}
 		>

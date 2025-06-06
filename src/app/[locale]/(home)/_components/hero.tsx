@@ -52,7 +52,6 @@ const Hero: FC<IProps> = ({ heroViewModel }) => {
 
 export default Hero;
 
-
 // 'use client';
 // import { Link } from '@/i18n/routing';
 // import { PAGES } from '@/lib';

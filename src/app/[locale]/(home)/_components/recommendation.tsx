@@ -4,11 +4,11 @@ import type {
 	EstablishmentCategory,
 	EstablishmentListItem,
 } from '@/business-entities/establishment/EstablishmentEntity';
-import { Link, useRouter } from '@/i18n/routing';
-import { PAGES, SEARCH_PARAMS } from '@/lib';
+import { Link } from '@/i18n/routing';
+import { PAGES } from '@/lib';
+import { useSetParams } from '@common';
 import { Button, EstCategorySlider, Translate } from '@components';
-import { useSearchParams } from 'next/navigation';
-import { type FC, useState } from 'react';
+import { type FC, useMemo } from 'react';
 import { FiArrowRight } from 'react-icons/fi';
 import { useMediaQuery } from 'react-responsive';
 import RecommendationCard from './recommendationCard';
@@ -26,30 +26,20 @@ const Recommendation: FC<IProps> = ({
 }) => {
 	const isLargeScreen = useMediaQuery({ minWidth: 1025 });
 	const isSmallScreen = useMediaQuery({ minWidth: 440 });
-	const searchParams = useSearchParams();
-	const router = useRouter();
 
 	const itemsCount = isLargeScreen ? 7 : isSmallScreen ? 4 : 3;
 	const itemsSpacing = isLargeScreen ? 15 : 20;
 
-	const [selectedCategory, setSelectedCategory] = useState<EstablishmentCategory | null>(
-		searchParams.get(SEARCH_PARAMS.category.key) as EstablishmentCategory,
-	);
+	const { setParam, removeParam, getParam } = useSetParams();
+
+	const selectedCategory = useMemo(() => getParam('category') || null, [getParam]);
 
 	const onSelectCategory = (selected: EstablishmentCategory) => {
 		if (selectedCategory === selected) {
-			setSelectedCategory(null);
-
-			const params = new URLSearchParams(searchParams.toString());
-			params.delete(SEARCH_PARAMS.category.key);
-			router.replace(`?${params.toString()}`, { scroll: false });
-			return;
+			removeParam('category');
+		} else {
+			setParam('category', selected);
 		}
-
-		setSelectedCategory(selected);
-		const params = new URLSearchParams(searchParams.toString());
-		params.set(SEARCH_PARAMS.category.key, selected);
-		router.replace(`?${params.toString()}`, { scroll: false });
 	};
 
 	return (
@@ -75,9 +65,9 @@ const Recommendation: FC<IProps> = ({
 			</Translate>
 
 			{establishments.length ? (
-				<div className="grid grid-cols-4 xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 xs:grid-cols-2 gap-4 lg:gap-2 justify-items-center">
+				<div className="grid grid-cols-4 md:grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 gap-4 justify-items-center">
 					{establishments.map((establishment) => (
-						<RecommendationCard key={establishment.id} establishment={establishment} />
+						<RecommendationCard establishment={establishment} key={establishment.id} />
 					))}
 				</div>
 			) : (

@@ -14,41 +14,61 @@ const RecommendationCard: FC<IProps> = ({ establishment }) => {
 	const { locale } = useLocale();
 
 	return (
-		<Link href={`${PAGES.ENTERPRISES_ALL}/${establishment.id}`}>
-			<div className="w-[320px] max-w-[320px] h-[478px] lg:w-[171px] lg:h-[320px] flex flex-col gap-[19px] lg:gap-2 lg:pb-2 pb-[14px] shadow-sm rounded-[20px] bg-background_1 cursor-pointer border border-light_gray">
-				<div className="max-h-[322px] max-w-[320px] lg:max-w-[171px] lg:max-h-[171px] w-full">
-					<Image
-						src={establishment?.cover || '/other/cardImg.webp'}
-						alt="establishment image"
-						width={320}
-						priority
-						height={322}
-						className="rounded-b-2xl rounded-t-[20px] w-full h-[322px] lg:h-[171px] object-cover object-center"
-					/>
+		<Link
+			href={`${PAGES.ENTERPRISES_ALL}/${establishment.id}`}
+			className="
+					w-full
+                    cursor-pointer
+                    border border-transparent rounded-[15px] overflow-hidden
+                    transition-all duration-300  hover:shadow-md
+                    sm:flex sm:flex-col 
+
+                    lg:flex lg:flex-row lg:h-[140px] 
+
+					hover:-translate-y-2 lg:hover:translate-y-0
+                "
+		>
+			<div
+				className="
+                        relative
+                        w-full h-[160px] 
+                        sm:h-auto 
+
+                        lg:w-[40%] lg:h-full
+                    "
+			>
+				<Image
+					src={establishment?.cover}
+					alt="establishment image"
+					fill
+					priority
+					className="object-cover object-center"
+				/>
+			</div>
+
+			<div
+				className="
+                        flex flex-col justify-between
+                        px-4 py-3 md:px-3 md:py-2 grow
+                        lg:w-[60%] lg:h-full lg:py-2 lg:px-3
+                    "
+			>
+				<div className="flex flex-col gap-2 flex-grow">
+					<h4 className="font-semibold text-lg md:text-base lg:text-sm uppercase truncate numeric min-h-[2.8em] md:min-h-[2.6em] lg:min-h-[auto] font-roboto">
+						{getTranslateByKey(locale, establishment.translates, 'name')}
+					</h4>
+					<p className="font-normal text-gray text-sm md:text-xs line-clamp-2 numeric h-[2.8em] md:h-[2.4em] lg:h-[auto] overflow-hidden font-roboto">
+						{getTranslateByKey(locale, establishment.translates, 'description')}
+					</p>
 				</div>
-				<div className="px-[14px] md:px-2 h-full flex flex-col justify-between">
-					<div className="">
-						<h4 className="font-semibold text-lg uppercase md:text-sm md:font-medium line-clamp-2 numeric">
-							{getTranslateByKey(locale, establishment.translates, 'name')}
-						</h4>
-						<p className="font-normal text-gray text-sm line-clamp-2 md:text-xs numeric">
-							{getTranslateByKey(locale, establishment.translates, 'description')}
-						</p>
-					</div>
-					<div className="flex justify-between">
-						<Button
-							clickable={'nonClickable'}
-							variant={'yellow'}
-							className="rounded-2xl text-base font-semibold md:text-xs numeric"
-						>
-							{establishment?.average_bill} c
-						</Button>
-						{/* 
-						<div className={'flex gap-1 items-center'}>
-							<p className="numeric text-base font-semibold md:text-xs">0</p>
-							<IoStar className="text-[var(--yellow)] md:text-sm" />
-						</div> */}
-					</div>
+
+				<div className="pt-2 md:pt-1.5">
+					<Button
+						clickable="nonClickable"
+						className="text-base md:text-sm lg:text-xs font-bold py-1.5 md:py-1 lg:py-0.5 numeric w-max  text-yellow bg-transparent shadow-none mr-auto p-0"
+					>
+						{establishment?.average_bill} c
+					</Button>
 				</div>
 			</div>
 		</Link>

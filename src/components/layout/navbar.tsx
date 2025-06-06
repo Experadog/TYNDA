@@ -1,6 +1,6 @@
 import { Link } from '@/i18n/routing';
 import { NAV_LINKS } from '@/lib';
-import { Button, ToggleLocale, ToggleTheme } from '@components';
+import { Button, Fade, ToggleLocale, ToggleTheme, Translate } from '@components';
 import clsx from 'clsx';
 import Image from 'next/image';
 import { type FC, useState } from 'react';
@@ -20,12 +20,11 @@ interface IProps {
 }
 
 export const navbarIcons = [
-	<RiHome6Line className="w-[18px] h-[18px]" />,
-	<TbMapSearch className="w-[18px] h-[18px]" />,
-	<CgInfo className="w-[18px] h-[18px]" />,
-	<LiaPhoneSolid className="w-[18px] h-[18px]" />,
-	<LuCreditCard className="w-[18px] h-[18px]" />,
-	// <AiOutlineFileProtect className="w-[18px] h-[18px]" />,
+	<RiHome6Line className="w-[18px] h-[18px]" key={'1'} />,
+	<TbMapSearch className="w-[18px] h-[18px] " key={'2'} />,
+	<CgInfo className="w-[18px] h-[18px]" key={'3'} />,
+	<LiaPhoneSolid className="w-[18px] h-[18px]" key={'4'} />,
+	<LuCreditCard className="w-[18px] h-[18px]" key={'5'} />,
 ];
 
 const Navbar: FC<IProps> = () => {
@@ -39,9 +38,9 @@ const Navbar: FC<IProps> = () => {
 	const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
 	return (
-		<header
+		<Fade
 			className={clsx(
-				'bg-background_1 flex flex-col fixed z-[9999] top-0 right-0 left-0 transition-shadow duration-1000 border-b border-b-light_gray',
+				'bg-background_1 flex flex-col fixed z-[9999] top-0 right-0 left-0 transition-shadow duration-1000 border-b border-b-light_gray max-w-[1920px] mx-auto',
 				isScrolled && 'shadow-lg border-none',
 			)}
 		>
@@ -87,6 +86,7 @@ const Navbar: FC<IProps> = () => {
 					<ToggleLocale />
 					<Button
 						onClick={navigateToAuthOrProfile}
+						disableAnimation
 						className={clsx(
 							'bg-transparent uppercase text-foreground_1 font-semibold shadow-none p-5 rounded-3xl border-foreground_1  border cursor-pointer hover:bg-yellow hover:border-background_1 hover:text-white lg:hidden text-xs numeric',
 							shouldHighlightBtn && 'bg-yellow  border-background_1 text-white',
@@ -107,8 +107,17 @@ const Navbar: FC<IProps> = () => {
 				</nav>
 			</div>
 
-			{isMenuOpen && <MobileNavbar onClose={setIsMenuOpen} />}
-		</header>
+			<Translate
+				open={isMenuOpen}
+				onExit={{ direction: 'left', distance: 300 }}
+				direction="left"
+				distance={200}
+				duration={0.5}
+				className="fixed inset-x-0 top-[87px] bottom-0 max-h-full bg-background_1 px-5 py-10 flex flex-col overflow-y-scroll"
+			>
+				<MobileNavbar onClose={setIsMenuOpen} />
+			</Translate>
+		</Fade>
 	);
 };
 
