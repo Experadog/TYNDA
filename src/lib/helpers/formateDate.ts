@@ -1,6 +1,7 @@
 type Props = {
 	showTime?: boolean;
 	timeOnly?: boolean;
+	shortFormat?: boolean;
 };
 
 export function formatDate(dateInput: string | Date | null, options: Props = {}): string {
@@ -24,6 +25,11 @@ export function formatDate(dateInput: string | Date | null, options: Props = {})
 		const hours = String(date.getHours()).padStart(2, '0');
 		const minutes = String(date.getMinutes()).padStart(2, '0');
 		return `${hours}:${minutes}, ${formattedDate}`;
+	}
+
+	if (options.shortFormat) {
+		const shortYear = String(year).slice(-2);
+		return `${day}/${month}/${shortYear}`;
 	}
 
 	return formattedDate;

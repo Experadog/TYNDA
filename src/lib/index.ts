@@ -24,5 +24,7 @@ export * from './helpers/middleware-helpers';
 export * from './helpers/parseISOStringToDate';
 export * from './helpers/phoneFormatter';
 export * from './helpers/prepareFormDataForFiles';
+export * from './helpers/prepateErrorForServer';
+export * from './helpers/priceFormatter';
 export * from './helpers/renderIconByValidationStatus';
 export * from './helpers/responseValidate';

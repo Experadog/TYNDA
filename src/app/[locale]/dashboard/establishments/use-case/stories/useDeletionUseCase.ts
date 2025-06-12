@@ -1,4 +1,3 @@
-import { useRouter } from '@/i18n/routing';
 import { URL_ENTITIES } from '@/lib';
 import {
 	type EstablishmentDeletionRequestModel,
@@ -21,8 +20,6 @@ export function useDeletionUseCase({ viewModel }: Props) {
 		[EstablishmentDeletionRequestModel]
 	>({ messages: viewModel });
 
-	const router = useRouter();
-
 	const establishmentDeletionAction = createAction({
 		requestAction: deleteEstablishment,
 		onSuccess: () => {
@@ -32,7 +29,6 @@ export function useDeletionUseCase({ viewModel }: Props) {
 			]);
 			setDeletionID('');
 			setIsConfirm(false);
-			router.refresh();
 		},
 	});
 

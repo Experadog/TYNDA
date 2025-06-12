@@ -1,6 +1,8 @@
 'use client';
 
+import { DTOClientHistories } from '@/dto/dtoClientHistory';
 import { Slider, Translate } from '@components';
+import { useMediaQuery } from 'react-responsive';
 import { useProfileSettingsUseCase } from '../../../use-case/profile-use-case';
 import Empty from './empty';
 import RecentlyVisitedCard from './recently-visited-card';
@@ -12,29 +14,31 @@ const RecentlyVisited = () => {
 
 	const isEmpty = clientHistory.data ? !clientHistory.data.items.length : true;
 
+	const isMobile = useMediaQuery({ maxWidth: 640 });
+
 	return (
 		<Translate
 			direction="left"
 			distance={150}
-			className="bg-background_1 rounded-3xl p-6 shadow-md flex flex-col gap-3 w-full overflow-hidden"
+			className="bg-background_1 rounded-3xl p-6 shadow-md flex flex-col gap-3 w-full overflow-hidden sm:p-0 sm:bg-transparent sm:shadow-none"
 		>
-			<span className="text-foreground_1 text-base font-semibold">
+			<span className="text-foreground_1 text-base font-semibold sm:text-center">
 				Ваши недавно посещенные места
 			</span>
 
-			{isEmpty ? (
+			{!isEmpty ? (
 				<Empty />
 			) : (
 				<Slider
 					loop={false}
-					slidesPerView={3}
+					slidesPerView={isMobile ? 1 : 3}
 					spacing={1}
-					classNameChildren="p-3"
+					classNameChildren="px-3"
 					total={clientHistory.data.total}
 					onReachEnd={moveToNextClientHistory}
 					page={clientHistory.data.page}
 				>
-					{clientHistory.data.items.map((item) => (
+					{DTOClientHistories.map((item) => (
 						<RecentlyVisitedCard key={item.establishment_id} {...item} />
 					))}
 				</Slider>

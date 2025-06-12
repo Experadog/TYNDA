@@ -75,7 +75,7 @@ const SearchControl = ({ onSelect, className, isMarked }: Props) => {
 			/>
 
 			{isSuggestionsOpen && (
-				<div className="absolute mt-1 w-full bg-background_1 border-2 border-light_gray rounded-lg shadow-lg z-[10000] max-h-60 overflow-y-auto">
+				<div className="absolute mt-1 w-full bg-background_6 border-2 border-light_gray rounded-lg shadow-lg z-[10000] max-h-60 overflow-y-auto">
 					{isLoading ? (
 						<div className="flex justify-center items-center py-4">
 							<LoadingSpinner />
@@ -85,7 +85,7 @@ const SearchControl = ({ onSelect, className, isMarked }: Props) => {
 							<div
 								key={suggestion.place_id}
 								className={clsx(
-									'px-3 py-2 hover:bg-yellow hover:text-white transition-colors cursor-pointer text-sm text-gray-800',
+									'px-3 py-2 hover:bg-light_gray transition-colors cursor-pointer text-sm text-gray-800',
 									index !== suggestions.length - 1 &&
 										'border-b border-light_gray',
 								)}

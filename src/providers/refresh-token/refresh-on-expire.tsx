@@ -25,7 +25,7 @@ const RefreshOnExpire: FC<IProps> = ({ children, initialSession }) => {
 	const access = useRef(decrypted?.access_token);
 	const refresh = useRef(decrypted?.refresh_token);
 	const expires = useRef(decrypted?.access_token_expire_time);
-	const lastRefreshed = useRef(decrypted?.last_refreshed);
+	const lastRefreshed = useRef(decrypted?.last_refreshed ?? 0);
 
 	const isRefreshing = useRef(false);
 	const refreshTimer = useRef<NodeJS.Timeout | null>(null);
@@ -34,7 +34,7 @@ const RefreshOnExpire: FC<IProps> = ({ children, initialSession }) => {
 
 	const isValidSession = !!access.current && !!refresh.current && !!expires.current;
 
-	const clearRefreshTimer = useCallback(() => {
+	const clearTimers = useCallback(() => {
 		if (refreshTimer.current) {
 			clearTimeout(refreshTimer.current);
 			refreshTimer.current = null;
@@ -43,11 +43,10 @@ const RefreshOnExpire: FC<IProps> = ({ children, initialSession }) => {
 
 	const onError = useCallback(async () => {
 		if (isErrorHandled.current) return;
-
 		isErrorHandled.current = true;
 		abortController.current?.abort();
 
-		LOGGER.error('Error in session refreshing');
+		LOGGER.error('Session refresh failed');
 
 		await fetch(`${LOCAL_API_URL}${URL_LOCAL_ENTITIES.CLEAR_SESSION}`, {
 			method: 'POST',
@@ -59,48 +58,22 @@ const RefreshOnExpire: FC<IProps> = ({ children, initialSession }) => {
 		});
 	}, [router, setUser]);
 
-	const startRefreshTimer = useCallback(() => {
-		if (!expires.current || !isValidSession || isRefreshing.current || isErrorHandled.current)
-			return;
-
-		const sessionExpireDate = new Date(expires.current);
-		const now = new Date();
-		const timeRemaining = sessionExpireDate.getTime() - now.getTime();
-
-		if (timeRemaining <= 10000) {
-			const refreshInterval = Math.max(timeRemaining - 10000, 0);
-			clearRefreshTimer();
-			refreshTimer.current = setTimeout(handleRefresh, refreshInterval);
-		}
-	}, [isValidSession, clearRefreshTimer]);
-
 	const handleRefresh = useCallback(async () => {
 		if (isRefreshing.current || !isValidSession || isErrorHandled.current) return;
 
-		if (
-			lastRefreshed.current &&
-			new Date().getTime() - lastRefreshed.current < REFRESH_INTERVAL_GUARD
-		) {
-			return;
-		}
+		const now = Date.now();
 
-		if (document.readyState !== 'complete') {
-			await new Promise((resolve) =>
-				window.addEventListener('load', resolve, { once: true }),
-			);
-		}
-
-		if (document.visibilityState !== 'visible') {
-			startRefreshTimer();
+		if (lastRefreshed.current && now - lastRefreshed.current < REFRESH_INTERVAL_GUARD) {
 			return;
 		}
 
 		isRefreshing.current = true;
-		clearRefreshTimer();
+		clearTimers();
 		abortController.current = new AbortController();
 
 		try {
-			LOGGER.info('Starting refreshing session...');
+			LOGGER.info('Refreshing session...');
+
 			const res = await fetch(`${LOCAL_API_URL}${URL_LOCAL_ENTITIES.REFRESH_SESSION}`, {
 				method: 'POST',
 				credentials: 'include',
@@ -108,68 +81,77 @@ const RefreshOnExpire: FC<IProps> = ({ children, initialSession }) => {
 				priority: 'high',
 			});
 
-			if (!res.ok) throw new Error('Failed to refresh token');
+			if (!res.ok) {
+				const text = await res.text();
+				LOGGER.error(`Failed to refresh token: ${res.status} - ${text}`);
+				throw new Error('Failed to refresh token');
+			}
 
-			const data = await res.json();
-			const decryptedData = decryptData(data) as Session;
-
-			// Testing
-			const currentDateKey = new Date()
-				.toLocaleString('ru-RU', {
-					day: '2-digit',
-					month: '2-digit',
-					year: 'numeric',
-					hour: '2-digit',
-					minute: '2-digit',
-				})
-				.replace(/[\s,:]/g, '-');
-			localStorage.setItem(currentDateKey, JSON.stringify(decryptedData.access_token));
+			const encryptedData = await res.text();
+			const decryptedData = decryptData(encryptedData) as Session;
 
 			if (!decryptedData?.access_token) throw new Error('Invalid token');
 
 			access.current = decryptedData.access_token;
 			refresh.current = decryptedData.refresh_token;
 			expires.current = decryptedData.access_token_expire_time;
-			lastRefreshed.current = new Date().getTime();
+
+			lastRefreshed.current = now;
 			isErrorHandled.current = false;
+
 			LOGGER.success('Session successfully refreshed');
-		} catch (error) {
+		} catch (err) {
 			await onError();
 		} finally {
-			router.refresh();
 			isRefreshing.current = false;
+			router.refresh();
+			scheduleRefresh();
 		}
-	}, [router, onError, startRefreshTimer, isValidSession, clearRefreshTimer]);
+	}, [isValidSession, onError, router, clearTimers]);
+
+	const scheduleRefresh = useCallback(() => {
+		if (!isValidSession || isRefreshing.current || isErrorHandled.current || !expires.current)
+			return;
+
+		clearTimers();
+
+		const now = Date.now();
+		const expireAt = new Date(expires.current).getTime();
+		const remainingMs = expireAt - now;
+
+		const refreshIn = Math.max(remainingMs - 300_00, 0);
+
+		refreshTimer.current = setTimeout(() => {
+			LOGGER.info(`⏳ Refresh triggered at ${new Date().toLocaleTimeString()}`);
+			handleRefresh();
+		}, refreshIn);
+	}, [isValidSession, handleRefresh, clearTimers, expires, isErrorHandled]);
 
 	useEffect(() => {
-		if (isValidSession) {
-			startRefreshTimer();
+		if (!isValidSession) return;
 
-			const visibilityChangeHandler = () => {
-				if (document.visibilityState === 'visible') {
-					startRefreshTimer();
-				} else {
-					clearRefreshTimer();
-				}
-			};
+		scheduleRefresh();
 
-			const focusHandler = () => startRefreshTimer();
+		const handleVisibility = () => {
+			if (document.visibilityState === 'visible') {
+				scheduleRefresh();
+			} else {
+				clearTimers();
+			}
+		};
 
-			const resumeHandler = () => startRefreshTimer();
+		const handleFocus = () => scheduleRefresh();
 
-			document.addEventListener('visibilitychange', visibilityChangeHandler);
-			window.addEventListener('focus', focusHandler);
-			document.addEventListener('resume', resumeHandler);
+		document.addEventListener('visibilitychange', handleVisibility);
+		window.addEventListener('focus', handleFocus);
 
-			return () => {
-				clearRefreshTimer();
-				document.removeEventListener('visibilitychange', visibilityChangeHandler);
-				window.removeEventListener('focus', focusHandler);
-				document.removeEventListener('resume', resumeHandler);
-				abortController.current?.abort();
-			};
-		}
-	}, [isValidSession, startRefreshTimer, clearRefreshTimer]);
+		return () => {
+			clearTimers();
+			document.removeEventListener('visibilitychange', handleVisibility);
+			window.removeEventListener('focus', handleFocus);
+			abortController.current?.abort();
+		};
+	}, [isValidSession, scheduleRefresh, clearTimers]);
 
 	useEffect(() => {
 		isRefreshing.current = false;

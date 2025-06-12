@@ -18,7 +18,7 @@ import { createAction, createLoginSchema, useAsyncAction } from '@common';
 import { useGoogleLogin } from '@react-oauth/google';
 
 export const useLoginUseCase = () => {
-	const viewModel = useViewModel(['Toast', 'Login']);
+	const viewModel = useViewModel(['Toast', 'Login', 'Validation']);
 
 	const { setUser } = useUser();
 	const router = useRouter();
@@ -68,10 +68,7 @@ export const useLoginUseCase = () => {
 		},
 	});
 
-	const form = createLoginSchema({
-		email: 'Почта является не корректной',
-		password: 'Длинна пароля должна составлять минимум 6',
-	});
+	const form = createLoginSchema(viewModel.Validation);
 
 	const onCommonLogin = async (values: LoginRequestModel) => {
 		await loginExecute(loginAction, values);

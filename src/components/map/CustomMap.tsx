@@ -157,19 +157,19 @@ const CustomMap = ({
 			)}
 
 			{isSearch && (
-				<div className="flex flex-col gap-1 z-[999] absolute right-4 top-4">
+				<div className="flex flex-col gap-1 z-[999] absolute right-4 top-4 bg-background_1 p-4  rounded-xl border border-light_gray">
 					<SearchControl
 						isMarked={!!position?.length}
 						onSelect={(coords) => setMapSearchCoords(coords)}
-						className="w-60"
+						className="w-60 relative"
 					/>
+
 					<div className="flex items-center gap-1">
 						<Button
 							variant={'default'}
 							size={'sm'}
 							disabled={!position}
-							className="w-full border border-light_gray rounded-l-xl hover:bg-yellow hover:text-white bg-background_1"
-							disableAnimation
+							className="w-full border border-light_gray rounded-l-xl hover:bg-yellow hover:text-white bg-background_1 !transform-none"
 							onClick={() => flyTo(position)}
 						>
 							Найти маркер
@@ -177,10 +177,9 @@ const CustomMap = ({
 
 						<Button
 							variant={'default'}
-							className="w-full border border-light_gray rounded-r-xl hover:bg-yellow hover:text-white bg-background_1"
+							className="w-full border border-light_gray rounded-r-xl hover:bg-yellow hover:text-white bg-background_1 !transform-none"
 							size={'sm'}
 							disabled={!position}
-							disableAnimation
 							onClick={handleDeleteMark}
 						>
 							Удалить маркер

@@ -77,7 +77,7 @@ class EstablishmentService {
 	): Promise<EstablishmentCreationResponseModel> {
 		const url = (await isSuperUser())
 			? URL_ENTITIES.ESTABLISHMENT_CREATION_ADMIN
-			: URL_ENTITIES.ESTABLISHMENT_CREATION;
+			: URL_ENTITIES.ESTABLISHMENT;
 
 		const response = await AXIOS_POST<EstablishmentCreationResponseModel>({
 			url,
@@ -94,7 +94,7 @@ class EstablishmentService {
 		data: EstablishmentDeletionRequestModel,
 	): Promise<EstablishmentCreationResponseModel> {
 		const response = await AXIOS_DELETE<EstablishmentCreationResponseModel>({
-			url: `${URL_ENTITIES.ESTABLISHMENT_DELETION}/${data.id}`,
+			url: `${URL_ENTITIES.ESTABLISHMENT}/${data.id}`,
 		});
 
 		return response;
@@ -104,7 +104,7 @@ class EstablishmentService {
 		data: EstablishmentUpdatingRequestModel,
 	): Promise<EstablishmentUpdatingResponseModel> {
 		const response = await AXIOS_PATCH<EstablishmentUpdatingResponseModel>({
-			url: `${URL_ENTITIES.ESTABLISHMENT_UPDATING}/${data.id}`,
+			url: `${URL_ENTITIES.ESTABLISHMENT}/${data.id}`,
 			data: data.payload,
 		});
 

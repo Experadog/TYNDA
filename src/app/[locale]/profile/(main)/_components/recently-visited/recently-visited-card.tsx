@@ -1,54 +1,54 @@
 import { URL_ENTITIES } from '@/lib';
-import { ClientHistory } from '@business-entities';
+import type { ClientHistory } from '@business-entities';
 import { revalidateByTags } from '@common';
 import Image from 'next/image';
-import { FC } from 'react';
+import type { FC } from 'react';
 import { IoStar } from 'react-icons/io5';
 
 const RecentlyVisitedCard: FC<ClientHistory> = (item) => {
-    const {
-        establishment: { address, category, cover, name },
-    } = item;
+	const {
+		establishment: { address, category, cover, name },
+	} = item;
 
-    return (
-        <div
-            onClick={() => revalidateByTags([URL_ENTITIES.CARD_HISTORY])}
-            className='flex flex-col w-full shadow-md rounded-xl overflow-hidden gap-3 border border-background_3 cursor-pointer hover:border-white  hover:-translate-y-3 transition-transform flex-shrink-0 relative'
-        >
-            <div className='w-full h-32 relative'>
-                <Image
-                    src={cover}
-                    alt={name}
-                    unoptimized
-                    fill
-                    style={{ objectFit: 'cover' }}
-                    onError={(event) => {
-                        event.currentTarget.src = '/other/placeholder.webp';
-                    }}
-                    priority
-                />
-            </div>
+	return (
+		<div
+			onClick={() => revalidateByTags([URL_ENTITIES.CARD_HISTORY])}
+			className="
+    relative flex flex-col w-full rounded-xl overflow-hidden cursor-pointer
+    border border-light_gray
+    shadow-sm transition-shadow duration-300 ease-in-out group
+  "
+		>
+			<div className="relative w-full h-40 sm:h-32">
+				<Image
+					src={cover}
+					alt={name}
+					fill
+					style={{ objectFit: 'cover' }}
+					onError={(event) => {
+						event.currentTarget.src = '/other/placeholder.webp';
+					}}
+					priority
+					className="group-hover:scale-110 transition-transform duration-500"
+				/>
+				<div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/90 via-black/50 to-transparent pointer-events-none" />
+			</div>
 
-            <div className='flex flex-col gap-1 p-3'>
-                <span className='text-foreground_1 font-semibold text-lg truncate'>{name}</span>
-                <span className='text-foreground_1 font-semibold text-base truncate'>
-                    {category}
-                    <span className='text-foreground_1 font-normal text-base ml-3'>{address}</span>
-                </span>
-                <div className='flex items-center gap-2 px-1'>
-                    <span className='flex items-center gap-1'>
-                        <IoStar
-                            color='var(--yellow)'
-                            size={20}
-                        />
-                        <span className='text-sm font-semibold numeric'>{0}</span>
-                    </span>
-                    <div className='bg-foreground_1 size-1 rounded-full' />
-                    <span className='text-sm font-normal numeric'>{0} отзывов</span>
-                </div>
-            </div>
-        </div>
-    );
+			<div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+				<h3 className="text-lg font-semibold truncate">{name}</h3>
+				<div className="flex flex-wrap gap-2 text-sm font-medium opacity-90">
+					<span>{category}</span>
+					<span className="opacity-70 truncate">{address}</span>
+				</div>
+				<div className="flex items-center gap-3 pt-2 text-yellow-400">
+					<IoStar size={18} />
+					<span className="font-semibold numeric">0</span>
+					<div className="bg-white w-1 h-1 rounded-full opacity-70" />
+					<span className="text-sm font-normal numeric opacity-80">{0} отзывов</span>
+				</div>
+			</div>
+		</div>
+	);
 };
 
 export default RecentlyVisitedCard;

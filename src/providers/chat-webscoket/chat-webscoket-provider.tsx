@@ -27,6 +27,7 @@ interface WebSocketContextValue {
 	messages: Message[];
 	sendMessage: (data: SendMessageRequest) => void;
 	connectWebSocket: (establishmentID?: string) => void;
+	shouldRefreshChatList: boolean;
 }
 
 const WebSocketContext = createContext<WebSocketContextValue | undefined>(undefined);
@@ -42,9 +43,17 @@ export const ChatWebSocketProvider = ({ session, children }: ChatWebSocketProvid
 	const [isConnected, setIsConnected] = useState(false);
 	const [messages, setMessages] = useState<Message[]>([]);
 
+	const [shouldRefreshChatList, setShouldRefreshChatList] = useState(false);
+
 	const reconnectAttempts = useRef(0);
 	const maxReconnectAttempts = 5;
 	const reconnectDelay = 2000;
+
+	useEffect(() => {
+		if (reconnectAttempts.current === maxReconnectAttempts && isConnected) {
+			reconnectAttempts.current = 0;
+		}
+	}, [isConnected]);
 
 	const connectWebSocket = useCallback(
 		(establishmentID?: string) => {
@@ -77,13 +86,13 @@ export const ChatWebSocketProvider = ({ session, children }: ChatWebSocketProvid
 			ws.onopen = () => {
 				console.log('✅ WebSocket подключен');
 				setIsConnected(true);
-				reconnectAttempts.current = 0;
 			};
 
 			ws.onmessage = (event) => {
 				try {
 					const response: WebSocketMessage = JSON.parse(event.data);
 					console.log('📨 Получено сообщение:', response);
+
 					if (response.is_system) {
 						if (role === UserRole.CLIENT && !is_superuser) {
 							router.push(PAGES.PROFILE_CHAT);
@@ -98,6 +107,12 @@ export const ChatWebSocketProvider = ({ session, children }: ChatWebSocketProvid
 					}
 
 					const { message, data, is_system } = response;
+
+					const isChatIdNew = !messages.some(
+						(existedMessage) => existedMessage.chat_id === message.chat_id,
+					);
+
+					setShouldRefreshChatList(isChatIdNew);
 
 					setMessages((prev) => [...prev, { ...message, data, is_system }]);
 				} catch (error) {
@@ -148,6 +163,7 @@ export const ChatWebSocketProvider = ({ session, children }: ChatWebSocketProvid
 		messages,
 		sendMessage,
 		connectWebSocket,
+		shouldRefreshChatList,
 	};
 
 	return <WebSocketContext.Provider value={value}>{children}</WebSocketContext.Provider>;

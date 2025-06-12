@@ -1,20 +1,19 @@
 import type { StaffRetrievalResponseModel } from '@/services';
-import { useStaffModalUseCase } from './modal/useStaffModalUseCase';
 import { useStaffPaginationUseCase } from './pagination/useStaffPaginationUseCase';
 import { useStaffFormUseCase } from './schema/useStaffFormUseCase';
 import { useStaffCreationUseCase } from './stories/useStaffCreationUseCase';
 import { useStaffDeletionUseCase } from './stories/useStaffDeletionUseCase';
 import { useStaffUpdatingUseCase } from './stories/useStaffUpdatingUseCase';
+import { useStaffTableUseCase } from './table/useStaffTableUseCase';
 
 type Props = {
 	staff: StaffRetrievalResponseModel['data'];
 };
 
 export function useStaffUseCase({ staff }: Props) {
-	const schema = useStaffFormUseCase();
 	const pagination = useStaffPaginationUseCase(staff);
 
-	const modal = useStaffModalUseCase({ schema });
+	const { schema, modal } = useStaffFormUseCase();
 
 	const create = useStaffCreationUseCase({
 		onCloseModal: modal.actions.onClose,
@@ -25,7 +24,13 @@ export function useStaffUseCase({ staff }: Props) {
 		onCloseModal: modal.actions.onClose,
 		refetch: pagination.actions.refetchCurrentPage,
 	});
+
 	const deletion = useStaffDeletionUseCase({ refetch: pagination.actions.refetchCurrentPage });
+
+	const table = useStaffTableUseCase({
+		onOpenModal: modal.actions.onOpen,
+		onDelete: deletion.confirmModal.open,
+	});
 
 	return {
 		modal,
@@ -34,6 +39,7 @@ export function useStaffUseCase({ staff }: Props) {
 		pagination,
 		update,
 		deletion,
+		table,
 	};
 }
 

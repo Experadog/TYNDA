@@ -34,21 +34,21 @@ const Translate: FC<IProps> = ({
 	children,
 	duration = 1,
 	delay = 0,
-	animateOnce = true,
+	animateOnce = false,
 	direction = 'left',
 	distance = 20,
 	className,
 	open,
 	onExit,
 }) => {
+	const [isMounted, setIsMounted] = useState(false);
 	const [isRendered, setIsRendered] = useState(open !== undefined ? open : true);
-
-	const [shouldAnimateInClass, setShouldAnimateInClass] = useState(open === true);
-
-	const [isIntersecting, setIsIntersecting] = useState(false);
+	const [shouldAnimateInClass, setShouldAnimateInClass] = useState(false);
 	const [hasIntersectedOnce, setHasIntersectedOnce] = useState(false);
 
 	const elementRef = useRef<HTMLDivElement>(null);
+	const observerRef = useRef<IntersectionObserver | null>(null);
+	const hideTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
 	const exitDuration = onExit?.duration ?? duration;
 	const exitDelay = onExit?.delay ?? 0;
@@ -56,29 +56,51 @@ const Translate: FC<IProps> = ({
 	const exitDistance = onExit?.distance ?? distance;
 
 	useEffect(() => {
-		if (!elementRef.current) return;
-
-		const observer = new IntersectionObserver(
-			([entry]) => {
-				setIsIntersecting(entry.isIntersecting);
-				if (entry.isIntersecting) {
-					setHasIntersectedOnce(true);
-				}
-			},
-			{ threshold: 0.0001 },
-		);
-
-		observer.observe(elementRef.current);
-
-		return () => {
-			if (elementRef.current) {
-				observer.unobserve(elementRef.current);
-			}
-		};
+		setIsMounted(true);
+		return () => setIsMounted(false);
 	}, []);
 
 	useEffect(() => {
-		let timeoutId: NodeJS.Timeout | undefined;
+		if (!isMounted || !elementRef.current || open !== undefined) return;
+
+		const options = {
+			threshold: 0.01,
+			rootMargin: '0px',
+		};
+
+		observerRef.current = new IntersectionObserver((entries) => {
+			const [entry] = entries;
+
+			if (entry.isIntersecting) {
+				if (hideTimeout.current) {
+					clearTimeout(hideTimeout.current);
+					hideTimeout.current = null;
+				}
+				if (!animateOnce || !hasIntersectedOnce) {
+					setHasIntersectedOnce(true);
+					setShouldAnimateInClass(true);
+				}
+			} else if (!animateOnce) {
+				hideTimeout.current = setTimeout(() => {
+					setShouldAnimateInClass(false);
+				}, 1000);
+			}
+		}, options);
+
+		observerRef.current.observe(elementRef.current);
+
+		return () => {
+			if (observerRef.current && elementRef.current) {
+				observerRef.current.unobserve(elementRef.current);
+			}
+			if (hideTimeout.current) {
+				clearTimeout(hideTimeout.current);
+			}
+		};
+	}, [animateOnce, hasIntersectedOnce, isMounted, open]);
+
+	useEffect(() => {
+		if (!isMounted) return;
 
 		if (open !== undefined) {
 			if (open) {
@@ -86,35 +108,14 @@ const Translate: FC<IProps> = ({
 				setShouldAnimateInClass(true);
 			} else {
 				setShouldAnimateInClass(false);
-				timeoutId = setTimeout(
-					() => {
-						setIsRendered(false);
-					},
+				const timer = setTimeout(
+					() => setIsRendered(false),
 					exitDuration * 1000 + exitDelay * 1000,
 				);
-			}
-		} else {
-			if (isIntersecting) {
-				if (animateOnce && hasIntersectedOnce) {
-					setShouldAnimateInClass(true);
-				} else {
-					setShouldAnimateInClass(true);
-				}
-			} else {
-				if (!animateOnce && hasIntersectedOnce) {
-					setShouldAnimateInClass(false);
-				} else if (animateOnce && hasIntersectedOnce) {
-					setShouldAnimateInClass(true);
-				} else {
-					setShouldAnimateInClass(false);
-				}
+				return () => clearTimeout(timer);
 			}
 		}
-
-		return () => {
-			if (timeoutId) clearTimeout(timeoutId);
-		};
-	}, [open, isIntersecting, animateOnce, hasIntersectedOnce, exitDuration, exitDelay]);
+	}, [open, isMounted, exitDuration, exitDelay]);
 
 	const currentDuration = shouldAnimateInClass ? duration : exitDuration;
 	const currentDelay = shouldAnimateInClass ? delay : exitDelay;
@@ -125,13 +126,22 @@ const Translate: FC<IProps> = ({
 		animationDuration: `${currentDuration}s`,
 		animationDelay: `${currentDelay}s`,
 		'--distance': `${currentDistance}px`,
+		opacity: isMounted ? undefined : 1,
+		transform: isMounted ? undefined : 'translate3d(0, 0, 0)',
 	};
 
 	const mergedClassNames = clsx(
 		'translate',
-		shouldAnimateInClass ? 'translate-in' : 'translate-out',
+		{
+			'translate-in': isMounted && shouldAnimateInClass,
+			'translate-out': isMounted && !shouldAnimateInClass,
+		},
 		`direction-${currentDirection}`,
 		className,
+		{
+			'animate-once': animateOnce && hasIntersectedOnce,
+			'ssr-ready': !isMounted,
+		},
 	);
 
 	if (!isRendered) return null;

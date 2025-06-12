@@ -1,12 +1,9 @@
 'use client';
 
 import { Button, CustomFormField, Form } from '@components';
-import type { FC } from 'react';
 import { useUpdateProfileUseCase } from '../../use-case/useUpdateProfileUseCase';
 
-type IProps = {};
-
-const CredentialsForm: FC<IProps> = ({}) => {
+const CredentialsForm = () => {
 	const {
 		states: { credentials },
 		actions: { onUpdateCredentials },
@@ -16,7 +13,7 @@ const CredentialsForm: FC<IProps> = ({}) => {
 		<Form {...credentials.form}>
 			<form
 				onSubmit={credentials.form.handleSubmit(onUpdateCredentials)}
-				className="bg-background_1 px-7 py-6 shadow-md rounded-2xl max-w-[50%] w-full"
+				className="bg-background_6 px-7 py-6 shadow-md rounded-2xl max-w-[50%] w-full"
 			>
 				<div className="flex flex-col gap-4 w-full">
 					<CustomFormField

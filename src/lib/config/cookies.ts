@@ -5,4 +5,5 @@ export enum COOKIES {
 	SESSION = 'session',
 	THEME = 'theme',
 	USER_SETTINGS = 'user_settings',
+	LAST_REVALIDATE_KEY = 'last-revalidate-key',
 }

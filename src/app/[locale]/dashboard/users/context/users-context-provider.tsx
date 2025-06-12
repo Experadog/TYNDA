@@ -6,16 +6,12 @@ import { type UseUsersUseCaseType, useUserUseCase } from '../use-cases/useUsersU
 
 type Props = {
 	children: ReactNode;
-	usersResponse?: UsersRetrievalResponseModel;
+	usersResponse: UsersRetrievalResponseModel;
 };
 
 const UsersContext = createContext<UseUsersUseCaseType | null>(null);
 
 export const UsersContextProvider: FC<Props> = ({ children, usersResponse }) => {
-	if (!usersResponse?.data) {
-		return <>{children}</>;
-	}
-
 	const value = useUserUseCase({ data: usersResponse.data });
 
 	return <UsersContext.Provider value={value}>{children}</UsersContext.Provider>;

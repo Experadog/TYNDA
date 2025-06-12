@@ -1,3 +1,5 @@
+'use server';
+
 import { PAGINATION } from '@/lib';
 import { getEstablishmentAllClient, getUserChatList } from '@/services';
 import type { FC, ReactNode } from 'react';

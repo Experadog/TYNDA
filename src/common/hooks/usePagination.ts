@@ -13,6 +13,7 @@ type UsePaginationParams<T> = {
 	entity: keyof typeof PAGINATION;
 	params?: Params;
 	keys?: Array<string | null | undefined | number | boolean>;
+	getInitialDataInClient?: boolean;
 };
 
 export function usePagination<T>({
@@ -21,13 +22,14 @@ export function usePagination<T>({
 	entity,
 	params = {},
 	keys = [],
+	getInitialDataInClient = false,
 }: UsePaginationParams<T>) {
 	const [pages, setPages] = useState<Record<number, T[]>>(
 		initialData ? { [initialData.page]: initialData.items } : {},
 	);
 
 	const [page, setPage] = useState(initialData ? Number(initialData.page) : 1);
-	const [isLoading, setIsLoading] = useState(!initialData);
+	const [isLoading, setIsLoading] = useState(!initialData || getInitialDataInClient);
 
 	const fetchPage = async (pageToFetch: number): Promise<boolean> => {
 		setIsLoading(true);
@@ -92,12 +94,6 @@ export function usePagination<T>({
 	};
 
 	useEffect(() => {
-		if (!initialData) {
-			fetchPage(page);
-		}
-	}, []);
-
-	useEffect(() => {
 		if (!initialData) return;
 
 		setPages((prev) => {
@@ -121,11 +117,13 @@ export function usePagination<T>({
 		setPages(initialData ? { [initialData.page]: initialData.items } : {});
 		setPage(initialData ? Number(initialData.page) : 1);
 		setIsLoading(!initialData);
-
-		if (!initialData) {
-			fetchPage(1);
-		}
 	}, [JSON.stringify(keys)]);
+
+	useEffect(() => {
+		if (getInitialDataInClient) {
+			fetchPage(page);
+		}
+	}, []);
 
 	const items = useMemo(() => {
 		const flatItems = Object.values(pages).flat();
@@ -148,6 +146,7 @@ export function usePagination<T>({
 		allPages: pages,
 		list: items,
 		total: initialData?.total || 0,
+		initialData,
 	};
 
 	const actions = {
@@ -158,3 +157,5 @@ export function usePagination<T>({
 
 	return { states, actions };
 }
+
+export type UsePaginationType = ReturnType<typeof usePagination>;

@@ -1,6 +1,6 @@
 'use client';
 
-import { usePathname, useRouter } from '@/i18n/routing';
+import { supportedLanguages, usePathname, useRouter } from '@/i18n/routing';
 import { useLocale } from '@/providers/locale/locale-provider';
 import { useParams } from 'next/navigation';
 import { startTransition } from 'react';
@@ -12,10 +12,9 @@ const ToggleLocale = () => {
 	const pathname = usePathname();
 	const params = useParams();
 
-	const supportedLocales = ['ru', 'kg', 'en'];
-	const getNextLocale = (current: string) => {
-		const index = supportedLocales.indexOf(current);
-		return supportedLocales[(index + 1) % supportedLocales.length];
+	const getNextLocale = (current: Locale) => {
+		const index = supportedLanguages.indexOf(current);
+		return supportedLanguages[(index + 1) % supportedLanguages.length];
 	};
 
 	const onToggle = async () => {

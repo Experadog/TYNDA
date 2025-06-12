@@ -25,3 +25,10 @@ export const emptyToUndefined = (v: unknown) =>
 	typeof v === 'string' && v.trim() === '' ? undefined : v;
 
 export const emptyToNull = (v: unknown) => (typeof v === 'string' && v.trim() === '' ? null : v);
+
+export const passwordPatterns = (msg: string) =>
+	z
+		.string()
+		.regex(/[A-Z]/, msg)
+		.regex(/[0-9]/, msg)
+		.regex(/[^A-Za-z0-9]/, msg);

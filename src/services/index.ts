@@ -35,3 +35,11 @@ export * from './roles/rolesService';
 //Chat
 export * from './chat/chatService';
 export * from './chat/chatServiceTypes';
+
+// Card
+export * from './card/cardService';
+export * from './card/cardServiceTypes';
+
+// Tariff
+export * from './tariff/tariffService';
+export * from './tariff/tariffServiceTypes';

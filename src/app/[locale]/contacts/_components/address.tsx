@@ -1,10 +1,22 @@
 'use client';
-import CustomMap from '@/components/map/CustomMap';
+
+import { LoadingSpinner } from '@components';
+import dynamic from 'next/dynamic';
 import type { FC } from 'react';
 
 interface IProps {
 	address: ViewModel['Contacts']['address'];
 }
+
+// Динамическая загрузка CustomMap только на клиенте
+const CustomMap = dynamic(() => import('@/components/map/CustomMap'), {
+	ssr: false,
+	loading: () => (
+		<div className="w-full h-full flex items-center justify-center">
+			<LoadingSpinner className="size-6 text-gray" />
+		</div>
+	),
+});
 
 const Address: FC<IProps> = ({ address }) => {
 	return (

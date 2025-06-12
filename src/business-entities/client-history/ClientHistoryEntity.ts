@@ -1,5 +1,12 @@
+import type { Translations } from '@common';
+
+type ClientHistoryTranslation = {
+	title: string;
+	description: string;
+};
+
 export type ClientHistory = {
-	translates: unknown;
+	translates: Translations<ClientHistoryTranslation>;
 	client_email: string;
 	card_id: string;
 	discount: number;

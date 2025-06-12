@@ -1,28 +1,34 @@
 'use client';
 
-import StaffTableBody from './staff-table-body';
-import StaffTableFooter from './staff-table-footer';
-import StaffTableHead from './staff-table-head';
+import type { Staff } from '@business-entities';
+import { Table, TableBody, TableFooter, TableHeader, TableWrapper } from '@components';
+import { useStaffContext } from '../../context/staff-context-provider';
+import StaffEmptyRow from './staff-empty-row';
 
 const StaffTable = () => {
+	const { pagination, table } = useStaffContext();
+
 	return (
-		<div className="w-full h-full mt-0 mb-0">
-			<div className="w-full h-full flex flex-col border-light_gray border rounded-lg overflow-hidden bg-background_6">
-				<table className="table-fixed border-separate border-spacing-0 w-full">
-					<StaffTableHead />
-				</table>
+		<TableWrapper>
+			<Table>
+				<TableHeader columns={table.columns} />
+			</Table>
 
-				<div className="flex-1 overflow-y-auto relative">
-					<table className="table-fixed border-separate border-spacing-0 w-full">
-						<StaffTableBody />
-					</table>
-				</div>
-
-				<table className="table-fixed border-separate border-spacing-0 w-full">
-					<StaffTableFooter />
-				</table>
+			<div className="flex-1 overflow-y-auto relative">
+				<Table>
+					<TableBody<Staff>
+						data={pagination.states.data}
+						columns={table.columns}
+						loading={pagination.states.isLoading}
+						empty={<StaffEmptyRow />}
+					/>
+				</Table>
 			</div>
-		</div>
+
+			<Table>
+				<TableFooter colSpan={table.columns.length} pagination={pagination} />
+			</Table>
+		</TableWrapper>
 	);
 };
 

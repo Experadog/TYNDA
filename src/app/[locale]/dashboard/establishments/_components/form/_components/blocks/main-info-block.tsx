@@ -31,6 +31,8 @@ const MainInfoBlock = ({ categoriesViewModel, schema }: Props) => {
 							<DataLangSwitcher
 								onSwitch={(lang) => setNameActiveLang(lang)}
 								activeLanguage={nameActiveLang}
+								scope="name"
+								schema={schema}
 							/>
 
 							<CustomFormField
@@ -60,7 +62,7 @@ const MainInfoBlock = ({ categoriesViewModel, schema }: Props) => {
 									label: categoriesViewModel[value],
 									value,
 								}))}
-								className="py-3.5 text-base"
+								className="py-3 text-base"
 								placeholder="Тип"
 								name="category"
 								control={schema.control}
@@ -98,6 +100,8 @@ const MainInfoBlock = ({ categoriesViewModel, schema }: Props) => {
 							<DataLangSwitcher
 								onSwitch={(lang) => setDescriptionActiveLang(lang)}
 								activeLanguage={descriptionActiveLang}
+								scope="description"
+								schema={schema}
 							/>
 
 							<CustomFormField
@@ -107,7 +111,7 @@ const MainInfoBlock = ({ categoriesViewModel, schema }: Props) => {
 								name={`translates.${descriptionActiveLang}.description`}
 								control={schema.control}
 								type="text"
-								TextAreaClassName="h-72 w-full bg-input_bg"
+								TextAreaClassName="h-72 w-full bg-input_bg max-h-[600px]"
 							/>
 						</div>,
 

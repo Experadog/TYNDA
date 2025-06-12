@@ -106,7 +106,7 @@ const Slider: FC<SliderProps> = ({
 		<div className="relative w-full">
 			<div
 				className={clsx(
-					`keen-slider transition-opacity duration-300 ${isLoaded ? 'opacity-100' : 'opacity-0'}`,
+					`keen-slider transition-opacity duration-300 ${isLoaded ? 'opacity-100' : 'opacity-0'} sm:px-0`,
 					classNameSlider,
 				)}
 				ref={sliderRef}

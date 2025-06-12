@@ -6,14 +6,12 @@ import { type UseRolesUseCaseType, useRolesUseCase } from '../use-cases/useRoles
 
 type Props = {
 	children: ReactNode;
-	roles: GetRolesResponseModel | undefined;
+	roles: GetRolesResponseModel;
 };
 
 const RolesContext = createContext<UseRolesUseCaseType | null>(null);
 
 export const RolesContextProvider: FC<Props> = ({ children, roles }) => {
-	if (!roles?.data) return <>{children}</>;
-
 	const value = useRolesUseCase({ roles: roles.data });
 	return <RolesContext.Provider value={value}>{children}</RolesContext.Provider>;
 };

@@ -1,10 +1,8 @@
 'use client';
 
-import { URL_ENTITIES } from '@/lib';
 import { useChatWebSocket } from '@/providers/chat-webscoket/chat-webscoket-provider';
 import type { ChatScope, ChatType } from '@business-entities';
-import { revalidateByTags } from '@common';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { IoSend } from 'react-icons/io5';
 import Avatar from '../../avatar/avatar';
 import EstablishmentCategoryComponent from '../../establishment-category/establishment-category';
@@ -46,10 +44,6 @@ const Chat = ({ chat, scope }: Props) => {
 		});
 		setContent('');
 	};
-
-	useEffect(() => {
-		revalidateByTags([URL_ENTITIES.CHAT_DETAILED]);
-	}, [chat.id]);
 
 	return (
 		<div className="flex flex-col h-full">

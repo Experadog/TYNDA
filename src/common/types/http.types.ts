@@ -1,4 +1,9 @@
-import type { EstablishmentCategory, PermissionScopeKey, UserRole } from '@business-entities';
+import type {
+	CardVariants,
+	EstablishmentCategory,
+	PermissionScopeKey,
+	UserRole,
+} from '@business-entities';
 
 export type Params = {
 	page?: string;
@@ -20,4 +25,5 @@ export type Params = {
 	chat_id?: string;
 	user_id?: string;
 	search_name?: string;
+	card_type?: CardVariants;
 };

@@ -1,0 +1,178 @@
+import type { ClientHistory } from '@business-entities';
+
+export const DTOClientHistories: ClientHistory[] = [
+	{
+		translates: {
+			en: { title: 'First Visit', description: "Client's first visit to the establishment." },
+			ru: { title: 'Первый визит', description: 'Первое посещение клиента в заведении.' },
+			kg: { title: 'Биринчи жолу баруу', description: 'Кардардын биринчи жолу баруусу.' },
+		},
+		client_email: 'client1@example.com',
+		card_id: 'card_001',
+		discount: 10,
+		establishment_id: 'est_001',
+		created_time: '2025-06-01T10:00:00Z',
+		establishment: {
+			id: 'est_001',
+			name: 'Cafe Mocha',
+			status: 'enable',
+			discount: 10,
+			cover: '/profile/profile.webp',
+			address: '123 Coffee St, City',
+			category: 'Cafe',
+		},
+	},
+	{
+		translates: {
+			en: {
+				title: 'Loyal Customer',
+				description: 'Visited multiple times, enjoys our service.',
+			},
+			ru: {
+				title: 'Постоянный клиент',
+				description: 'Посетил несколько раз, любит наш сервис.',
+			},
+			kg: {
+				title: 'Туруктуу кардар',
+				description: 'Бир нече жолу келип, кызматты жакшы көрөт.',
+			},
+		},
+		client_email: 'client2@example.com',
+		card_id: 'card_002',
+		discount: 15,
+		establishment_id: 'est_002',
+		created_time: '2025-05-20T15:30:00Z',
+		establishment: {
+			id: 'est_002',
+			name: 'Fitness Gym',
+			status: 'enable',
+			discount: 15,
+			cover: '/profile/profile.webp',
+			address: '45 Healthy Ave, City',
+			category: 'Gym',
+		},
+	},
+	{
+		translates: {
+			en: {
+				title: 'Special Discount',
+				description: 'Received a special discount on services.',
+			},
+			ru: {
+				title: 'Специальная скидка',
+				description: 'Получил специальную скидку на услуги.',
+			},
+			kg: {
+				title: 'Ар кандай арзандатуу',
+				description: 'Кызматтарга атайын арзандатуу алды.',
+			},
+		},
+		client_email: 'client3@example.com',
+		card_id: 'card_003',
+		discount: 20,
+		establishment_id: 'est_003',
+		created_time: '2025-04-15T09:00:00Z',
+		establishment: {
+			id: 'est_003',
+			name: 'Spa & Wellness',
+			status: 'enable',
+			discount: 20,
+			cover: '/profile/profile.webp',
+			address: '789 Relax Blvd, City',
+			category: 'Spa',
+		},
+	},
+	{
+		translates: {
+			en: { title: 'Referral Bonus', description: 'Bonus received for referring a friend.' },
+			ru: { title: 'Бонус за рекомендацию', description: 'Бонус за приглашение друга.' },
+			kg: {
+				title: 'Досторду чакыруу бонусу',
+				description: 'Досторду чакырган үчүн бонус алды.',
+			},
+		},
+		client_email: 'client4@example.com',
+		card_id: 'card_004',
+		discount: 5,
+		establishment_id: 'est_004',
+		created_time: '2025-03-30T14:45:00Z',
+		establishment: {
+			id: 'est_004',
+			name: 'Bookstore Central',
+			status: 'enable',
+			discount: 5,
+			cover: '/profile/profile.webp',
+			address: '56 Library Ln, City',
+			category: 'Bookstore',
+		},
+	},
+	{
+		translates: {
+			en: { title: 'Seasonal Offer', description: 'Seasonal discount applied to purchase.' },
+			ru: { title: 'Сезонное предложение', description: 'Сезонная скидка на покупку.' },
+			kg: { title: 'Мөөнөттүү сунуш', description: 'Сезондук арзандатуу берилди.' },
+		},
+		client_email: 'client5@example.com',
+		card_id: 'card_005',
+		discount: 12,
+		establishment_id: 'est_005',
+		created_time: '2025-02-10T11:15:00Z',
+		establishment: {
+			id: 'est_005',
+			name: 'Fashion Boutique',
+			status: 'enable',
+			discount: 12,
+			cover: '/profile/profile.webp',
+			address: '101 Style St, City',
+			category: 'Fashion',
+		},
+	},
+	{
+		translates: {
+			en: { title: 'Anniversary Gift', description: 'Received gift on client anniversary.' },
+			ru: { title: 'Подарок на годовщину', description: 'Подарок к годовщине клиента.' },
+			kg: {
+				title: 'Жылдык майрам белеги',
+				description: 'Кардардын жылдык майрамына белек берилди.',
+			},
+		},
+		client_email: 'client6@example.com',
+		card_id: 'card_006',
+		discount: 8,
+		establishment_id: 'est_006',
+		created_time: '2025-01-25T18:00:00Z',
+		establishment: {
+			id: 'est_006',
+			name: 'Gourmet Restaurant',
+			status: 'enable',
+			discount: 8,
+			cover: '/profile/profile.webp',
+			address: '77 Gourmet Rd, City',
+			category: 'Restaurant',
+		},
+	},
+	{
+		translates: {
+			en: { title: 'Exclusive Member', description: 'Exclusive offers for member clients.' },
+			ru: {
+				title: 'Эксклюзивный участник',
+				description: 'Эксклюзивные предложения для участников.',
+			},
+			kg: { title: 'Өзгөчө мүчө', description: 'Мүчө кардарлар үчүн өзгөчө сунуштар.' },
+		},
+		client_email: 'client7@example.com',
+		card_id: 'card_007',
+		discount: 18,
+		establishment_id: 'est_007',
+		created_time: '2024-12-12T12:00:00Z',
+		establishment: {
+			id: 'est_007',
+			name: 'Tech Store',
+			status: 'enable',
+			discount: 18,
+			cover: '/profile/profile.webp',
+			address: '202 Tech Park, City',
+			category: 'Electronics',
+		},
+	},
+];

@@ -1,4 +1,4 @@
-import { setBorderRadius } from '@/app/[locale]/dashboard/page-settings-actions';
+import { setBorderRadius } from '@/app/[locale]/dashboard/settings';
 import type { PageSettings } from '@common';
 import { Label, RadioGroup, RadioGroupItem } from '@components';
 import { TbBorderCornerRounded } from 'react-icons/tb';

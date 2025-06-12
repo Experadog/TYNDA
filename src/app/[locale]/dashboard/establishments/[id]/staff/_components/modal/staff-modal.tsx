@@ -2,7 +2,7 @@
 
 import { ROLE_DEFAULT_IDS } from '@/lib';
 import type { StaffFormValues } from '@common';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@components';
+import { DialogWrapper } from '@components';
 import { useStaffContext } from '../../context/staff-context-provider';
 import StaffForm from '../form/staff-form';
 
@@ -25,16 +25,19 @@ const StaffModal = ({ establishment_id }: Props) => {
 		}
 	};
 
-	return (
-		<Dialog open={isOpen} onOpenChange={onClose}>
-			<DialogContent className="bg-background_1 rounded-xl font-roboto">
-				<DialogHeader>
-					<DialogTitle>{selectedStaff ? 'Редактировать' : 'Создать'}</DialogTitle>
-				</DialogHeader>
+	console.log(schema.formState.isDirty, schema.formState.isValid);
 
-				<StaffForm schema={schema} onClose={onClose} onSubmit={handleSubmit} />
-			</DialogContent>
-		</Dialog>
+	return (
+		<DialogWrapper
+			isOpen={isOpen}
+			onClose={onClose}
+			action={selectedStaff ? 'update' : 'create'}
+			title={selectedStaff ? 'Редактировать' : 'Создать'}
+			disableSubmit={!schema.formState.isDirty}
+			buttonForm="staff-form"
+		>
+			<StaffForm schema={schema} onSubmit={handleSubmit} />
+		</DialogWrapper>
 	);
 };
 

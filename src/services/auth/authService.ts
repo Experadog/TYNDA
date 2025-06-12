@@ -50,6 +50,8 @@ class AuthService {
 			url: URL_ENTITIES.LOGOUT,
 		});
 
+		console.log('Attempting logout');
+
 		if (isSuccessResponse(response)) {
 			await clearCookie(COOKIES.SESSION);
 		}

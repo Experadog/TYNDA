@@ -1,4 +1,4 @@
-import { switchGrayscale } from '@/app/[locale]/dashboard/page-settings-actions';
+import { switchGrayscale } from '@/app/[locale]/dashboard/settings';
 import { Label, Switch } from '@components';
 import { EyeOff } from 'lucide-react';
 

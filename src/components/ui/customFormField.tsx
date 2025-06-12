@@ -30,6 +30,7 @@ interface IProps<T extends FieldValues> {
 	min?: number;
 	postfix?: ReactNode;
 	showError?: boolean;
+	defaultValue?: string;
 }
 
 export const CustomFormField = <T extends FieldValues>({
@@ -49,6 +50,7 @@ export const CustomFormField = <T extends FieldValues>({
 	min,
 	showError = true,
 	postfix,
+	defaultValue,
 }: IProps<T>) => {
 	const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
@@ -57,7 +59,7 @@ export const CustomFormField = <T extends FieldValues>({
 			control={control}
 			name={name}
 			render={({ field }) => (
-				<FormItem className={clsx('relative w-full', className)}>
+				<FormItem className={clsx('relative w-full  p-0 space-y-0', className)}>
 					{label && (
 						<FormLabel
 							htmlFor={name}
@@ -72,6 +74,12 @@ export const CustomFormField = <T extends FieldValues>({
 								<textarea
 									{...field}
 									placeholder={placeholder}
+									defaultValue={defaultValue}
+									value={
+										Array.isArray(field.value)
+											? field.value.join('\n')
+											: field.value
+									}
 									name={name}
 									className={`outline-none font-normal max-h-[400px] min-h-56 border border-light_gray px-4 py-3 rounded-xl  whitespace-pre-line ${TextAreaClassName || ''}`}
 								/>
@@ -83,7 +91,7 @@ export const CustomFormField = <T extends FieldValues>({
 										min={min}
 										value={field.value ?? ''}
 										className={clsx(
-											'outline-none placeholder:text-placeholder placeholder:font-normal rounded-xl px-4 py-6 numeric border border-light_gray font-normal',
+											'outline-none placeholder:text-placeholder placeholder:font-normal rounded-xl px-4 py-6 numeric border border-light_gray font-normal bg-input_bg text-foreground_1',
 											type === 'password' ? 'pr-10' : '',
 											InputClassName,
 											!showError &&
@@ -126,7 +134,7 @@ export const CustomFormField = <T extends FieldValues>({
 						<div className="flex justify-end w-full text-xs">
 							<FormMessage
 								className={clsx(
-									'text-error numeric font-roboto text-end',
+									'text-error numeric font-roboto text-end pt-2',
 									ErrorClassName,
 								)}
 							/>

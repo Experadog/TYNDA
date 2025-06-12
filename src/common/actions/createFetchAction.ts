@@ -1,10 +1,11 @@
 'use server';
 
-import { API_URL, COOKIES, LOGGER, PAGES, getTokensFromSession, isEmptyObject } from '@/lib';
-import { cookies } from 'next/headers';
+import { DTOEmptyCommonPagination, DTOEmptyCommonResponse } from '@/dto/dtoEmpty';
+import { API_URL, COOKIES, LOGGER, isEmptyObject } from '@/lib';
+import type { Session } from '@business-entities';
+import { ClearSessionError } from '../custom-errors/session-error';
 import type { Params } from '../types/http.types';
-import { clearCookie } from './clear-cookie';
-import { forceRedirect } from './forceRedirect';
+import { getCookie } from './get-cookie';
 
 type Props = {
 	endpoint: string;
@@ -13,6 +14,15 @@ type Props = {
 	postfix?: (string | number)[];
 	revalidate?: boolean;
 	revalidateTags?: string[];
+};
+
+const onError = <T>(params?: Params): T => {
+	'use client';
+	if (params?.page || params?.size) {
+		return DTOEmptyCommonPagination() as T;
+	}
+
+	return DTOEmptyCommonResponse() as T;
 };
 
 export async function createFetchAction<T>({
@@ -39,14 +49,13 @@ export async function createFetchAction<T>({
 		}
 	}
 
-	const headers: HeadersInit = {};
+	const headers = new Headers();
 
 	if (shouldBeAuthorized) {
-		const cookieStore = await cookies();
-		const session = cookieStore.get(COOKIES.SESSION)?.value;
-		const credentials = getTokensFromSession(session);
+		const session = await getCookie<Session>(COOKIES.SESSION, true);
 		if (session) {
-			headers.Cookie = credentials;
+			const tokens = `access_token=${session.access_token}; refresh_token=${session.refresh_token}`;
+			headers.set('Cookie', tokens);
 		}
 	}
 
@@ -59,22 +68,25 @@ export async function createFetchAction<T>({
 			next: { tags: revalidateTags },
 		});
 
+		const data: T = await response.json();
+
 		if (!response.ok) {
 			if (response.status === 401) {
-				await clearCookie(COOKIES.SESSION);
-				await forceRedirect(PAGES.LOGIN);
+				throw new ClearSessionError();
 			}
 
-			LOGGER.error(`Fetch failed: ${response.statusText}(${response.status}) ${endpoint}`);
-			return {} as T;
+			console.log(data);
+			LOGGER.error(
+				`Fetch failed: ${response.statusText}(${response.status}) ${pathWithPostfix}`,
+			);
+			return onError(params);
 		}
 
-		const data: T = await response.json();
-		LOGGER.success(`Received data from: ${cleanEndpoint} `);
+		LOGGER.success(`Received data from: ${pathWithPostfix} `);
 
 		return data;
 	} catch (error) {
 		LOGGER.error(error);
-		return {} as T;
+		return onError(params);
 	}
 }

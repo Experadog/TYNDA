@@ -1,45 +1,61 @@
 .credit-card {
-    width: 100%;
-    height: 160px;
-    background-size: cover;
-    background-repeat: no-repeat;
-    border-radius: 20px;
-    position: relative;
-    transition: transform 0.1s ease-out;
-    perspective: 2500px;
-    transform-style: preserve-3d;
+	width: 100%;
+	height: 160px;
+	background-size: cover;
+	background-repeat: no-repeat;
+	border-radius: 20px;
+	position: relative;
+	transition: transform 0.1s ease-out;
+	perspective: 2500px;
+	transform-style: preserve-3d;
 }
 
 .card-content {
-    width: 100%;
-    height: 100%;
-    border-radius: 20px;
-    overflow: hidden;
-    transition: transform 0.1s ease-out;
+	width: 100%;
+	height: 100%;
+	border-radius: 20px;
+	overflow: hidden;
+	transition: transform 0.1s ease-out;
 }
 
 .credit-card::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: inherit;
-    z-index: -1;
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	background: inherit;
+	z-index: -1;
 }
 
 .credit-card:hover .card-content {
-    transform: rotateY(var(--rotateY)) rotateX(var(--rotateX));
-    transition: box-shadow 0.5s ease;
+	transform: rotateY(var(--rotateY)) rotateX(var(--rotateX));
+	transition: box-shadow 0.5s ease;
 }
 
 .card-thickness {
-    position: absolute;
-    width: 100%;
-    top: 0;
-    height: 100%;
-    background-size: cover;
-    background-repeat: no-repeat;
-    filter: brightness(0.7);
-    border-radius: inherit;
-    transform: translateZ(-10px);
+	position: absolute;
+	width: 100%;
+	top: 0;
+	height: 100%;
+	background-size: cover;
+	background-repeat: no-repeat;
+	filter: brightness(0.7);
+	border-radius: inherit;
+	transform: translateZ(-10px);
+}
+
+@media (max-width: 640px) {
+	.credit-card {
+		height: 120px;
+		border-radius: 14px;
+		perspective: 1500px;
+	}
+	.card-content {
+		border-radius: 14px;
+	}
+	.card-thickness {
+		filter: brightness(0.8);
+		transform: translateZ(-6px);
+		border-radius: 14px;
+	}
 }

@@ -1,4 +1,12 @@
-import { Building2, MessageCircle, Percent, Settings, ShieldCheck, Users } from 'lucide-react';
+import {
+	Building2,
+	CreditCard,
+	MessageCircle,
+	Percent,
+	Settings,
+	ShieldCheck,
+	Users,
+} from 'lucide-react';
 
 export enum PAGES {
 	HOME = '/',
@@ -20,7 +28,7 @@ export enum PAGES {
 	PROFILE = '/profile',
 	UPDATE_PROFILE = '/profile/update-profile',
 	PROFILE_CREDENTIALS = '/profile/update-profile/credentials',
-	PROFILE_TARIFF = '/profile/update-profile/tariff',
+	PROFILE_TARIFF = '/profile/update-profile/tariffs',
 	PROFILE_CHAT = '/profile/update-profile/chat',
 
 	//nested dashboard
@@ -35,7 +43,8 @@ export enum PAGES {
 	ROLES = '/dashboard/roles',
 
 	STAFF = '/staff',
-	ESTABLISHMENT_CHAT = '/establishment-chat',
+	CHAT = '/establishment-chat',
+	DASHBOARD_TARIFF = '/dashboard/tariff',
 
 	//Enterprises
 }
@@ -70,6 +79,11 @@ export const DASHBOARD_LINKS = {
 			key: 'ROLES',
 			link: PAGES.ROLES,
 			icon: ShieldCheck,
+		},
+		{
+			key: 'DASHBOARD_TARIFF',
+			link: PAGES.DASHBOARD_TARIFF,
+			icon: CreditCard,
 		},
 		{
 			key: 'DASHBOARD_CHAT',

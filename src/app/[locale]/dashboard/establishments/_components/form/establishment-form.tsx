@@ -24,13 +24,14 @@ type Props = {
 const EstablishmentForm = ({ establishment }: Props) => {
 	const { user } = useUser();
 
-	const { viewModel } = useEstablishmentContext();
+	const { viewModel, pagination } = useEstablishmentContext();
 
 	const updatingUseCase = useUpdatingUseCase({
 		viewModel: {
 			updating: viewModel.Toast.EstablishmentUpdating,
 			loadFile: viewModel.Toast.LoadFile,
 		},
+		refetchPagination: pagination.actions.refetchCurrentPage,
 	});
 
 	const creationUseCase = useCreationUseCase({
@@ -91,7 +92,11 @@ const EstablishmentForm = ({ establishment }: Props) => {
 					</BlockWrapper>
 
 					<BlockWrapper>
-						<FooterBlock isUpdatingMode={!!establishment?.id} schema={schema} />
+						<FooterBlock
+							isUpdatingMode={!!establishment?.id}
+							schema={schema}
+							item={establishment}
+						/>
 					</BlockWrapper>
 				</form>
 			</Form>

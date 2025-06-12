@@ -25,7 +25,7 @@ const ChatItem = ({ scope, item }: Props) => {
 			case 'dashboard':
 				return PAGES.DASHBOARD_CHAT;
 			case 'establishment':
-				return `${PAGES.ESTABLISHMENT}/${item.establishment.id}/${PAGES.ESTABLISHMENT_CHAT}`;
+				return `${PAGES.ESTABLISHMENT}/${item.establishment.id}/${PAGES.CHAT}`;
 			default:
 				return '';
 		}

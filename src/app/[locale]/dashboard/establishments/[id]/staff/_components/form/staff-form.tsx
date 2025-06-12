@@ -1,14 +1,13 @@
 import type { StaffFormValues, StaffSchema } from '@common';
-import { Button, CustomFormField, Form, ImgUploader } from '@components';
+import { CustomFormField, Form, ImgUploader } from '@components';
 import { useStaffContext } from '../../context/staff-context-provider';
 
 type Props = {
 	schema: StaffSchema;
-	onClose: () => void;
 	onSubmit: (values: StaffFormValues) => Promise<void>;
 };
 
-const StaffForm = ({ schema, onClose, onSubmit }: Props) => {
+const StaffForm = ({ schema, onSubmit }: Props) => {
 	const {
 		modal: {
 			states: { selectedStaff },
@@ -16,12 +15,16 @@ const StaffForm = ({ schema, onClose, onSubmit }: Props) => {
 	} = useStaffContext();
 
 	const onImageChange = (file: File | null) => {
-		schema.setValue('avatar', file);
+		schema.setValue('avatar', file, { shouldDirty: true });
 	};
 
 	return (
 		<Form {...schema}>
-			<form className="w-full flex flex-col gap-4" onSubmit={schema.handleSubmit(onSubmit)}>
+			<form
+				id="staff-form"
+				className="w-full flex flex-col gap-4"
+				onSubmit={schema.handleSubmit(onSubmit)}
+			>
 				{!selectedStaff && (
 					<>
 						<CustomFormField
@@ -77,26 +80,6 @@ const StaffForm = ({ schema, onClose, onSubmit }: Props) => {
 					label="Фамилия (опционально)"
 					InputClassName="bg-input_bg"
 				/>
-
-				<div className="flex justify-end gap-3 items-center">
-					<Button
-						className="rounded-lg"
-						disableAnimation
-						size={'default'}
-						onClick={onClose}
-					>
-						Закрыть
-					</Button>
-
-					<Button
-						className="rounded-lg bg-orange text-white"
-						disableAnimation
-						type="submit"
-						size={'default'}
-					>
-						Сохранить изменения
-					</Button>
-				</div>
 			</form>
 		</Form>
 	);
