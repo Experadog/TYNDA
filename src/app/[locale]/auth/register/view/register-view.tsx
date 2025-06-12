@@ -1,5 +1,6 @@
 'use client';
 
+import { useViewModel } from '@/i18n/getTranslate';
 import { Link } from '@/i18n/routing';
 import { PAGES } from '@/lib';
 import { UserRole } from '@business-entities';
@@ -15,17 +16,17 @@ const RegisterView = () => {
 	const { role } = states;
 	const { onChangeRole } = actions;
 
+	const { Register } = useViewModel(['Auth']);
+
 	return (
-		<div className="flex flex-col gap-10 xs:gap-3">
+		<div className="flex flex-col gap-8 xs:gap-3">
 			<Translate direction="right" distance={100}>
 				<div className="flex flex-col gap-3">
-					<h1 className="text-white text-2xl font-semibold">
-						Создайте новую учетную запись
-					</h1>
+					<h1 className="text-white text-2xl font-semibold">{Register.title}</h1>
 					<span className="text-shade_gray">
-						У вас уже есть существующий аккаунт?{' '}
+						{Register.has_account}
 						<Link href={PAGES.LOGIN} className="text-yellow font-semibold ml-2 xs:ml-0">
-							Войти
+							{Register.login}
 						</Link>
 					</span>
 				</div>

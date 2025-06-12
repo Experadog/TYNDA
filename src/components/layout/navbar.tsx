@@ -1,6 +1,6 @@
 import { Link } from '@/i18n/routing';
 import { NAV_LINKS } from '@/lib';
-import { Button, Fade, ToggleLocale, ToggleTheme, Translate } from '@components';
+import { Button, ToggleLocale, ToggleTheme, Translate } from '@components';
 import clsx from 'clsx';
 import Image from 'next/image';
 import { type FC, useState } from 'react';
@@ -38,13 +38,18 @@ const Navbar: FC<IProps> = () => {
 	const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
 	return (
-		<Fade
+		<div
 			className={clsx(
 				'bg-background_1 flex flex-col fixed z-[9999] top-0 right-0 left-0 transition-shadow duration-1000 border-b border-b-light_gray max-w-[1920px] mx-auto',
 				isScrolled && 'shadow-lg border-none',
 			)}
 		>
-			<div className="flex items-center px-10 xs:px-5 py-5 gap-8 justify-between">
+			<Translate
+				direction="down"
+				animateOnce
+				distance={100}
+				className="flex items-center px-10 xs:px-5 py-5 gap-8 justify-between"
+			>
 				<div className="flex items-center gap-16">
 					<div className="w-[50px] h-[48px]">
 						<Link href={'/'}>
@@ -53,6 +58,7 @@ const Navbar: FC<IProps> = () => {
 								alt="Логотип"
 								width={50}
 								height={48}
+								priority
 								className="min-w-[50px] min-h-[48px]"
 							/>
 						</Link>
@@ -99,13 +105,15 @@ const Navbar: FC<IProps> = () => {
 					<div className="lg:flex hidden items-center ml-auto">
 						<Button
 							onClick={toggleMenu}
-							className="bg-transparent text-foreground_1 py-2 px-4 rounded-[50px] border-foreground_1 border hover:bg-yellow hover:border-yellow hover:text-white"
+							disableAnimation
+							className="shadow-none bg-transparent p-0"
+							size={'default'}
 						>
 							<div>{isMenuOpen ? <IoClose /> : <RxHamburgerMenu />}</div>
 						</Button>
 					</div>
 				</nav>
-			</div>
+			</Translate>
 
 			<Translate
 				open={isMenuOpen}
@@ -117,7 +125,7 @@ const Navbar: FC<IProps> = () => {
 			>
 				<MobileNavbar onClose={setIsMenuOpen} />
 			</Translate>
-		</Fade>
+		</div>
 	);
 };
 

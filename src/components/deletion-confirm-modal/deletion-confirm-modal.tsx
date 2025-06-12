@@ -18,7 +18,7 @@ const DeletionConfirmModal = ({ onClose, open, onConfirm, text }: Props) => {
 						<AlertTriangle className="w-6 h-6" />
 					</div>
 					<DialogTitle className="text-2xl font-semibold font-roboto">
-						Вы уверены?
+						Подтвердите удаление
 					</DialogTitle>
 				</DialogHeader>
 

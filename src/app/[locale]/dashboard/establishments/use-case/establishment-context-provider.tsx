@@ -2,7 +2,6 @@
 import type { FC, ReactNode } from 'react';
 import { createContext, useContext } from 'react';
 
-import { DTOEmptyPagination } from '@/dto/dtoEmpty';
 import type { GetEstablishmentAllClientResponseModel } from '@/services';
 import {
 	type UseEstablishmentUseCaseType,
@@ -10,7 +9,7 @@ import {
 } from './useEstablishmentsUseCase';
 
 type Props = {
-	establishments: GetEstablishmentAllClientResponseModel | undefined;
+	establishments: GetEstablishmentAllClientResponseModel;
 	children: ReactNode;
 };
 
@@ -18,7 +17,7 @@ const EstablishmentContext = createContext<UseEstablishmentUseCaseType | undefin
 
 export const EstablishmentContextProvider: FC<Props> = ({ establishments, children }) => {
 	const value = useEstablishmentUseCase({
-		establishments: establishments ? establishments.data : DTOEmptyPagination,
+		establishments: establishments.data,
 	});
 	return <EstablishmentContext.Provider value={value}>{children}</EstablishmentContext.Provider>;
 };

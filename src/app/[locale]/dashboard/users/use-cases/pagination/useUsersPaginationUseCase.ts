@@ -12,10 +12,12 @@ export function useUsersPaginationUseCase({ data }: Props) {
 		entity: 'user',
 		fetchFn: getUsers,
 	});
+
 	const selection_params = usePagination<UserListItem>({
 		entity: 'user',
 		fetchFn: getUsers,
 		params: { role: UserRole.ESTABLISHER },
+		getInitialDataInClient: true,
 	});
 
 	return { table_params, selection_params };

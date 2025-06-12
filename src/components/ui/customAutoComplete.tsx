@@ -38,6 +38,7 @@ type Props<T extends ItemBase> = {
 	showAvatar?: boolean;
 	onScroll: (e: React.UIEvent<HTMLDivElement>) => void;
 	isPaginationLoading?: boolean;
+	noDataText?: string;
 };
 
 export function CustomAutocomplete<T extends ItemBase>({
@@ -50,6 +51,7 @@ export function CustomAutocomplete<T extends ItemBase>({
 	showAvatar,
 	className,
 	onScroll,
+	noDataText,
 	isPaginationLoading,
 }: Props<T>) {
 	const [open, setOpen] = React.useState(false);
@@ -114,8 +116,9 @@ export function CustomAutocomplete<T extends ItemBase>({
 
 					<CommandList className="min-h-[150px]" key={inputValue} onScroll={onScroll}>
 						{!filteredData.length && !isLoading && (
-							<CommandEmpty className="bg-red-200a absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-								<MdOutlineSearchOff className="size-8 text-muted-foreground hover:text-foreground" />
+							<CommandEmpty className="absolute text-gray top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col gap-2 items-center">
+								<MdOutlineSearchOff className="size-8  hover:text-foreground" />
+								{noDataText}
 							</CommandEmpty>
 						)}
 
@@ -123,7 +126,7 @@ export function CustomAutocomplete<T extends ItemBase>({
 							{isLoading ? (
 								<CommandLoading>
 									<div className="flex justify-center py-2">
-										<LoadingSpinner />
+										<LoadingSpinner className="text-gray" />
 									</div>
 								</CommandLoading>
 							) : (
@@ -137,7 +140,7 @@ export function CustomAutocomplete<T extends ItemBase>({
 												setInputValue(item.label);
 												setOpen(false);
 											}}
-											className="cursor-pointer hover:bg-orange"
+											className="cursor-pointer hover:bg-light_gray"
 										>
 											{showAvatar && (
 												<Avatar
@@ -159,7 +162,7 @@ export function CustomAutocomplete<T extends ItemBase>({
 									))}
 
 									{isPaginationLoading && (
-										<div className="flex justify-center py-2">
+										<div className="flex justify-center py-2 text-gray">
 											<LoadingSpinner />
 										</div>
 									)}

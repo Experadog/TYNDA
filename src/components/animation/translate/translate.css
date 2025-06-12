@@ -1,96 +1,106 @@
-/* Глобальные настройки анимации */
+/* SSR стили - контент видим без анимации */
+.translate.ssr-ready {
+	opacity: 1 !important;
+	transform: translate3d(0, 0, 0) !important;
+	animation: none !important;
+}
+
+.translate {
+	will-change: transform, opacity;
+	backface-visibility: hidden;
+}
+
 .translate-in,
 .translate-out {
 	animation-fill-mode: forwards;
-	animation-timing-function: ease-out;
-	will-change: transform, opacity;
+	animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+	transform: translate3d(0, 0, 0);
 }
 
-/* Анимации для разных направлений */
 @keyframes slideInFromLeft {
-	0% {
-		opacity: 0.01;
+	from {
+		opacity: 0;
 		transform: translate3d(var(--distance), 0, 0);
 	}
-	100% {
+	to {
 		opacity: 1;
 		transform: translate3d(0, 0, 0);
 	}
 }
 
 @keyframes slideOutToLeft {
-	0% {
+	from {
 		opacity: 1;
 		transform: translate3d(0, 0, 0);
 	}
-	100% {
-		opacity: 0.01;
+	to {
+		opacity: 0;
 		transform: translate3d(var(--distance), 0, 0);
 	}
 }
 
 @keyframes slideInFromRight {
-	0% {
-		opacity: 0.01;
+	from {
+		opacity: 0;
 		transform: translate3d(calc(-1 * var(--distance)), 0, 0);
 	}
-	100% {
+	to {
 		opacity: 1;
 		transform: translate3d(0, 0, 0);
 	}
 }
 
 @keyframes slideOutToRight {
-	0% {
+	from {
 		opacity: 1;
 		transform: translate3d(0, 0, 0);
 	}
-	100% {
-		opacity: 0.01;
+	to {
+		opacity: 0;
 		transform: translate3d(calc(-1 * var(--distance)), 0, 0);
 	}
 }
 
 @keyframes slideInFromTop {
-	0% {
-		opacity: 0.01;
+	from {
+		opacity: 0;
 		transform: translate3d(0, calc(-1 * var(--distance)), 0);
 	}
-	100% {
+	to {
 		opacity: 1;
 		transform: translate3d(0, 0, 0);
 	}
 }
 
 @keyframes slideOutToTop {
-	0% {
+	from {
 		opacity: 1;
 		transform: translate3d(0, 0, 0);
 	}
-	100% {
-		opacity: 0.01;
+	to {
+		opacity: 0;
 		transform: translate3d(0, calc(-1 * var(--distance)), 0);
 	}
 }
 
 @keyframes slideInFromBottom {
-	0% {
-		opacity: 0.01;
+	from {
+		opacity: 0;
 		transform: translate3d(0, var(--distance), 0);
 	}
-	100% {
+	to {
 		opacity: 1;
 		transform: translate3d(0, 0, 0);
 	}
 }
 
 @keyframes slideOutToBottom {
-	0% {
+	from {
 		opacity: 1;
 		transform: translate3d(0, 0, 0);
 	}
-	100% {
-		opacity: 0.01;
+	to {
+		opacity: 0;
 		transform: translate3d(0, var(--distance), 0);
 	}
 }
@@ -126,4 +136,9 @@
 
 .translate-out.direction-down {
 	animation-name: slideOutToBottom;
+}
+
+/* Класс для однократной анимации */
+.animate-once {
+	animation-iteration-count: 1;
 }

@@ -1,5 +1,5 @@
 import { useThemeContext } from '@/providers/theme/theme-provider';
-import { setDefaultSettings } from '../../../page-settings-actions';
+import { setDefaultSettings } from '../../../settings';
 import { useSettingContext } from '../../context/settings-context-provider';
 
 import { Button } from '@/components/ui/button';

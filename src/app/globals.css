@@ -20,7 +20,7 @@
 		--shade-gray: #b3b3b3;
 		--light-gray: #e6e6e6;
 		--placeholder: #666666e5;
-		--input-bg: #f0f0f0;
+		--input-bg: #e8e8e8;
 		--success: #16a34a;
 
 		--gradient: linear-gradient(to bottom, #f5f5f5, #f5f5f5, #f5f5f5);
@@ -45,7 +45,8 @@
 
 	.dark {
 		/* dynamic */
-		--background-1: #202124;
+		--background-1: #1c1c1c;
+
 		--background-2: #222222;
 		--background-3: #4a4a4a;
 		--background-4: #202124;
@@ -128,7 +129,7 @@ html.font-size-large {
 }
 
 body {
-	font-family: var(--font-raleway), sans-serif;
+	font-family: var(--font-manrope), sans-serif;
 	background-image: var(--gradient);
 }
 

@@ -3,7 +3,7 @@ import { GoogleAnalytics, Layout } from '@components';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata, Viewport } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
-import { Raleway, Roboto } from 'next/font/google';
+import { Manrope, Roboto } from 'next/font/google';
 import NextTopLoader from 'nextjs-toploader';
 
 import { type SupportedLanguages, supportedLanguages } from '@/i18n/routing';
@@ -12,10 +12,10 @@ import CollectedProviders from '@/providers/collected-providers';
 import { getCookie } from '@common';
 import '../globals.css';
 
-const raleway = Raleway({
-	variable: '--font-raleway',
-	subsets: ['latin', 'cyrillic'],
-	weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+const manrope = Manrope({
+	variable: '--font-manrope',
+	subsets: ['latin', 'cyrillic', 'cyrillic-ext'],
+	weight: ['200', '300', '400', '500', '600', '700', '800'],
 });
 
 const roboto = Roboto({
@@ -66,7 +66,6 @@ export const metadata: Metadata = {
 	},
 	verification: {
 		google: '9lHV1DEx2SzxWVdBRj49hHbvp9EM3xEbfp7mPRpm4nQ',
-		yandex: '1a655a87476c0739',
 	},
 };
 
@@ -116,7 +115,7 @@ export default async function RootLayout({
 				/>
 			</head>
 
-			<body className={`${raleway.variable} ${roboto.variable} antialiased min-w-96`}>
+			<body className={`${manrope.className} ${roboto.variable} antialiased min-w-96`}>
 				<NextTopLoader
 					color="var(--yellow)"
 					height={3}

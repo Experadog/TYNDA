@@ -1,4 +1,5 @@
 import type { EntityStatus } from '@common';
+import type { Card } from '../card/CardEntity';
 import type { EstablishmentDetailed } from '../establishment/EstablishmentEntity';
 
 export type User = {
@@ -16,7 +17,7 @@ export type User = {
 	last_login_time: string;
 	role: UserRole;
 	avatar: string;
-	card: null;
+	card: Card;
 	cached_permission_groups: {
 		establishment: Partial<'crud'>;
 		user: Partial<'crud'>;

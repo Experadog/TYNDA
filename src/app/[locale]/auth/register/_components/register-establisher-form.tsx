@@ -1,3 +1,4 @@
+import { useViewModel } from '@/i18n/getTranslate';
 import { Button, CustomFormField, Form } from '@components';
 import { useRegisterUseCase } from '../use-case/useRegisterUseCase';
 
@@ -6,13 +7,15 @@ const RegisterEstablisherForm = () => {
 	const { partnerForm } = states;
 	const { openAndTriggerConfirmModal } = actions;
 
+	const { Buttons, Inputs } = useViewModel(['Inputs', 'Buttons']);
+
 	return (
 		<Form {...partnerForm}>
 			<form className="mt-7 flex flex-col gap-5">
-				<div className="flex items-center gap-4">
+				<div className="flex items-start gap-4">
 					<CustomFormField
 						control={partnerForm.control}
-						placeholder="Введите ваше имя"
+						placeholder={Inputs.name}
 						InputClassName="xs:py-5 xs:rounded-lg text-white"
 						type="text"
 						name="first_name"
@@ -20,7 +23,7 @@ const RegisterEstablisherForm = () => {
 
 					<CustomFormField
 						control={partnerForm.control}
-						placeholder="Введите вашу фамилию"
+						placeholder={Inputs.surname}
 						InputClassName="xs:py-5 xs:rounded-lg text-white"
 						type="text"
 						name="last_name"
@@ -28,7 +31,7 @@ const RegisterEstablisherForm = () => {
 				</div>
 				<CustomFormField
 					control={partnerForm.control}
-					placeholder="Введите вашу почту"
+					placeholder={Inputs.email}
 					InputClassName="xs:py-5 xs:rounded-lg text-white"
 					type="email"
 					name="email"
@@ -36,7 +39,7 @@ const RegisterEstablisherForm = () => {
 
 				<CustomFormField
 					control={partnerForm.control}
-					placeholder="Введите ваш пароль"
+					placeholder={Inputs.password}
 					InputClassName="xs:py-5 xs:rounded-lg text-white"
 					type="password"
 					name="password"
@@ -44,7 +47,7 @@ const RegisterEstablisherForm = () => {
 
 				<CustomFormField
 					control={partnerForm.control}
-					placeholder="Подтвердите ваш пароль"
+					placeholder={Inputs.confirm_password}
 					InputClassName="xs:py-5 xs:rounded-lg text-white"
 					type="password"
 					name="confirm_password"
@@ -56,7 +59,7 @@ const RegisterEstablisherForm = () => {
 					variant={'yellow'}
 					className="w-full rounded-3xl p-6 xs:py-2 xs:rounded-md xs:my-3"
 				>
-					Далее
+					{Buttons.next}
 				</Button>
 			</form>
 		</Form>

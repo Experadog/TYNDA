@@ -3,9 +3,9 @@
 import { useViewModel } from '@/i18n/getTranslate';
 
 import type { EstablishmentDetailed } from '@/business-entities/establishment/EstablishmentEntity';
-import CustomMap from '@/components/map/CustomMap';
 import { type GetEstablishmentAllClientResponseModel, getEstablishmentAllClient } from '@/services';
 import { usePagination } from '@common';
+import { LoadingSpinner } from '@components';
 import dynamic from 'next/dynamic';
 import type { FC } from 'react';
 import Hero from './_components/hero';
@@ -13,9 +13,18 @@ import Hero from './_components/hero';
 const AllPhoto = dynamic(() => import('./_components/all-photo'), { ssr: true });
 const WeAdvise = dynamic(() => import('./_components/we-advise'), { ssr: true });
 
+const CustomMap = dynamic(() => import('@/components/map/CustomMap'), {
+	ssr: false,
+	loading: () => (
+		<div className="w-full h-full flex items-center justify-center">
+			<LoadingSpinner className="size-6 text-gray" />
+		</div>
+	),
+});
+
 interface IProps {
 	item: EstablishmentDetailed;
-	data: GetEstablishmentAllClientResponseModel['data'];
+	data?: GetEstablishmentAllClientResponseModel['data'];
 }
 
 const DetailEnterpriseView: FC<IProps> = ({ item, data }) => {

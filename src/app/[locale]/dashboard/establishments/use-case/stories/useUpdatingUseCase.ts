@@ -21,9 +21,11 @@ type Props = {
 		loadFile: ViewModel['Toast']['LoadFile'];
 		updating: ViewModel['Toast']['EstablishmentUpdating'];
 	};
+
+	refetchPagination: () => Promise<void>;
 };
 
-export function useUpdatingUseCase({ viewModel }: Props) {
+export function useUpdatingUseCase({ viewModel, refetchPagination }: Props) {
 	const router = useRouter();
 
 	const { execute: establishmentUpdatingExecute } = useAsyncAction<
@@ -41,7 +43,9 @@ export function useUpdatingUseCase({ viewModel }: Props) {
 				URL_ENTITIES.ESTABLISHMENT_ALL_CLIENT,
 				URL_ENTITIES.ESTABLISHMENT_DETAIL,
 			]);
+
 			router.push(PAGES.ESTABLISHMENT);
+			await refetchPagination();
 		},
 	});
 

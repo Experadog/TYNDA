@@ -23,7 +23,7 @@ class ChatService {
 
 	static async createChat(params: Params): Promise<CommonResponse<ChatListItem>> {
 		const response = await AXIOS_POST<CommonResponse<ChatListItem>>({
-			url: URL_ENTITIES.ESTABLISHMENT_CHAT,
+			url: URL_ENTITIES.CHAT,
 			params,
 		});
 
@@ -35,10 +35,10 @@ class ChatService {
 		scope: ChatScope,
 	): Promise<ChatRetrievalResponseModel> {
 		const response = await createFetchAction<ChatRetrievalResponseModel>({
-			endpoint: URL_ENTITIES.CHAT_DETAILED,
+			endpoint: URL_ENTITIES.CHAT,
 			postfix: [params?.chat_id || ''],
 			shouldBeAuthorized: true,
-			revalidateTags: [URL_ENTITIES.CHAT_DETAILED],
+			revalidateTags: [URL_ENTITIES.CHAT],
 		});
 
 		if (!isSuccessResponse(response)) {

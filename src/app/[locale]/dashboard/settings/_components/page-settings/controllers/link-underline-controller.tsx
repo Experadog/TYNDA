@@ -1,4 +1,4 @@
-import { switchUnderlineLinks } from '@/app/[locale]/dashboard/page-settings-actions';
+import { switchUnderlineLinks } from '@/app/[locale]/dashboard/settings';
 import { Label, Switch } from '@components';
 import { Link2 } from 'lucide-react';
 

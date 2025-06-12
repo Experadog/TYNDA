@@ -41,24 +41,25 @@ const nextConfig: NextConfig = {
 						key: 'Content-Security-Policy',
 						value: `
     default-src 'self';
-    script-src 'self' 'unsafe-inline' 'unsafe-eval' 
-      https://accounts.google.com 
-      https://accounts.google.com/gsi/client 
-      https://www.googletagmanager.com 
+    script-src 'self' 'unsafe-inline'
+      https://accounts.google.com
+      https://accounts.google.com/gsi/client
+      https://www.googletagmanager.com
       https://www.google-analytics.com
       https://va.vercel-scripts.com;
     style-src 'self' 'unsafe-inline';
-    img-src 'self' blob: data: 
-      https://soyuz.kg 
-      https://a.tile.openstreetmap.org 
-      https://b.tile.openstreetmap.org 
-      https://c.tile.openstreetmap.org 
-      https://tile.openstreetmap.org 
+    img-src 'self' blob: data:
+      https://soyuz.kg
+      https://a.tile.openstreetmap.org
+      https://b.tile.openstreetmap.org
+      https://c.tile.openstreetmap.org
+      https://tile.openstreetmap.org
       https://unpkg.com;
     font-src 'self';
-    connect-src 'self' 
-      https://tile.openstreetmap.org 
+    connect-src 'self'
+      https://tile.openstreetmap.org
       https://www.google-analytics.com
+      https://api.telegram.org
       wss://soyuz.kg;
   `
 							.replace(/\s{2,}/g, ' ')

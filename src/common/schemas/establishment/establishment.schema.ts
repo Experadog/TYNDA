@@ -5,6 +5,7 @@ import {
 	type EstablishmentCategory,
 	type EstablishmentDetailedDefaultValue,
 } from '@/business-entities/establishment/EstablishmentEntity';
+import { type SupportedLanguages, supportedLanguages } from '@/i18n/routing';
 import { SOCIAL_MEDIAS } from '@/lib';
 import { useUser } from '@/providers/user/user-provider';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -102,6 +103,7 @@ const establishmentFormShape = (
 				}),
 
 			translates: z.object(translates),
+
 			website: z.preprocess(
 				emptyToNull,
 				z.string().url({ message: messages.invalid_url }).nullable().optional(),
@@ -186,7 +188,13 @@ export const defaultValue: EstablishmentDetailedDefaultValue = {
 	category: undefined,
 	contacts: {},
 	coordinates: {},
-	translates: {},
+	translates: supportedLanguages.reduce(
+		(acc, lang) => {
+			acc[lang] = { name: '', description: '' };
+			return acc;
+		},
+		{} as Record<SupportedLanguages, { name: string; description: string }>,
+	),
 	website: '',
 	email: '',
 	average_bill: undefined,

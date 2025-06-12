@@ -42,10 +42,10 @@ const ImagesBlock = ({ schema }: Props) => {
 	return (
 		<div className="flex flex-col gap-3 font-roboto h-[450px]">
 			<p className="text-foreground_1">Фото предприятия</p>
-			<div className="flex gap-4 h-full">
+			<div className="flex h-full">
 				<div
 					onClick={() => !coverFile && coverInputRef?.current?.click()}
-					className="h-full"
+					className="h-full mr-4"
 				>
 					<ImageBlockItem
 						isCover
@@ -62,7 +62,7 @@ const ImagesBlock = ({ schema }: Props) => {
 					/>
 				</div>
 
-				<div className="overflow-x-auto w-full flex flex-col gap-4">
+				<div className="overflow-x-auto w-full flex flex-col gap-4 relative">
 					{renderRow(topRowFiles, 'top', topInputRef)}
 					{renderRow(bottomRowFiles, 'bottom', bottomInputRef)}
 				</div>

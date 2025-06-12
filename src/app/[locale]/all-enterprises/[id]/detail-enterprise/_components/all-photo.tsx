@@ -11,9 +11,10 @@ import { useDetailEnterpriseUseCase } from '../use-cases/useDetailEnterpriseUseC
 interface IProps {
 	viewModel: ViewModel['DetailEnterprise']['allPhoto'];
 	imagesList: string[];
+	disableMap?: boolean;
 }
 
-const AllPhoto: FC<IProps> = ({ imagesList }) => {
+const AllPhoto: FC<IProps> = ({ imagesList, disableMap = false }) => {
 	const { viewModel } = useDetailEnterpriseUseCase();
 
 	return (
@@ -125,15 +126,17 @@ const AllPhoto: FC<IProps> = ({ imagesList }) => {
 				</button>
 			</div>
 
-			<Link href={`/${PAGES.BENEFITS_MAP}`}>
-				<Button
-					className="rounded-2xl h-14 bg-yellow text-white text-base font-semibold w-full items-center gap-[10px] hidden lg:flex"
-					variant={'yellow'}
-					disableAnimation
-				>
-					Показать на карте <TbMapSearch />
-				</Button>
-			</Link>
+			{!disableMap && (
+				<Link href={`/${PAGES.BENEFITS_MAP}`}>
+					<Button
+						className="rounded-2xl h-14 bg-yellow text-white text-base font-semibold w-full items-center gap-[10px] hidden lg:flex"
+						variant={'yellow'}
+						disableAnimation
+					>
+						Показать на карте <TbMapSearch />
+					</Button>
+				</Link>
+			)}
 		</div>
 	);
 };

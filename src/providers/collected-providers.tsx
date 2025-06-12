@@ -1,5 +1,6 @@
 'use server';
 import { COOKIES } from '@/lib';
+import { ErrorBoundary } from '@common';
 import { TooltipProvider } from '@components';
 import { cookies } from 'next/headers';
 import type { FC, ReactNode } from 'react';
@@ -23,27 +24,29 @@ const CollectedProviders: FC<IProps> = async ({ children }) => {
 	const session = cookieStore.get(COOKIES.SESSION)?.value || '';
 
 	return (
-		<ThemeProvider
-			attribute="class"
-			defaultTheme={'system'}
-			forcedTheme={theme}
-			enableSystem
-			theme={theme}
-		>
-			<OAuthProvider>
-				<LocaleProvider locale={locale}>
-					<UserProvider session={session}>
-						<ChatWebSocketProvider session={session}>
-							<RefreshOnExpire initialSession={session}>
-								<ToastClientProvider theme={theme} />
-								<CacheRevalidate />
-								<TooltipProvider>{children}</TooltipProvider>
-							</RefreshOnExpire>
-						</ChatWebSocketProvider>
-					</UserProvider>
-				</LocaleProvider>
-			</OAuthProvider>
-		</ThemeProvider>
+		<ErrorBoundary>
+			<ThemeProvider
+				attribute="class"
+				defaultTheme={'system'}
+				forcedTheme={theme}
+				enableSystem
+				theme={theme}
+			>
+				<OAuthProvider>
+					<LocaleProvider locale={locale}>
+						<UserProvider session={session}>
+							<ChatWebSocketProvider session={session}>
+								<RefreshOnExpire initialSession={session}>
+									<ToastClientProvider theme={theme} />
+									<CacheRevalidate />
+									<TooltipProvider>{children}</TooltipProvider>
+								</RefreshOnExpire>
+							</ChatWebSocketProvider>
+						</UserProvider>
+					</LocaleProvider>
+				</OAuthProvider>
+			</ThemeProvider>
+		</ErrorBoundary>
 	);
 };
 

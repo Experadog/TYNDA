@@ -34,13 +34,13 @@ const Sidebar = () => {
 	const shouldHighlightLink = useMemo(() => (path: string) => path === pathname, [pathname]);
 
 	return (
-		<div className="flex flex-col gap-5 p-6 bg-background_1 static h-full">
+		<div className="flex flex-col gap-5 p-6 bg-background_1 static h-full border-r border-r-light_gray">
 			<div className="flex flex-col gap-6">
 				{PROFILE_LINKS.map((link, index) => (
 					<Link
 						key={link}
 						className={clsx(
-							'flex items-center gap-3 font-semibold text-base transition-colors hover:bg-yellow hover:text-white px-3 py-2 rounded-2xl',
+							'flex items-center gap-3 font-semibold text-base transition-colors hover:bg-yellow hover:text-white px-3 py-2 rounded-2xl ',
 							shouldHighlightLink(link) ? 'bg-yellow text-white' : '',
 						)}
 						href={link}
@@ -55,7 +55,7 @@ const Sidebar = () => {
 
 			<Link
 				href={PAGES.PROFILE}
-				className="text-yellow border-2 border-yellow rounded-2xl text-center p-2 font-semibold hover:bg-background_2"
+				className="text-yellow border-2 border-yellow rounded-2xl  text-center p-2 font-semibold hover:bg-background_2"
 			>
 				Вернуться в профиль
 			</Link>

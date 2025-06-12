@@ -19,17 +19,20 @@ const ActivationCodeInput = ({
 		<div className="flex items-center gap-2">
 			{code.map((num, index) => (
 				<input
-					key={`${index}-${num}`}
+					// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+					key={index}
 					ref={(el) => {
 						inputsRef.current[index] = el;
 					}}
-					type="number"
-					value={num.length > 1 ? num[0] : num}
+					data-index={index}
+					type="text"
+					inputMode="numeric"
+					pattern="[0-9]*"
+					value={num}
 					onChange={(e) => handleChange(index, e.target.value)}
 					onKeyDown={(e) => handleKeyDown(index, e)}
 					onPaste={handlePaste}
 					maxLength={1}
-					max={1}
 					className="w-full h-16 bg-input_bg border-2 border-shade_gray outline-none rounded-xl text-center text-foreground_1 focus:border-yellow font-semibold text-xl font-mono xs:h-11"
 				/>
 			))}

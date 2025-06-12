@@ -1,4 +1,4 @@
-import { setFontSize } from '@/app/[locale]/dashboard/page-settings-actions';
+import { setFontSize } from '@/app/[locale]/dashboard/settings';
 import type { PageSettings } from '@common';
 import { Label, RadioGroup, RadioGroupItem } from '@components';
 import { Type } from 'lucide-react';

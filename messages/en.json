@@ -10,19 +10,11 @@
 			"menu": [
 				{
 					"title": "Pages",
-					"items": [
-						"Home",
-						"About Us",
-						"Contacts",
-						"Services"
-					]
+					"items": ["Home", "About Us", "Contacts", "Services"]
 				},
 				{
 					"title": "Useful Information",
-					"items": [
-						"About Us",
-						"Our Contacts"
-					]
+					"items": ["About Us", "Our Contacts"]
 				},
 				{
 					"title": "Account",
@@ -187,6 +179,22 @@
 				"default": "Error creating user"
 			},
 			"success": "User created!"
+		},
+
+		"TariffCreation": {
+			"loading": "Creating tariff...",
+			"success": "Tariff successfully created!",
+			"error": "An error occurred while creating the tariff"
+		},
+		"TariffDeletion": {
+			"loading": "Deleting tariff...",
+			"success": "Tariff successfully deleted!",
+			"error": "An error occurred while deleting the tariff"
+		},
+		"TariffUpdating": {
+			"loading": "Updating tariff...",
+			"success": "Tariff updated successfully!",
+			"error": "Error while trying to update tariff"
 		}
 	},
 	"AllEnterprises": {
@@ -318,21 +326,24 @@
 		}
 	},
 	"Validation": {
-		"min_3": "Minimum length—3 characters",
-		"min_20": "Description must be at least 20 characters",
+		"min_1": "Minimum length is 1 character",
+		"min_3": "Minimum length is 3 characters",
+		"min_20": "Minimum length is 20 characters",
 		"required": "This field is required",
 		"gt_0": "Value must be greater than 0",
-		"max_100": "Max length—100 characters",
-		"max_255": "Max length—255 characters",
-		"max_800": "Max length—800 characters",
-		"invalid_email": "Please enter a valid email",
-		"invalid_url": "Please enter a valid URL",
+		"max_100": "Maximum length is 100 characters",
+		"max_255": "Maximum length is 255 characters",
+		"max_800": "Maximum length is 800 characters",
+		"invalid_email": "Enter a valid email address",
+		"invalid_password": "Enter a strong password",
+		"min_8": "Minimum length is 8 characters",
+		"invalid_url": "Enter a valid URL",
 		"cover_required": "Please add a cover image",
-		"images_required": "Please add images",
-		"coordinates_required": "Please mark your business on the map",
-		"lt_100": "Value must be less than 100",
-		"create_or_select_establisher": "Select or create an owner",
-		"password_not_math": "Passwords don’t match"
+		"images_required": "Please add an image",
+		"coordinates_required": "Please specify the business location",
+		"lt_100": "Value must not exceed 100",
+		"create_or_select_establisher": "Create or select an owner",
+		"password_not_math": "Passwords do not match"
 	},
 	"Shared": {
 		"establishment_categories": {
@@ -377,11 +388,17 @@
 			"USERS": "Users",
 			"SETTINGS": "Settings",
 			"DISCOUNTS": "Discounts",
-			"ESTABLISHMENT_CHAT": "Chat"
+			"CHAT": "Chat",
+			"DASHBOARD_TARIFF": "Tariffs and cards"
 		},
 		"EntityStatus": {
 			"enable": "Active",
 			"disable": "Inactive"
+		},
+
+		"tariff_types": {
+			"tourist": "Tourist",
+			"compatriot": "Compatriot"
 		}
 	},
 	"UnderDevelopment": {
@@ -420,5 +437,48 @@
 			"openForYou": "Discover the land of mountains through a new level of travel!",
 			"yourWay": "Tynda is your perfect path to the perfect journey."
 		}
+	},
+
+	"Buttons": {
+		"register_as_partner": "Register as a Partner",
+		"register_as_client": "Register as a Client",
+		"login": "Sign In",
+		"next": "Next",
+		"confirm": "Confirm",
+		"back": "Back"
+	},
+	"Inputs": {
+		"email": "Email Address",
+		"password": "Password",
+		"confirm_password": "Confirm Password",
+		"name": "First Name",
+		"surname": "Last Name"
+	},
+	"Auth": {
+		"Login": {
+			"title": "Welcome back!",
+			"no_account": "Don't have an account?",
+			"register": "Create one",
+			"or": "or sign in with"
+		},
+		"Register": {
+			"title": "Create a New Account",
+			"has_account": "Already have an account?",
+			"login": "Sign In",
+			"is_partner": "Are you a business partner? Register as one",
+			"is_client": "Are you a client? Register as a client"
+		},
+		"ConfirmEmail": {
+			"email_title": "Please verify your email address — a confirmation code will be sent to it",
+			"modal_title": "Email Confirmation",
+			"confirm_code_title": "Ensure the activation code has been entered correctly"
+		}
+	},
+
+	"Tariff": {
+		"your_tariff": "Your tariff",
+		"your_plan": "Your plan",
+		"expires_date": "Expiration date",
+		"not_active": "Your tariff is not active"
 	}
 }

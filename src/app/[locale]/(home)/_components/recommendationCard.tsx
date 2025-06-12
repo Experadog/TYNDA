@@ -1,6 +1,6 @@
 import type { EstablishmentListItem } from '@/business-entities/establishment/EstablishmentEntity';
 import { Link } from '@/i18n/routing';
-import { PAGES, getTranslateByKey } from '@/lib';
+import { PAGES, getTranslateByKey, priceFormatter } from '@/lib';
 import { useLocale } from '@/providers/locale/locale-provider';
 import { Button } from '@components';
 import Image from 'next/image';
@@ -67,7 +67,7 @@ const RecommendationCard: FC<IProps> = ({ establishment }) => {
 						clickable="nonClickable"
 						className="text-base md:text-sm lg:text-xs font-bold py-1.5 md:py-1 lg:py-0.5 numeric w-max  text-yellow bg-transparent shadow-none mr-auto p-0"
 					>
-						{establishment?.average_bill} c
+						{priceFormatter(establishment?.average_bill, 'с')}
 					</Button>
 				</div>
 			</div>

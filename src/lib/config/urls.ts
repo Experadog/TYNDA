@@ -20,6 +20,11 @@ export enum URL_ENTITIES {
 
 	//biz
 	CARD_HISTORY = '/biz/card_history/client-history',
+	CARD_ALL = '/biz/card/all',
+	TARIFF_CLIENT_ALL = '/biz/tariff/client/all',
+	TARIFF_ALL = '/biz/tariff/all',
+	USER_CARD = '/biz/card/user-card',
+	TARIFF = '/biz/tariff',
 
 	//base
 	LOAD_FILE = '/base/resources',
@@ -31,20 +36,18 @@ export enum URL_ENTITIES {
 	ESTABLISHMENT_DETAIL = '/org/establishment/detail',
 	ESTABLISHMENT_CREATION_ADMIN = '/org/establishment/admin',
 
-	ESTABLISHMENT_CREATION = '/org/establishment',
-	ESTABLISHMENT_DELETION = '/org/establishment',
-	ESTABLISHMENT_UPDATING = '/org/establishment',
+	ESTABLISHMENT = '/org/establishment',
 
 	//mes
 	CHAT_MY = '/mes/chat/my',
-	ESTABLISHMENT_CHAT = '/mes/chat',
-	CHAT_DETAILED = '/mes/chat',
+	CHAT = '/mes/chat',
 	CHAT_ESTABLISHMENT = '/mes/chat/establishment',
 }
 
 export enum URL_LOCAL_ENTITIES {
 	CLEAR_SESSION = '/clear-session',
 	REFRESH_SESSION = '/refresh-session',
+	REVALIDATE = '/revalidate',
 }
 
 export const WEBSOCKET_API = 'wss://soyuz.kg/skgapi/v1/mes/chat/ws?token=';

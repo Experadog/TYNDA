@@ -38,6 +38,8 @@ type Props<T extends FieldValues> = {
 	isLoading?: boolean;
 	isPaginationLoading?: boolean;
 	isEnd?: boolean;
+	container?: HTMLElement | null;
+	noDataText?: string;
 };
 
 const CustomSelect = <T extends FieldValues>({
@@ -56,6 +58,8 @@ const CustomSelect = <T extends FieldValues>({
 	onReachEnd,
 	isPaginationLoading,
 	isEnd,
+	container,
+	noDataText,
 }: Props<T>) => {
 	const handleScroll = async (e: React.UIEvent<HTMLDivElement>) => {
 		if (!isInfinityScroll) return;
@@ -109,6 +113,7 @@ const CustomSelect = <T extends FieldValues>({
 								placeholder={placeholder}
 								className={className}
 								showAvatar={showAvatar}
+								noDataText={noDataText}
 							/>
 						) : (
 							<Select value={field?.value} onValueChange={field.onChange}>
@@ -121,7 +126,11 @@ const CustomSelect = <T extends FieldValues>({
 								>
 									<SelectValue placeholder={placeholder} />
 								</SelectTrigger>
-								<SelectContent className="bg-background_1 border border-input_bg max-h-52 overflow-y-scroll">
+								<SelectContent
+									container={container || undefined}
+									className="bg-background_6 border border-input_bg max-h-52 overflow-y-scroll z-[99999]"
+									onScroll={handleScroll}
+								>
 									<SelectGroup>
 										{data.map((item) => (
 											<SelectItem

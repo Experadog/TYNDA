@@ -1,6 +1,13 @@
 import type { Params } from '@common';
 
-export type PaginationKeys = 'staff' | 'establishment' | 'role' | 'user' | 'chat';
+export type PaginationKeys =
+	| 'staff'
+	| 'establishment'
+	| 'role'
+	| 'user'
+	| 'chat'
+	| 'tariff'
+	| 'card';
 
 export const PAGINATION: Record<PaginationKeys, Pick<Params, 'size' | 'page'>> = {
 	staff: {
@@ -26,5 +33,15 @@ export const PAGINATION: Record<PaginationKeys, Pick<Params, 'size' | 'page'>> =
 	chat: {
 		page: '1',
 		size: '30',
+	},
+
+	tariff: {
+		page: '1',
+		size: '20',
+	},
+
+	card: {
+		page: '1',
+		size: '20',
 	},
 } as const;

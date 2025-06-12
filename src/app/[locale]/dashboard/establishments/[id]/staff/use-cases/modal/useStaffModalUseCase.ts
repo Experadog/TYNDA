@@ -1,7 +1,8 @@
 'use client';
 
+import { DTOStaffEmptyFields } from '@/dto/dtoEmpty';
 import type { Staff } from '@business-entities';
-import { type StaffSchema, staffSchemaDefaultValue } from '@common';
+import type { StaffSchema } from '@common';
 import { useState } from 'react';
 
 export function useStaffModalUseCase({ schema }: { schema: StaffSchema }) {
@@ -19,7 +20,7 @@ export function useStaffModalUseCase({ schema }: { schema: StaffSchema }) {
 		if (item) {
 			schema.reset(item);
 		} else {
-			schema.reset(staffSchemaDefaultValue);
+			schema.reset(DTOStaffEmptyFields);
 		}
 	};
 

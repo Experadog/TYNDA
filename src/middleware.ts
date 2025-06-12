@@ -11,7 +11,7 @@ import { UserRole } from '@business-entities';
 import { getCookie } from '@common';
 import createMiddleware from 'next-intl/middleware';
 import { type NextRequest, NextResponse } from 'next/server';
-import { setDefaultSettings } from './app/[locale]/dashboard/page-settings-actions';
+import { setDefaultSettings } from './app/[locale]/dashboard/settings';
 import { supportedLanguages } from './i18n/routing';
 
 const nextIntlMiddleware = createMiddleware({

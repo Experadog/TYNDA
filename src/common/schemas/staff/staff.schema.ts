@@ -1,19 +1,26 @@
 'use client';
 
+import { DTOStaffEmptyFields } from '@/dto/dtoEmpty';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { emptyToNull } from '../common/common-rules';
+import { emptyToNull, passwordPatterns } from '../common/common-rules';
 
-export const staffFormShape = (messages: ViewModel['Validation'], isCreation: boolean) => {
+export const staffFormShape = (messages: ViewModel['Validation'], isUpdating: boolean) => {
 	return z.object({
-		email_name: isCreation
-			? z.string({ required_error: messages.required }).min(1, { message: messages.required })
-			: z.string().optional(),
+		email_name: isUpdating
+			? z.string().optional()
+			: z.string({ required_error: messages.required }).min(1, { message: messages.min_1 }),
 
-		password: isCreation
-			? z.string({ required_error: messages.required }).min(1, { message: messages.required })
-			: z.string().optional(),
+		password: isUpdating
+			? z.string().optional()
+			: z
+					.string({ required_error: messages.required })
+					.and(
+						passwordPatterns(messages.invalid_password).min(8, {
+							message: messages.min_8,
+						}),
+					),
 
 		permission_groups: z.array(z.string()).optional(),
 
@@ -29,32 +36,18 @@ export const staffFormShape = (messages: ViewModel['Validation'], isCreation: bo
 	});
 };
 
-export const createStaffSchema = (
-	messages: ViewModel['Validation'],
-	defaultValues: StaffFormValues | null,
-	isCreation: boolean,
-) => {
-	const schema = staffFormShape(messages, isCreation);
+export const createStaffSchema = (messages: ViewModel['Validation'], isUpdating: boolean) => {
+	const schema = staffFormShape(messages, isUpdating);
 
 	type FormValues = z.infer<typeof schema>;
 
 	const form = useForm<FormValues>({
 		resolver: zodResolver(schema),
-		defaultValues: defaultValues ?? staffSchemaDefaultValue,
+		defaultValues: DTOStaffEmptyFields,
 		reValidateMode: 'onChange',
 	});
 
 	return form;
-};
-
-export const staffSchemaDefaultValue: StaffFormValues = {
-	email_name: '',
-	permission_groups: [],
-	staff_establishment_id: '',
-	first_name: '',
-	last_name: '',
-	password: '',
-	avatar: '',
 };
 
 export type StaffFormValues = z.infer<ReturnType<typeof staffFormShape>>;

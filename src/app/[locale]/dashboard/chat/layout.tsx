@@ -1,5 +1,5 @@
-import { PAGINATION } from '@/lib';
-import { getEstablishmentAllClient, getUserChatList } from '@/services';
+'use server';
+
 import type { ReactNode } from 'react';
 import ChatLayoutView from './view/chat-layout-view';
 
@@ -8,17 +8,7 @@ type Props = {
 };
 
 const Layout = async ({ children }: Props) => {
-	const chatsResponse = await getUserChatList(PAGINATION.chat);
-	const establishmentResponse = await getEstablishmentAllClient(PAGINATION.establishment);
-
-	return (
-		<ChatLayoutView
-			chatsResponse={chatsResponse.data}
-			establishmentResponse={establishmentResponse.data}
-		>
-			{children}
-		</ChatLayoutView>
-	);
+	return <ChatLayoutView>{children}</ChatLayoutView>;
 };
 
 export default Layout;

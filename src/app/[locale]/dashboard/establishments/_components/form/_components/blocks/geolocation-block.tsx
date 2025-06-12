@@ -1,12 +1,17 @@
 'use client';
 
 import type { EstablishmentSchema } from '@common';
-import { Button } from '@components';
+import { Button, LoadingSpinner } from '@components';
 import dynamic from 'next/dynamic';
 import { useGeolocationUseCase } from '../../../../use-case/other/useGeolocationUseCase';
 
 export const CustomMap = dynamic(() => import('@/components/map/CustomMap'), {
 	ssr: false,
+	loading: () => (
+		<div className="w-full h-full flex items-center justify-center">
+			<LoadingSpinner className="size-6 text-gray" />
+		</div>
+	),
 });
 
 type Props = {
@@ -48,7 +53,7 @@ const GeolocationBlock = ({ schema }: Props) => {
 			</div>
 
 			{isMapOpen && (
-				<div className="fixed top-0 left-0 w-screen h-screen z-[999999] bg-white">
+				<div className="fixed top-0 left-0 w-screen h-screen z-[999999] bg-background_1">
 					<Button
 						type="button"
 						onClick={onCloseMap}
@@ -63,6 +68,7 @@ const GeolocationBlock = ({ schema }: Props) => {
 						onMark={onMark}
 						onDelete={onDeleteMark}
 						isSearch
+						protectedScroll={false}
 						defaultMarkerCoordinates={defaultMarkerCoordinates}
 					/>
 				</div>

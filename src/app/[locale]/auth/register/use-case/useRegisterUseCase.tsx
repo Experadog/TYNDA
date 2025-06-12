@@ -64,22 +64,23 @@ export const RegisterProvider: React.FC<{ children: ReactNode }> = ({ children }
 	const [role, setRole] = useState<UserRole>(UserRole.CLIENT);
 
 	const CODE_LENGTH = 6;
-	const [code, setCode] = useState<string[]>(Array(CODE_LENGTH).fill(''));
+	const DEFAULT_CODE = Array(CODE_LENGTH).fill('');
+	const [code, setCode] = useState<string[]>(DEFAULT_CODE);
 	const [focusIndex, setFocusIndex] = useState<number | null>(null);
 
 	const inputsRef = useRef<Array<HTMLInputElement | null>>([]);
 
-	const viewModel = useViewModel(['Toast']);
+	const { Toast, Validation } = useViewModel(['Toast', 'Validation']);
 	const router = useRouter();
 	const { execute: registerExecute, isLoading: isRegisterLoading } = useAsyncAction<
 		RegisterResponseModel,
 		[RegisterClientRequestModel | RegisterEstablisherRequestModel]
-	>({ messages: viewModel.Register });
+	>({ messages: Toast.Register });
 	const { execute: activationExecute } = useAsyncAction<
 		AccountActivationResponseModel,
 		[AccountActivationRequestModel]
 	>({
-		messages: viewModel.ActivateAccount,
+		messages: Toast.ActivateAccount,
 	});
 
 	const onChangeRole = (newRole: UserRole) => setRole(newRole);
@@ -89,31 +90,24 @@ export const RegisterProvider: React.FC<{ children: ReactNode }> = ({ children }
 	const closeConfirmModal = () => {
 		setIsConfirmModal(false);
 		setIsActivating(false);
-		setCode([]);
+		setCode(DEFAULT_CODE);
 	};
-
 	const handleChange = (index: number, value: string) => {
-		if (!/^\d*$/.test(value)) return;
+		const sanitizedValue = value.replace(/\D/g, '');
+
+		if (!sanitizedValue) return;
 
 		const newCode = [...code];
-		const newValue = typeof Number(value.slice(-1)) === 'number' ? value.slice(-1) : '';
-		console.log(newValue);
-		newCode[index] = newValue;
+		newCode[index] = sanitizedValue[0];
+
 		setCode(newCode);
 
-		if (value && index < inputsRef.current.length - 1) {
-			inputsRef.current[index + 1]?.focus();
+		if (index < CODE_LENGTH - 1) {
+			setFocusIndex(index + 1);
 		}
 	};
 
 	const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-		const isNumberKey = /^[0-9]$/.test(e.key);
-		const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab'];
-
-		if (!isNumberKey && !allowedKeys.includes(e.key)) {
-			e.preventDefault();
-		}
-
 		if (e.key === 'Backspace') {
 			e.preventDefault();
 
@@ -130,66 +124,68 @@ export const RegisterProvider: React.FC<{ children: ReactNode }> = ({ children }
 			} else {
 				setFocusIndex(index);
 			}
-		}
-
-		if (e.key === 'ArrowLeft') {
+		} else if (e.key === 'ArrowLeft') {
 			e.preventDefault();
-			if (index > 0) {
-				setFocusIndex(index - 1);
-			}
-		}
-		if (e.key === 'ArrowRight') {
+			if (index > 0) setFocusIndex(index - 1);
+		} else if (e.key === 'ArrowRight') {
 			e.preventDefault();
-			if (index < inputsRef.current.length - 1) {
-				setFocusIndex(index + 1);
-			}
+			if (index < inputsRef.current.length - 1) setFocusIndex(index + 1);
 		}
 	};
 
 	const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
-		const pasted = e.clipboardData.getData('Text').replace(/\D/g, '').slice(0, CODE_LENGTH);
-		if (!pasted) return;
+		e.preventDefault();
+
+		const pastedText = e.clipboardData.getData('Text').replace(/\D/g, '').slice(0, CODE_LENGTH);
+
+		if (!pastedText) return;
 
 		const newCode = [...code];
-		for (let i = 0; i < CODE_LENGTH; i++) {
-			newCode[i] = pasted[i] || '';
-			const input = inputsRef.current[i];
+		const startIndex = Number.parseInt(e.currentTarget.dataset.index || '0');
 
-			if (input) {
-				input.value = pasted[i].length > 1 ? pasted[i][0] : '';
-			}
+		let lastFilledIndex = startIndex - 1;
+
+		for (let i = 0; i < pastedText.length && startIndex + i < CODE_LENGTH; i++) {
+			newCode[startIndex + i] = pastedText[i];
+			lastFilledIndex = startIndex + i;
 		}
+
+		for (let i = lastFilledIndex + 1; i < CODE_LENGTH; i++) {
+			newCode[i] = '';
+		}
+
 		setCode(newCode);
 
-		const nextIndex = pasted.length < CODE_LENGTH ? pasted.length : CODE_LENGTH - 1;
-		inputsRef.current[nextIndex]?.focus();
+		let nextFocusIndex = lastFilledIndex;
+		if (lastFilledIndex < CODE_LENGTH - 1) {
+			nextFocusIndex = lastFilledIndex + 1;
+		}
+
+		setFocusIndex(nextFocusIndex);
 	};
 
 	useEffect(() => {
-		if (focusIndex !== null) {
-			inputsRef.current[focusIndex]?.focus();
-			setFocusIndex(null); // сброс чтобы не зацикливать
+		if (focusIndex !== null && inputsRef.current[focusIndex]) {
+			const timer = setTimeout(() => {
+				inputsRef.current[focusIndex]?.focus();
+				setFocusIndex(null);
+			}, 0);
+			return () => clearTimeout(timer);
 		}
 	}, [focusIndex]);
 
-	const clientForm = createRegisterClientSchema({
-		email: 'Почта является не корректной',
-		password: 'Длинна пароля должна составлять минимум 6',
-		confirm_password: 'Пароли не совпадают',
-	});
+	const clientForm = createRegisterClientSchema(Validation);
 
-	const partnerForm = createRegisterEstablisherSchema({
-		email: 'Почта является не корректной',
-		password: 'Длинна пароля должна составлять минимум 6',
-		confirm_password: 'Пароли не совпадают',
-		first_name: 'Это поле обязательное',
-		last_name: 'Это поле обязательное',
-	});
+	const partnerForm = createRegisterEstablisherSchema(Validation);
 
 	const registerAction = createAction({
 		requestAction: register,
+
 		onSuccess: () => {
 			setIsActivating(true);
+		},
+		onError: () => {
+			closeConfirmModal();
 		},
 	});
 

@@ -16,10 +16,6 @@ const EstablisherBlock = ({ schema, onChangeEstIdValidation }: Props) => {
 				states: { list, isLoading, hasNextPage },
 				actions: { onGoNextPage },
 			},
-
-			table_params: {
-				states: { list: tableList },
-			},
 		},
 	} = useUsersContext();
 
@@ -91,6 +87,7 @@ const EstablisherBlock = ({ schema, onChangeEstIdValidation }: Props) => {
 					placeholder="Выберите владельца предприятия"
 					isAutoComplete
 					className="py-3.5 text-base"
+					noDataText="Нет данных"
 				/>
 			)}
 		</div>

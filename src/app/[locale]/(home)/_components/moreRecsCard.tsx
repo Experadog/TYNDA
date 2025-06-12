@@ -1,6 +1,6 @@
 import type { EstablishmentListItem } from '@/business-entities/establishment/EstablishmentEntity';
 import { Link } from '@/i18n/routing';
-import { PAGES, getTranslateByKey } from '@/lib';
+import { PAGES, getTranslateByKey, priceFormatter } from '@/lib';
 import { useLocale } from '@/providers/locale/locale-provider';
 import { Button } from '@components';
 import Image from 'next/image';
@@ -38,7 +38,7 @@ const MoreRecsCard: FC<IProps> = ({ establishment, mainClassName = '' }) => {
 					</p>
 					<div className="mt-3">
 						<Button className="rounded-[18px]  text-yellow bg-transparent text-base font-semibold numeric pointer-events-none p-0">
-							{establishment?.average_bill} c
+							{priceFormatter(establishment?.average_bill, 'с')}
 						</Button>
 					</div>
 				</div>

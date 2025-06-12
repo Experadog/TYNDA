@@ -4,10 +4,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-export const createLoginSchema = (message: ValidationMessages) => {
+export const createLoginSchema = (messages: ViewModel['Validation']) => {
 	const schema = z.object({
-		email: z.string().email(message.email),
-		password: z.string().min(1, message.password),
+		email: z.string().email(messages.invalid_email),
+		password: z.string().min(1, messages.min_1),
 	});
 
 	const defaultValues: DefaultValues = {
@@ -20,14 +20,10 @@ export const createLoginSchema = (message: ValidationMessages) => {
 	const form = useForm<FormValues>({
 		resolver: zodResolver(schema),
 		defaultValues,
+		reValidateMode: 'onChange',
 	});
 
 	return form;
-};
-
-type ValidationMessages = {
-	email: string;
-	password: string;
 };
 
 type DefaultValues = {
