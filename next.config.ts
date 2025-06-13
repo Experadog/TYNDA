@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
 	images: {
 		domains: ['tynda.kg', 'soyuz.kg'],
 		formats: ['image/avif', 'image/webp'],
-		minimumCacheTTL: 86400,
+		minimumCacheTTL: 604800,
 	},
 
 	experimental: {
@@ -34,8 +34,9 @@ const nextConfig: NextConfig = {
 					{ key: 'X-Content-Type-Options', value: 'nosniff' },
 					{
 						key: 'Strict-Transport-Security',
-						value: 'max-age=63072000; includeSubDomains; preload',
+						value: 'max-age=31536000; includeSubDomains; preload',
 					},
+
 					{ key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
 					{
 						key: 'Content-Security-Policy',
@@ -61,6 +62,8 @@ const nextConfig: NextConfig = {
       https://www.google-analytics.com
       https://api.telegram.org
       wss://soyuz.kg;
+    object-src 'none';
+    frame-ancestors 'none';
   `
 							.replace(/\s{2,}/g, ' ')
 							.trim(),
@@ -72,10 +75,14 @@ const nextConfig: NextConfig = {
 					},
 					{ key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
 					{ key: 'Cross-Origin-Resource-Policy', value: 'same-origin' },
-					// { key: 'Cross-Origin-Embedder-Policy', value: 'require-corp' },
+					{ key: 'Cross-Origin-Embedder-Policy', value: 'require-corp' },
 
 					{ key: 'Access-Control-Allow-Origin', value: 'https://soyuz.kg' },
 					{ key: 'X-XSS-Protection', value: '1; mode=block' },
+					{
+						key: 'Server',
+						value: '',
+					},
 				],
 			},
 		];

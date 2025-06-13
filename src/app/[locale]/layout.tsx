@@ -27,22 +27,19 @@ const roboto = Roboto({
 export const metadata: Metadata = {
 	title: 'Tynda.kg',
 	description:
-		'Tynda.kg — первая и единственная онлайн-платформа для туризма и отдыха в Кыргызстане, где гармонично сочетаются аутентичность и современный комфорт. Здесь вы найдёте любые варианты путешествий — от душевного отдыха в традиционной юрте до элитных глэмпингов и индивидуальных туров премиум-класса.',
+		'Tynda.kg — уникальная онлайн-платформа для путешествий и отдыха в Кыргызстане. Здесь собраны туры, глэмпинги, юрты, рестораны, отели, развлечения и всё, что нужно туристу.',
 	icons: '/page-icon.ico',
 	robots: 'index, follow',
 	keywords:
-		'юридические вопросы, малый бизнес, документы, туризм, средний бизнес, Кыргызстан, образовательные программы, миграционные вопросы, реклама, отдых, кыргызстан, глэмпинг, туры, legal issues, small business, tourism, Kyrgyzstan, glamping, travel, migration, vacation, nomadic culture, yurt, eco tourism, premium tours, mountain travel, nature tours, adventure Kyrgyzstan',
-
+		'туризм, Кыргызстан, отдых, путешествия, юрта, глэмпинг, рестораны, кафе, отели, развлечения, экскурсии, горы, озёра, природа, эко-туризм, сервисы для туристов, Tynda, Tynda.kg, travel, Kyrgyzstan, yurt, glamping, mountain, lakes, eco tourism, restaurants, hotels, entertainment',
 	metadataBase: new URL('https://tynda.kg'),
-
 	authors: { name: 'Команда Tynda.kg' },
 	publisher: 'Tynda.kg',
-
 	openGraph: {
 		title: 'Tynda.kg',
 		description:
-			'Tynda.kg — первая и единственная онлайн-платформа для туризма и отдыха в Кыргызстане, где гармонично сочетаются аутентичность и современный комфорт. Здесь вы найдёте любые варианты путешествий — от душевного отдыха в традиционной юрте до элитных глэмпингов и индивидуальных туров премиум-класса.',
-		images: ['/page-icon.ico'],
+			'Tynda.kg — все для путешествий и отдыха в Кыргызстане: туры, глэмпинги, юрты, рестораны, отели, развлечения и многое другое.',
+		images: ['/home/herobg.webp'],
 		url: 'https://tynda.kg',
 		type: 'website',
 		locale: 'ru_RU',
@@ -52,7 +49,7 @@ export const metadata: Metadata = {
 		card: 'summary_large_image',
 		title: 'Tynda.kg',
 		description:
-			'Tynda.kg — первая и единственная онлайн-платформа для туризма и отдыха в Кыргызстане, где гармонично сочетаются аутентичность и современный комфорт. Здесь вы найдёте любые варианты путешествий — от душевного отдыха в традиционной юрте до элитных глэмпингов и индивидуальных туров премиум-класса.',
+			'Tynda.kg — универсальная платформа для туризма и отдыха в Кыргызстане: туры, заведения, сервисы и развлечения для каждого.',
 		images: ['/home/herobg.webp'],
 		creator: '@TyndaKG',
 	},
@@ -110,6 +107,71 @@ export default async function RootLayout({
 								target: 'https://tynda.kg/search?q={search_term_string}',
 								'query-input': 'required name=search_term_string',
 							},
+						}),
+					}}
+				/>
+
+				<script
+					type="application/ld+json"
+					// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+					dangerouslySetInnerHTML={{
+						__html: JSON.stringify({
+							'@context': 'https://schema.org',
+							'@type': 'Organization',
+							name: 'Tynda.kg',
+							url: 'https://tynda.kg',
+							logo: 'https://tynda.kg/page-icon.png',
+							sameAs: [
+								'https://www.instagram.com/soyuz.kg/',
+								'https://vk.com/soyuzkg',
+								'https://t.me/SOYUZKG',
+							],
+						}),
+					}}
+				/>
+
+				<script
+					type="application/ld+json"
+					// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+					dangerouslySetInnerHTML={{
+						__html: JSON.stringify({
+							'@context': 'https://schema.org',
+							'@type': 'BreadcrumbList',
+							itemListElement: [
+								{
+									'@type': 'ListItem',
+									position: 1,
+									name: 'Главная',
+									item: 'https://tynda.kg',
+								},
+
+								{
+									'@type': 'ListItem',
+									position: 2,
+									name: 'Карта',
+									item: 'https://tynda.kg/ru/benefits-map',
+								},
+								{
+									'@type': 'ListItem',
+									position: 3,
+									name: 'О нас',
+									item: 'https://tynda.kg/ru/about',
+								},
+
+								{
+									'@type': 'ListItem',
+									position: 4,
+									name: 'Контакты',
+									item: 'https://tynda.kg/ru/contacts',
+								},
+
+								{
+									'@type': 'ListItem',
+									position: 5,
+									name: 'Услуги',
+									item: 'https://tynda.kg/ru/tariffs',
+								},
+							],
 						}),
 					}}
 				/>
