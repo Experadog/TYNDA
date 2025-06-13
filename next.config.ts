@@ -74,8 +74,7 @@ const nextConfig: NextConfig = {
 						value: 'geolocation=(), microphone=(), camera=(), payment=()',
 					},
 					{ key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
-					{ key: 'Cross-Origin-Resource-Policy', value: 'same-origin' },
-					{ key: 'Cross-Origin-Embedder-Policy', value: 'require-corp' },
+					{ key: 'Cross-Origin-Resource-Policy', value: 'cross-origin' },
 
 					{ key: 'Access-Control-Allow-Origin', value: 'https://soyuz.kg' },
 					{ key: 'X-XSS-Protection', value: '1; mode=block' },
