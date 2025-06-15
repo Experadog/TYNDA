@@ -3,14 +3,14 @@
 import { useViewModel } from '@/i18n/getTranslate';
 import { useRouter } from '@/i18n/routing';
 import { PAGES, phoneFormatter } from '@/lib';
+import { useChatWebSocket } from '@/providers/chat-webscoket/chat-webscoket-provider';
 import { useUser } from '@/providers/user/user-provider';
-import {
-	type CredentialsUpdateRequestModel,
-	type CredentialsUpdateResponseModel,
-	type PhoneFirstStepVerificationResponseModel,
-	type PhoneSecondStepVerificationRequestModel,
-	type ProfileUpdateResponseModel,
-	logout,
+import type {
+	CredentialsUpdateRequestModel,
+	CredentialsUpdateResponseModel,
+	PhoneFirstStepVerificationResponseModel,
+	PhoneSecondStepVerificationRequestModel,
+	ProfileUpdateResponseModel,
 } from '@/services';
 import {
 	firstStepPhoneVerification,
@@ -20,7 +20,6 @@ import {
 } from '@/services/profile/profileService';
 import {
 	type CommonDataStringResponse,
-	type CommonResponse,
 	type ProfileFormValues,
 	createAction,
 	createCredentialsSchema,
@@ -78,7 +77,6 @@ interface UpdateProfileContextType {
 			};
 		};
 		onUpdateCredentials: (data: CredentialsUpdateRequestModel) => Promise<void>;
-		onLogout: () => Promise<void>;
 	};
 }
 
@@ -88,6 +86,8 @@ export const UpdateProfileProvider: React.FC<{ children: ReactNode }> = ({ child
 	const viewModel = useViewModel(['Toast', 'Validation']);
 
 	const { user } = useUser();
+
+	const { disconnectWebSocket } = useChatWebSocket();
 
 	const router = useRouter();
 
@@ -131,10 +131,6 @@ export const UpdateProfileProvider: React.FC<{ children: ReactNode }> = ({ child
 		>({
 			messages: viewModel.Toast.UpdateCredentials,
 		}),
-
-		logout: useAsyncAction<CommonResponse<null>, [string]>({
-			messages: viewModel.Toast.Logout,
-		}),
 	};
 
 	const actions = {
@@ -169,14 +165,6 @@ export const UpdateProfileProvider: React.FC<{ children: ReactNode }> = ({ child
 			requestAction: updateCredentials,
 			onSuccess: () => {
 				router.push(PAGES.LOGIN);
-			},
-		}),
-
-		logoutAction: createAction({
-			requestAction: logout,
-			onSuccess: () => {
-				router.push(PAGES.LOGIN);
-				window.location.reload();
 			},
 		}),
 	};
@@ -223,10 +211,6 @@ export const UpdateProfileProvider: React.FC<{ children: ReactNode }> = ({ child
 
 		onUpdateCredentials: async (data: CredentialsUpdateRequestModel) => {
 			await action_executes.updateCredentials.execute(actions.updateCredentialsAction, data);
-		},
-
-		onLogout: async () => {
-			await action_executes.logout.execute(actions.logoutAction, '');
 		},
 	};
 

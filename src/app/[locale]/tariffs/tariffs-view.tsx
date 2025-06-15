@@ -1,8 +1,7 @@
 'use client';
+import { useViewModel } from '@/i18n/getTranslate';
 import dynamic from 'next/dynamic';
-import type { FC } from 'react';
 import Hero from './_components/hero';
-import { useTariffsUseCase } from './use-cases/useTariffsUseCase';
 
 const MoreAboutPlans = dynamic(() => import('./_components/more-about-plans'), {
 	ssr: true,
@@ -22,22 +21,19 @@ const BusinessPlan = dynamic(() => import('./_components/business-plan'), {
 	ssr: true,
 });
 
-type IProps = {};
+const TariffsView = () => {
+	const viewModel = useViewModel(['Tariffs']);
 
-const TariffsView: FC<IProps> = ({}) => {
-	const {
-		viewModel: { tariffs },
-	} = useTariffsUseCase();
 	return (
 		<>
-			<Hero heroViewModel={tariffs.hero} />
-			<MoreAboutPlans moreAboutPlansViewModel={tariffs.moreAboutPlans} />
+			<Hero heroViewModel={viewModel.hero} />
+			<MoreAboutPlans moreAboutPlansViewModel={viewModel.moreAboutPlans} />
 			<div className="max-w-[1340px] m-auto lg:w-full">
-				<TouristicPlan touristicPlanViewModel={tariffs.touristicPlan} />
-				<BusinessPlan businessPlanViewModel={tariffs.businessPlan} />
+				<TouristicPlan touristicPlanViewModel={viewModel.touristicPlan} />
+				<BusinessPlan businessPlanViewModel={viewModel.businessPlan} />
 			</div>
-			<TouristClub touristClubViewModel={tariffs.touristClub} />
-			<FirstService firstService={tariffs.firstService} />
+			<TouristClub touristClubViewModel={viewModel.touristClub} />
+			<FirstService firstService={viewModel.firstService} />
 		</>
 	);
 };

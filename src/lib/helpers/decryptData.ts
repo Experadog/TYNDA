@@ -1,9 +1,8 @@
-import type { Session } from '@business-entities';
 import { AES, enc } from 'crypto-js';
 import { CRYPTO_KEY } from '../config/common';
 import { LOGGER } from './chalkLogger';
 
-export function decryptData(encryptedData: string): Session | null {
+export function decryptData<T>(encryptedData: string): T | null {
 	try {
 		const bytes = AES.decrypt(encryptedData, CRYPTO_KEY);
 		const decryptedData = bytes.toString(enc.Utf8);

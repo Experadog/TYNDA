@@ -389,17 +389,25 @@
 			"SETTINGS": "Настройки",
 			"DISCOUNTS": "Скидки и акции",
 			"CHAT": "Чат",
-			"DASHBOARD_TARIFF": "Тарифы и карты"
+			"DASHBOARD_TARIFF": "Тарифы",
+			"DASHBOARD_CARD": "Карты"
 		},
 
-		"EntityStatus": {
+		"entity_status": {
 			"enable": "Активный",
 			"disable": "Не активный"
 		},
 
-		"tariff_types": {
-			"tourist": "Туристическая",
-			"compatriot": "Патриотическая"
+		"card_types": {
+			"tourist": "Турист",
+			"compatriot": "Патриот"
+		},
+
+		"user_role": {
+			"superadmin": "Администратор",
+			"establisher": "Владелец",
+			"client": "Клиент",
+			"establishment_worker": "Сотрудник"
 		}
 	},
 	"UnderDevelopment": {

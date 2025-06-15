@@ -1,16 +1,7 @@
 'use server';
 
-import { clearCookie } from '@/common/actions/clear-cookie';
-import {
-	COOKIES,
-	URL_ENTITIES,
-	defaultCookieConfig,
-	encryptData,
-	isSuccessResponse,
-	parseISOStringToDate,
-} from '@/lib';
-import { AXIOS_GET, AXIOS_POST, type CommonResponse } from '@common';
-import { cookies } from 'next/headers';
+import { URL_ENTITIES, isSuccessResponse } from '@/lib';
+import { AXIOS_GET, AXIOS_POST, clearSession, setSession } from '@common';
 import type {
 	AccountActivationRequestModel,
 	AccountActivationResponseModel,
@@ -18,6 +9,7 @@ import type {
 	GoogleLoginResponseModel,
 	LoginRequestModel,
 	LoginResponseModel,
+	LogoutResponseModel,
 	RegisterClientRequestModel,
 	RegisterEstablisherRequestModel,
 	RegisterResponseModel,
@@ -30,31 +22,19 @@ class AuthService {
 			data: request,
 		});
 
-		const cookieStore = await cookies();
-
 		if (isSuccessResponse(response)) {
-			const encryptedSessionData = encryptData(response.data);
-
-			cookieStore.set(
-				COOKIES.SESSION,
-				encryptedSessionData,
-				defaultCookieConfig(parseISOStringToDate(response.data.refresh_token_expire_time)),
-			);
+			await setSession(response.data);
 		}
 
 		return response;
 	}
 
-	static async logout(): Promise<CommonResponse<null>> {
-		const response = await AXIOS_POST<CommonResponse<null>>({
+	static async logout(): Promise<LogoutResponseModel> {
+		const response = await AXIOS_POST<LogoutResponseModel>({
 			url: URL_ENTITIES.LOGOUT,
 		});
 
-		console.log('Attempting logout');
-
-		if (isSuccessResponse(response)) {
-			await clearCookie(COOKIES.SESSION);
-		}
+		await clearSession();
 
 		return response;
 	}
@@ -72,13 +52,7 @@ class AuthService {
 		});
 
 		if (isSuccessResponse(response)) {
-			const cookieStore = await cookies();
-			const encryptedSessionData = encryptData(response.data);
-			cookieStore.set(
-				COOKIES.SESSION,
-				encryptedSessionData,
-				defaultCookieConfig(parseISOStringToDate(response.data.refresh_token_expire_time)),
-			);
+			await setSession(response.data);
 		}
 
 		return response;

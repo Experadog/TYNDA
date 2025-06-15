@@ -7,7 +7,6 @@ export { default as Chat } from './chat/opened-chat/chat';
 export { default as DeletionConfirmModal } from './deletion-confirm-modal/deletion-confirm-modal';
 export { default as DialogWrapper } from './dialog-wrapper/dialog-wrapper';
 export { default as EntityRoleComponent } from './entity-role/entity-role';
-export { default as EntityStatusComponent } from './entity-status/entity-status';
 export { default as EstCategorySlider } from './est-category-slider/est-category-slider';
 export { default as EstablishmentCategoryComponent } from './establishment-category/establishment-category';
 export { default as GoogleAnalytics } from './google-analytics/google-analytics';

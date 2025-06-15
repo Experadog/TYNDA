@@ -9,32 +9,31 @@ import { Avatar, Button } from '@components';
 import clsx from 'clsx';
 import { Fragment, useCallback, useMemo } from 'react';
 import { MdLogout } from 'react-icons/md';
-import { useUpdateProfileUseCase } from '../../profile/update-profile/use-case/useUpdateProfileUseCase';
 
 const Sidebar = () => {
-	const { user } = useUser();
-	const pathname = usePathname();
-	const { breadCrumbs } = useViewModel(['Shared']);
+	const { user, onLogout } = useUser();
 
 	if (!user) return null;
 
-	const {
-		actions: { onLogout },
-	} = useUpdateProfileUseCase();
+	const pathname = usePathname();
+	const { breadCrumbs, user_role } = useViewModel(['Shared']);
 
 	const shouldHighlightLink = useCallback(
 		(path: string) => pathname.startsWith(path),
 		[pathname],
 	);
 
-	const [role, roleKey] = useMemo((): [string, keyof typeof DASHBOARD_LINKS] => {
-		const { is_superuser, role } = user;
+	const roleEnum = useMemo((): keyof typeof DASHBOARD_LINKS => {
+		switch (user?.role) {
+			case UserRole.ESTABLISHER_WORKER:
+				return UserRole.ESTABLISHER_WORKER;
 
-		if (is_superuser) return ['Администратор', 'super_user'];
+			case UserRole.ESTABLISHER:
+				return UserRole.ESTABLISHER;
 
-		if (role === UserRole.ESTABLISHER) return ['Владелец', UserRole.ESTABLISHER];
-
-		return ['Сотрудник', UserRole.ESTABLISHER_WORKER];
+			default:
+				return 'super_user';
+		}
 	}, [user]);
 
 	return (
@@ -51,7 +50,10 @@ const Sidebar = () => {
 
 					<p className="text-gray text-xs font-normal">{user?.email}</p>
 					<p className="text-gray text-xs">
-						Роль: <strong className="text-orange font-mono">{role}</strong>
+						Роль:{' '}
+						<strong className="text-orange font-mono">
+							{user && user_role?.[user.role]}
+						</strong>
 					</p>
 				</div>
 			</div>
@@ -59,9 +61,9 @@ const Sidebar = () => {
 			<div className="flex gap-2 w-full flex-col">
 				<p className="font-semibold text-foreground_1">Меню</p>
 				<div className="flex flex-col gap-3">
-					{DASHBOARD_LINKS[roleKey].map(({ icon: Icon, link, key }, index) => (
+					{DASHBOARD_LINKS[roleEnum].map(({ icon: Icon, link, key }, index) => (
 						<Fragment key={link}>
-							{index === DASHBOARD_LINKS[roleKey].length - 1 && (
+							{index === DASHBOARD_LINKS[roleEnum].length - 1 && (
 								<div className="w-full h-[1px] bg-light_gray" />
 							)}
 							<Link

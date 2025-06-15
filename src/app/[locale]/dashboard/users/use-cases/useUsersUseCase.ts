@@ -6,12 +6,13 @@ import { useUsersCreationUseCase } from './stories/useUsersCreationUseCase';
 import { useUsersTableUseCase } from './table/useTableUseCase';
 
 type Props = {
-	data: UsersRetrievalResponseModel['data'];
+	tableData: UsersRetrievalResponseModel['data'];
+	selectionData: UsersRetrievalResponseModel['data'];
 };
 
-export function useUserUseCase({ data }: Props) {
+export function useUserUseCase({ tableData, selectionData }: Props) {
 	const schema = useUserSchemaUseCase();
-	const pagination = useUsersPaginationUseCase({ data });
+	const pagination = useUsersPaginationUseCase({ selectionData, tableData });
 	const modal = useUsersModalUseCase();
 	const creation = useUsersCreationUseCase({
 		onCloseModal: modal.actions.onClose,

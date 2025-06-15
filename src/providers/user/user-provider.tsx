@@ -1,35 +1,56 @@
 'use client';
 
-import { decryptData } from '@/lib';
-import type { User } from '@business-entities';
+import { useViewModel } from '@/i18n/getTranslate';
+import { useRouter } from '@/i18n/routing';
+import { PAGES, decryptData } from '@/lib';
+import { type LogoutResponseModel, logout } from '@/services';
+import type { Session, User } from '@business-entities';
+import { createAction, useAsyncAction } from '@common';
 import type React from 'react';
-import { type ReactNode, createContext, useContext, useEffect, useState } from 'react';
+import { type ReactNode, createContext, useContext, useState } from 'react';
 
 interface UserContextType {
 	user: User | null;
-	setUser: (user: User | null) => void;
+	setUser: React.Dispatch<React.SetStateAction<User | null>>;
+	onLogout: () => Promise<void>;
 }
 
 const UserContext = createContext<UserContextType | null>(null);
 
-export const UserProvider: React.FC<{
+interface UserProviderProps {
 	children: ReactNode;
 	session: string;
-}> = ({ children, session }) => {
-	const [state, setState] = useState<User | null>(decryptData(session)?.user || null);
+}
 
-	const setUser = (newUser: User | null) => {
-		setState(newUser);
+export const UserProvider: React.FC<UserProviderProps> = ({ children, session }) => {
+	const initialUser = decryptData<Session>(session)?.user || null;
+	const [user, setUser] = useState<User | null>(initialUser);
+
+	// Logout
+
+	const router = useRouter();
+
+	const { Logout } = useViewModel(['Toast']);
+	const { execute: logoutExecute } = useAsyncAction<LogoutResponseModel, []>({
+		messages: Logout,
+	});
+
+	const logoutAction = createAction({
+		requestAction: logout,
+		onSuccess: () => {
+			router.push(PAGES.LOGIN);
+			setTimeout(() => {
+				setUser(null);
+			}, 300);
+		},
+	});
+
+	const onLogout = async () => {
+		await logoutExecute(logoutAction);
 	};
 
-	useEffect(() => {
-		setState(decryptData(session)?.user || null);
-	}, [session]);
-
 	return (
-		<UserContext.Provider value={{ user: state, setUser: setUser }}>
-			{children}
-		</UserContext.Provider>
+		<UserContext.Provider value={{ user, setUser, onLogout }}>{children}</UserContext.Provider>
 	);
 };
 
@@ -38,6 +59,5 @@ export const useUser = (): UserContextType => {
 	if (!context) {
 		throw new Error('useUser must be used within a UserProvider');
 	}
-
 	return context;
 };

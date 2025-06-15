@@ -29,7 +29,7 @@ export function usePagination<T>({
 	);
 
 	const [page, setPage] = useState(initialData ? Number(initialData.page) : 1);
-	const [isLoading, setIsLoading] = useState(!initialData || getInitialDataInClient);
+	const [isLoading, setIsLoading] = useState(getInitialDataInClient);
 
 	const fetchPage = async (pageToFetch: number): Promise<boolean> => {
 		setIsLoading(true);

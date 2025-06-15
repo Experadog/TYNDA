@@ -5,18 +5,16 @@ import { Button } from '@components';
 import clsx from 'clsx';
 import { useMemo } from 'react';
 
+import { useUser } from '@/providers/user/user-provider';
 import { FiCreditCard } from 'react-icons/fi';
 import { HiOutlineChatAlt } from 'react-icons/hi';
 import { LuShieldHalf, LuUserRound } from 'react-icons/lu';
 import { MdLogout } from 'react-icons/md';
-import { useUpdateProfileUseCase } from '../use-case/useUpdateProfileUseCase';
 
 const Sidebar = () => {
 	const pathname = usePathname();
 
-	const {
-		actions: { onLogout },
-	} = useUpdateProfileUseCase();
+	const { onLogout } = useUser();
 
 	const icons = [
 		<LuUserRound key={'1'} />,

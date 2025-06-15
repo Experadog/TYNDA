@@ -1,10 +1,7 @@
 'use server';
 
-import { API_URL, COOKIES, LOGGER, PAGES, getTokensFromSession } from '@/lib';
+import { API_URL, COOKIES, LOGGER, getTokensFromSession } from '@/lib';
 import axios, { type AxiosError, type AxiosInstance, type AxiosResponse } from 'axios';
-import { clearCookie } from '../actions/clear-cookie';
-import { forceRedirect } from '../actions/forceRedirect';
-import { sendErrorToTelegram } from '../actions/sendUserErrorToTelegram';
 import type { Params } from '../types/http.types';
 import type { CommonResponse } from '../types/responses.types';
 
@@ -51,17 +48,6 @@ axiosInstance.interceptors.response.use(
 		LOGGER.error(
 			`Error in ${response?.config.url}, errors: message: '${data.msg}(${data.code})'`,
 		);
-
-		if (
-			response?.statusText === 'Unauthorized' ||
-			response?.statusText === 'Token has expired' ||
-			response?.statusText === 'Bad Gateway' ||
-			response?.status === 500
-		) {
-			await sendErrorToTelegram({ message: response.statusText, stack: response.config.url });
-			await clearCookie(COOKIES.SESSION);
-			await forceRedirect(PAGES.LOGIN);
-		}
 
 		throw error;
 	},

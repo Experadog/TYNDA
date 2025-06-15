@@ -19,7 +19,7 @@ export type ValueAtPath<T, P extends string> = P extends `${infer K}.${infer Res
 		? T[P]
 		: never;
 
-export type ColumnConfig<T extends object, P extends NestedKeyOf<T> = NestedKeyOf<T>> = {
+type ColumnConfig<T extends object, P extends NestedKeyOf<T> = NestedKeyOf<T>> = {
 	key: P;
 	title: string | ReactNode;
 	className?: ClassValue;

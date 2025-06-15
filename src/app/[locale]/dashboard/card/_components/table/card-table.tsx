@@ -1,9 +1,10 @@
-import type { Tariff } from '@business-entities';
-import { Table, TableBody, TableFooter, TableHeader, TableWrapper } from '@components';
-import { useTariffContext } from '../../context/tariff-context-provider';
+'use client';
 
-const TariffTable = () => {
-	const { pagination, table } = useTariffContext();
+import { Table, TableBody, TableFooter, TableHeader, TableWrapper } from '@components';
+import { useCardContext } from '../../context/card-context-provider';
+
+const CardTable = () => {
+	const { table, pagination } = useCardContext();
 
 	return (
 		<TableWrapper>
@@ -13,11 +14,7 @@ const TariffTable = () => {
 
 			<div className="flex-1 overflow-y-auto relative">
 				<Table>
-					<TableBody<Tariff>
-						data={pagination.states.data}
-						columns={table.columns}
-						loading={pagination.states.isLoading}
-					/>
+					<TableBody columns={table.columns} data={pagination.states.data} />
 				</Table>
 			</div>
 
@@ -28,4 +25,4 @@ const TariffTable = () => {
 	);
 };
 
-export default TariffTable;
+export default CardTable;

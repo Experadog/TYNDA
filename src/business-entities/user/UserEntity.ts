@@ -55,7 +55,7 @@ export type Credentials = {
 	refresh_token_expire_time: string;
 };
 
-export type Session = { user: User; last_refreshed: number } & Credentials;
+export type Session = { user: User } & Credentials;
 
 export type BonusHistory = {
 	image: string;

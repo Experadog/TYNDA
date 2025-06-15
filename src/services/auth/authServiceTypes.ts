@@ -35,5 +35,7 @@ export type AccountActivationRequestModel = {
 };
 
 export type AccountActivationResponseModel = CommonResponse<string>;
-
 export type RegisterResponseModel = CommonResponse<string>;
+
+// Loogut
+export type LogoutResponseModel = CommonResponse<string>;

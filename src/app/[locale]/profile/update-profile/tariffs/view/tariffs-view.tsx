@@ -1,9 +1,10 @@
 'use client';
 
+import { useViewModel } from '@/i18n/getTranslate';
 import { formatDate, priceFormatter } from '@/lib';
 import { useLocale } from '@/providers/locale/locale-provider';
 import type { TariffListRetrievalResponseModel, UserCardRetrievalResponseModel } from '@/services';
-import { EntityStatusComponent, TariffCard } from '@components';
+import { TariffCard } from '@components';
 import { CircleCheck } from 'lucide-react';
 import { HiMinusSmall } from 'react-icons/hi2';
 
@@ -14,6 +15,7 @@ type Props = {
 
 const TariffsView = ({ other_tariffs, userCard }: Props) => {
 	const { locale } = useLocale();
+	const viewModel = useViewModel(['Shared']);
 
 	const translation = userCard.tariff.translates?.[locale];
 
@@ -49,7 +51,7 @@ const TariffsView = ({ other_tariffs, userCard }: Props) => {
 				<div className="flex flex-col gap-3  bg-background_3  p-3 rounded-xl border border-light_gray ">
 					<div className="flex  items-center justify-between font-roboto text-foreground_1 font-normal">
 						<p>Статус</p>
-						<EntityStatusComponent status={userCard.tariff.status} />
+						{viewModel.entity_status[userCard.tariff.status]}
 					</div>
 
 					<div className="flex   items-center justify-between font-roboto text-foreground_1 font-normal">
@@ -65,7 +67,7 @@ const TariffsView = ({ other_tariffs, userCard }: Props) => {
 			</div>
 			<h3 className="text-foreground_1 text-2xl font-semibold">Все тарифы</h3>
 
-			<div className="flex gap-5 flex-wrap">
+			<div className="grid gap-5 grid-cols-4 sm:grid-cols-1 auto-rows-fr">
 				{other_tariffs.items.map((item) => {
 					const translation = item.translates?.[locale] || {
 						name: '',
@@ -75,7 +77,7 @@ const TariffsView = ({ other_tariffs, userCard }: Props) => {
 					return (
 						<div
 							key={item.id}
-							className="flex flex-col justify-between bg-background_6 border border-light_gray rounded-2xl shadow-md p-6 w-full gap-5 transition-transform duration-300 hover:-translate-y-[5px] cursor-pointer"
+							className="flex flex-col justify-between bg-background_6 border border-light_gray rounded-2xl shadow-md p-6 gap-5 transition-transform duration-300 hover:-translate-y-[5px] cursor-pointer"
 						>
 							<div className="flex items-center justify-between">
 								<p className="text-xl font-semibold text-foreground_1">
@@ -86,7 +88,7 @@ const TariffsView = ({ other_tariffs, userCard }: Props) => {
 								</div>
 							</div>
 
-							<div className="flex flex-col gap-3 h-full">
+							<div className="flex flex-col gap-3 flex-1">
 								{translation.description.map((desc) => (
 									<div
 										key={`${desc}-${item.id}`}

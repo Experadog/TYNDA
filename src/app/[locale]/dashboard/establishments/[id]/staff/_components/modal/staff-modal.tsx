@@ -25,8 +25,6 @@ const StaffModal = ({ establishment_id }: Props) => {
 		}
 	};
 
-	console.log(schema.formState.isDirty, schema.formState.isValid);
-
 	return (
 		<DialogWrapper
 			isOpen={isOpen}

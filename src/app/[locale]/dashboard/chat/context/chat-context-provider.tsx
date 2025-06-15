@@ -6,21 +6,14 @@ import { type UseChatUseCaseType, useChatUseCase } from '../use-cases/useChatUse
 
 type Props = {
 	children: ReactNode;
-	chatResponse?: ChatListRetrievalResponseModel;
+	chatResponse: ChatListRetrievalResponseModel;
 };
 
 const ChatContext = createContext<UseChatUseCaseType | null>(null);
 
 export const ChatContextProvider: FC<Props> = ({ children, chatResponse }) => {
 	const value = useChatUseCase({
-		chatList: chatResponse?.data || {
-			items: [],
-			links: { first: '', last: '', self: '' },
-			page: 1,
-			size: 10,
-			total: 0,
-			total_pages: 1,
-		},
+		chatList: chatResponse?.data,
 	});
 
 	return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;

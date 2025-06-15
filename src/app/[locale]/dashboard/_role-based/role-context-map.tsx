@@ -7,7 +7,7 @@ import type {
 	PageSettings,
 	SuperUserData,
 } from '@common';
-import { UpdateProfileProvider } from '../../profile/update-profile/use-case/useUpdateProfileUseCase';
+import { CardContextProvider } from '../card/context/card-context-provider';
 import { ChatContextProvider } from '../chat/context/chat-context-provider';
 import { EstablishmentContextProvider } from '../establishments/use-case/establishment-context-provider';
 import { RolesContextProvider } from '../roles/context/roles-context-provider';
@@ -29,7 +29,7 @@ function CommonProviders({ data, children }: { data: CommonProviderData; childre
 	return (
 		<SettingsContextProvider settings={data.settingsData}>
 			<EstablishmentContextProvider establishments={data.establishmentsResponse}>
-				<UpdateProfileProvider>{children}</UpdateProfileProvider>
+				{children}
 			</EstablishmentContextProvider>
 		</SettingsContextProvider>
 	);
@@ -38,18 +38,20 @@ function CommonProviders({ data, children }: { data: CommonProviderData; childre
 export const roleContextMap = {
 	superadmin: ({ data, children }: ProviderProps<SuperUserData>) => (
 		<ChatContextProvider chatResponse={data.chatResponse}>
-			<TariffContextProvider
-				cardsResponse={data.cardResponse?.data}
-				tariffsResponse={data.tariffResponse?.data}
-			>
-				<CommonProviders data={data}>
-					<UsersContextProvider usersResponse={data.usersResponse}>
-						<RolesContextProvider roles={data.rolesResponse}>
-							{children}
-						</RolesContextProvider>
-					</UsersContextProvider>
-				</CommonProviders>
-			</TariffContextProvider>
+			<CardContextProvider cardResponse={data.cardResponse?.data}>
+				<TariffContextProvider tariffsResponse={data.tariffResponse?.data}>
+					<CommonProviders data={data}>
+						<UsersContextProvider
+							allUsersResponse={data.allUsersResponse}
+							establisherOnlyResponse={data.establisherOnlyResponse}
+						>
+							<RolesContextProvider roles={data.rolesResponse}>
+								{children}
+							</RolesContextProvider>
+						</UsersContextProvider>
+					</CommonProviders>
+				</TariffContextProvider>
+			</CardContextProvider>
 		</ChatContextProvider>
 	),
 

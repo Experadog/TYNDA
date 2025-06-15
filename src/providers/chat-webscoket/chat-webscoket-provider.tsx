@@ -2,7 +2,7 @@
 
 import { useRouter } from '@/i18n/routing';
 import { PAGES, WEBSOCKET_API, decryptData } from '@/lib';
-import { type Message, UserRole, type WebSocketMessage } from '@business-entities';
+import { type Message, type Session, UserRole, type WebSocketMessage } from '@business-entities';
 import { pushCommonToast } from '@common';
 import {
 	type ReactNode,
@@ -27,6 +27,7 @@ interface WebSocketContextValue {
 	messages: Message[];
 	sendMessage: (data: SendMessageRequest) => void;
 	connectWebSocket: (establishmentID?: string) => void;
+	disconnectWebSocket: () => void;
 	shouldRefreshChatList: boolean;
 }
 
@@ -42,25 +43,27 @@ export const ChatWebSocketProvider = ({ session, children }: ChatWebSocketProvid
 	const socketRef = useRef<WebSocket | null>(null);
 	const [isConnected, setIsConnected] = useState(false);
 	const [messages, setMessages] = useState<Message[]>([]);
-
 	const [shouldRefreshChatList, setShouldRefreshChatList] = useState(false);
 
-	const reconnectAttempts = useRef(0);
-	const maxReconnectAttempts = 5;
-	const reconnectDelay = 2000;
+	const resetState = () => {
+		setIsConnected(false);
+		setMessages([]);
+		setShouldRefreshChatList(false);
+	};
 
-	useEffect(() => {
-		if (reconnectAttempts.current === maxReconnectAttempts && isConnected) {
-			reconnectAttempts.current = 0;
+	const disconnectWebSocket = useCallback(() => {
+		if (socketRef.current) {
+			socketRef.current.close();
+			socketRef.current = null;
 		}
-	}, [isConnected]);
+		resetState();
+	}, []);
 
 	const connectWebSocket = useCallback(
 		(establishmentID?: string) => {
 			if (!session) return;
 
-			const data = decryptData(session);
-
+			const data = decryptData<Session>(session);
 			if (!data) return;
 
 			const {
@@ -75,12 +78,10 @@ export const ChatWebSocketProvider = ({ session, children }: ChatWebSocketProvid
 				if (role === UserRole.ESTABLISHER && establishmentID) {
 					url += `&establishment_id=${establishmentID}`;
 				}
-
 				return url;
 			}
 
 			const ws = new WebSocket(buildWSUrl());
-
 			socketRef.current = ws;
 
 			ws.onopen = () => {
@@ -97,24 +98,23 @@ export const ChatWebSocketProvider = ({ session, children }: ChatWebSocketProvid
 						if (role === UserRole.CLIENT && !is_superuser) {
 							router.push(PAGES.PROFILE_CHAT);
 						}
-
 						if (is_superuser) {
 							router.push(PAGES.DASHBOARD_CHAT);
 						}
-
 						pushCommonToast('Произошла системная ошибка', 'error');
 						return;
 					}
 
 					const { message, data, is_system } = response;
 
-					const isChatIdNew = !messages.some(
-						(existedMessage) => existedMessage.chat_id === message.chat_id,
-					);
+					setMessages((prev) => {
+						const isChatIdNew = !prev.some(
+							(existedMessage) => existedMessage.chat_id === message.chat_id,
+						);
 
-					setShouldRefreshChatList(isChatIdNew);
-
-					setMessages((prev) => [...prev, { ...message, data, is_system }]);
+						setShouldRefreshChatList(isChatIdNew);
+						return [...prev, { ...message, data, is_system }];
+					});
 				} catch (error) {
 					console.error('Ошибка парсинга сообщения:', error);
 				}
@@ -126,29 +126,17 @@ export const ChatWebSocketProvider = ({ session, children }: ChatWebSocketProvid
 
 			ws.onclose = () => {
 				console.log('❌ WebSocket закрыт');
-
-				setIsConnected(false);
-
-				if (reconnectAttempts.current < maxReconnectAttempts) {
-					reconnectAttempts.current += 1;
-					setTimeout(() => {
-						console.log(`🔁 Попытка переподключения #${reconnectAttempts.current}`);
-						connectWebSocket();
-					}, reconnectDelay * reconnectAttempts.current);
-				} else {
-					console.warn('🚫 Достигнут лимит попыток переподключения');
-				}
+				resetState();
 			};
 		},
-		[session],
+		[session, router],
 	);
 
 	useEffect(() => {
-		connectWebSocket();
-		return () => {
-			socketRef.current?.close();
-		};
-	}, [connectWebSocket]);
+		if (session) {
+			connectWebSocket();
+		}
+	}, [session]);
 
 	const sendMessage = useCallback((data: SendMessageRequest) => {
 		if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
@@ -163,6 +151,7 @@ export const ChatWebSocketProvider = ({ session, children }: ChatWebSocketProvid
 		messages,
 		sendMessage,
 		connectWebSocket,
+		disconnectWebSocket,
 		shouldRefreshChatList,
 	};
 

@@ -3,7 +3,7 @@ import { priceFormatter } from '@/lib';
 import { useLocale } from '@/providers/locale/locale-provider';
 import type { Tariff } from '@business-entities';
 import type { ColumnConfigs } from '@common';
-import { Button, EntityStatusComponent, TableRowActions } from '@components';
+import { Button, TableRowActions } from '@components';
 
 type Props = {
 	onMutate: (item?: Tariff) => void;
@@ -11,7 +11,7 @@ type Props = {
 };
 
 export function useTariffTableUseCase({ onMutate, onDelete }: Props) {
-	const { tariff_types } = useViewModel(['Shared']);
+	const viewModel = useViewModel(['Shared']);
 
 	const { locale } = useLocale();
 
@@ -24,7 +24,7 @@ export function useTariffTableUseCase({ onMutate, onDelete }: Props) {
 		{
 			key: 'card_type',
 			title: 'Тип',
-			render: (value) => tariff_types[value],
+			render: (value) => viewModel.card_types[value],
 		},
 
 		{
@@ -36,7 +36,7 @@ export function useTariffTableUseCase({ onMutate, onDelete }: Props) {
 		{
 			key: 'status',
 			title: 'Статус',
-			render: (value) => <EntityStatusComponent status={value} />,
+			render: (value) => viewModel.entity_status[value],
 		},
 
 		{

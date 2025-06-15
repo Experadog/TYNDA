@@ -28,7 +28,7 @@ const TariffCard: FC<IProps> = ({
 
 	const { Tariff, Shared } = useViewModel(['Tariff', 'Shared']);
 	const { your_tariff, not_active } = Tariff;
-	const { tariff_types } = Shared;
+	const { card_types } = Shared;
 
 	const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
 		const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
@@ -65,7 +65,7 @@ const TariffCard: FC<IProps> = ({
 						</span>
 						<div className="flex items-center justify-between">
 							<span className="text-white uppercase text-lg  sm:text-xs">
-								{tariff_types[data?.tariff.card_type]}
+								{card_types[data?.tariff.card_type]}
 							</span>
 							<span className="text-white text-md numeric sm:text-xs">
 								{formatDate(data?.expire_date || '', { shortFormat: true })}

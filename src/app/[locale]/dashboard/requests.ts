@@ -1,6 +1,6 @@
 'use server';
 
-import { COOKIES, PAGES, PAGINATION } from '@/lib';
+import { PAGES, PAGINATION } from '@/lib';
 import {
 	getAdminTariffList,
 	getCardList,
@@ -9,14 +9,14 @@ import {
 	getUserChatList,
 	getUsers,
 } from '@/services';
-import { type Session, UserRole } from '@business-entities';
+import { UserRole } from '@business-entities';
 import {
 	type CommonData,
 	type EstablisherData,
 	type RoleResult,
 	type SuperUserData,
 	forceRedirect,
-	getCookie,
+	getSession,
 } from '@common';
 
 import { getSettings } from './settings';
@@ -36,20 +36,34 @@ async function getEstablisherData(): Promise<Omit<EstablisherData, keyof CommonD
 }
 
 async function getSuperUserData(): Promise<Omit<SuperUserData, keyof CommonData>> {
-	const [rolesResponse, usersResponse, chatResponse, tariffResponse, cardResponse] =
-		await Promise.all([
-			getRoles(PAGINATION.role),
-			getUsers(PAGINATION.user),
-			getUserChatList(PAGINATION.chat),
-			getAdminTariffList(PAGINATION.tariff),
-			getCardList(PAGINATION.card),
-		]);
+	const [
+		rolesResponse,
+		allUsersResponse,
+		chatResponse,
+		tariffResponse,
+		cardResponse,
+		establisherOnlyResponse,
+	] = await Promise.all([
+		getRoles(PAGINATION.role),
+		getUsers(PAGINATION.user),
+		getUserChatList(PAGINATION.chat),
+		getAdminTariffList(PAGINATION.tariff),
+		getCardList(PAGINATION.card),
+		getUsers({ ...PAGINATION.user, role: UserRole.ESTABLISHER }),
+	]);
 
-	return { rolesResponse, usersResponse, chatResponse, tariffResponse, cardResponse };
+	return {
+		rolesResponse,
+		allUsersResponse,
+		chatResponse,
+		tariffResponse,
+		cardResponse,
+		establisherOnlyResponse,
+	};
 }
 
 export async function executeRoleRequests(): Promise<RoleResult> {
-	const session = await getCookie<Session>(COOKIES.SESSION, true);
+	const session = await getSession();
 
 	if (!session) return forceRedirect(PAGES.LOGIN);
 

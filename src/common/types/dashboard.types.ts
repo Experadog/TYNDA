@@ -26,10 +26,11 @@ export type EstablisherData = CommonData & {
 
 export type SuperUserData = CommonData & {
 	rolesResponse: GetRolesResponseModel;
-	usersResponse: UsersRetrievalResponseModel;
+	allUsersResponse: UsersRetrievalResponseModel;
 	chatResponse: ChatListRetrievalResponseModel;
 	tariffResponse: TariffListRetrievalResponseModel;
 	cardResponse: CardListRetrievalResponseModel;
+	establisherOnlyResponse: UsersRetrievalResponseModel;
 };
 
 export type EstablishmentWorkerData = CommonData;
