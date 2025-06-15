@@ -3,6 +3,7 @@
 import { useViewModel } from '@/i18n/getTranslate';
 import { useRouter } from '@/i18n/routing';
 import { PAGES, YANDEX_CLIENT_ID, createDynamicCallbackUrl } from '@/lib';
+import { useChatWebSocket } from '@/providers/chat-webscoket/chat-webscoket-provider';
 import { useLocale } from '@/providers/locale/locale-provider';
 import { useUser } from '@/providers/user/user-provider';
 import {
@@ -23,6 +24,7 @@ export const useLoginUseCase = () => {
 	const { setUser } = useUser();
 	const router = useRouter();
 	const { locale } = useLocale();
+	const { connectWebSocket } = useChatWebSocket();
 
 	const { execute: loginExecute, isLoading: isLoginLoading } = useAsyncAction<
 		LoginResponseModel,
@@ -47,6 +49,10 @@ export const useLoginUseCase = () => {
 			router.push(PAGES.PROFILE);
 			return;
 		}
+
+		setTimeout(() => {
+			connectWebSocket();
+		}, 2000);
 	};
 
 	const loginAction = createAction({
@@ -81,6 +87,7 @@ export const useLoginUseCase = () => {
 	const loginWithYandex = () => {
 		const redirect_uri = createDynamicCallbackUrl(locale);
 		const authUrl = `https://oauth.yandex.ru/authorize?response_type=code&client_id=${YANDEX_CLIENT_ID}&redirect_uri=${redirect_uri}`;
+
 		router.push(authUrl);
 	};
 

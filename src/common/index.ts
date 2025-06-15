@@ -22,7 +22,6 @@ export * from './axios/axiosInstance';
 
 //Hooks
 export * from './hooks/useAsyncAction';
-export * from './hooks/useCacheRevalidate';
 export * from './hooks/useDebounce';
 export * from './hooks/usePagination';
 export * from './hooks/usePrepareBreadCrumbs';
@@ -50,3 +49,7 @@ export * from './toast/push-toast';
 // Custom Errors
 export { default as ErrorBoundary } from './custom-errors/global-error';
 export * from './custom-errors/session-error';
+
+// Session Manager
+
+export * from './session-manager/session-manager';

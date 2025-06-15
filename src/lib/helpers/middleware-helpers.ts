@@ -1,16 +1,32 @@
 import { type NextRequest, NextResponse } from 'next/server';
 
 import { type SupportedLanguages, routing } from '@/i18n/routing';
-import { type Session, UserRole } from '@business-entities';
+import { type Credentials, type Session, UserRole } from '@business-entities';
+import type { CommonResponse } from '@common';
+import { API_URL } from '../config/api';
+import { REVALIDATE } from '../config/common';
 import { COOKIES } from '../config/cookies';
 import { PAGES } from '../config/pages';
+import { URL_ENTITIES } from '../config/urls';
 import { decryptData } from './decryptData';
+import { encryptData } from './encryptData';
 
 const PUBLIC_FILE = /\.(.*)$/;
 const PROTECTED_CLIENT_ROUTES = [PAGES.PROFILE, PAGES.DASHBOARD];
 
-const PROTECTED_ESTABLISHER_WORKER_ROUTES = [PAGES.DASHBOARD_CHAT, PAGES.ROLES];
-const PROTECTED_ESTABLISHER_ROUTES = [PAGES.USERS, PAGES.ROLES, PAGES.DASHBOARD_CHAT];
+const PROTECTED_ESTABLISHER_WORKER_ROUTES = [
+	PAGES.DASHBOARD_CHAT,
+	PAGES.ROLES,
+	PAGES.DASHBOARD_CARD,
+	PAGES.DASHBOARD_TARIFF,
+];
+const PROTECTED_ESTABLISHER_ROUTES = [
+	PAGES.USERS,
+	PAGES.ROLES,
+	PAGES.DASHBOARD_CHAT,
+	PAGES.DASHBOARD_CARD,
+	PAGES.DASHBOARD_TARIFF,
+];
 const PROTECTED_SUPER_USER_ROUTES = [PAGES.STAFF];
 
 export function isStaticOrApiRequest(pathname: string): boolean {
@@ -177,4 +193,72 @@ export function handleAuthRedirection(
 	}
 
 	return null;
+}
+
+export async function tryRefreshSession(req: NextRequest, response: NextResponse) {
+	const sessionCookie = req.cookies.get(COOKIES.SESSION);
+	if (!sessionCookie) return response;
+
+	let sessionData: Session | null;
+
+	try {
+		sessionData = decryptData(sessionCookie.value || '');
+	} catch {
+		return response;
+	}
+
+	if (!sessionData?.access_token || !sessionData?.refresh_token) {
+		return response;
+	}
+
+	const expireTimeMs = new Date(sessionData.access_token_expire_time).getTime();
+	const now = Date.now();
+	const SAFETY_WINDOW_MS = REVALIDATE.ONE_HOUR;
+
+	if (expireTimeMs - now > SAFETY_WINDOW_MS) {
+		return response;
+	}
+
+	try {
+		const refreshRes = await fetch(`${API_URL}${URL_ENTITIES.REFRESH_TOKEN}`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Cookie: `access_token=${sessionData.access_token}; refresh_token=${sessionData.refresh_token}`,
+			},
+			credentials: 'include',
+		});
+
+		if (!refreshRes.ok) {
+			response.cookies.delete(COOKIES.SESSION);
+			return response;
+		}
+
+		const refreshedData = (await refreshRes.json()) as CommonResponse<Credentials>;
+
+		if (!refreshedData?.data) {
+			response.cookies.delete(COOKIES.SESSION);
+			return response;
+		}
+
+		const newSession: Session = {
+			...refreshedData.data,
+			user: sessionData.user,
+		};
+
+		const encryptedNewSession = encryptData(newSession);
+
+		response.cookies.set({
+			name: COOKIES.SESSION,
+			value: encryptedNewSession,
+			path: '/',
+			httpOnly: true,
+			sameSite: 'lax',
+		});
+
+		return response;
+	} catch (error) {
+		response.cookies.delete(COOKIES.SESSION);
+		return response;
+	}
 }

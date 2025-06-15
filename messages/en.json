@@ -389,16 +389,24 @@
 			"SETTINGS": "Settings",
 			"DISCOUNTS": "Discounts",
 			"CHAT": "Chat",
-			"DASHBOARD_TARIFF": "Tariffs and cards"
+			"DASHBOARD_TARIFF": "Tariffs",
+			"DASHBOARD_CARD": "Cards"
 		},
-		"EntityStatus": {
+		"entity_status": {
 			"enable": "Active",
 			"disable": "Inactive"
 		},
 
-		"tariff_types": {
+		"card_types": {
 			"tourist": "Tourist",
 			"compatriot": "Compatriot"
+		},
+
+		"user_role": {
+			"superadmin": "Administrator",
+			"establisher": "Owner",
+			"client": "Client",
+			"establishment_worker": "Employee"
 		}
 	},
 	"UnderDevelopment": {

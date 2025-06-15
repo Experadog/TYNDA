@@ -390,16 +390,24 @@
 			"SETTINGS": "Орнотуулар",
 			"DISCOUNTS": "Арзандатуулар жана акциялар",
 			"CHAT": "Чат",
-			"DASHBOARD_TARIFF": "Тарифтер жана карталар"
+			"DASHBOARD_TARIFF": "Тарифтер",
+			"DASHBOARD_CARD": "Карталар"
 		},
-		"EntityStatus": {
+		"entity_status": {
 			"enable": "Активдүү",
 			"disable": "Жигердүү эмес"
 		},
 
-		"tariff_types": {
-			"tourist": "Туристтик",
-			"compatriot": "Мекендештик"
+		"card_types": {
+			"tourist": "Турист",
+			"compatriot": "Мекендеш"
+		},
+
+		"user_role": {
+			"superadmin": "Администратор",
+			"establisher": "Ээси",
+			"client": "Кардар",
+			"establishment_worker": "Кызматкер"
 		}
 	},
 	"UnderDevelopment": {

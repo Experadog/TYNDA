@@ -45,8 +45,6 @@ export enum URL_ENTITIES {
 }
 
 export enum URL_LOCAL_ENTITIES {
-	CLEAR_SESSION = '/clear-session',
-	REFRESH_SESSION = '/refresh-session',
 	REVALIDATE = '/revalidate',
 }
 

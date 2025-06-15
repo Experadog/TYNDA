@@ -1,11 +1,9 @@
 'use server';
 
 import { DTOEmptyCommonPagination, DTOEmptyCommonResponse } from '@/dto/dtoEmpty';
-import { API_URL, COOKIES, LOGGER, isEmptyObject } from '@/lib';
-import type { Session } from '@business-entities';
-import { ClearSessionError } from '../custom-errors/session-error';
+import { API_URL, LOGGER, isEmptyObject } from '@/lib';
+import { getSession } from '../session-manager/session-manager';
 import type { Params } from '../types/http.types';
-import { getCookie } from './get-cookie';
 
 type Props = {
 	endpoint: string;
@@ -52,11 +50,14 @@ export async function createFetchAction<T>({
 	const headers = new Headers();
 
 	if (shouldBeAuthorized) {
-		const session = await getCookie<Session>(COOKIES.SESSION, true);
-		if (session) {
-			const tokens = `access_token=${session.access_token}; refresh_token=${session.refresh_token}`;
-			headers.set('Cookie', tokens);
+		const session = await getSession();
+
+		if (!session) {
+			return onError(params);
 		}
+
+		const tokens = `access_token=${session.access_token}; refresh_token=${session.refresh_token}`;
+		headers.set('Cookie', tokens);
 	}
 
 	try {
@@ -71,11 +72,6 @@ export async function createFetchAction<T>({
 		const data: T = await response.json();
 
 		if (!response.ok) {
-			if (response.status === 401) {
-				throw new ClearSessionError();
-			}
-
-			console.log(data);
 			LOGGER.error(
 				`Fetch failed: ${response.statusText}(${response.status}) ${pathWithPostfix}`,
 			);

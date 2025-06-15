@@ -1,8 +1,8 @@
 'use server';
 
-import { clearCookie } from '@/common/actions/clear-cookie';
 import { createFetchAction } from '@/common/actions/createFetchAction';
-import { COOKIES, URL_ENTITIES, encryptData, isSuccessResponse, parseISOStringToDate } from '@/lib';
+import { DTOEmptyCommonResponse } from '@/dto/dtoEmpty';
+import { URL_ENTITIES, isSuccessResponse } from '@/lib';
 import type { Session } from '@business-entities';
 import {
 	AXIOS_GET,
@@ -11,8 +11,9 @@ import {
 	type CommonDataStringResponse,
 	type Params,
 	type ProfileFormValues,
-	getCookie,
-	setCookie,
+	clearSession,
+	getSession,
+	setSession,
 } from '@common';
 import type {
 	ClientHistoryResponseModel,
@@ -42,21 +43,17 @@ class ProfileService {
 		return response;
 	}
 
-	static async updateProfile(payload: ProfileFormValues) {
+	static async updateProfile(payload: ProfileFormValues): Promise<ProfileUpdateResponseModel> {
 		const response = await AXIOS_PATCH<ProfileUpdateResponseModel>({
 			url: URL_ENTITIES.PROFILE,
 			data: payload,
 		});
 
 		if (isSuccessResponse(response)) {
-			const session = await getCookie<Session>(COOKIES.SESSION, true);
+			const session = await getSession();
 
 			if (!session) {
-				return {
-					code: 400,
-					msg: '',
-					data: '',
-				};
+				return DTOEmptyCommonResponse();
 			}
 
 			const avatar = payload.avatar instanceof File ? '' : payload.avatar || '';
@@ -66,11 +63,7 @@ class ProfileService {
 				user: { ...session?.user, ...payload, avatar },
 			};
 
-			await setCookie(
-				COOKIES.SESSION,
-				encryptData(newSession),
-				parseISOStringToDate(session.refresh_token_expire_time),
-			);
+			await setSession(newSession);
 		}
 
 		return response;
@@ -100,7 +93,7 @@ class ProfileService {
 		});
 
 		if (isSuccessResponse(response)) {
-			await clearCookie(COOKIES.SESSION);
+			await clearSession();
 		}
 
 		return response;

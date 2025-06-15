@@ -3,12 +3,13 @@ import { type UserListItem, UserRole } from '@business-entities';
 import { usePagination } from '@common';
 
 type Props = {
-	data: UsersRetrievalResponseModel['data'];
+	tableData: UsersRetrievalResponseModel['data'];
+	selectionData: UsersRetrievalResponseModel['data'];
 };
 
-export function useUsersPaginationUseCase({ data }: Props) {
+export function useUsersPaginationUseCase({ tableData, selectionData }: Props) {
 	const table_params = usePagination<UserListItem>({
-		initialData: data,
+		initialData: tableData,
 		entity: 'user',
 		fetchFn: getUsers,
 	});
@@ -17,7 +18,7 @@ export function useUsersPaginationUseCase({ data }: Props) {
 		entity: 'user',
 		fetchFn: getUsers,
 		params: { role: UserRole.ESTABLISHER },
-		getInitialDataInClient: true,
+		initialData: selectionData,
 	});
 
 	return { table_params, selection_params };

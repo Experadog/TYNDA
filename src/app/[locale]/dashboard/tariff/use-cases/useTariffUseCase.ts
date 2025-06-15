@@ -1,10 +1,5 @@
 import { useViewModel } from '@/i18n/getTranslate';
-import {
-	type CardListRetrievalResponseModel,
-	type TariffListRetrievalResponseModel,
-	getCardList,
-	getTariffList,
-} from '@/services';
+import { type TariffListRetrievalResponseModel, getTariffList } from '@/services';
 import { createTariffSchema, usePagination } from '@common';
 import { useTariffActionModalUseCase } from './modal/useTariffActionModalUseCase';
 import { useTariffCreationUseCase } from './stories/useTariffCreationUseCase';
@@ -13,21 +8,14 @@ import { useTariffUpdatingUseCase } from './stories/useTariffUpdatingUseCase';
 import { useTariffTableUseCase } from './table/useTariffTableUseCase';
 
 type Props = {
-	cardsResponse?: CardListRetrievalResponseModel['data'];
 	tariffsResponse?: TariffListRetrievalResponseModel['data'];
 };
 
-export function useTariffUserCase({ cardsResponse, tariffsResponse }: Props) {
-	const tariffPagination = usePagination({
+export function useTariffUserCase({ tariffsResponse }: Props) {
+	const pagination = usePagination({
 		entity: 'tariff',
 		fetchFn: getTariffList,
 		initialData: tariffsResponse,
-	});
-
-	const cardPagination = usePagination({
-		entity: 'card',
-		fetchFn: getCardList,
-		initialData: cardsResponse,
 	});
 
 	const viewModel = useViewModel(['Validation']);
@@ -46,7 +34,7 @@ export function useTariffUserCase({ cardsResponse, tariffsResponse }: Props) {
 		onDelete: modal.onOpenDeletionModal,
 	});
 
-	return { tariffPagination, cardPagination, table, modal, schema, creation, deletion, updating };
+	return { pagination, table, modal, schema, creation, deletion, updating };
 }
 
 export type UseTariffUseCaseType = ReturnType<typeof useTariffUserCase>;

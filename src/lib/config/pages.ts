@@ -1,4 +1,5 @@
 import {
+	BadgeDollarSign,
 	Building2,
 	CreditCard,
 	MessageCircle,
@@ -44,7 +45,9 @@ export enum PAGES {
 
 	STAFF = '/staff',
 	CHAT = '/establishment-chat',
+
 	DASHBOARD_TARIFF = '/dashboard/tariff',
+	DASHBOARD_CARD = '/dashboard/card',
 
 	//Enterprises
 }
@@ -83,6 +86,12 @@ export const DASHBOARD_LINKS = {
 		{
 			key: 'DASHBOARD_TARIFF',
 			link: PAGES.DASHBOARD_TARIFF,
+			icon: BadgeDollarSign,
+		},
+
+		{
+			key: 'DASHBOARD_CARD',
+			link: PAGES.DASHBOARD_CARD,
 			icon: CreditCard,
 		},
 		{

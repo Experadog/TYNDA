@@ -8,7 +8,6 @@ import CacheRevalidate from './cache-revalidate/cache-revalidate';
 import { ChatWebSocketProvider } from './chat-webscoket/chat-webscoket-provider';
 import { LocaleProvider } from './locale/locale-provider';
 import OAuthProvider from './oAuth/oAuth-provider';
-import RefreshOnExpire from './refresh-token/refresh-on-expire';
 import { ThemeProvider } from './theme/theme-provider';
 import { ToastClientProvider } from './toast-provider/toast-provider';
 import { UserProvider } from './user/user-provider';
@@ -36,11 +35,9 @@ const CollectedProviders: FC<IProps> = async ({ children }) => {
 					<LocaleProvider locale={locale}>
 						<UserProvider session={session}>
 							<ChatWebSocketProvider session={session}>
-								<RefreshOnExpire initialSession={session}>
-									<ToastClientProvider theme={theme} />
-									<CacheRevalidate />
-									<TooltipProvider>{children}</TooltipProvider>
-								</RefreshOnExpire>
+								<ToastClientProvider theme={theme} />
+								<CacheRevalidate />
+								<TooltipProvider>{children}</TooltipProvider>
 							</ChatWebSocketProvider>
 						</UserProvider>
 					</LocaleProvider>

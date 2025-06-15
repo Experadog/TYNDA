@@ -1,9 +1,9 @@
 'use client';
 
-import { REVALIDATE, URL_ENTITIES, URL_LOCAL_ENTITIES } from '@/lib';
+import { LOGGER, URL_ENTITIES, URL_LOCAL_ENTITIES } from '@/lib';
 import { UserRole } from '@business-entities';
-import { useCacheRevalidateOnActivity } from '@common';
-import { useEffect, useState } from 'react';
+import { revalidateByTags } from '@common';
+import { useEffect, useMemo, useState } from 'react';
 import { useUser } from '../user/user-provider';
 
 const CacheRevalidate = () => {
@@ -11,30 +11,21 @@ const CacheRevalidate = () => {
 
 	const [shouldRevalidate, setShouldRevalidate] = useState(false);
 
-	const prepareRevalidationTags = (): URL_ENTITIES[] => {
-		const clientTags: URL_ENTITIES[] = [
-			URL_ENTITIES.ESTABLISHMENT_ALL_CLIENT,
-			URL_ENTITIES.TARIFF_CLIENT_ALL,
-			URL_ENTITIES.CHAT_MY,
-		];
+	const prepareRevalidationTags = useMemo((): URL_ENTITIES[] => {
+		if (!user) return [URL_ENTITIES.ESTABLISHMENT_ALL_CLIENT];
 
-		if (!user) return clientTags;
-
-		const isAdmin = user.is_superuser;
-		const isEstablisher = user.role === UserRole.ESTABLISHER;
-		const isClient = user.role === UserRole.CLIENT && !isAdmin;
-
-		if (isAdmin) {
+		if (user.is_superuser) {
 			return [
 				URL_ENTITIES.ESTABLISHMENT_ALL_ADMIN,
 				URL_ENTITIES.USERS,
 				URL_ENTITIES.CHAT_MY,
 				URL_ENTITIES.TARIFF_ALL,
 				URL_ENTITIES.CHAT,
+				URL_ENTITIES.CARD_ALL,
 			];
 		}
 
-		if (isEstablisher) {
+		if (user.role === UserRole.ESTABLISHER) {
 			return [
 				URL_ENTITIES.ESTABLISHMENT_ALL_ESTABLISHER,
 				URL_ENTITIES.STAFF,
@@ -42,34 +33,36 @@ const CacheRevalidate = () => {
 			];
 		}
 
-		if (isClient) {
-			return clientTags;
+		if (user.role === UserRole.CLIENT) {
+			return [
+				URL_ENTITIES.ESTABLISHMENT_ALL_CLIENT,
+				URL_ENTITIES.TARIFF_CLIENT_ALL,
+				URL_ENTITIES.CHAT_MY,
+			];
 		}
 
 		return [];
-	};
-
-	const checkRevalidation = async (): Promise<void> => {
-		await fetch(`/api${URL_LOCAL_ENTITIES.REVALIDATE}`)
-			.then((res) => res.json())
-			.then((data) => {
-				setShouldRevalidate(data.shouldRevalidate);
-			})
-			.catch(() => setShouldRevalidate(false));
-	};
+	}, [user]);
 
 	useEffect(() => {
+		const checkRevalidation = async () => {
+			try {
+				const res = await fetch(`/api${URL_LOCAL_ENTITIES.REVALIDATE}`);
+				const data = await res.json();
+				setShouldRevalidate(data.shouldRevalidate);
+			} catch {
+				setShouldRevalidate(false);
+			}
+		};
 		checkRevalidation();
 	}, []);
 
-	useCacheRevalidateOnActivity({
-		tags: prepareRevalidationTags(),
-		revalidateOnVisibilityChange: true,
-		revalidateOnUnfocus: true,
-		revalidateIntervalMs: REVALIDATE.FIVE_MIN,
-		revalidateOnLoad: true,
-		enabled: shouldRevalidate,
-	});
+	useEffect(() => {
+		if (shouldRevalidate) {
+			revalidateByTags(prepareRevalidationTags);
+			LOGGER.warning(`Revalidating for: ${prepareRevalidationTags.join('; ')}`);
+		}
+	}, [shouldRevalidate]);
 
 	return null;
 };

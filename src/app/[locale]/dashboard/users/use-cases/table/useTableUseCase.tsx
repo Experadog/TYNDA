@@ -1,11 +1,10 @@
+import { useViewModel } from '@/i18n/getTranslate';
 import { formatDate } from '@/lib';
 import type { UserListItem } from '@business-entities';
 import type { ColumnConfigs } from '@common';
 import {
 	Avatar,
 	Button,
-	EntityRoleComponent,
-	EntityStatusComponent,
 	TableRowActions,
 	Tooltip,
 	TooltipContent,
@@ -17,6 +16,8 @@ type Props = {
 };
 
 export function useUsersTableUseCase({ onOpenCreation }: Props) {
+	const viewModel = useViewModel(['Shared']);
+
 	const columns: ColumnConfigs<UserListItem> = [
 		{
 			key: 'avatar',
@@ -65,13 +66,13 @@ export function useUsersTableUseCase({ onOpenCreation }: Props) {
 		{
 			key: 'role',
 			title: 'Роль',
-			render: (value) => <EntityRoleComponent role={value} is_superuser={false} />,
+			render: (value) => viewModel.user_role[value],
 		},
 
 		{
 			key: 'status',
 			title: 'Статус',
-			render: (value) => <EntityStatusComponent status={value} />,
+			render: (value) => viewModel.entity_status[value],
 		},
 		{
 			key: 'id',
