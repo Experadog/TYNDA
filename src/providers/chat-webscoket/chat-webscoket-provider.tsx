@@ -3,7 +3,7 @@
 import { useRouter } from '@/i18n/routing';
 import { PAGES, WEBSOCKET_API, decryptData } from '@/lib';
 import { type Message, type Session, UserRole, type WebSocketMessage } from '@business-entities';
-import { pushCommonToast } from '@common';
+import { EntityStatusEnum, pushCommonToast } from '@common';
 import {
 	type ReactNode,
 	createContext,
@@ -13,6 +13,7 @@ import {
 	useRef,
 	useState,
 } from 'react';
+import { RiChatDeleteLine } from 'react-icons/ri';
 
 type SendMessageRequest = {
 	message: {
@@ -66,6 +67,10 @@ export const ChatWebSocketProvider = ({ session, children }: ChatWebSocketProvid
 			const data = decryptData<Session>(session);
 			if (!data) return;
 
+			if (data.user.status === EntityStatusEnum.DISABLE) {
+				return;
+			}
+
 			const {
 				access_token,
 				user: { role, is_superuser },
@@ -101,7 +106,16 @@ export const ChatWebSocketProvider = ({ session, children }: ChatWebSocketProvid
 						if (is_superuser) {
 							router.push(PAGES.DASHBOARD_CHAT);
 						}
-						pushCommonToast('Произошла системная ошибка', 'error');
+						pushCommonToast('Веб-Сокет не подключен', 'info', {
+							icon: <RiChatDeleteLine className="text-yellow" />,
+						});
+						return;
+					}
+
+					if (response.code !== 200) {
+						pushCommonToast('Веб-Сокет не подключен', 'info', {
+							icon: <RiChatDeleteLine className="text-yellow" />,
+						});
 						return;
 					}
 

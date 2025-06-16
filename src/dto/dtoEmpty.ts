@@ -25,7 +25,7 @@ export const DTOStaffEmptyFields: StaffFormValues = {
 	avatar: '',
 };
 
-export function DTOEmptyCommonPagination<T>(): CommonResponse<Paginated<T>> {
+export function DTOEmptyCommonPagination<T>(text?: string): CommonResponse<Paginated<T>> {
 	return {
 		code: 500,
 		data: {
@@ -40,14 +40,14 @@ export function DTOEmptyCommonPagination<T>(): CommonResponse<Paginated<T>> {
 			total: 0,
 			total_pages: 0,
 		},
-		msg: 'Error handling DTO',
+		msg: `Error handling DTO, server msg:${text}`,
 	};
 }
 
-export function DTOEmptyCommonResponse<T>(): CommonResponse<T> {
+export function DTOEmptyCommonResponse<T>(text?: string): CommonResponse<T> {
 	return {
 		code: 500,
-		data: {} as T,
-		msg: 'Error handling DTO',
+		data: null as T,
+		msg: `Error handling DTO, server msg:${text}`,
 	};
 }

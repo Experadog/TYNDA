@@ -73,7 +73,7 @@ const TariffCard: FC<IProps> = ({
 						</div>
 					</div>
 				) : (
-					<span className="text-sm font-mono absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 sm:text-xs">
+					<span className="text-sm font-mono absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 sm:text-xs text-light_gray">
 						{not_active}
 					</span>
 				)}

@@ -8,8 +8,10 @@ import { REVALIDATE } from '../config/common';
 import { COOKIES } from '../config/cookies';
 import { PAGES } from '../config/pages';
 import { URL_ENTITIES } from '../config/urls';
+import { LOGGER } from './chalkLogger';
 import { decryptData } from './decryptData';
 import { encryptData } from './encryptData';
+import { formatDate } from './formateDate';
 
 const PUBLIC_FILE = /\.(.*)$/;
 const PROTECTED_CLIENT_ROUTES = [PAGES.PROFILE, PAGES.DASHBOARD];
@@ -215,11 +217,30 @@ export async function tryRefreshSession(req: NextRequest, response: NextResponse
 	const now = Date.now();
 	const SAFETY_WINDOW_MS = REVALIDATE.ONE_HOUR;
 
+	if (sessionData.refresh_in_progress) {
+		LOGGER.info('Skipping refresh: already in progress');
+		return response;
+	}
+
+	if (sessionData.last_refreshed_time) {
+		const lastRefreshedMs = new Date(sessionData.last_refreshed_time).getTime();
+		if (now - lastRefreshedMs < REVALIDATE.FIFTEEN_SECONDS) {
+			LOGGER.info('Skipping refresh: refreshed recently');
+			return response;
+		}
+	}
+
 	if (expireTimeMs - now > SAFETY_WINDOW_MS) {
 		return response;
 	}
 
 	try {
+		LOGGER.info('Staring to refresh...');
+
+		const lockSession: Session = { ...sessionData, refresh_in_progress: true };
+		const encryptedLockedSession = encryptData(lockSession);
+		req.cookies.set(COOKIES.SESSION, encryptedLockedSession);
+
 		const refreshRes = await fetch(`${API_URL}${URL_ENTITIES.REFRESH_TOKEN}`, {
 			method: 'POST',
 			headers: {
@@ -243,10 +264,16 @@ export async function tryRefreshSession(req: NextRequest, response: NextResponse
 
 		const newSession: Session = {
 			...refreshedData.data,
+			last_refreshed_time: new Date().toISOString(),
+			refresh_in_progress: false,
 			user: sessionData.user,
 		};
 
 		const encryptedNewSession = encryptData(newSession);
+		LOGGER.success('Refreshed successfully!');
+		LOGGER.success(
+			`Next refresh in: ${formatDate(newSession.access_token_expire_time, { showTime: true })}`,
+		);
 
 		response.cookies.set({
 			name: COOKIES.SESSION,
@@ -258,6 +285,7 @@ export async function tryRefreshSession(req: NextRequest, response: NextResponse
 
 		return response;
 	} catch (error) {
+		LOGGER.error('Error in refresh!');
 		response.cookies.delete(COOKIES.SESSION);
 		return response;
 	}

@@ -42,7 +42,6 @@ class ProfileService {
 
 		return response;
 	}
-
 	static async updateProfile(payload: ProfileFormValues): Promise<ProfileUpdateResponseModel> {
 		const response = await AXIOS_PATCH<ProfileUpdateResponseModel>({
 			url: URL_ENTITIES.PROFILE,
@@ -56,11 +55,14 @@ class ProfileService {
 				return DTOEmptyCommonResponse();
 			}
 
-			const avatar = payload.avatar instanceof File ? '' : payload.avatar || '';
-
 			const newSession: Session = {
 				...session,
-				user: { ...session?.user, ...payload, avatar },
+				user: {
+					...session.user,
+					...payload,
+					avatar:
+						typeof payload.avatar === 'string' ? payload.avatar : session.user.avatar,
+				},
 			};
 
 			await setSession(newSession);

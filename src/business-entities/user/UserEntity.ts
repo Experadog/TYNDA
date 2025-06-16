@@ -8,7 +8,7 @@ export type User = {
 	last_name?: string;
 	email: string;
 	phone: string;
-	status: 'enable' | 'disable';
+	status: EntityStatus;
 	is_superuser: boolean;
 	is_staff: boolean;
 	is_multi_login: boolean;
@@ -55,7 +55,11 @@ export type Credentials = {
 	refresh_token_expire_time: string;
 };
 
-export type Session = { user: User } & Credentials;
+export type Session = {
+	user: User;
+	last_refreshed_time?: string;
+	refresh_in_progress?: boolean;
+} & Credentials;
 
 export type BonusHistory = {
 	image: string;

@@ -41,7 +41,7 @@ const BonusCard: FC<BonusHistory> = (item) => {
 
 				<div
 					className="absolute bottom-0 right-0 p-2 font-bold text-sm flex items-center gap-1 
-                bg-gradient-to-r from-yellow to-orange-400 text-white 
+                bg-gradient-to-r from-yellow to-orange text-white 
                 rounded-tl-3xl"
 				>
 					<CiDiscount1 />

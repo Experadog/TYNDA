@@ -1,11 +1,12 @@
 'use client';
 
 import { useViewModel } from '@/i18n/getTranslate';
-import { formatDate, priceFormatter } from '@/lib';
+import { formatDate, getTranslateByKey, priceFormatter } from '@/lib';
 import { useLocale } from '@/providers/locale/locale-provider';
 import type { TariffListRetrievalResponseModel, UserCardRetrievalResponseModel } from '@/services';
 import { TariffCard } from '@components';
 import { CircleCheck } from 'lucide-react';
+import { useMemo } from 'react';
 import { HiMinusSmall } from 'react-icons/hi2';
 
 type Props = {
@@ -17,21 +18,33 @@ const TariffsView = ({ other_tariffs, userCard }: Props) => {
 	const { locale } = useLocale();
 	const viewModel = useViewModel(['Shared']);
 
-	const translation = userCard?.tariff.translates?.[locale];
+	const [name, description] = useMemo(() => {
+		if (!userCard) {
+			return ['', []];
+		}
+
+		const name = getTranslateByKey(locale, userCard.tariff.translates, 'name');
+		const description = getTranslateByKey(locale, userCard.tariff.translates, 'description');
+
+		return [name, description];
+	}, [userCard]);
 
 	return (
 		<div className="p-5 flex flex-col gap-12">
 			<h3 className="text-foreground_1 text-2xl font-semibold">Текущий тариф</h3>
 			<div className="flex flex-col max-w-[400px] w-full bg-background_6 p-3 rounded-2xl border border-light_gray gap-3 shadow-md">
 				<div className="flex flex-col gap-2">
-					<p className="text-lg  px-3 py-1 font-semibold text-yellow bg-background_1 rounded-2xl border border-light_gray w-max mx-auto">
-						{translation.name}
-					</p>
+					{name && (
+						<p className="text-lg  px-3 py-1 font-semibold text-yellow bg-background_1 rounded-2xl border border-light_gray w-max mx-auto">
+							{name}
+						</p>
+					)}
+
 					<TariffCard isActive={userCard?.tariff?.status === 'enable'} data={userCard} />
 				</div>
 
 				<div className="flex flex-col  w-full bg-background_6 rounded-xl  border-light_gray border">
-					{translation.description.map((feature, index) => (
+					{description.map((feature, index) => (
 						<div key={feature} className="flex flex-col">
 							<div className="flex justify-between gap-2 items-center  p-3 ">
 								<p className="font-roboto text-md font-normal text-foreground_1 gap-0.5 flex items-center">
@@ -41,7 +54,7 @@ const TariffsView = ({ other_tariffs, userCard }: Props) => {
 								<CircleCheck className="text-success" />
 							</div>
 
-							{index !== translation.description.length - 1 && (
+							{index !== description.length - 1 && (
 								<div className="w-full h-[1px] bg-light_gray" />
 							)}
 						</div>

@@ -14,13 +14,12 @@ type Props = {
 	revalidateTags?: string[];
 };
 
-const onError = <T>(params?: Params): T => {
-	'use client';
+const onError = <T>(params?: Params, text?: string): T => {
 	if (params?.page || params?.size) {
-		return DTOEmptyCommonPagination() as T;
+		return DTOEmptyCommonPagination(text) as T;
 	}
 
-	return DTOEmptyCommonResponse() as T;
+	return DTOEmptyCommonResponse(text) as T;
 };
 
 export async function createFetchAction<T>({
@@ -53,7 +52,7 @@ export async function createFetchAction<T>({
 		const session = await getSession();
 
 		if (!session) {
-			return onError(params);
+			return onError(params, 'Session not found');
 		}
 
 		const tokens = `access_token=${session.access_token}; refresh_token=${session.refresh_token}`;
@@ -75,7 +74,8 @@ export async function createFetchAction<T>({
 			LOGGER.error(
 				`Fetch failed: ${response.statusText}(${response.status}) ${pathWithPostfix}`,
 			);
-			return onError(params);
+
+			return onError(params, response.statusText);
 		}
 
 		LOGGER.success(`Received data from: ${pathWithPostfix} `);

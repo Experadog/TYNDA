@@ -56,10 +56,12 @@ const UserCard = () => {
 
 				<div className="flex flex-col items-center mt-20 sm:mt-14">
 					<div className="flex items-center gap-1">
+						{user?.first_name && user?.last_name && (
+							<div className='bg-[url("/profile/check.svg")] size-5 sm:size-4 bg-cover' />
+						)}
 						<h3 className="text-foreground_1 font-semibold text-xl sm:text-lg">
 							{user?.first_name} {user?.last_name}
 						</h3>
-						<div className='bg-[url("/profile/check.svg")] size-5 sm:size-4 bg-cover' />
 					</div>
 					<div className="flex flex-col gap-1 mt-4 items-center">
 						<h4 className="text-gray font-semibold text-sm sm:text-xs numeric">

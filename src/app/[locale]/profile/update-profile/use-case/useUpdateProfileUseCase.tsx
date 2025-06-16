@@ -3,7 +3,6 @@
 import { useViewModel } from '@/i18n/getTranslate';
 import { useRouter } from '@/i18n/routing';
 import { PAGES, phoneFormatter } from '@/lib';
-import { useChatWebSocket } from '@/providers/chat-webscoket/chat-webscoket-provider';
 import { useUser } from '@/providers/user/user-provider';
 import type {
 	CredentialsUpdateRequestModel,
@@ -85,9 +84,7 @@ const UpdateProfileContext = createContext<UpdateProfileContextType | undefined>
 export const UpdateProfileProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 	const viewModel = useViewModel(['Toast', 'Validation']);
 
-	const { user } = useUser();
-
-	const { disconnectWebSocket } = useChatWebSocket();
+	const { user, setUser } = useUser();
 
 	const router = useRouter();
 
