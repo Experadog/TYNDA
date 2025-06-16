@@ -35,6 +35,7 @@ export type WebSocketMessage = {
 	};
 	is_system: boolean;
 	data: object;
+	code?: number;
 };
 
 export type ChatListItem = {

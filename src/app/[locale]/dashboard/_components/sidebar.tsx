@@ -52,7 +52,7 @@ const Sidebar = () => {
 					<p className="text-gray text-xs">
 						Роль:{' '}
 						<strong className="text-orange font-mono">
-							{user && user_role?.[user.role]}
+							{user && user_role?.[user.is_superuser ? 'superadmin' : user.role]}
 						</strong>
 					</p>
 				</div>

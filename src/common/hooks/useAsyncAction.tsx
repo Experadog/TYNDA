@@ -1,5 +1,7 @@
 'use client';
 
+import { DTOEmptyCommonResponse } from '@/dto/dtoEmpty';
+import { isAxiosError } from 'axios';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { pushCommonToast } from '../toast/push-common-toast';
@@ -55,7 +57,7 @@ export function useAsyncAction<TResponse, TParams extends unknown[] = []>(
 
 		if (lastExecuted && now - lastExecuted < throttleTime) {
 			showThrottleToast(3000);
-			return {} as TResponse;
+			return DTOEmptyCommonResponse('Throttle timeout') as TResponse;
 		}
 
 		setLastExecuted(now);
@@ -71,6 +73,15 @@ export function useAsyncAction<TResponse, TParams extends unknown[] = []>(
 
 			return await result;
 		} catch (err) {
+			if (isAxiosError(err)) {
+				const { code, message } = err;
+
+				if (code === '401' && message === 'Token has expired') {
+					showThrottleToast(5000);
+					return DTOEmptyCommonResponse('Session timeout') as TResponse;
+				}
+			}
+
 			setError(err as Error);
 			throw err;
 		} finally {

@@ -9,8 +9,8 @@ interface CreateProfileSchemaProps {
 	defaultValues: {
 		first_name: string;
 		last_name: string;
-		phone: string;
-		avatar: string;
+		phone?: string;
+		avatar?: string;
 	};
 }
 

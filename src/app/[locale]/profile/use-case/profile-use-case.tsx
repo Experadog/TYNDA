@@ -37,7 +37,6 @@ export const ProfileContextProvider: FC<ContextProps> = ({ children, clientHisto
 	const [isAvatarUpdating, setIsAvatarUpdating] = useState(false);
 
 	const { user } = useUser();
-
 	const {
 		actions: { onUpdateProfile },
 	} = useUpdateProfileUseCase();
@@ -58,7 +57,12 @@ export const ProfileContextProvider: FC<ContextProps> = ({ children, clientHisto
 
 	const updateAvatarAction = createAction({
 		requestAction: loadFile,
-		onSuccess: (res) => onUpdateProfile({ ...user, avatar: res.data[0] }),
+		onSuccess: (res) =>
+			onUpdateProfile({
+				last_name: user?.last_name,
+				first_name: user?.first_name,
+				avatar: res.data[0],
+			}),
 	});
 
 	const onUpdateAvatar = async (data: LoadFileRequestModel) => {

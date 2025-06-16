@@ -1,22 +1,29 @@
 import usePreventAutoFocus from '@/common/hooks/usePreventAutoFocus';
-import { DialogDescription, DialogTitle } from '@radix-ui/react-dialog';
 import clsx from 'clsx';
 import type { ReactNode } from 'react';
 import { Button } from '../ui/button';
-import { Dialog, DialogContent, DialogFooter, DialogHeader } from '../ui/dialog';
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+} from '../ui/dialog';
 
 type Props = {
 	isOpen: boolean;
 	onClose: () => void;
-	title: string;
+	title: string | ReactNode;
 	children: ReactNode;
 	onClick?: () => Promise<void>;
-	action: 'create' | 'update';
-	description?: string;
+	action: 'create' | 'update' | 'default';
+	description?: string | ReactNode;
 	buttonForm?: string;
 	modal?: boolean;
 	className?: string;
 	disableSubmit?: boolean;
+	direction?: 'vertical' | 'horizontal';
 };
 
 const DialogWrapper = ({
@@ -31,6 +38,7 @@ const DialogWrapper = ({
 	modal = true,
 	className,
 	disableSubmit = false,
+	direction = 'horizontal',
 }: Props) => {
 	const prevent = usePreventAutoFocus();
 
@@ -38,8 +46,9 @@ const DialogWrapper = ({
 		<Dialog open={isOpen} onOpenChange={onClose} modal={modal}>
 			<DialogContent
 				{...prevent}
+				autoFocus={false}
 				className={clsx(
-					'bg-background_1 border-none p-8 sm:p-10 rounded-2xl xs:max-w-[90%]',
+					'bg-background_1 !border-none p-8 sm:p-10 rounded-2xl xs:max-w-[90%] focus:border-none',
 					className,
 				)}
 			>
@@ -54,28 +63,35 @@ const DialogWrapper = ({
 					)}
 				</DialogHeader>
 
-				<div className="mt-6">{children}</div>
+				<div className="mt-4">{children}</div>
 
-				<DialogFooter className="mt-8 flex flex-row justify-end gap-3">
-					<Button
-						variant="outline"
-						className="rounded-xl px-5 py-2 text-sm border-shade_gray text-foreground_1"
-						onClick={onClose}
-						disableAnimation
+				{action !== 'default' ? (
+					<DialogFooter
+						className={clsx(
+							'mt-8 flex  justify-end gap-3',
+							direction === 'horizontal' ? 'flex-row' : 'flex-col',
+						)}
 					>
-						Закрыть
-					</Button>
-					<Button
-						type="submit"
-						form={buttonForm}
-						disableAnimation
-						onClick={onClick}
-						disabled={disableSubmit}
-						className="bg-yellow text-white rounded-xl px-5 py-2 text-sm font-medium"
-					>
-						{action === 'create' ? 'Создать' : 'Сохранить'}
-					</Button>
-				</DialogFooter>
+						<Button
+							variant="outline"
+							className="rounded-xl px-5 py-3 text-sm border-shade_gray text-foreground_1"
+							onClick={onClose}
+							disableAnimation
+						>
+							Закрыть
+						</Button>
+						<Button
+							type="submit"
+							form={buttonForm}
+							disableAnimation
+							onClick={onClick}
+							disabled={disableSubmit}
+							className="bg-yellow text-white rounded-xl px-5 py-3 text-sm font-medium"
+						>
+							{action === 'create' ? 'Создать' : 'Сохранить'}
+						</Button>
+					</DialogFooter>
+				) : null}
 			</DialogContent>
 		</Dialog>
 	);

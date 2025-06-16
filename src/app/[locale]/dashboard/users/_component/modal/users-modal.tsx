@@ -1,7 +1,7 @@
 'use client';
 
 import type { UserFormValues } from '@common';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@components';
+import { DialogWrapper } from '@components';
 import { useUsersContext } from '../../context/users-context-provider';
 import UsersForm from '../form/users-form';
 
@@ -19,15 +19,15 @@ const UsersModal = () => {
 	};
 
 	return (
-		<Dialog open={isOpen} onOpenChange={onClose}>
-			<DialogContent className="bg-background_1 rounded-xl font-roboto">
-				<DialogHeader>
-					<DialogTitle>{selectedUser ? 'Редактировать' : 'Создать'}</DialogTitle>
-				</DialogHeader>
-
-				<UsersForm schema={schema} onClose={onClose} onSubmit={handleSubmit} />
-			</DialogContent>
-		</Dialog>
+		<DialogWrapper
+			isOpen={isOpen}
+			onClose={onClose}
+			action={selectedUser ? 'update' : 'create'}
+			title={selectedUser ? 'Редактировать' : 'Создать'}
+			buttonForm="users-form"
+		>
+			<UsersForm schema={schema} onClose={onClose} onSubmit={handleSubmit} />
+		</DialogWrapper>
 	);
 };
 

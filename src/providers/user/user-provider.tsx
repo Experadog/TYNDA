@@ -7,7 +7,7 @@ import { type LogoutResponseModel, logout } from '@/services';
 import type { Session, User } from '@business-entities';
 import { createAction, useAsyncAction } from '@common';
 import type React from 'react';
-import { type ReactNode, createContext, useContext, useState } from 'react';
+import { type ReactNode, createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 interface UserContextType {
 	user: User | null;
@@ -23,10 +23,14 @@ interface UserProviderProps {
 }
 
 export const UserProvider: React.FC<UserProviderProps> = ({ children, session }) => {
-	const initialUser = decryptData<Session>(session)?.user || null;
+	const initialUser = useMemo(() => decryptData<Session>(session)?.user || null, [session]);
 	const [user, setUser] = useState<User | null>(initialUser);
 
-	// Logout
+	useEffect(() => {
+		if (initialUser) {
+			setUser(initialUser);
+		}
+	}, [initialUser]);
 
 	const router = useRouter();
 
