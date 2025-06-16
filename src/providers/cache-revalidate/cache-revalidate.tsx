@@ -37,6 +37,7 @@ const CacheRevalidate = () => {
 			return [
 				URL_ENTITIES.ESTABLISHMENT_ALL_CLIENT,
 				URL_ENTITIES.TARIFF_CLIENT_ALL,
+				URL_ENTITIES.CARD_HISTORY,
 				URL_ENTITIES.CHAT_MY,
 			];
 		}

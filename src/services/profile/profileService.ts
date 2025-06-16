@@ -43,6 +43,7 @@ class ProfileService {
 
 		return response;
 	}
+
 	static async updateProfile(payload: ProfileFormValues): Promise<ProfileUpdateResponseModel> {
 		const response = await AXIOS_PATCH<ProfileUpdateResponseModel>({
 			url: URL_ENTITIES.PROFILE,

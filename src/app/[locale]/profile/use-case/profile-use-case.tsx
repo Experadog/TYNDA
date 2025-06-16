@@ -14,7 +14,7 @@ import { useUpdateProfileUseCase } from '../update-profile/use-case/useUpdatePro
 
 interface ProfileContextType {
 	states: {
-		clientHistory: ClientHistoryResponseModel;
+		clientHistory: ClientHistoryResponseModel['data'];
 		isAvatarUpdating: boolean;
 	};
 	actions: {
@@ -27,7 +27,7 @@ interface ProfileContextType {
 
 interface ContextProps {
 	children: ReactNode;
-	clientHistoryResponse: ClientHistoryResponseModel;
+	clientHistoryResponse: ClientHistoryResponseModel['data'];
 }
 
 const ProfileContext = createContext<ProfileContextType | undefined>(undefined);
@@ -70,18 +70,18 @@ export const ProfileContextProvider: FC<ContextProps> = ({ children, clientHisto
 	};
 
 	const moveToNextClientHistory = async () => {
-		const nextPage = clientHistory.data.page + 1;
+		const nextPage = clientHistory.page + 1;
 
-		if (clientHistory.data.items.length === clientHistory.data.total) return;
+		if (clientHistory.items.length === clientHistory.total) return;
 
 		const nextPageData = await getClientHistory({ page: nextPage.toString() });
 
 		setClientHistory((prevState) => ({
 			...prevState,
 			data: {
-				...prevState.data,
+				...prevState,
 				page: nextPage,
-				items: [...prevState.data.items, ...nextPageData.data.items],
+				items: [...prevState.items, ...nextPageData.data.items],
 			},
 		}));
 	};

@@ -1,6 +1,5 @@
 'use client';
 
-import { DTOClientHistories } from '@/dto/dtoClientHistory';
 import { Slider, Translate } from '@components';
 import { useMediaQuery } from 'react-responsive';
 import { useProfileSettingsUseCase } from '../../../use-case/profile-use-case';
@@ -12,7 +11,7 @@ const RecentlyVisited = () => {
 	const { clientHistory } = states;
 	const { moveToNextClientHistory } = actions;
 
-	const isEmpty = clientHistory.data ? !clientHistory.data.items.length : true;
+	const isEmpty = !clientHistory.items.length;
 
 	const isMobile = useMediaQuery({ maxWidth: 640 });
 
@@ -26,7 +25,7 @@ const RecentlyVisited = () => {
 				Ваши недавно посещенные места
 			</span>
 
-			{!isEmpty ? (
+			{isEmpty ? (
 				<Empty />
 			) : (
 				<Slider
@@ -34,11 +33,11 @@ const RecentlyVisited = () => {
 					slidesPerView={isMobile ? 1 : 3}
 					spacing={1}
 					classNameChildren="px-3"
-					total={clientHistory.data.total}
+					total={clientHistory.total}
 					onReachEnd={moveToNextClientHistory}
-					page={clientHistory.data.page}
+					page={clientHistory.page}
 				>
-					{DTOClientHistories.map((item) => (
+					{clientHistory.items.map((item) => (
 						<RecentlyVisitedCard key={item.establishment_id} {...item} />
 					))}
 				</Slider>

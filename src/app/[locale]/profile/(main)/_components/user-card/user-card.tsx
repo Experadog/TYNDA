@@ -73,7 +73,7 @@ const UserCard = () => {
 					</div>
 				</div>
 
-				<div className="flex flex-col gap-3 items-center w-full mt-5 sm:mt-3">
+				<div className="flex flex-col gap-3 items-center w-full mt-5 sm:mt-3 mb-2">
 					<TariffCard isActive={isCardActive} data={user?.card} shouldNavigate />
 				</div>
 

@@ -195,6 +195,12 @@
 			"loading": "Updating tariff...",
 			"success": "Tariff updated successfully!",
 			"error": "Error while trying to update tariff"
+		},
+
+		"ChatCreation": {
+			"loading": "Creating chat...",
+			"success": "Chat created successfully",
+			"error": "Error while creating chat"
 		}
 	},
 	"AllEnterprises": {

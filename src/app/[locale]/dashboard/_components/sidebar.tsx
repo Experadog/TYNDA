@@ -13,8 +13,6 @@ import { MdLogout } from 'react-icons/md';
 const Sidebar = () => {
 	const { user, onLogout } = useUser();
 
-	if (!user) return null;
-
 	const pathname = usePathname();
 	const { breadCrumbs, user_role } = useViewModel(['Shared']);
 

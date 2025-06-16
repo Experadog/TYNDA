@@ -1,6 +1,4 @@
-import { URL_ENTITIES } from '@/lib';
 import type { ClientHistory } from '@business-entities';
-import { revalidateByTags } from '@common';
 import Image from 'next/image';
 import type { FC } from 'react';
 import { IoStar } from 'react-icons/io5';
@@ -12,7 +10,6 @@ const RecentlyVisitedCard: FC<ClientHistory> = (item) => {
 
 	return (
 		<div
-			onClick={() => revalidateByTags([URL_ENTITIES.CARD_HISTORY])}
 			className="
     relative flex flex-col w-full rounded-xl overflow-hidden cursor-pointer
     border border-light_gray

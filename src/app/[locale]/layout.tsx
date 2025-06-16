@@ -1,10 +1,10 @@
 import { GoogleAnalytics, Layout } from '@components';
 
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import HolyLoader from 'holy-loader';
 import type { Metadata, Viewport } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
 import { Manrope, Roboto } from 'next/font/google';
-import NextTopLoader from 'nextjs-toploader';
 
 import { type SupportedLanguages, supportedLanguages } from '@/i18n/routing';
 import { COOKIES } from '@/lib';
@@ -179,7 +179,7 @@ export default async function RootLayout({
 			</head>
 
 			<body className={`${manrope.className} ${roboto.variable} antialiased min-w-96`}>
-				<NextTopLoader
+				<HolyLoader
 					color="var(--yellow)"
 					height={3}
 					showSpinner={false}

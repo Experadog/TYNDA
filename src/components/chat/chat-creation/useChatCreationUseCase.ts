@@ -1,13 +1,22 @@
+import { useViewModel } from '@/i18n/getTranslate';
 import { useRouter } from '@/i18n/routing';
 import { PAGES, URL_ENTITIES } from '@/lib';
 import { useChatWebSocket } from '@/providers/chat-webscoket/chat-webscoket-provider';
 import {
+	type ChatCreationResponseModel,
 	type GetEstablishmentAllClientResponseModel,
 	createChat,
 	getEstablishmentAllClient,
 } from '@/services';
 import type { ChatScope } from '@business-entities';
-import { createAction, revalidateByTags, usePagination, useSearch } from '@common';
+import {
+	type Params,
+	createAction,
+	revalidateByTags,
+	useAsyncAction,
+	usePagination,
+	useSearch,
+} from '@common';
 import { useState } from 'react';
 
 type Props = {
@@ -19,6 +28,12 @@ export function useChatCreationUseCase({ establishments, scope }: Props) {
 	const [isOpen, setIsOpen] = useState(false);
 	const { connectWebSocket } = useChatWebSocket();
 	const router = useRouter();
+	const { ChatCreation } = useViewModel(['Toast']);
+
+	const { execute, isLoading: isChatCreating } = useAsyncAction<
+		ChatCreationResponseModel,
+		[Params]
+	>({ messages: ChatCreation });
 
 	const commonPath = scope === 'dashboard' ? PAGES.DASHBOARD_CHAT : PAGES.PROFILE_CHAT;
 
@@ -54,7 +69,7 @@ export function useChatCreationUseCase({ establishments, scope }: Props) {
 	};
 
 	const onCreateChat = async (establishment_id: string) => {
-		await action({ establishment_id });
+		await execute(action, { establishment_id });
 	};
 
 	const actions = {
@@ -67,6 +82,7 @@ export function useChatCreationUseCase({ establishments, scope }: Props) {
 		pagination,
 		search,
 		isOpen,
+		isChatCreating,
 	};
 
 	return { actions, states };

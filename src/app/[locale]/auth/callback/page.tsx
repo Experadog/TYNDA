@@ -16,19 +16,19 @@ const Callback = () => {
 
 		const code = params.get('code');
 		if (code) {
-			onSendGoogleCode({ code, locale });
+			setTimeout(() => {
+				onSendGoogleCode({ code, locale });
+			}, 2000);
 		}
 	}, [params, locale]);
 
 	return (
-		<div className="">
-			<Translate direction="up" animateOnce className="flex flex-col gap-3 items-center">
-				<Avatar src={'/logo.svg'} className="size-24" />
-				<h3 className="text-foreground_1 text-2xl font-semibold">Tynda KG</h3>
-				<h4 className="text-foreground_2 text-md font-normal">Идет авторизация...</h4>
-				<LoadingSpinner className="size-5 text-yellow" />
-			</Translate>
-		</div>
+		<Translate direction="up" animateOnce className="flex flex-col gap-3 items-center">
+			<Avatar src={'/logo.svg'} className="size-24" />
+			<h3 className="text-foreground_1 text-2xl font-semibold">Tynda KG</h3>
+			<h4 className="text-foreground_2 text-md font-normal">Идет авторизация...</h4>
+			<LoadingSpinner className="size-5 text-yellow" />
+		</Translate>
 	);
 };
 

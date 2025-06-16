@@ -18,7 +18,7 @@ type Props = {
 
 const ChatCreationModal = ({ establishments, scope }: Props) => {
 	const { actions, states } = useChatCreationUseCase({ establishments, scope });
-	const { isOpen, pagination, search } = states;
+	const { isOpen, pagination, search, isChatCreating } = states;
 	const { onClose, onCreateChat, onOpen } = actions;
 
 	return (
@@ -44,7 +44,7 @@ const ChatCreationModal = ({ establishments, scope }: Props) => {
 						onLoadMore={pagination.actions.onGoNextPage}
 						className="max-h-[350px] min-h-[350px] h-[350px] flex flex-col gap-1 pb-3"
 					>
-						{search.isLoading ? (
+						{search.isLoading || isChatCreating ? (
 							<LoadingSpinner className="text-yellow size-10 m-auto" />
 						) : (
 							pagination.states.list.map((item) => (
