@@ -4,6 +4,7 @@ import { DTOEmptyCommonPagination, DTOEmptyCommonResponse } from '@/dto/dtoEmpty
 import { API_URL, LOGGER, isEmptyObject } from '@/lib';
 import { getSession } from '../session-manager/session-manager';
 import type { Params } from '../types/http.types';
+import { sendErrorToTelegram } from './sendUserErrorToTelegram';
 
 type Props = {
 	endpoint: string;
@@ -14,7 +15,16 @@ type Props = {
 	revalidateTags?: string[];
 };
 
-const onError = <T>(params?: Params, text?: string): T => {
+const onError = async <T>(
+	pathWithPostfix: string,
+	params?: Params,
+	text?: string,
+	code?: number,
+): Promise<T> => {
+	await sendErrorToTelegram({
+		message: `Error in ${pathWithPostfix}, errors: message: '${text}(${code})`,
+	});
+
 	if (params?.page || params?.size) {
 		return DTOEmptyCommonPagination(text) as T;
 	}
@@ -52,7 +62,7 @@ export async function createFetchAction<T>({
 		const session = await getSession();
 
 		if (!session) {
-			return onError(params, 'Session not found');
+			return onError(pathWithPostfix, params, 'Session not found');
 		}
 
 		const tokens = `access_token=${session.access_token}; refresh_token=${session.refresh_token}`;
@@ -75,7 +85,7 @@ export async function createFetchAction<T>({
 				`Fetch failed: ${response.statusText}(${response.status}) ${pathWithPostfix}`,
 			);
 
-			return onError(params, response.statusText);
+			return onError(pathWithPostfix, params, response.statusText, response.status);
 		}
 
 		LOGGER.success(`Received data from: ${pathWithPostfix} `);
@@ -83,6 +93,6 @@ export async function createFetchAction<T>({
 		return data;
 	} catch (error) {
 		LOGGER.error(error);
-		return onError(params);
+		return onError(pathWithPostfix, params, 'Internal Error');
 	}
 }

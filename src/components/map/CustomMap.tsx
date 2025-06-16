@@ -126,7 +126,7 @@ const CustomMap = ({
 	useEffect(() => {
 		if (mapSearchCoords?.length) {
 			setPosition(mapSearchCoords);
-			flyTo(mapSearchCoords, 15);
+			flyTo(mapSearchCoords, 17);
 			onMark?.(mapSearchCoords);
 		}
 	}, [mapSearchCoords, flyTo, onMark]);
@@ -170,7 +170,7 @@ const CustomMap = ({
 							size={'sm'}
 							disabled={!position}
 							className="w-full border border-light_gray rounded-l-xl hover:bg-yellow hover:text-white bg-background_1 !transform-none"
-							onClick={() => flyTo(position)}
+							onClick={() => flyTo(position, 17)}
 						>
 							Найти маркер
 						</Button>

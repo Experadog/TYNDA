@@ -345,7 +345,8 @@
 		"coordinates_required": "Ишкананын жайгашкан жерин белгилеңиз",
 		"lt_100": "Маани 100дөн ашпоого тийиш",
 		"create_or_select_establisher": "Владельцти тандаңыз же түзүңүз",
-		"password_not_math": "Сырсөздөр дал келбейт"
+		"password_not_math": "Сырсөздөр дал келбейт",
+		"invalid_coordinates": "Туура координат маанилерин киргизиңиз"
 	},
 	"Shared": {
 		"establishment_categories": {

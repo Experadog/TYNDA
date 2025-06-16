@@ -93,14 +93,30 @@ const establishmentFormShape = (
 				)
 				.optional(),
 
-			coordinates: z
-				.object({
-					latitude: z.number().optional(),
-					longitude: z.number().optional(),
-				})
-				.refine((data) => data.latitude !== undefined && data.longitude !== undefined, {
-					message: messages.coordinates_required,
-				}),
+			coordinates: z.object({
+				latitude: z.preprocess(
+					(val) => {
+						if (!val) return undefined;
+						const num = Number(val);
+						return Number.isNaN(num) ? undefined : num;
+					},
+					z
+						.number({ required_error: messages.required })
+						.min(-90, { message: messages.invalid_coordinates })
+						.max(90, { message: messages.invalid_coordinates }),
+				),
+				longitude: z.preprocess(
+					(val) => {
+						if (!val) return undefined;
+						const num = Number(val);
+						return Number.isNaN(num) ? undefined : num;
+					},
+					z
+						.number({ required_error: messages.required })
+						.min(-180, { message: messages.invalid_coordinates })
+						.max(180, { message: messages.invalid_coordinates }),
+				),
+			}),
 
 			translates: z.object(translates),
 
@@ -187,7 +203,10 @@ export const defaultValue: EstablishmentDetailedDefaultValue = {
 	address: '',
 	category: undefined,
 	contacts: {},
-	coordinates: {},
+	coordinates: {
+		latitude: undefined,
+		longitude: undefined,
+	},
 	translates: supportedLanguages.reduce(
 		(acc, lang) => {
 			acc[lang] = { name: '', description: '' };

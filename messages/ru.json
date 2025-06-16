@@ -340,10 +340,11 @@
 		"invalid_url": "Введите корректный URL",
 		"cover_required": "Добавьте главное изображение",
 		"images_required": "Добавьте изображение",
-		"coordinates_required": "Укажите предприятие на карте",
+		"coordinates_required": "Укажите предприятие на карте или введите вручную",
 		"lt_100": "Значение должно быть не больше 100",
 		"create_or_select_establisher": "Создайте или выберите владельца",
-		"password_not_math": "Пароли не совпадают"
+		"password_not_math": "Пароли не совпадают",
+		"invalid_coordinates": "Введите правильные параметры координат"
 	},
 	"Shared": {
 		"establishment_categories": {

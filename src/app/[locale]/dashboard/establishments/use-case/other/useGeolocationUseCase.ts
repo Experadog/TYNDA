@@ -9,11 +9,15 @@ type Props = {
 export function useGeolocationUseCase({ schema }: Props) {
 	const [isMapOpen, setIsMapOpen] = useState(false);
 
-	const coordinates =
-		useWatch({
-			control: schema.control,
-			name: 'coordinates',
-		}) || {};
+	const latitude = useWatch({
+		control: schema.control,
+		name: 'coordinates.latitude',
+	});
+
+	const longitude = useWatch({
+		control: schema.control,
+		name: 'coordinates.longitude',
+	});
 
 	const onOpenMap = () => setIsMapOpen(true);
 	const onCloseMap = () => setIsMapOpen(false);
@@ -24,6 +28,10 @@ export function useGeolocationUseCase({ schema }: Props) {
 		},
 		[schema.setValue],
 	);
+
+	const resetCoordinates = () => {
+		schema.resetField('coordinates');
+	};
 
 	const triggerSchema = useCallback(() => schema.trigger('coordinates'), [schema]);
 
@@ -40,7 +48,7 @@ export function useGeolocationUseCase({ schema }: Props) {
 	);
 
 	const onDeleteMark = useCallback(() => {
-		setSchemaValue({});
+		resetCoordinates();
 		triggerSchema();
 	}, [setSchemaValue, triggerSchema]);
 
@@ -49,12 +57,12 @@ export function useGeolocationUseCase({ schema }: Props) {
 	}, [schema.formState.errors.coordinates?.message]);
 
 	const defaultMarkerCoordinates = useMemo((): [number, number] | null => {
-		const { latitude, longitude } = coordinates;
-
-		if (latitude && longitude) return [latitude, longitude];
+		if (latitude && longitude) {
+			return [Number(latitude), Number(longitude)];
+		}
 
 		return null;
-	}, [coordinates]);
+	}, [latitude, longitude]);
 
 	return {
 		actions: {
