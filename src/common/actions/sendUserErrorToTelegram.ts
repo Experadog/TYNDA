@@ -1,8 +1,7 @@
 'use server';
 
-import { COOKIES, EXTERNAL_APIS, TELEGRAM_CHAT_ID, TELEGRAM_KEY } from '@/lib';
-import type { Session } from '@business-entities';
-import { getCookie } from './get-cookie';
+import { EXTERNAL_APIS, TELEGRAM_CHAT_ID, TELEGRAM_KEY } from '@/lib';
+import { getSession } from '../session-manager/session-manager';
 
 type SerializedError = {
 	message: string;
@@ -12,7 +11,7 @@ type SerializedError = {
 
 export async function sendErrorToTelegram(serializedError: SerializedError) {
 	try {
-		const session = await getCookie<Session>(COOKIES.SESSION, true);
+		const session = await getSession();
 		const userEmail = session?.user.email || 'Не авторизован';
 
 		const timestamp = new Date().toLocaleString('ru-RU', {

@@ -343,7 +343,8 @@
 		"coordinates_required": "Please specify the business location",
 		"lt_100": "Value must not exceed 100",
 		"create_or_select_establisher": "Create or select an owner",
-		"password_not_math": "Passwords do not match"
+		"password_not_math": "Passwords do not match",
+		"invalid_coordinates": "Enter valid coordinate values"
 	},
 	"Shared": {
 		"establishment_categories": {

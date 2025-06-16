@@ -2,6 +2,7 @@
 
 import { API_URL, COOKIES, LOGGER, getTokensFromSession } from '@/lib';
 import axios, { type AxiosError, type AxiosInstance, type AxiosResponse } from 'axios';
+import { sendErrorToTelegram } from '../actions/sendUserErrorToTelegram';
 import type { Params } from '../types/http.types';
 import type { CommonResponse } from '../types/responses.types';
 
@@ -44,7 +45,9 @@ axiosInstance.interceptors.response.use(
 	async (error: AxiosError) => {
 		const { response } = error;
 		const data = response?.data as CommonResponse<null>;
-
+		await sendErrorToTelegram({
+			message: `Error in ${response?.config.url}, errors: message: '${data.msg}(${data.code})`,
+		});
 		LOGGER.error(
 			`Error in ${response?.config.url}, errors: message: '${data.msg}(${data.code})'`,
 		);

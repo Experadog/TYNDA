@@ -1,14 +1,11 @@
-'use server';
-
 import { EXTERNAL_APIS, LOGGER } from '@/lib';
 import type { Params } from '../types/http.types';
+import { sendErrorToTelegram } from './sendUserErrorToTelegram';
 
 type Props = {
 	endpoint: string;
 	params?: Params;
 	postfix?: (string | number)[];
-	revalidate?: boolean;
-	revalidateTags?: string[];
 	baseURLKey: keyof typeof EXTERNAL_APIS;
 };
 
@@ -16,15 +13,12 @@ export async function createExternalFetchAction<T>({
 	endpoint,
 	params,
 	postfix = [],
-	revalidate = false,
-	revalidateTags,
 	baseURLKey,
 }: Props): Promise<T> {
 	const cleanBaseUrl = EXTERNAL_APIS[baseURLKey]?.replace(/\/$/, '');
 	const cleanEndpoint = endpoint.replace(/^\//, '');
 
 	const pathWithPostfix = [cleanEndpoint, ...postfix.map((p) => encodeURIComponent(p))].join('/');
-
 	const url = new URL(`${cleanBaseUrl}/${pathWithPostfix}`);
 
 	if (params) {
@@ -40,23 +34,23 @@ export async function createExternalFetchAction<T>({
 	try {
 		const response = await fetch(url.toString(), {
 			method: 'GET',
-			credentials: 'include',
-			cache: revalidate ? 'no-store' : 'force-cache',
 			headers,
-			next: { tags: revalidateTags },
+			cache: 'no-store',
 		});
 
 		if (!response.ok) {
+			await sendErrorToTelegram({
+				message: `Error in ${pathWithPostfix}, message:${response.statusText}`,
+			});
 			LOGGER.error(`Fetch failed: ${response.statusText}`);
 			return {} as T;
 		}
 
 		const data: T = await response.json();
-		// LOGGER.success(`Received data from ${JSON.stringify(data, null, 2)}`);
-		LOGGER.success(`Received data from: ${cleanEndpoint} `);
-
+		LOGGER.success(`Received data from: ${cleanEndpoint}`);
 		return data;
 	} catch (error) {
+		await sendErrorToTelegram({ message: `Error in ${pathWithPostfix}, message:${error}` });
 		LOGGER.error(error);
 		return {} as T;
 	}

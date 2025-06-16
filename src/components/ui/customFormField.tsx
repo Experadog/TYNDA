@@ -31,6 +31,7 @@ interface IProps<T extends FieldValues> {
 	postfix?: ReactNode;
 	showError?: boolean;
 	defaultValue?: string;
+	step?: string | number | undefined;
 }
 
 export const CustomFormField = <T extends FieldValues>({
@@ -51,6 +52,7 @@ export const CustomFormField = <T extends FieldValues>({
 	showError = true,
 	postfix,
 	defaultValue,
+	step,
 }: IProps<T>) => {
 	const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
@@ -89,6 +91,7 @@ export const CustomFormField = <T extends FieldValues>({
 										{...field}
 										max={max}
 										min={min}
+										step={step}
 										value={field.value ?? ''}
 										className={clsx(
 											'outline-none placeholder:text-placeholder placeholder:font-normal rounded-xl px-4 py-6 numeric border border-light_gray font-normal bg-input_bg text-foreground_1',

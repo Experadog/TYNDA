@@ -59,6 +59,7 @@ const nextConfig: NextConfig = {
     font-src 'self';
     connect-src 'self'
       https://tile.openstreetmap.org
+      https://nominatim.openstreetmap.org
       https://www.google-analytics.com
       https://api.telegram.org
       wss://soyuz.kg;

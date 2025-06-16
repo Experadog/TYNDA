@@ -1,7 +1,7 @@
 'use client';
 
 import type { EstablishmentSchema } from '@common';
-import { Button, LoadingSpinner } from '@components';
+import { Button, CustomFormField, LoadingSpinner } from '@components';
 import dynamic from 'next/dynamic';
 import { useGeolocationUseCase } from '../../../../use-case/other/useGeolocationUseCase';
 
@@ -27,20 +27,21 @@ const GeolocationBlock = ({ schema }: Props) => {
 	} = geolocationUseCase;
 
 	return (
-		<div className="flex flex-col gap-3 font-roboto w-full max-w-full">
+		<div className="flex flex-col gap-4 font-roboto w-full max-w-full">
 			<div className="flex items-center justify-between">
 				<p className="text-foreground_1 text-base font-medium">
 					{defaultMarkerCoordinates?.length ? (
 						<>
-							Объект указан:{' '}
+							Координаты:{' '}
 							<span className="text-yellow text-sm">
 								{defaultMarkerCoordinates.join('; ')}
 							</span>
 						</>
 					) : (
-						'Укажите объект на карте'
+						'Укажите координаты (на карте или вручную)'
 					)}
 				</p>
+
 				<Button
 					type="button"
 					variant={'yellow'}
@@ -50,6 +51,23 @@ const GeolocationBlock = ({ schema }: Props) => {
 				>
 					Открыть карту
 				</Button>
+			</div>
+			<div className="w-full h-[1px] bg-light_gray flex flex-col gap-3" />
+
+			<div className="flex flex-col gap-3">
+				<CustomFormField
+					control={schema.control}
+					placeholder="Широта"
+					name="coordinates.latitude"
+					type="number"
+				/>
+
+				<CustomFormField
+					control={schema.control}
+					placeholder="Долгота"
+					name="coordinates.longitude"
+					type="number"
+				/>
 			</div>
 
 			{isMapOpen && (

@@ -1,9 +1,14 @@
 'use client';
 
 import { useUser } from '@/providers/user/user-provider';
+import { UserRole } from '@business-entities';
 
 const DashboardMeetView = () => {
 	const { user } = useUser();
+
+	const isEstablisher = user?.role === UserRole.ESTABLISHER;
+	const isSuperAdmin = user?.is_superuser;
+	const isStaff = user?.role === UserRole.ESTABLISHER_WORKER;
 
 	return (
 		<div className="w-full h-full flex flex-col gap-6">
@@ -17,35 +22,46 @@ const DashboardMeetView = () => {
 				</p>
 			</div>
 
-			<div>
-				<h3 className="text-xl font-semibold mb-2">Основные разделы:</h3>
-				<ul className="list-disc list-inside text-gray-700 space-y-1 text-gray">
-					<li>
-						<strong className="italic text-foreground_1">Предприятия</strong> — список
-						всех доступных компаний, возможность добавления и редактирования.
-					</li>
-					<li>
-						<strong className="italic text-foreground_1">Сотрудники</strong> —
-						добавление, редактирование и управление правами доступа персонала.
-					</li>
-					<li>
-						<strong className="italic text-foreground_1">Роли</strong> — настройка
-						уровней доступа и ролей для безопасности и гибкости.
-					</li>
-					<li>
-						<strong className="italic text-foreground_1">Взаимодействие</strong> —
-						коммуникация и взаимодействие внутри платформы.
-					</li>
-					<li>
-						<strong className="italic text-foreground_1">Скидки и акции</strong> —
-						управление маркетинговыми кампаниями, акциями и предложениями.
-					</li>
-					<li>
-						<strong className="italic text-foreground_1">Настройки</strong> —
-						персонализация профиля, языка, уведомлений и других параметров.
-					</li>
-				</ul>
-			</div>
+			{isSuperAdmin && (
+				<div>
+					<h3 className="text-xl font-semibold mb-2 text-foreground_1">
+						Возможности администратора:
+					</h3>
+					<ul className="list-disc list-inside text-gray space-y-1">
+						<li>Полный доступ ко всем предприятиям и данным системы.</li>
+						<li>Создание и управление компаниями и пользователями.</li>
+						<li>Гибкая настройка прав доступа и ролей.</li>
+						<li>Управление глобальными настройками платформы.</li>
+					</ul>
+				</div>
+			)}
+
+			{isEstablisher && (
+				<div>
+					<h3 className="text-xl font-semibold mb-2 text-foreground_1">
+						Возможности владельца предприятия:
+					</h3>
+					<ul className="list-disc list-inside text-gray space-y-1">
+						<li>Управление своими предприятиями и сотрудниками.</li>
+						<li>Real-time чат с клиентами</li>
+						<li>Создание и управление скидками, акциями и предложениями.</li>
+						<li>Настройка параметров предприятия и профиля.</li>
+					</ul>
+				</div>
+			)}
+
+			{isStaff && (
+				<div>
+					<h3 className="text-xl font-semibold mb-2 text-foreground_1">
+						Возможности сотрудника:
+					</h3>
+					<ul className="list-disc list-inside text-gray space-y-1">
+						<li>Просмотр и выполнение задач, доступных по своим правам.</li>
+						<li>Взаимодействие с клиентами и коллегами.</li>
+						<li>Доступ к внутренним процессам компании в рамках своей роли.</li>
+					</ul>
+				</div>
+			)}
 
 			<div>
 				<h3 className="text-xl font-semibold mb-2 text-foreground_1">
