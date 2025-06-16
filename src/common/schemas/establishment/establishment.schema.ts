@@ -145,8 +145,8 @@ const establishmentFormShape = (
 				const num = Number(val);
 				return Number.isNaN(num) ? val : num;
 			}, z
-				.number({ invalid_type_error: messages.gt_0 })
-				.positive({ message: messages.gt_0 })
+				.number({ invalid_type_error: messages.required })
+				.min(0, { message: messages.gt_0 })
 				.nullable()
 				.optional()),
 
@@ -160,11 +160,12 @@ const establishmentFormShape = (
 					},
 					z
 						.number({
-							invalid_type_error: messages.gt_0,
+							invalid_type_error: messages.required,
 						})
-						.refine((val) => val >= 0, { message: messages.gt_0 }) // теперь >=0, чтобы 0 тоже прошло
-						.refine((val) => val < 100, { message: messages.lt_100 }),
+						.min(0, { message: messages.gt_0 })
+						.max(100, { message: messages.lt_100 }),
 				)
+				.nullable()
 				.optional(),
 		})
 

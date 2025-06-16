@@ -72,6 +72,7 @@ export function useCreationUseCase({ viewModel }: Props) {
 			establisher_id,
 			...rest
 		} = data;
+
 		if (!cover) return;
 
 		const allFiles = [cover, ...images];
