@@ -2,7 +2,7 @@
 
 import { useViewModel } from '@/i18n/getTranslate';
 import { useRouter } from '@/i18n/routing';
-import { PAGES, phoneFormatter } from '@/lib';
+import { PAGES, URL_ENTITIES, phoneFormatter } from '@/lib';
 import { useUser } from '@/providers/user/user-provider';
 import type {
 	CredentialsUpdateRequestModel,
@@ -24,6 +24,7 @@ import {
 	createCredentialsSchema,
 	createProfileSchema,
 	pushCommonToast,
+	revalidateByTags,
 	useAsyncAction,
 } from '@common';
 import {
@@ -133,6 +134,7 @@ export const UpdateProfileProvider: React.FC<{ children: ReactNode }> = ({ child
 	const actions = {
 		updateProfileAction: createAction({
 			requestAction: updateProfile,
+			onSuccess: () => revalidateByTags([URL_ENTITIES.PROFILE]),
 		}),
 
 		phone: {

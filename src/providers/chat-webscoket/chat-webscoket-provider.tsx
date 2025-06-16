@@ -112,7 +112,7 @@ export const ChatWebSocketProvider = ({ session, children }: ChatWebSocketProvid
 						return;
 					}
 
-					if (response.code !== 200) {
+					if (response.code && response.code !== 200) {
 						pushCommonToast('Веб-Сокет не подключен', 'info', {
 							icon: <RiChatDeleteLine className="text-yellow" />,
 						});
