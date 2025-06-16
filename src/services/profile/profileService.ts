@@ -5,7 +5,6 @@ import { DTOEmptyCommonResponse } from '@/dto/dtoEmpty';
 import { URL_ENTITIES, isSuccessResponse } from '@/lib';
 import type { Session } from '@business-entities';
 import {
-	AXIOS_GET,
 	AXIOS_PATCH,
 	AXIOS_POST,
 	type CommonDataStringResponse,
@@ -25,8 +24,10 @@ import type {
 
 class ProfileService {
 	static async getProfileInfo() {
-		const response = await AXIOS_GET<ProfileResponseModel>({
-			url: URL_ENTITIES.PROFILE,
+		const response = await createFetchAction<ProfileResponseModel>({
+			endpoint: URL_ENTITIES.PROFILE,
+			shouldBeAuthorized: true,
+			revalidateTags: [URL_ENTITIES.PROFILE],
 		});
 
 		return response;
