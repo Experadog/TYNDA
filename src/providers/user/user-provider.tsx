@@ -27,10 +27,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children, session })
 	const [user, setUser] = useState<User | null>(initialUser);
 
 	useEffect(() => {
-		if (initialUser) {
-			setUser(initialUser);
-		}
-	}, [initialUser]);
+		setUser(initialUser);
+	}, [session]);
 
 	const router = useRouter();
 
@@ -41,12 +39,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children, session })
 
 	const logoutAction = createAction({
 		requestAction: logout,
-		onSuccess: () => {
-			router.push(PAGES.LOGIN);
-			setTimeout(() => {
-				setUser(null);
-			}, 300);
-		},
+		onSuccess: () => router.push(PAGES.LOGIN),
 	});
 
 	const onLogout = async () => {

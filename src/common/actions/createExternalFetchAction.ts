@@ -41,6 +41,7 @@ export async function createExternalFetchAction<T>({
 		if (!response.ok) {
 			await sendErrorToTelegram({
 				message: `Error in ${pathWithPostfix}, message:${response.statusText}`,
+				payload: JSON.stringify(params || {}),
 			});
 			LOGGER.error(`Fetch failed: ${response.statusText}`);
 			return {} as T;
@@ -50,7 +51,10 @@ export async function createExternalFetchAction<T>({
 		LOGGER.success(`Received data from: ${cleanEndpoint}`);
 		return data;
 	} catch (error) {
-		await sendErrorToTelegram({ message: `Error in ${pathWithPostfix}, message:${error}` });
+		await sendErrorToTelegram({
+			message: `Error in ${pathWithPostfix}, message:${error}`,
+			payload: JSON.stringify(params || {}),
+		});
 		LOGGER.error(error);
 		return {} as T;
 	}

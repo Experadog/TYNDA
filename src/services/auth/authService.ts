@@ -1,7 +1,8 @@
 'use server';
 
+import { createFetchAction } from '@/common/actions/createFetchAction';
 import { URL_ENTITIES, isSuccessResponse } from '@/lib';
-import { AXIOS_GET, AXIOS_POST, clearSession, setSession } from '@common';
+import { AXIOS_POST, clearSession, setSession } from '@common';
 import type {
 	AccountActivationRequestModel,
 	AccountActivationResponseModel,
@@ -43,8 +44,9 @@ class AuthService {
 		code,
 		locale,
 	}: GoogleLoginRequestModel): Promise<GoogleLoginResponseModel> {
-		const response = await AXIOS_GET<GoogleLoginResponseModel>({
-			url: URL_ENTITIES.CALLBACK_GOOGLE,
+		const response = await createFetchAction<GoogleLoginResponseModel>({
+			endpoint: URL_ENTITIES.CALLBACK_GOOGLE,
+			shouldBeAuthorized: false,
 			params: {
 				code,
 				state: locale,

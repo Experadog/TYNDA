@@ -23,6 +23,7 @@ const onError = async <T>(
 ): Promise<T> => {
 	await sendErrorToTelegram({
 		message: `Error in ${pathWithPostfix}, errors: message: '${text}(${code})`,
+		payload: JSON.stringify(params || {}),
 	});
 
 	if (params?.page || params?.size) {

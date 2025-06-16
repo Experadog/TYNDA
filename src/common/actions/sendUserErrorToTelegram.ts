@@ -7,6 +7,7 @@ type SerializedError = {
 	message: string;
 	stack?: string;
 	componentStack?: string;
+	payload?: unknown;
 };
 
 export async function sendErrorToTelegram(serializedError: SerializedError) {
@@ -32,6 +33,9 @@ export async function sendErrorToTelegram(serializedError: SerializedError) {
 
 📄 *Сообщение:*  
 \`${serializedError.message}\`
+
+📊 *Полезная нагрузка:*  
+\`${serializedError.payload}\`
 
 📌 *Stack:*  
 \`\`\`
