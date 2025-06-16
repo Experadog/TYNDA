@@ -69,7 +69,6 @@ export function useUpdatingUseCase({ viewModel, refetchPagination }: Props) {
 			...rest,
 			cover: uploadedCover,
 			images: uploadedImages,
-			discount: data?.discount || undefined,
 			work_time,
 		};
 
