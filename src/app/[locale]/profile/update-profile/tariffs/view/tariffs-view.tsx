@@ -17,7 +17,7 @@ const TariffsView = ({ other_tariffs, userCard }: Props) => {
 	const { locale } = useLocale();
 	const viewModel = useViewModel(['Shared']);
 
-	const translation = userCard.tariff.translates?.[locale];
+	const translation = userCard?.tariff.translates?.[locale];
 
 	return (
 		<div className="p-5 flex flex-col gap-12">
@@ -51,17 +51,17 @@ const TariffsView = ({ other_tariffs, userCard }: Props) => {
 				<div className="flex flex-col gap-3  bg-background_3  p-3 rounded-xl border border-light_gray ">
 					<div className="flex  items-center justify-between font-roboto text-foreground_1 font-normal">
 						<p>Статус</p>
-						{viewModel.entity_status[userCard.tariff.status]}
+						{viewModel.entity_status[userCard?.tariff.status]}
 					</div>
 
 					<div className="flex   items-center justify-between font-roboto text-foreground_1 font-normal">
 						<p>Стоимость</p>
-						<p>{priceFormatter(userCard.tariff.price, 'с')}</p>
+						<p>{priceFormatter(userCard?.tariff.price, 'с')}</p>
 					</div>
 
 					<div className="flex   items-center justify-between font-roboto text-foreground_1 font-normal">
 						<p>Активен до</p>
-						<p>{formatDate(userCard.expire_date, { showTime: true })}</p>
+						<p>{formatDate(userCard?.expire_date, { showTime: true })}</p>
 					</div>
 				</div>
 			</div>

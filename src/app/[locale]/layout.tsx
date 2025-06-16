@@ -27,18 +27,19 @@ const roboto = Roboto({
 export const metadata: Metadata = {
 	title: 'Tynda.kg',
 	description:
-		'Tynda.kg — уникальная онлайн-платформа для путешествий и отдыха в Кыргызстане. Здесь собраны туры, глэмпинги, юрты, рестораны, отели, развлечения и всё, что нужно туристу.',
+		'Tynda.kg — уникальная онлайн-платформа для путешествий и отдыха в Кыргызской Республике. Здесь собраны туры, глэмпинги, юрты, рестораны, отели, развлечения и всё, что нужно туристу.',
 	icons: '/page-icon.ico',
 	robots: 'index, follow',
 	keywords:
-		'туризм, Кыргызстан, отдых, путешествия, юрта, глэмпинг, рестораны, кафе, отели, развлечения, экскурсии, горы, озёра, природа, эко-туризм, сервисы для туристов, Tynda, Tynda.kg, travel, Kyrgyzstan, yurt, glamping, mountain, lakes, eco tourism, restaurants, hotels, entertainment',
+		'туризм, Кыргызстан, Кыргызская Республика, отдых, путешествия, юрта, глэмпинг, рестораны, кафе, отели, развлечения, экскурсии, горы, озёра, природа, эко-туризм, сервисы для туристов, Tynda, Tynda.kg, travel, Kyrgyzstan, Kyrgyz Republic yurt, glamping, mountain, lakes, eco tourism, restaurants, hotels, entertainment',
 	metadataBase: new URL('https://tynda.kg'),
 	authors: { name: 'Команда Tynda.kg' },
 	publisher: 'Tynda.kg',
 	openGraph: {
 		title: 'Tynda.kg',
 		description:
-			'Tynda.kg — все для путешествий и отдыха в Кыргызстане: туры, глэмпинги, юрты, рестораны, отели, развлечения и многое другое.',
+			'Tynda.kg — все для путешествий и отдыха в Кыргызской Республике: туры, глэмпинги, юрты, рестораны, отели, развлечения и многое другое.',
+
 		images: ['/home/herobg.webp'],
 		url: 'https://tynda.kg',
 		type: 'website',

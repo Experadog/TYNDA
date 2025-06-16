@@ -15,7 +15,7 @@ const UserCard = () => {
 	} = useProfileSettingsUseCase();
 
 	const avatar = user?.avatar || '/other/avatar-placeholder.webp';
-	const isCardActive = user?.card.tariff.status === 'enable' || false;
+	const isCardActive = user?.card?.tariff.status === 'enable' || false;
 
 	return (
 		<Translate

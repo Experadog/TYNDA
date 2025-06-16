@@ -26,7 +26,7 @@
 	"Home": {
 		"hero": {
 			"title": "Tourism & Leisure",
-			"description": "Join and subscribe to TYNDA. Let’s unite and make life in Kyrgyzstan brighter and more exciting!",
+			"description": "Join and subscribe to TYNDA. Let’s unite and make life in the Kyrgyz Republic brighter and more exciting!",
 			"button": "Join Us"
 		},
 		"recommendation": {
@@ -54,9 +54,9 @@
 		},
 		"adMobile": {
 			"title": "TYNDA Mobile App",
-			"description1": "On our platform, we aim to provide everything you need for a comfortable and safe trip around Kyrgyzstan. From information about attractions to booking accommodation and transport - everything in one place, with maximum simplicity and convenience.",
+			"description1": "On our platform, we aim to provide everything you need for a comfortable and safe trip around the Kyrgyz Republic. From information about attractions to booking accommodation and transport - everything in one place, with maximum simplicity and convenience.",
 			"description2": "TYNDA is your personal guide, assistant and service. You can get legal support, learn about upcoming events, sign up for excursions or find travel companions. We have combined useful things with opportunities to earn money: join our community and offer your own services or events.",
-			"description3": "With TYNDA you don’t just travel – you discover Kyrgyzstan in a new way.",
+			"description3": "With TYNDA you don’t just travel – you discover the Kyrgyz Republic in a new way.",
 			"links": "Available on"
 		},
 		"about": {
@@ -66,7 +66,7 @@
 			"title3": "with",
 			"title4": "TYNDA",
 			"description1": "Our project’s club format offers special tools for participants and corporate discounts from our partners.",
-			"description2": "With TYNDA, you can not only live and travel in Kyrgyzstan but also earn with us. Join our club and participate in our events or order a turnkey event.",
+			"description2": "With TYNDA, you can not only live and travel in the Kyrgyz Republic but also earn with us. Join our club, participate in our events, or order a turnkey event.",
 			"stats1": "support & assistance",
 			"stats2": "unique routes",
 			"stats3": "satisfied clients"
@@ -250,7 +250,7 @@
 			"autoRenewed": "Auto-renewal. Cancel anytime.",
 			"bonuses": [
 				"Smart search + personalized recommendations",
-				"Offline maps of Kyrgyzstan",
+				"Offline maps of the Kyrgyz Republic",
 				"Elite selection of verified locations",
 				"Discounts and deals up to 30% from partners",
 				"Free privileges (welcome drinks, etc.)",
@@ -298,7 +298,7 @@
 		},
 		"firstService": {
 			"text1": "TYNDA—the first service of this",
-			"text2": "level in Kyrgyzstan!",
+			"text2": "level in the Kyrgyz Republic!",
 			"text3": "Subscribe today and",
 			"text4": "travel comfortably & affordably!"
 		}
@@ -422,9 +422,9 @@
 			"about": "About the company"
 		},
 		"Conductor": {
-			"title": "Tynda is your guide to the world of real Kyrgyzstan, as you saw it.",
+			"title": "Tynda is your guide to the world of the real Kyrgyz Republic, as you know it.",
 			"description1": "From cozy yurts under the starry sky to luxurious VIP tours - everything is in our app.",
-			"description2": "Tynda is the first and only online platform for tourism and recreation in Kyrgyzstan, where authenticity and modern comfort harmoniously combine. Here you will find any travel options - from a soulful rest in a traditional yurt to elite glamping and individual premium tours."
+			"description2": "Tynda is the first and only online platform for tourism and recreation in the Kyrgyz Republic, where authenticity and modern comfort harmoniously combine. Here you will find a variety of travel options – from a soulful rest in a traditional yurt to elite glamping and personalized premium tours."
 		},
 		"WhyTynda": {
 			"question1": "Why Tynda?",
