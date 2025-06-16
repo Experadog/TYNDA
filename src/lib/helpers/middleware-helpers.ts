@@ -215,7 +215,7 @@ export async function tryRefreshSession(req: NextRequest, response: NextResponse
 
 	const expireTimeMs = new Date(sessionData.access_token_expire_time).getTime();
 	const now = Date.now();
-	const SAFETY_WINDOW_MS = REVALIDATE.FIFTEEN_SECONDS;
+	const SAFETY_WINDOW_MS = REVALIDATE.ONE_HOUR;
 
 	if (sessionData.refresh_in_progress) {
 		LOGGER.info('Skipping refresh: already in progress');
