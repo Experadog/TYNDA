@@ -21,16 +21,24 @@ export function useSessionManager(initialSessionStr: string) {
 	const [isLoading, setIsLoading] = useState(false);
 
 	const clearSession = useCallback(async () => {
-		await fetch(`/api${URL_LOCAL_ENTITIES.CLEAR_SESSION}`, {
-			method: 'DELETE',
-		})
-			.then(() => {
-				setUser(null);
-				setTimeout(() => {
-					setIsLoading(false);
-				}, 3000);
-			})
-			.finally(() => router.refresh());
+		try {
+			await fetch(`/api${URL_LOCAL_ENTITIES.CLEAR_SESSION}`, {
+				method: 'DELETE',
+			});
+		} catch (error) {
+			console.error('Ошибка очистки сессии:', error);
+		} finally {
+			setTimeout(() => {
+				setIsLoading(false);
+				router.refresh();
+
+				const userResetDelay = setTimeout(() => {
+					setUser(null);
+				}, 1000);
+
+				return () => clearTimeout(userResetDelay);
+			}, 3000);
+		}
 	}, [router]);
 
 	const checkSession = useCallback(
