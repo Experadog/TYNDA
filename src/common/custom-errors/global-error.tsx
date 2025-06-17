@@ -4,7 +4,7 @@ import { URL_LOCAL_ENTITIES } from '@/lib';
 import { Button, ImgMask, LoadingSpinner } from '@components';
 import { AlertTriangle } from 'lucide-react';
 import React, { type ReactNode } from 'react';
-import { sendErrorToTelegram } from '../actions/sendUserErrorToTelegram';
+import { UnauthorizedError } from './unauthorized-error';
 
 type Props = {
 	children: ReactNode;
@@ -33,10 +33,10 @@ class ErrorBoundary extends React.Component<Props, State> {
 	}
 
 	static getDerivedStateFromError(error: Error): State {
-		const msg = error.message?.toLowerCase() || '';
-		const isSessionExpired = msg.includes('401') || msg.includes('unauthorized');
-
-		sendErrorToTelegram({ message: JSON.stringify(error) });
+		const isSessionExpired =
+			error instanceof UnauthorizedError ||
+			error.message === 'Unauthorized' ||
+			error.name === 'UnauthorizedError';
 
 		return {
 			hasError: true,

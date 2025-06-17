@@ -1,7 +1,8 @@
 'use server';
 
 import { DTOEmptyCommonPagination, DTOEmptyCommonResponse } from '@/dto/dtoEmpty';
-import { API_URL, LOGGER, ORIGIN, URL_LOCAL_ENTITIES, isEmptyObject } from '@/lib';
+import { API_URL, LOGGER, isEmptyObject } from '@/lib';
+import { UnauthorizedError } from '../custom-errors/unauthorized-error';
 import { getSession } from '../session-manager/session-manager';
 import type { Params } from '../types/http.types';
 import { sendErrorToTelegram } from './sendUserErrorToTelegram';
@@ -77,16 +78,11 @@ export async function createFetchAction<T>({
 			next: { tags: revalidateTags },
 		});
 
-		const data: T = await response.json();
-
 		if (response.status === 401) {
-			await fetch(`${ORIGIN}/api${URL_LOCAL_ENTITIES.CLEAR_SESSION}`, {
-				method: 'DELETE',
-				credentials: 'include',
-			});
-
-			throw new Error('401');
+			throw new UnauthorizedError();
 		}
+
+		const data: T = await response.json();
 
 		if (!response.ok) {
 			LOGGER.error(
@@ -98,7 +94,13 @@ export async function createFetchAction<T>({
 		LOGGER.success(`Received data from: ${pathWithPostfix}`);
 		return data;
 	} catch (error) {
-		if (error instanceof Error && error.message === '401') {
+		if (
+			error instanceof UnauthorizedError ||
+			(typeof error === 'object' &&
+				error !== null &&
+				'name' in error &&
+				(error as { name?: string }).name === 'UnauthorizedError')
+		) {
 			throw error;
 		}
 
