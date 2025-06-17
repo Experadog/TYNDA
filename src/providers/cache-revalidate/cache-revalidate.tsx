@@ -1,6 +1,6 @@
 'use client';
 
-import { LOGGER, URL_ENTITIES, URL_LOCAL_ENTITIES } from '@/lib';
+import { LOGGER, URL_ENTITIES, URL_LOCAL_ENTITIES, decryptData } from '@/lib';
 import { UserRole } from '@business-entities';
 import { revalidateByTags } from '@common';
 import { useEffect, useMemo, useState } from 'react';
@@ -49,8 +49,9 @@ const CacheRevalidate = () => {
 		const checkRevalidation = async () => {
 			try {
 				const res = await fetch(`/api${URL_LOCAL_ENTITIES.REVALIDATE}`);
-				const data = await res.json();
-				setShouldRevalidate(data.shouldRevalidate);
+				const data = await res.text();
+				const decrypted = decryptData<{ shouldRevalidate: boolean }>(data);
+				setShouldRevalidate(decrypted ? decrypted.shouldRevalidate : true);
 			} catch {
 				setShouldRevalidate(false);
 			}

@@ -7,5 +7,6 @@ export function defaultCookieConfig(expires?: Date): Partial<ResponseCookie> {
 		expires,
 		secure: true,
 		httpOnly: true,
+		priority: 'high',
 	};
 }

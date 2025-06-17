@@ -27,6 +27,7 @@ export * from './hooks/usePagination';
 export * from './hooks/usePrepareBreadCrumbs';
 export * from './hooks/usePreventAutoFocus';
 export * from './hooks/useSearch';
+export * from './hooks/useSessionManager';
 export * from './hooks/useSetParams';
 
 // Actions

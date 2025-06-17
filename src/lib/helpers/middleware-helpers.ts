@@ -267,7 +267,7 @@ export async function tryRefreshSession(
 		const newSession: Session = {
 			...refreshed.data,
 			user: sessionData.user,
-			access_token_expire_time: new Date(Date.now() + 1.5 * 60 * 1000).toISOString(),
+			access_token_expire_time: new Date(Date.now() + 1 * 60 * 1000).toISOString(),
 			last_refreshed_time: new Date().toISOString(),
 		};
 

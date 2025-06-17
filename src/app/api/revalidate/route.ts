@@ -1,6 +1,5 @@
 import { COOKIES, REVALIDATE, encryptData } from '@/lib';
 import { getCookie, setCookie } from '@common';
-import { NextResponse } from 'next/server';
 
 export async function GET() {
 	const lastRevalidate = await getCookie<number>(COOKIES.LAST_REVALIDATE_KEY, true);
@@ -17,7 +16,11 @@ export async function GET() {
 		}
 	}
 
-	const response = NextResponse.json({ shouldRevalidate });
+	const encrypted = encryptData({ shouldRevalidate });
+
+	const response = new Response(encrypted, {
+		headers: { 'Content-Type': 'application/json' },
+	});
 
 	if (shouldRevalidate) {
 		const expires = new Date(now + REVALIDATE.FIVE_MIN);
