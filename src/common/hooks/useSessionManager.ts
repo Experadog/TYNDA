@@ -25,6 +25,7 @@ export function useSessionManager(initialSessionStr: string) {
 			method: 'DELETE',
 		})
 			.then(() => {
+				setUser(null);
 				setTimeout(() => {
 					setIsLoading(false);
 				}, 3000);
