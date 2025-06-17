@@ -82,7 +82,7 @@ class ErrorBoundary extends React.Component<Props, State> {
 			</div>
 		);
 
-		if (error?.message === '401') {
+		if (error?.message === '401' || error?.name === '401') {
 			return renderErrorLayout(
 				'Сессия недействительна',
 				'Ваша сессия была завершена — возможно, из-за входа с другого устройства.\nПожалуйста, выполните повторный вход для продолжения работы.',
