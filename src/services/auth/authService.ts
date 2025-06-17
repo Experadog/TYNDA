@@ -24,7 +24,10 @@ class AuthService {
 		});
 
 		if (isSuccessResponse(response)) {
-			await setSession(response.data);
+			await setSession({
+				...response.data,
+				access_token_expire_time: new Date(Date.now() + 1.5 * 60 * 1000).toISOString(),
+			});
 		}
 
 		return response;

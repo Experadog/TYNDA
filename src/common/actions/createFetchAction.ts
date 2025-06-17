@@ -73,7 +73,6 @@ export async function createFetchAction<T>({
 	try {
 		const response = await fetch(url.toString(), {
 			method: 'GET',
-			credentials: 'include',
 			cache: revalidate ? 'default' : 'force-cache',
 			headers,
 			next: { tags: revalidateTags },

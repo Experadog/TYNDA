@@ -5,5 +5,7 @@ export function defaultCookieConfig(expires?: Date): Partial<ResponseCookie> {
 		path: '/',
 		sameSite: 'lax',
 		expires,
+		secure: true,
+		httpOnly: true,
 	};
 }

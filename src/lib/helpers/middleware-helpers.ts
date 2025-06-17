@@ -10,6 +10,7 @@ import { PAGES } from '../config/pages';
 import { URL_ENTITIES } from '../config/urls';
 import { LOGGER } from './chalkLogger';
 import { decryptData } from './decryptData';
+import { defaultCookieConfig } from './defaultCookieConfig';
 import { encryptData } from './encryptData';
 import { formatDate } from './formateDate';
 
@@ -197,49 +198,47 @@ export function handleAuthRedirection(
 	return null;
 }
 
-export async function tryRefreshSession(req: NextRequest, response: NextResponse) {
+export async function tryRefreshSession(
+	req: NextRequest,
+	response: NextResponse,
+): Promise<NextResponse> {
 	const sessionCookie = req.cookies.get(COOKIES.SESSION);
 	if (!sessionCookie) return response;
 
 	let sessionData: Session | null;
 
 	try {
-		sessionData = decryptData(sessionCookie.value || '');
+		sessionData = decryptData(sessionCookie.value);
 	} catch {
+		LOGGER.error('Invalid session cookie. Clearing it.');
+		response.cookies.delete(COOKIES.SESSION);
 		return response;
 	}
 
 	if (!sessionData?.access_token || !sessionData?.refresh_token) {
+		LOGGER.error('Missing token data. Clearing session.');
+		response.cookies.delete(COOKIES.SESSION);
 		return response;
 	}
 
-	const expireTimeMs = new Date(sessionData.access_token_expire_time).getTime();
 	const now = Date.now();
-	const SAFETY_WINDOW_MS = REVALIDATE.ONE_HOUR;
+	const accessTokenExpiry = new Date(sessionData.access_token_expire_time).getTime();
+	const lastRefreshed = sessionData.last_refreshed_time
+		? new Date(sessionData.last_refreshed_time).getTime()
+		: 0;
 
-	if (sessionData.refresh_in_progress) {
-		LOGGER.info('Skipping refresh: already in progress');
-		return response;
-	}
+	const SAFETY_MARGIN = REVALIDATE.ONE_MIN;
+	const REFRESH_INTERVAL_LIMIT = REVALIDATE.FIFTEEN_SECONDS;
 
-	if (sessionData.last_refreshed_time) {
-		const lastRefreshedMs = new Date(sessionData.last_refreshed_time).getTime();
-		if (now - lastRefreshedMs < REVALIDATE.FIFTEEN_SECONDS) {
-			LOGGER.info('Skipping refresh: refreshed recently');
-			return response;
-		}
-	}
+	const willExpireSoon = accessTokenExpiry - now <= SAFETY_MARGIN;
+	const refreshedRecently = now - lastRefreshed < REFRESH_INTERVAL_LIMIT;
 
-	if (expireTimeMs - now > SAFETY_WINDOW_MS) {
+	if (!willExpireSoon || refreshedRecently) {
 		return response;
 	}
 
 	try {
-		LOGGER.info('Staring to refresh...');
-
-		const lockSession: Session = { ...sessionData, refresh_in_progress: true };
-		const encryptedLockedSession = encryptData(lockSession);
-		req.cookies.set(COOKIES.SESSION, encryptedLockedSession);
+		LOGGER.info('Refreshing session...');
 
 		const refreshRes = await fetch(`${API_URL}${URL_ENTITIES.REFRESH_TOKEN}`, {
 			method: 'POST',
@@ -248,45 +247,45 @@ export async function tryRefreshSession(req: NextRequest, response: NextResponse
 				Cookie: `access_token=${sessionData.access_token}; refresh_token=${sessionData.refresh_token}`,
 			},
 			credentials: 'include',
+			cache: 'no-store',
 		});
 
 		if (!refreshRes.ok) {
+			LOGGER.error(`Refresh token request failed: ${refreshRes.status}`);
 			response.cookies.delete(COOKIES.SESSION);
 			return response;
 		}
 
-		const refreshedData = (await refreshRes.json()) as CommonResponse<Credentials>;
+		const refreshed = (await refreshRes.json()) as CommonResponse<Credentials>;
 
-		if (!refreshedData?.data) {
+		if (!refreshed?.data) {
+			LOGGER.error('Refresh response missing data.');
 			response.cookies.delete(COOKIES.SESSION);
 			return response;
 		}
 
 		const newSession: Session = {
-			...refreshedData.data,
-			last_refreshed_time: new Date().toISOString(),
-			refresh_in_progress: false,
+			...refreshed.data,
 			user: sessionData.user,
+			access_token_expire_time: new Date(Date.now() + 1.5 * 60 * 1000).toISOString(),
+			last_refreshed_time: new Date().toISOString(),
 		};
 
-		const encryptedNewSession = encryptData(newSession);
-		LOGGER.success('Refreshed successfully!');
-		LOGGER.success(
-			`Next refresh in: ${formatDate(newSession.access_token_expire_time, { showTime: true })}`,
+		const encrypted = encryptData(newSession);
+
+		response.cookies.set(
+			COOKIES.SESSION,
+			encrypted,
+			defaultCookieConfig(new Date(newSession.refresh_token_expire_time)),
 		);
 
-		response.cookies.set({
-			name: COOKIES.SESSION,
-			value: encryptedNewSession,
-			path: '/',
-			httpOnly: true,
-			sameSite: 'lax',
-		});
-
-		return response;
-	} catch (error) {
-		LOGGER.error('Error in refresh!');
+		LOGGER.success(
+			`Session refreshed. Next expiry: ${formatDate(newSession.access_token_expire_time, { showTime: true })}`,
+		);
+	} catch (err) {
+		LOGGER.error(`Unexpected error during session refresh ${err}`);
 		response.cookies.delete(COOKIES.SESSION);
-		return response;
 	}
+
+	return response;
 }
