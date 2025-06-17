@@ -72,7 +72,7 @@ const DashboardBreadcrumbs = () => {
 				keys: ['permission_scopes'],
 			},
 		});
-	}, [data, roles?.items, chatList.items, locale, viewModel]);
+	}, [data, roles?.items, chatList.items, locale, establishmentChats.items]);
 
 	const breadCrumbs = usePrepareBreadCrumbs({
 		pathname,

@@ -18,9 +18,7 @@ export async function GET() {
 
 	const encrypted = encryptData({ shouldRevalidate });
 
-	const response = new Response(encrypted, {
-		headers: { 'Content-Type': 'application/json' },
-	});
+	const response = new Response(encrypted, { status: 200 });
 
 	if (shouldRevalidate) {
 		const expires = new Date(now + REVALIDATE.FIVE_MIN);

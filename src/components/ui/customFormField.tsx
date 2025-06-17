@@ -92,6 +92,11 @@ export const CustomFormField = <T extends FieldValues>({
 										max={max}
 										min={min}
 										step={step}
+										onWheel={(e) => {
+											if (type === 'number') {
+												e.currentTarget.blur();
+											}
+										}}
 										value={field.value ?? ''}
 										className={clsx(
 											'outline-none placeholder:text-placeholder placeholder:font-normal rounded-xl px-4 py-6 numeric border border-light_gray font-normal bg-input_bg text-foreground_1',

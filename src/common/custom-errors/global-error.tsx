@@ -1,8 +1,8 @@
 'use client';
 
-import { prepareErrorForServer } from '@/lib';
-import { ClearSessionError, sendErrorToTelegram } from '@common';
-import { ImgMask, LoadingSpinner } from '@components';
+import { URL_LOCAL_ENTITIES, prepareErrorForServer } from '@/lib';
+import { sendErrorToTelegram } from '@common';
+import { Button, ImgMask } from '@components';
 import { AlertTriangle } from 'lucide-react';
 import React, { type ReactNode } from 'react';
 
@@ -32,68 +32,71 @@ class ErrorBoundary extends React.Component<Props, State> {
 		} else {
 			console.error('Caught error:', error, errorInfo);
 		}
-
-		if (error?.message === new ClearSessionError().getMessage()) {
-			await this.handleReset();
-			return;
-		}
 	}
 
 	handleReset = async () => {
-		if (typeof window !== 'undefined') {
-			const cookies = document.cookie.split(';');
-			for (const cookie of cookies) {
-				const [rawName] = cookie.split('=');
-				const name = rawName.trim();
-
-				document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
-			}
-
-			if ('caches' in window) {
-				const cacheNames = await caches.keys();
-				for (const cacheName of cacheNames) {
-					await caches.delete(cacheName);
+		await fetch(`/api${URL_LOCAL_ENTITIES.CLEAR_SESSION}`, {
+			method: 'POST',
+		})
+			.then(async () => {
+				if (typeof window !== 'undefined') {
+					if ('caches' in window) {
+						const cacheNames = await caches.keys();
+						for (const cacheName of cacheNames) {
+							await caches.delete(cacheName);
+						}
+					}
 				}
-			}
-
-			window.location.reload();
-		}
+			})
+			.finally(() => window.location.reload());
 	};
-
 	render() {
-		if (this.state.error?.message === 'Session needs to be cleared') {
-			return (
-				<div className="fixed inset-0 flex flex-col gap-2 items-center justify-center bg-background_6 text-foreground_1 p-4">
-					<h1 className="text-3xl font-bold text-center">Tynda KG</h1>
+		const { error, hasError } = this.state;
 
-					<LoadingSpinner className="text-yellow size-10" />
+		const renderErrorLayout = (
+			title: string,
+			description: string,
+			buttonText: string,
+			buttonAction: () => void,
+		) => (
+			<div className="fixed inset-0 bg-background_6 flex items-center justify-center">
+				<ImgMask />
+				<div className="flex flex-col items-center gap-6 bg-background_2 rounded-md p-10 shadow-2xl max-w-lg w-full z-10 text-center">
+					<AlertTriangle className="text-yellow-500 w-20 h-20" />
+					<h1 className="text-2xl md:text-3xl font-semibold text-foreground_1">
+						{title}
+					</h1>
+					<p className="text-sm md:text-base text-gray whitespace-pre-line leading-relaxed">
+						{description}
+					</p>
+					<Button
+						disableAnimation
+						variant={'yellow'}
+						onClick={buttonAction}
+						size={'lg'}
+						className="mt-6 px-6 py-5 bg-yellow text-white rounded-md font-medium shadow-md transition-colors"
+					>
+						{buttonText}
+					</Button>
 				</div>
+			</div>
+		);
+
+		if (error?.message === '401') {
+			return renderErrorLayout(
+				'Сессия недействительна',
+				'Ваша сессия была завершена — возможно, из-за входа с другого устройства.\nПожалуйста, выполните повторный вход для продолжения работы.',
+				'Войти снова',
+				this.handleReset,
 			);
 		}
 
-		if (this.state.hasError) {
-			return (
-				<div
-					className="fixed inset-0 flex items-center justify-center"
-					style={{ backgroundImage: `url('/home/herobg.webp')` }}
-				>
-					<ImgMask />
-					<div className="flex flex-col items-center gap-6 bg-background_2 border border-light_gray rounded-2xl p-10 shadow-2xl max-w-md w-full z-10">
-						<AlertTriangle className="text-foreground_1 w-20 h-20" />
-						<h1 className="text-3xl font-bold text-center">Что-то пошло не так</h1>
-						<p className="text-base text-center text-gray">
-							К сожалению, произошла внутренняя ошибка приложения. <br /> Мы уже
-							работаем над решением.
-						</p>
-						<button
-							type="button"
-							onClick={this.handleReset}
-							className="mt-4 px-8 py-3 bg-yellow text-white rounded-xl font-semibold shadow-lg transition hover:brightness-90"
-						>
-							Перезапустить сайт
-						</button>
-					</div>
-				</div>
+		if (hasError) {
+			return renderErrorLayout(
+				'Произошла ошибка',
+				'Во время выполнения запроса произошёл сбой.\nНаша команда уже уведомлена и работает над решением проблемы.',
+				'Обновить страницу',
+				this.handleReset,
 			);
 		}
 

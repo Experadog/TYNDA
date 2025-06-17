@@ -19,7 +19,7 @@ export async function GET() {
 		if (lastRefreshed && now - lastRefreshed <= REVALIDATE.FIFTEEN_SECONDS) {
 			shouldValidate = false;
 		} else {
-			if (!expiresAt || expiresAt - now <= REVALIDATE.FIFTEEN_SECONDS) {
+			if (!expiresAt || expiresAt - now <= REVALIDATE.FIVE_MIN) {
 				shouldValidate = true;
 			}
 		}
@@ -28,6 +28,6 @@ export async function GET() {
 	const encrypted = encryptData(shouldValidate);
 
 	return new Response(encrypted, {
-		headers: { 'Content-Type': 'application/json' },
+		status: 200,
 	});
 }

@@ -21,8 +21,13 @@ const onError = async <T>(
 	text?: string,
 	code?: number,
 ): Promise<T> => {
+	'use client';
+	if (code && code === 401) {
+		throw new Error(code.toString());
+	}
+
 	await sendErrorToTelegram({
-		message: `Error in ${pathWithPostfix}, errors: message: '${text}(${code})`,
+		message: `Error in ${pathWithPostfix}, message: '${text}(${code})`,
 		payload: JSON.stringify(params || {}),
 	});
 
@@ -79,6 +84,10 @@ export async function createFetchAction<T>({
 		});
 
 		const data: T = await response.json();
+
+		if (response.status === 401) {
+			await onError(pathWithPostfix, params, 'Session Error');
+		}
 
 		if (!response.ok) {
 			LOGGER.error(

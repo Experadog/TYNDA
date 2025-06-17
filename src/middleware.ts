@@ -29,9 +29,6 @@ export default async function middleware(req: NextRequest): Promise<NextResponse
 
 	let response = nextIntlMiddleware(req);
 
-	// Session management
-	// response = await tryRefreshSession(req, response);
-
 	const cookieHeader = req.headers.get('cookie') || '';
 	const themeCookieMatch = cookieHeader.match(/theme=(dark|light)/);
 	const theme = themeCookieMatch ? themeCookieMatch[1] : 'light';

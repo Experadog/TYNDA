@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from '@/i18n/routing';
-import { decryptData } from '@/lib';
+import { REVALIDATE, URL_LOCAL_ENTITIES, decryptData } from '@/lib';
 import type { Session, User } from '@business-entities';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -16,9 +16,11 @@ export function useSessionManager(initialSessionStr: string) {
 
 	const checkSession = useCallback(async () => {
 		try {
-			const res = await fetch('/api/session', {
+			const res = await fetch(`/api${URL_LOCAL_ENTITIES.SESSION}`, {
 				cache: 'no-store',
 				priority: 'high',
+				method: 'GET',
+				credentials: 'include',
 			});
 			const encrypted = await res.text();
 			const shouldRefresh = decryptData<boolean>(encrypted);
@@ -26,7 +28,7 @@ export function useSessionManager(initialSessionStr: string) {
 			if (shouldRefresh) {
 				setIsLoading(true);
 				try {
-					await fetch('/api/refresh', {
+					await fetch(`/api${URL_LOCAL_ENTITIES.REFRESH}`, {
 						cache: 'no-store',
 						method: 'POST',
 						credentials: 'include',
@@ -56,7 +58,7 @@ export function useSessionManager(initialSessionStr: string) {
 		const onFocus = () => checkSession();
 		window.addEventListener('focus', onFocus);
 
-		const intervalId = setInterval(checkSession, 60 * 1000);
+		const intervalId = setInterval(checkSession, REVALIDATE.FIVE_MIN);
 
 		return () => {
 			window.removeEventListener('focus', onFocus);

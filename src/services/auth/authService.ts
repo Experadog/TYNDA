@@ -24,10 +24,7 @@ class AuthService {
 		});
 
 		if (isSuccessResponse(response)) {
-			await setSession({
-				...response.data,
-				access_token_expire_time: new Date(Date.now() + 1 * 60 * 1000).toISOString(),
-			});
+			await setSession(response.data);
 		}
 
 		return response;
@@ -38,7 +35,9 @@ class AuthService {
 			url: URL_ENTITIES.LOGOUT,
 		});
 
-		await clearSession();
+		if (isSuccessResponse(response)) {
+			await clearSession();
+		}
 
 		return response;
 	}

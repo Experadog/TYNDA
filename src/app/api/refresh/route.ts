@@ -1,11 +1,29 @@
-import { API_URL, URL_ENTITIES } from '@/lib';
+import { API_URL, REVALIDATE, URL_ENTITIES, encryptData } from '@/lib';
 import type { Credentials, Session } from '@business-entities';
-import { type CommonResponse, clearSession, getSession, setSession } from '@common';
+import {
+	type CommonResponse,
+	clearSession,
+	getSession,
+	sendErrorToTelegram,
+	setSession,
+} from '@common';
 
 export async function POST() {
 	const oldSession = await getSession();
+	const response = encryptData({ success: true });
+	const successStatus = { status: 200 };
 
 	if (oldSession) {
+		const now = Date.now();
+
+		const lastRefreshed = oldSession.last_refreshed_time
+			? Date.parse(oldSession.last_refreshed_time)
+			: null;
+
+		if (lastRefreshed && now - lastRefreshed < REVALIDATE.FIFTEEN_SECONDS) {
+			return new Response(response, successStatus);
+		}
+
 		const payloadForRefresh = `access_token=${oldSession?.access_token}; refresh_token=${oldSession?.refresh_token}`;
 
 		const headers = new Headers();
@@ -15,9 +33,14 @@ export async function POST() {
 			method: 'POST',
 			headers,
 		});
+
 		if (!res.ok) {
 			await clearSession();
-			return new Response('Failed to refresh tokens', { status: 401 });
+			await sendErrorToTelegram({
+				message: `Error in session updating, message: '${res.statusText}(${res.status})`,
+				payload: `params: ${payloadForRefresh}`,
+			});
+			return new Response(response, successStatus);
 		}
 
 		const newCredentials = (await res.json()) as CommonResponse<Credentials>;
@@ -25,17 +48,15 @@ export async function POST() {
 		const updatedSession: Session = {
 			...newCredentials.data,
 			last_refreshed_time: new Date().toISOString(),
-			access_token_expire_time: new Date(Date.now() + 1 * 60 * 1000).toISOString(),
 			user: oldSession?.user,
 		};
 
 		await setSession(updatedSession);
-		return new Response(JSON.stringify({ success: true }), {
+		return new Response(response, {
 			status: 200,
-			headers: { 'Content-Type': 'application/json' },
 		});
 	}
 
 	await clearSession();
-	return new Response('No session found', { status: 401 });
+	return new Response(response, successStatus);
 }
