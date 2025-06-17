@@ -1,6 +1,4 @@
-import { COOKIES } from '@/lib';
 import toast from 'react-hot-toast';
-import { clearCookie } from '../actions/clear-cookie';
 import type { ActionMessages } from '../types/messages.types';
 import type { CommonResponse } from '../types/responses.types';
 
@@ -23,11 +21,6 @@ export function pushToast<T>(
 
 			if (statusCode === 500) {
 				return 'Ошибка сервера, повторите попытку позже';
-			}
-
-			if (statusCode === 401) {
-				clearCookie(COOKIES.SESSION);
-				return 'Сессия недействительная, выход из аккаунта...';
 			}
 
 			if (typeof options.error === 'string') {

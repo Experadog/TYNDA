@@ -19,7 +19,8 @@ export async function GET() {
 		if (lastRefreshed && now - lastRefreshed <= REVALIDATE.FIFTEEN_SECONDS) {
 			shouldValidate = false;
 		} else {
-			if (!expiresAt || expiresAt - now <= REVALIDATE.FIVE_MIN) {
+			// JAI JAI
+			if (!expiresAt || expiresAt - now <= REVALIDATE.FIVE_SECONDS) {
 				shouldValidate = true;
 			}
 		}

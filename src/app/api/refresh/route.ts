@@ -48,6 +48,8 @@ export async function POST() {
 		const updatedSession: Session = {
 			...newCredentials.data,
 			last_refreshed_time: new Date().toISOString(),
+			//jai jai
+			access_token_expire_time: new Date(Date.now() + 60 * 1000).toISOString(),
 			user: oldSession?.user,
 		};
 
