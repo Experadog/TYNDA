@@ -32,10 +32,13 @@ class ErrorBoundary extends React.Component<Props, State> {
 	}
 
 	static getDerivedStateFromError(error: Error): State {
+		const msg = error.message?.toLowerCase() || '';
+		const isSessionExpired = msg.includes('401') || msg.includes('unauthorized');
+
 		return {
 			hasError: true,
 			error,
-			isSessionExpired: error.message === '401',
+			isSessionExpired,
 			timer: TIMEOUT,
 		};
 	}
