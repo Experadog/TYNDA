@@ -4,6 +4,7 @@ import { URL_LOCAL_ENTITIES } from '@/lib';
 import { Button, ImgMask, LoadingSpinner } from '@components';
 import { AlertTriangle } from 'lucide-react';
 import React, { type ReactNode } from 'react';
+import { sendErrorToTelegram } from '../actions/sendUserErrorToTelegram';
 import { UnauthorizedError } from './unauthorized-error';
 
 type Props = {
@@ -81,7 +82,7 @@ class ErrorBoundary extends React.Component<Props, State> {
 		try {
 			await fetch(`/api${URL_LOCAL_ENTITIES.CLEAR_SESSION}`, {
 				method: 'DELETE',
-			});
+			}).then(() => sendErrorToTelegram({ message: JSON.stringify(this.state.error) }));
 
 			if (typeof window !== 'undefined' && 'caches' in window) {
 				const cacheNames = await caches.keys();
