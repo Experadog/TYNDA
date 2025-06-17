@@ -28,7 +28,7 @@ class ErrorBoundary extends React.Component<Props, State> {
 		};
 	}
 
-	static getDerivedStateFromError(error: Error): State {
+	static getDerivedStateFromError(error: Error): Partial<State> {
 		return {
 			hasError: true,
 			error,
@@ -36,10 +36,9 @@ class ErrorBoundary extends React.Component<Props, State> {
 		};
 	}
 
-	componentDidUpdate(_: Props, prevState: State) {
-		if (this.state.hasError && this.state.timer > 0 && prevState.timer !== this.state.timer) {
-			this.startCountdown();
-		}
+	componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+		console.error('Caught error:', error, errorInfo);
+		this.startCountdown();
 	}
 
 	componentWillUnmount() {
@@ -80,7 +79,7 @@ class ErrorBoundary extends React.Component<Props, State> {
 		return (
 			<div className="fixed inset-0 bg-background_6/80 backdrop-blur-sm flex items-center justify-center z-50">
 				<ImgMask />
-				<div className="relative z-10 w-full max-w-md rounded-2xl bg-background_4 p-8 shadow-2xl border border-yellow-400">
+				<div className="relative z-10 w-full max-w-md rounded-2xl bg-background_4 p-8 shadow-2xl border border-yellow">
 					<div className="flex flex-col items-center text-center gap-6">
 						<AlertTriangle className="text-yellow w-16 h-16 animate-pulse" />
 						<h2 className="text-2xl font-bold text-gray-900">{title}</h2>
@@ -93,7 +92,7 @@ class ErrorBoundary extends React.Component<Props, State> {
 							variant="yellow"
 							onClick={buttonAction}
 							size="lg"
-							className="mt-2 px-6 py-3 bg-yellow hover:bg-yellow-600 text-white rounded-lg font-medium transition-colors"
+							className="mt-2 px-6 py-3 bg-yellow  text-white rounded-lg font-medium transition-colors"
 						>
 							{buttonText}
 						</Button>

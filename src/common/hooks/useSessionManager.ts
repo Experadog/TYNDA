@@ -3,76 +3,120 @@
 import { useRouter } from '@/i18n/routing';
 import { REVALIDATE, URL_LOCAL_ENTITIES, decryptData } from '@/lib';
 import type { Session, User } from '@business-entities';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 export function useSessionManager(initialSessionStr: string) {
 	const router = useRouter();
 
-	const [user, setUser] = useState<User | null>(
-		() => decryptData<Session>(initialSessionStr)?.user ?? null,
-	);
+	const initialSession = useMemo(() => {
+		try {
+			return decryptData<Session>(initialSessionStr);
+		} catch (err) {
+			console.error('Ошибка при расшифровке сессии:', err);
+			return null;
+		}
+	}, [initialSessionStr]);
 
+	const [user, setUser] = useState<User | null>(() => initialSession?.user ?? null);
 	const [isLoading, setIsLoading] = useState(false);
 
-	const checkSession = useCallback(async () => {
-		try {
-			const res = await fetch(`/api${URL_LOCAL_ENTITIES.SESSION}`, {
-				cache: 'no-store',
-				priority: 'high',
-				method: 'GET',
-				credentials: 'include',
-			});
-			const encrypted = await res.text();
-			const shouldRefresh = decryptData<boolean>(encrypted);
+	const clearSession = useCallback(async () => {
+		await fetch(`/api${URL_LOCAL_ENTITIES.CLEAR_SESSION}`, {
+			method: 'DELETE',
+		}).finally(() => router.refresh());
+	}, [router]);
 
-			if (res.status === 401) {
-				await fetch(`/api${URL_LOCAL_ENTITIES.CLEAR_SESSION}`, {
-					method: 'DELETE',
-				}).then(() => router.refresh());
-
-				return;
-			}
-
-			if (shouldRefresh && res.status === 200) {
-				setIsLoading(true);
-				try {
-					await fetch(`/api${URL_LOCAL_ENTITIES.REFRESH}`, {
-						cache: 'no-store',
-						method: 'POST',
-						credentials: 'include',
-						priority: 'high',
-					});
-				} catch (error) {
-					console.error('Ошибка обновления сессии:', error);
-				} finally {
-					setTimeout(() => {
-						setIsLoading(false);
-					}, 3000);
-
-					router.refresh();
+	const checkSession = useCallback(
+		async (forceCheck: boolean) => {
+			try {
+				const url = new URL(`/api${URL_LOCAL_ENTITIES.SESSION}`, window.location.origin);
+				if (forceCheck) {
+					url.searchParams.set('force-check', 'true');
 				}
+
+				const res = await fetch(url, {
+					cache: 'no-store',
+					priority: 'high',
+					method: 'GET',
+					credentials: 'include',
+				});
+
+				const encrypted = await res.text();
+				const shouldRefresh = decryptData<boolean>(encrypted);
+
+				if (res.status === 401) {
+					await clearSession();
+					return;
+				}
+
+				if (res.status === 200 && shouldRefresh) {
+					setIsLoading(true);
+					try {
+						await fetch(`/api${URL_LOCAL_ENTITIES.REFRESH}`, {
+							cache: 'no-store',
+							method: 'POST',
+							credentials: 'include',
+							priority: 'high',
+						});
+					} catch (error) {
+						console.error('Ошибка обновления сессии:', error);
+					} finally {
+						setTimeout(() => {
+							setIsLoading(false);
+						}, 3000);
+
+						router.refresh();
+					}
+				}
+			} catch (error) {
+				console.error('Ошибка проверки сессии:', error);
 			}
-		} catch (error) {
-			console.error('Ошибка проверки сессии: JAI', error);
-			throw error;
-		}
-	}, []);
+		},
+		[clearSession],
+	);
 
 	useEffect(() => {
-		setUser(decryptData<Session>(initialSessionStr)?.user ?? null);
-		if (!initialSessionStr) return;
+		if (!initialSession) return;
 
-		const onFocus = () => checkSession();
-		window.addEventListener('focus', onFocus);
+		const now = () => Date.now();
 
-		// JAI JAI
-		const intervalId = setInterval(checkSession, REVALIDATE.FIFTEEN_SECONDS);
+		let lastClickTime: number | null = null;
+
+		const runVisibilityChangeCheck = () => {
+			void checkSession(true);
+		};
+
+		const runClickCheck = () => {
+			const elapsed = lastClickTime ? now() - lastClickTime : Number.POSITIVE_INFINITY;
+			if (elapsed >= REVALIDATE.ONE_MIN) {
+				lastClickTime = now();
+				void checkSession(false);
+			}
+		};
+
+		const handleVisibilityChange = () => {
+			if (document.visibilityState === 'visible') {
+				runVisibilityChangeCheck();
+			}
+		};
+
+		const handleClick = () => {
+			runClickCheck();
+		};
+
+		document.addEventListener('visibilitychange', handleVisibilityChange);
+		document.addEventListener('click', handleClick);
+
+		const intervalId = setInterval(() => {
+			void checkSession(false);
+		}, REVALIDATE.FIVE_MIN);
 
 		return () => {
-			window.removeEventListener('focus', onFocus);
+			document.removeEventListener('visibilitychange', handleVisibilityChange);
+			document.removeEventListener('click', handleClick);
 			clearInterval(intervalId);
 		};
-	}, [checkSession, initialSessionStr]);
+	}, [checkSession, initialSession]);
 
 	return {
 		user,

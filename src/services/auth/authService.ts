@@ -24,13 +24,7 @@ class AuthService {
 		});
 
 		if (isSuccessResponse(response)) {
-			// JAI JIA
-			const oneMinuteFromNow = new Date(Date.now() + 60 * 1000).toISOString();
-
-			await setSession({
-				...response.data,
-				access_token_expire_time: oneMinuteFromNow,
-			});
+			await setSession(response.data);
 		}
 
 		return response;
