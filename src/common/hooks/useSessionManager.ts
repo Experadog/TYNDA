@@ -23,12 +23,22 @@ export function useSessionManager(initialSessionStr: string) {
 	const clearSession = useCallback(async () => {
 		await fetch(`/api${URL_LOCAL_ENTITIES.CLEAR_SESSION}`, {
 			method: 'DELETE',
-		}).finally(() => router.refresh());
+		})
+			.then(() => {
+				setTimeout(() => {
+					setIsLoading(false);
+				}, 3000);
+			})
+			.finally(() => router.refresh());
 	}, [router]);
 
 	const checkSession = useCallback(
 		async (forceCheck: boolean) => {
 			try {
+				if (forceCheck) {
+					setIsLoading(true);
+				}
+
 				const url = new URL(`/api${URL_LOCAL_ENTITIES.SESSION}`, window.location.origin);
 				if (forceCheck) {
 					url.searchParams.set('force-check', 'true');
@@ -70,6 +80,10 @@ export function useSessionManager(initialSessionStr: string) {
 				}
 			} catch (error) {
 				console.error('Ошибка проверки сессии:', error);
+			} finally {
+				setTimeout(() => {
+					setIsLoading(false);
+				}, 3000);
 			}
 		},
 		[clearSession],
