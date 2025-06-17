@@ -27,8 +27,6 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children, session })
 	const { Logout } = useViewModel(['Toast']);
 	const router = useRouter();
 
-	const { user, setUser, isLoading } = useSessionManager(session);
-
 	const { execute: logoutExecute } = useAsyncAction<LogoutResponseModel, []>({
 		messages: Logout,
 	});
@@ -41,6 +39,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children, session })
 	const onLogout = async () => {
 		await logoutExecute(logoutAction);
 	};
+
+	const { user, setUser, isLoading } = useSessionManager(session);
 
 	return (
 		<UserContext.Provider value={{ user, setUser, onLogout }}>

@@ -1,11 +1,8 @@
 'use client';
 
-import { URL_LOCAL_ENTITIES } from '@/lib';
 import { Button, ImgMask, LoadingSpinner } from '@components';
 import { AlertTriangle } from 'lucide-react';
 import React, { type ReactNode } from 'react';
-import { sendErrorToTelegram } from '../actions/sendUserErrorToTelegram';
-import { UnauthorizedError } from './unauthorized-error';
 
 type Props = {
 	children: ReactNode;
@@ -14,7 +11,6 @@ type Props = {
 type State = {
 	hasError: boolean;
 	error: Error | null;
-	isSessionExpired: boolean;
 	timer: number;
 };
 
@@ -28,21 +24,14 @@ class ErrorBoundary extends React.Component<Props, State> {
 		this.state = {
 			hasError: false,
 			error: null,
-			isSessionExpired: false,
-			timer: 0,
+			timer: TIMEOUT,
 		};
 	}
 
 	static getDerivedStateFromError(error: Error): State {
-		const isSessionExpired =
-			error instanceof UnauthorizedError ||
-			error.message === 'Unauthorized' ||
-			error.name === 'UnauthorizedError';
-
 		return {
 			hasError: true,
 			error,
-			isSessionExpired,
 			timer: TIMEOUT,
 		};
 	}
@@ -78,23 +67,8 @@ class ErrorBoundary extends React.Component<Props, State> {
 		}, 1000);
 	}
 
-	handleReset = async () => {
-		try {
-			await fetch(`/api${URL_LOCAL_ENTITIES.CLEAR_SESSION}`, {
-				method: 'DELETE',
-			}).then(() => sendErrorToTelegram({ message: JSON.stringify(this.state.error) }));
-
-			if (typeof window !== 'undefined' && 'caches' in window) {
-				const cacheNames = await caches.keys();
-				for (const name of cacheNames) {
-					await caches.delete(name);
-				}
-			}
-		} catch (error) {
-			console.error('Ошибка при сбросе сессии:', error);
-		} finally {
-			window.location.reload();
-		}
+	handleReset = () => {
+		window.location.reload();
 	};
 
 	renderErrorLayout(
@@ -130,21 +104,12 @@ class ErrorBoundary extends React.Component<Props, State> {
 	}
 
 	override render() {
-		const { hasError, isSessionExpired, timer } = this.state;
-
-		if (isSessionExpired) {
-			return this.renderErrorLayout(
-				'Обнаружен вход с другого устройства',
-				`Сессия недействительна.\nВыход из аккаунта произойдёт автоматически через ${timer} секунд…`,
-				'Выйти сейчас',
-				this.handleReset,
-			);
-		}
+		const { hasError, timer } = this.state;
 
 		if (hasError) {
 			return this.renderErrorLayout(
 				'Произошла ошибка',
-				`Во время выполнения запроса произошёл сбой.\nНаша команда уже уведомлена и работает над решением проблемы.\n   Страница обновиться автоматически через ${timer} секунд..`,
+				`Во время выполнения запроса произошёл сбой.\nНаша команда уже уведомлена и работает над решением проблемы.\nСтраница обновится автоматически через ${timer} секунд…`,
 				'Обновить страницу',
 				this.handleReset,
 			);

@@ -1,4 +1,4 @@
-import { REVALIDATE, encryptData } from '@/lib';
+import { API_URL, REVALIDATE, URL_ENTITIES, encryptData } from '@/lib';
 import { getSession } from '@common';
 
 export async function GET() {
@@ -25,9 +25,17 @@ export async function GET() {
 		}
 	}
 
+	const res = await fetch(`${API_URL}${URL_ENTITIES.PROFILE}`, {
+		method: 'GET',
+		credentials: 'include',
+		headers: {
+			Cookie: `access_token=${session?.access_token}; refresh_token:${session?.refresh_token}`,
+		},
+	});
+
 	const encrypted = encryptData(shouldValidate);
 
 	return new Response(encrypted, {
-		status: 200,
+		status: res.status,
 	});
 }

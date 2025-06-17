@@ -2,7 +2,6 @@
 
 import { DTOEmptyCommonPagination, DTOEmptyCommonResponse } from '@/dto/dtoEmpty';
 import { API_URL, LOGGER, isEmptyObject } from '@/lib';
-import { UnauthorizedError } from '../custom-errors/unauthorized-error';
 import { getSession } from '../session-manager/session-manager';
 import type { Params } from '../types/http.types';
 import { sendErrorToTelegram } from './sendUserErrorToTelegram';
@@ -78,10 +77,6 @@ export async function createFetchAction<T>({
 			next: { tags: revalidateTags },
 		});
 
-		if (response.status === 401) {
-			throw new UnauthorizedError();
-		}
-
 		const data: T = await response.json();
 
 		if (!response.ok) {
@@ -94,17 +89,7 @@ export async function createFetchAction<T>({
 		LOGGER.success(`Received data from: ${pathWithPostfix}`);
 		return data;
 	} catch (error) {
-		if (
-			error instanceof UnauthorizedError ||
-			(typeof error === 'object' &&
-				error !== null &&
-				'name' in error &&
-				(error as { name?: string }).name === 'UnauthorizedError')
-		) {
-			throw error;
-		}
-
 		LOGGER.error(error);
-		return onError(pathWithPostfix, params, 'Unexpected Error', 500);
+		return onError(pathWithPostfix, params, `Unexpected Error: ${JSON.stringify(error)}`, 555);
 	}
 }

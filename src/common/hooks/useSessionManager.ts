@@ -4,6 +4,30 @@ import { useRouter } from '@/i18n/routing';
 import { REVALIDATE, URL_LOCAL_ENTITIES, decryptData } from '@/lib';
 import type { Session, User } from '@business-entities';
 import { useCallback, useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
+import { pushCommonToast } from '../toast/push-common-toast';
+
+function showThrottleToast(remainingTime: number) {
+	let countdown = Math.ceil(remainingTime / 1000);
+	const id = 'throttle-toast-unauthorized';
+
+	pushCommonToast(`Сессия не действительная, выход через ${countdown} с.`, 'loading', {
+		id,
+	});
+
+	const interval = setInterval(() => {
+		countdown -= 1;
+
+		if (countdown > 0) {
+			pushCommonToast(`Сессия не действительная, выход через ${countdown} с.`, 'loading', {
+				id,
+			});
+		} else {
+			clearInterval(interval);
+			toast.dismiss(id);
+		}
+	}, 1000);
+}
 
 export function useSessionManager(initialSessionStr: string) {
 	const router = useRouter();
@@ -25,7 +49,21 @@ export function useSessionManager(initialSessionStr: string) {
 			const encrypted = await res.text();
 			const shouldRefresh = decryptData<boolean>(encrypted);
 
-			if (shouldRefresh) {
+			if (res.status === 401) {
+				await fetch(`/api${URL_LOCAL_ENTITIES.CLEAR_SESSION}`, {
+					method: 'DELETE',
+				})
+					.then(() => showThrottleToast(3000))
+					.then(() =>
+						setTimeout(() => {
+							router.refresh();
+						}, 3000),
+					);
+
+				return;
+			}
+
+			if (shouldRefresh && res.status === 200) {
 				setIsLoading(true);
 				try {
 					await fetch(`/api${URL_LOCAL_ENTITIES.REFRESH}`, {
@@ -39,21 +77,20 @@ export function useSessionManager(initialSessionStr: string) {
 				} finally {
 					setTimeout(() => {
 						setIsLoading(false);
-					}, 1000);
+					}, 3000);
 
 					router.refresh();
 				}
 			}
 		} catch (error) {
-			console.error('Ошибка проверки сессии:', error);
+			console.error('Ошибка проверки сессии: JAI', error);
+			throw error;
 		}
 	}, []);
 
 	useEffect(() => {
 		setUser(decryptData<Session>(initialSessionStr)?.user ?? null);
 		if (!initialSessionStr) return;
-
-		checkSession();
 
 		const onFocus = () => checkSession();
 		window.addEventListener('focus', onFocus);
