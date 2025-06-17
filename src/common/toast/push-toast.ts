@@ -27,7 +27,7 @@ export function pushToast<T>(
 
 			if (statusCode === 401) {
 				clearCookie(COOKIES.SESSION);
-				return 'Сессия недействительная, выход из аккаунта';
+				return 'Сессия недействительная, выход из аккаунта...';
 			}
 
 			if (typeof options.error === 'string') {

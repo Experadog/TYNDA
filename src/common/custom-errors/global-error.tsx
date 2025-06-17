@@ -1,8 +1,7 @@
 'use client';
 
-import { URL_LOCAL_ENTITIES, prepareErrorForServer } from '@/lib';
-import { sendErrorToTelegram } from '@common';
-import { Button, ImgMask } from '@components';
+import { URL_LOCAL_ENTITIES } from '@/lib';
+import { Button, ImgMask, LoadingSpinner } from '@components';
 import { AlertTriangle } from 'lucide-react';
 import React, { type ReactNode } from 'react';
 
@@ -13,88 +12,132 @@ type Props = {
 type State = {
 	hasError: boolean;
 	error: Error | null;
+	isSessionExpired: boolean;
+	timer: number;
 };
 
+const TIMEOUT = 5;
+
 class ErrorBoundary extends React.Component<Props, State> {
+	timerInterval: NodeJS.Timeout | null = null;
+
 	constructor(props: Props) {
 		super(props);
-		this.state = { hasError: false, error: null };
+		this.state = {
+			hasError: false,
+			error: null,
+			isSessionExpired: false,
+			timer: 0,
+		};
 	}
 
 	static getDerivedStateFromError(error: Error): State {
-		return { hasError: true, error };
+		return {
+			hasError: true,
+			error,
+			isSessionExpired: error.message === '401',
+			timer: TIMEOUT,
+		};
 	}
 
-	async componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-		if (process.env.NODE_ENV === 'production') {
-			const serializedError = prepareErrorForServer(error, errorInfo);
-			await sendErrorToTelegram(serializedError);
-		} else {
-			console.error('Caught error:', error, errorInfo);
+	componentDidUpdate(_: Props, prevState: State) {
+		if (this.state.hasError && this.state.timer > 0 && prevState.timer !== this.state.timer) {
+			this.startCountdown();
 		}
 	}
 
-	handleReset = async () => {
-		await fetch(`/api${URL_LOCAL_ENTITIES.CLEAR_SESSION}`, {
-			method: 'POST',
-		})
-			.then(async () => {
-				if (typeof window !== 'undefined') {
-					if ('caches' in window) {
-						const cacheNames = await caches.keys();
-						for (const cacheName of cacheNames) {
-							await caches.delete(cacheName);
-						}
-					}
-				}
-			})
-			.finally(() => window.location.reload());
-	};
-	render() {
-		const { error, hasError } = this.state;
+	componentWillUnmount() {
+		if (this.timerInterval) {
+			clearInterval(this.timerInterval);
+		}
+	}
 
-		const renderErrorLayout = (
-			title: string,
-			description: string,
-			buttonText: string,
-			buttonAction: () => void,
-		) => (
-			<div className="fixed inset-0 bg-background_6 flex items-center justify-center">
+	startCountdown() {
+		if (this.timerInterval) return;
+
+		this.timerInterval = setInterval(() => {
+			this.setState(
+				(prev) => ({ timer: prev.timer - 1 }),
+				() => {
+					if (this.state.timer <= 0) {
+						if (this.timerInterval) {
+							clearInterval(this.timerInterval);
+						}
+						this.timerInterval = null;
+						this.handleReset();
+					}
+				},
+			);
+		}, 1000);
+	}
+
+	handleReset = async () => {
+		try {
+			await fetch(`/api${URL_LOCAL_ENTITIES.CLEAR_SESSION}`, {
+				method: 'DELETE',
+			});
+
+			if (typeof window !== 'undefined' && 'caches' in window) {
+				const cacheNames = await caches.keys();
+				for (const name of cacheNames) {
+					await caches.delete(name);
+				}
+			}
+		} catch (error) {
+			console.error('Ошибка при сбросе сессии:', error);
+		} finally {
+			window.location.reload();
+		}
+	};
+
+	renderErrorLayout(
+		title: string,
+		description: string,
+		buttonText: string,
+		buttonAction: () => void,
+	) {
+		return (
+			<div className="fixed inset-0 bg-background_6/80 backdrop-blur-sm flex items-center justify-center z-50">
 				<ImgMask />
-				<div className="flex flex-col items-center gap-6 bg-background_2 rounded-md p-10 shadow-2xl max-w-lg w-full z-10 text-center">
-					<AlertTriangle className="text-yellow-500 w-20 h-20" />
-					<h1 className="text-2xl md:text-3xl font-semibold text-foreground_1">
-						{title}
-					</h1>
-					<p className="text-sm md:text-base text-gray whitespace-pre-line leading-relaxed">
-						{description}
-					</p>
-					<Button
-						disableAnimation
-						variant={'yellow'}
-						onClick={buttonAction}
-						size={'lg'}
-						className="mt-6 px-6 py-5 bg-yellow text-white rounded-md font-medium shadow-md transition-colors"
-					>
-						{buttonText}
-					</Button>
+				<div className="relative z-10 w-full max-w-md rounded-2xl bg-background_4 p-8 shadow-2xl border border-yellow-400">
+					<div className="flex flex-col items-center text-center gap-6">
+						<AlertTriangle className="text-yellow w-16 h-16 animate-pulse" />
+						<h2 className="text-2xl font-bold text-gray-900">{title}</h2>
+						<p className="text-base text-gray whitespace-pre-line">{description}</p>
+
+						<LoadingSpinner className="w-6 h-6 text-yellow animate-spin" />
+
+						<Button
+							disableAnimation
+							variant="yellow"
+							onClick={buttonAction}
+							size="lg"
+							className="mt-2 px-6 py-3 bg-yellow hover:bg-yellow-600 text-white rounded-lg font-medium transition-colors"
+						>
+							{buttonText}
+						</Button>
+					</div>
 				</div>
 			</div>
 		);
+	}
 
-		if (error?.message === '401' || error?.name === '401') {
-			return renderErrorLayout(
-				'Сессия недействительна',
-				'Ваша сессия была завершена — возможно, из-за входа с другого устройства.\nПожалуйста, выполните повторный вход для продолжения работы.',
-				'Войти снова',
+	override render() {
+		const { hasError, isSessionExpired, timer } = this.state;
+
+		if (isSessionExpired) {
+			return this.renderErrorLayout(
+				'Обнаружен вход с другого устройства',
+				`Сессия недействительна.\nВыход из аккаунта произойдёт автоматически через ${timer} секунд…`,
+				'Выйти сейчас',
 				this.handleReset,
 			);
 		}
 
 		if (hasError) {
-			return renderErrorLayout(
+			return this.renderErrorLayout(
 				'Произошла ошибка',
-				'Во время выполнения запроса произошёл сбой.\nНаша команда уже уведомлена и работает над решением проблемы.',
+				`Во время выполнения запроса произошёл сбой.\nНаша команда уже уведомлена и работает над решением проблемы.\n   Страница обновиться автоматически через ${timer} секунд..`,
 				'Обновить страницу',
 				this.handleReset,
 			);

@@ -1,7 +1,7 @@
 'use server';
 
 import { DTOEmptyCommonPagination, DTOEmptyCommonResponse } from '@/dto/dtoEmpty';
-import { API_URL, LOGGER, isEmptyObject } from '@/lib';
+import { API_URL, LOGGER, ORIGIN, URL_LOCAL_ENTITIES, isEmptyObject } from '@/lib';
 import { getSession } from '../session-manager/session-manager';
 import type { Params } from '../types/http.types';
 import { sendErrorToTelegram } from './sendUserErrorToTelegram';
@@ -21,8 +21,6 @@ const onError = async <T>(
 	text?: string,
 	code?: number,
 ): Promise<T> => {
-	'use client';
-
 	await sendErrorToTelegram({
 		message: `Error in ${pathWithPostfix}, message: '${text}(${code})`,
 		payload: JSON.stringify(params || {}),
@@ -63,12 +61,13 @@ export async function createFetchAction<T>({
 	try {
 		if (shouldBeAuthorized) {
 			const session = await getSession();
-			if (!session) throw new Error('401');
 
-			headers.set(
-				'Cookie',
-				`access_token=${session.access_token}; refresh_token=${session.refresh_token}`,
-			);
+			if (session) {
+				headers.set(
+					'Cookie',
+					`access_token=${session.access_token}; refresh_token=${session.refresh_token}`,
+				);
+			}
 		}
 
 		const response = await fetch(url.toString(), {
@@ -81,6 +80,11 @@ export async function createFetchAction<T>({
 		const data: T = await response.json();
 
 		if (response.status === 401) {
+			await fetch(`${ORIGIN}/api${URL_LOCAL_ENTITIES.CLEAR_SESSION}`, {
+				method: 'DELETE',
+				credentials: 'include',
+			});
+
 			throw new Error('401');
 		}
 
@@ -94,12 +98,11 @@ export async function createFetchAction<T>({
 		LOGGER.success(`Received data from: ${pathWithPostfix}`);
 		return data;
 	} catch (error) {
-		LOGGER.error(error);
-
 		if (error instanceof Error && error.message === '401') {
 			throw error;
 		}
 
+		LOGGER.error(error);
 		return onError(pathWithPostfix, params, 'Unexpected Error', 500);
 	}
 }
