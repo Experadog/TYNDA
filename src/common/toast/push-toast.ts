@@ -21,17 +21,17 @@ export function pushToast<T>(
 		error: (error: Error) => {
 			const statusCode = Number.parseInt(error.message, 10);
 
-			if (typeof options.error === 'string') {
-				return options.error;
-			}
-
 			if (statusCode === 500) {
 				return 'Ошибка сервера, повторите попытку позже';
 			}
 
 			if (statusCode === 401) {
 				clearCookie(COOKIES.SESSION);
-				return 'Сессия недействительная, повторите вход';
+				return 'Сессия недействительная, выход из аккаунта';
+			}
+
+			if (typeof options.error === 'string') {
+				return options.error;
 			}
 
 			if (typeof options.error === 'object' && options.error !== null) {

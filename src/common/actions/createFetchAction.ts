@@ -22,9 +22,6 @@ const onError = async <T>(
 	code?: number,
 ): Promise<T> => {
 	'use client';
-	if (code && code === 401) {
-		throw new Error(code.toString());
-	}
 
 	await sendErrorToTelegram({
 		message: `Error in ${pathWithPostfix}, message: '${text}(${code})`,
@@ -86,7 +83,7 @@ export async function createFetchAction<T>({
 		const data: T = await response.json();
 
 		if (response.status === 401) {
-			await onError(pathWithPostfix, params, 'Session Error');
+			throw new Error(response.status.toString());
 		}
 
 		if (!response.ok) {
@@ -102,6 +99,10 @@ export async function createFetchAction<T>({
 		return data;
 	} catch (error) {
 		LOGGER.error(error);
-		return onError(pathWithPostfix, params, 'Internal Error');
+		if (error instanceof Error && error.message === '401') {
+			throw new Error(error.message);
+		}
+
+		return onError(pathWithPostfix, params, 'Unexpected Error', 500);
 	}
 }
