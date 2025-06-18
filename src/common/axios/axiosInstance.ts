@@ -45,13 +45,13 @@ axiosInstance.interceptors.response.use(
 	async (error: AxiosError) => {
 		const { response } = error;
 		const data = response?.data as CommonResponse<null>;
+
 		await sendErrorToTelegram({
-			message: `Error in ${response?.config.url}, errors: message: '${data.msg}(${data.code})`,
+			message: `Error in ${response?.config.url}, message: '${data.msg}(${data.code})`,
 			payload: `params: ${JSON.stringify(error?.config?.params)}, body: ${JSON.stringify(error?.config?.data)}`,
 		});
-		LOGGER.error(
-			`Error in ${response?.config.url}, errors: message: '${data.msg}(${data.code})'`,
-		);
+
+		LOGGER.error(`Error in ${response?.config.url}, message: '${data.msg}(${data.code})'`);
 
 		throw error;
 	},

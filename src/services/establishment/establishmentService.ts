@@ -88,8 +88,6 @@ class EstablishmentService {
 		return response;
 	}
 
-	static async createAdminEstablishment() {}
-
 	static async deleteEstablishment(
 		data: EstablishmentDeletionRequestModel,
 	): Promise<EstablishmentCreationResponseModel> {

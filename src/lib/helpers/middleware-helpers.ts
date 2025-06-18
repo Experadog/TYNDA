@@ -1,17 +1,10 @@
 import { type NextRequest, NextResponse } from 'next/server';
 
 import { type SupportedLanguages, routing } from '@/i18n/routing';
-import { type Credentials, type Session, UserRole } from '@business-entities';
-import type { CommonResponse } from '@common';
-import { API_URL } from '../config/api';
-import { REVALIDATE } from '../config/common';
+import { type Session, UserRole } from '@business-entities';
 import { COOKIES } from '../config/cookies';
 import { PAGES } from '../config/pages';
-import { URL_ENTITIES } from '../config/urls';
-import { LOGGER } from './chalkLogger';
 import { decryptData } from './decryptData';
-import { encryptData } from './encryptData';
-import { formatDate } from './formateDate';
 
 const PUBLIC_FILE = /\.(.*)$/;
 const PROTECTED_CLIENT_ROUTES = [PAGES.PROFILE, PAGES.DASHBOARD];
@@ -195,98 +188,4 @@ export function handleAuthRedirection(
 	}
 
 	return null;
-}
-
-export async function tryRefreshSession(req: NextRequest, response: NextResponse) {
-	const sessionCookie = req.cookies.get(COOKIES.SESSION);
-	if (!sessionCookie) return response;
-
-	let sessionData: Session | null;
-
-	try {
-		sessionData = decryptData(sessionCookie.value || '');
-	} catch {
-		return response;
-	}
-
-	if (!sessionData?.access_token || !sessionData?.refresh_token) {
-		return response;
-	}
-
-	const expireTimeMs = new Date(sessionData.access_token_expire_time).getTime();
-	const now = Date.now();
-	const SAFETY_WINDOW_MS = REVALIDATE.ONE_HOUR;
-
-	if (sessionData.refresh_in_progress) {
-		LOGGER.info('Skipping refresh: already in progress');
-		return response;
-	}
-
-	if (sessionData.last_refreshed_time) {
-		const lastRefreshedMs = new Date(sessionData.last_refreshed_time).getTime();
-		if (now - lastRefreshedMs < REVALIDATE.FIFTEEN_SECONDS) {
-			LOGGER.info('Skipping refresh: refreshed recently');
-			return response;
-		}
-	}
-
-	if (expireTimeMs - now > SAFETY_WINDOW_MS) {
-		return response;
-	}
-
-	try {
-		LOGGER.info('Staring to refresh...');
-
-		const lockSession: Session = { ...sessionData, refresh_in_progress: true };
-		const encryptedLockedSession = encryptData(lockSession);
-		req.cookies.set(COOKIES.SESSION, encryptedLockedSession);
-
-		const refreshRes = await fetch(`${API_URL}${URL_ENTITIES.REFRESH_TOKEN}`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				Cookie: `access_token=${sessionData.access_token}; refresh_token=${sessionData.refresh_token}`,
-			},
-			credentials: 'include',
-		});
-
-		if (!refreshRes.ok) {
-			response.cookies.delete(COOKIES.SESSION);
-			return response;
-		}
-
-		const refreshedData = (await refreshRes.json()) as CommonResponse<Credentials>;
-
-		if (!refreshedData?.data) {
-			response.cookies.delete(COOKIES.SESSION);
-			return response;
-		}
-
-		const newSession: Session = {
-			...refreshedData.data,
-			last_refreshed_time: new Date().toISOString(),
-			refresh_in_progress: false,
-			user: sessionData.user,
-		};
-
-		const encryptedNewSession = encryptData(newSession);
-		LOGGER.success('Refreshed successfully!');
-		LOGGER.success(
-			`Next refresh in: ${formatDate(newSession.access_token_expire_time, { showTime: true })}`,
-		);
-
-		response.cookies.set({
-			name: COOKIES.SESSION,
-			value: encryptedNewSession,
-			path: '/',
-			httpOnly: true,
-			sameSite: 'lax',
-		});
-
-		return response;
-	} catch (error) {
-		LOGGER.error('Error in refresh!');
-		response.cookies.delete(COOKIES.SESSION);
-		return response;
-	}
 }

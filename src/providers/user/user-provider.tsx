@@ -2,12 +2,13 @@
 
 import { useViewModel } from '@/i18n/getTranslate';
 import { useRouter } from '@/i18n/routing';
-import { PAGES, decryptData } from '@/lib';
+import { PAGES } from '@/lib';
 import { type LogoutResponseModel, logout } from '@/services';
-import type { Session, User } from '@business-entities';
-import { createAction, useAsyncAction } from '@common';
+import type { User } from '@business-entities';
+import { createAction, useAsyncAction, useSessionManager } from '@common';
+import { Avatar, LoadingSpinner, Translate } from '@components';
 import type React from 'react';
-import { type ReactNode, createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { type ReactNode, createContext, useContext } from 'react';
 
 interface UserContextType {
 	user: User | null;
@@ -23,16 +24,9 @@ interface UserProviderProps {
 }
 
 export const UserProvider: React.FC<UserProviderProps> = ({ children, session }) => {
-	const initialUser = useMemo(() => decryptData<Session>(session)?.user || null, [session]);
-	const [user, setUser] = useState<User | null>(initialUser);
-
-	useEffect(() => {
-		setUser(initialUser);
-	}, [session]);
-
+	const { Logout } = useViewModel(['Toast']);
 	const router = useRouter();
 
-	const { Logout } = useViewModel(['Toast']);
 	const { execute: logoutExecute } = useAsyncAction<LogoutResponseModel, []>({
 		messages: Logout,
 	});
@@ -46,8 +40,32 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children, session })
 		await logoutExecute(logoutAction);
 	};
 
+	const { user, setUser, isLoading } = useSessionManager(session);
+
 	return (
-		<UserContext.Provider value={{ user, setUser, onLogout }}>{children}</UserContext.Provider>
+		<UserContext.Provider value={{ user, setUser, onLogout }}>
+			<>
+				{children}
+
+				{user && (
+					<Translate
+						direction="left"
+						open={isLoading}
+						distance={1000}
+						animateOnce
+						onExit={{ direction: 'right', delay: 0.2 }}
+						className="fixed inset-0 flex flex-col gap-3 justify-center items-center z-[9999999] bg-background_6"
+					>
+						<Avatar src={'/logo.svg'} className="size-24 animate-pulse duration-500" />
+						<h3 className="text-foreground_1 text-2xl font-semibold">Tynda KG</h3>
+						<h4 className="text-foreground_2 text-md font-normal">
+							Проверка сессии...
+						</h4>
+						<LoadingSpinner className="size-5 text-yellow" />
+					</Translate>
+				)}
+			</>
+		</UserContext.Provider>
 	);
 };
 

@@ -58,7 +58,6 @@ export type Credentials = {
 export type Session = {
 	user: User;
 	last_refreshed_time?: string;
-	refresh_in_progress?: boolean;
 } & Credentials;
 
 export type BonusHistory = {

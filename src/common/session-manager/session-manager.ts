@@ -19,5 +19,9 @@ export async function clearSession() {
 export async function setSession(payload: Session) {
 	const cookieStore = await cookies();
 	const encrypted = encryptData(payload);
-	cookieStore.set(COOKIES.SESSION, encrypted, defaultCookieConfig());
+	cookieStore.set(
+		COOKIES.SESSION,
+		encrypted,
+		defaultCookieConfig(new Date(payload.refresh_token_expire_time)),
+	);
 }

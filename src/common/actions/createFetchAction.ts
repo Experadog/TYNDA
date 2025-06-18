@@ -22,7 +22,7 @@ const onError = async <T>(
 	code?: number,
 ): Promise<T> => {
 	await sendErrorToTelegram({
-		message: `Error in ${pathWithPostfix}, errors: message: '${text}(${code})`,
+		message: `Error in ${pathWithPostfix}, message: '${text}(${code})`,
 		payload: JSON.stringify(params || {}),
 	});
 
@@ -45,7 +45,6 @@ export async function createFetchAction<T>({
 	const cleanEndpoint = endpoint.replace(/^\//, '');
 
 	const pathWithPostfix = [cleanEndpoint, ...postfix.map((p) => encodeURIComponent(p))].join('/');
-
 	const url = new URL(`${cleanBaseUrl}/${pathWithPostfix}`);
 
 	if (params && !isEmptyObject(params)) {
@@ -59,21 +58,20 @@ export async function createFetchAction<T>({
 
 	const headers = new Headers();
 
-	if (shouldBeAuthorized) {
-		const session = await getSession();
+	try {
+		if (shouldBeAuthorized) {
+			const session = await getSession();
 
-		if (!session) {
-			return onError(pathWithPostfix, params, 'Session not found');
+			if (session) {
+				headers.set(
+					'Cookie',
+					`access_token=${session.access_token}; refresh_token=${session.refresh_token}`,
+				);
+			}
 		}
 
-		const tokens = `access_token=${session.access_token}; refresh_token=${session.refresh_token}`;
-		headers.set('Cookie', tokens);
-	}
-
-	try {
 		const response = await fetch(url.toString(), {
 			method: 'GET',
-			credentials: 'include',
 			cache: revalidate ? 'default' : 'force-cache',
 			headers,
 			next: { tags: revalidateTags },
@@ -85,15 +83,13 @@ export async function createFetchAction<T>({
 			LOGGER.error(
 				`Fetch failed: ${response.statusText}(${response.status}) ${pathWithPostfix}`,
 			);
-
 			return onError(pathWithPostfix, params, response.statusText, response.status);
 		}
 
-		LOGGER.success(`Received data from: ${pathWithPostfix} `);
-
+		LOGGER.success(`Received data from: ${pathWithPostfix}`);
 		return data;
 	} catch (error) {
 		LOGGER.error(error);
-		return onError(pathWithPostfix, params, 'Internal Error');
+		return onError(pathWithPostfix, params, `Unexpected Error: ${JSON.stringify(error)}`, 555);
 	}
 }

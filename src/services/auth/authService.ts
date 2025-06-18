@@ -35,7 +35,9 @@ class AuthService {
 			url: URL_ENTITIES.LOGOUT,
 		});
 
-		await clearSession();
+		if (isSuccessResponse(response)) {
+			await clearSession();
+		}
 
 		return response;
 	}

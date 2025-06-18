@@ -27,6 +27,7 @@ export * from './hooks/usePagination';
 export * from './hooks/usePrepareBreadCrumbs';
 export * from './hooks/usePreventAutoFocus';
 export * from './hooks/useSearch';
+export * from './hooks/useSessionManager';
 export * from './hooks/useSetParams';
 
 // Actions
@@ -48,7 +49,6 @@ export * from './toast/push-toast';
 
 // Custom Errors
 export { default as ErrorBoundary } from './custom-errors/global-error';
-export * from './custom-errors/session-error';
 
 // Session Manager
 

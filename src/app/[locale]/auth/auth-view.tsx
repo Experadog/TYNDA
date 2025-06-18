@@ -1,11 +1,22 @@
+'use client';
+
+import { useUser } from '@/providers/user/user-provider';
 import { ImgMask, Translate } from '@components';
-import type { FC, ReactNode } from 'react';
+import { type FC, type ReactNode, useEffect } from 'react';
 
 interface IProps {
 	children: ReactNode;
 }
 
 const AuthView: FC<IProps> = ({ children }) => {
+	const { setUser, user } = useUser();
+
+	useEffect(() => {
+		if (user) {
+			setUser(null);
+		}
+	}, []);
+
 	return (
 		<div className="h-full flex justify-start  lg:justify-center lg:items-center gap-20 lg:gap-10 sm:gap-5  bg-[url('/auth/auth.webp')] bg-no-repeat bg-cover full-height relative">
 			<ImgMask />

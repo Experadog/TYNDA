@@ -32,7 +32,7 @@ const EstablishmentPreview = ({ item }: { item?: EstablishmentDetailed }) => {
 
 				<div className="w-full px-8 lg:px-5 py-4 m-auto overflow-y-scroll ">
 					<div className="flex gap-5 lg:flex-col">
-						<div className="order-2 lg:order-1 flex flex-col gap-6 relative">
+						<div className="order-2 lg:order-1 flex flex-col gap-6 relative w-full">
 							<h2 className="text-4xl font-medium lg:text-2xl lg:font-semibold">
 								{translates[locale].name}
 							</h2>
@@ -44,7 +44,7 @@ const EstablishmentPreview = ({ item }: { item?: EstablishmentDetailed }) => {
 								{item.address}
 							</p>
 
-							<div className="flex flex-col gap-4  shadow-md rounded-[15px] text-sm p-3 bg-background_6">
+							<div className="flex flex-col gap-4  rounded-[15px] text-sm p-3 bg-background_3 w-full">
 								<p className="flex items-start gap-3 numeric">
 									<BsGeoAlt className="size-5 text-yellow" />
 									<span className="font-medium sm:text-xs">
