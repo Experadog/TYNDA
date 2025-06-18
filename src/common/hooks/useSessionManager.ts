@@ -31,12 +31,6 @@ export function useSessionManager(initialSessionStr: string) {
 			setTimeout(() => {
 				setIsLoading(false);
 				router.refresh();
-
-				const userResetDelay = setTimeout(() => {
-					setUser(null);
-				}, 1000);
-
-				return () => clearTimeout(userResetDelay);
 			}, 3000);
 		}
 	}, [router]);
