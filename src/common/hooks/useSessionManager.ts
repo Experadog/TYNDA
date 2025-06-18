@@ -96,16 +96,26 @@ export function useSessionManager(initialSessionStr: string) {
 		if (!initialSession) return;
 
 		const now = () => Date.now();
+		const cooldown = REVALIDATE.ONE_MIN;
 
 		let lastClickTime: number | null = null;
+		let lastVisibilityTime: number | null = null;
 
 		const runVisibilityChangeCheck = () => {
-			void checkSession(true);
+			const elapsed = lastVisibilityTime
+				? now() - lastVisibilityTime
+				: Number.POSITIVE_INFINITY;
+
+			if (elapsed >= cooldown) {
+				lastVisibilityTime = now();
+				void checkSession(true);
+			}
 		};
 
 		const runClickCheck = () => {
 			const elapsed = lastClickTime ? now() - lastClickTime : Number.POSITIVE_INFINITY;
-			if (elapsed >= REVALIDATE.ONE_MIN) {
+
+			if (elapsed >= cooldown) {
 				lastClickTime = now();
 				void checkSession(false);
 			}
