@@ -1,5 +1,10 @@
+import { URL_LOCAL_ENTITIES, decryptData, encryptData } from '@/lib';
 import { createExternalFetchAction } from '@common';
-import type { GETOpenStreetSearchResponseModel } from './externalServiceTypes';
+import type {
+	GETOpenStreetSearchResponseModel,
+	TranslateRequestModel,
+	TranslateResponseModel,
+} from './externalServiceTypes';
 
 export class ExternalService {
 	static async openStreetMapSearch(query: string): GETOpenStreetSearchResponseModel {
@@ -11,6 +16,21 @@ export class ExternalService {
 
 		return response;
 	}
+
+	static async translateText(req: TranslateRequestModel): Promise<TranslateResponseModel> {
+		const res = await fetch(`/api/${URL_LOCAL_ENTITIES.TRANSLATE}`, {
+			method: 'POST',
+			headers: { 'Content-Type': 'text/plain' },
+			body: encryptData(req),
+		});
+
+		const data = await res.text();
+		const decryptedData = decryptData<TranslateResponseModel>(data) || {
+			text: 'Translation Error',
+		};
+
+		return decryptedData;
+	}
 }
 
-export const { openStreetMapSearch } = ExternalService;
+export const { openStreetMapSearch, translateText } = ExternalService;

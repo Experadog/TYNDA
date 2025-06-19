@@ -14,6 +14,7 @@ import {
 	type Params,
 	createAction,
 	loadFilesAction,
+	pushCommonToast,
 	revalidateByTags,
 	useAsyncAction,
 } from '@common';
@@ -82,7 +83,10 @@ export function useCreationUseCase({ viewModel }: Props) {
 			messages: viewModel.loadFile,
 		});
 
-		if (!res.length) return;
+		if (!res.length) {
+			pushCommonToast('Превышен вес картинок, макс 10Mb', 'error');
+			return;
+		}
 
 		const [uploadedCover, ...uploadedImages] = res;
 		const work_time = `${work_time_start}-${work_time_end}`;

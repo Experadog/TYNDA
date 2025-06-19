@@ -10,6 +10,7 @@ export * from './config/urls';
 
 // helpers
 export * from './helpers/chalkLogger';
+export * from './helpers/checkFormDataSize';
 export * from './helpers/createDynamicCallbackUrl';
 export * from './helpers/createRandomID';
 export * from './helpers/decryptData';

@@ -12,6 +12,7 @@ import {
 	type EstablishmentFormValues,
 	createAction,
 	loadFilesAction,
+	pushCommonToast,
 	revalidateByTags,
 	useAsyncAction,
 } from '@common';
@@ -60,7 +61,10 @@ export function useUpdatingUseCase({ viewModel, refetchPagination }: Props) {
 			messages: viewModel.loadFile,
 		});
 
-		if (!res?.length) return;
+		if (!res.length) {
+			pushCommonToast('Суммарный размер файлов не должен превышать 10 МБ.', 'error');
+			return;
+		}
 
 		const [uploadedCover, ...uploadedImages] = res;
 		const work_time = `${work_time_start}-${work_time_end}`;
