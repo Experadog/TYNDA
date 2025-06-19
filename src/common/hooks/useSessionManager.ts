@@ -3,7 +3,7 @@
 import { useRouter } from '@/i18n/routing';
 import { REVALIDATE, URL_LOCAL_ENTITIES, decryptData } from '@/lib';
 import type { Session, User } from '@business-entities';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 export function useSessionManager(initialSessionStr: string) {
 	const router = useRouter();
@@ -54,13 +54,13 @@ export function useSessionManager(initialSessionStr: string) {
 					credentials: 'include',
 				});
 
-				const encrypted = await res.text();
-				const shouldRefresh = decryptData<boolean>(encrypted);
-
 				if (res.status === 401) {
 					await clearSession();
 					return;
 				}
+
+				const encrypted = await res.text();
+				const shouldRefresh = decryptData<boolean>(encrypted);
 
 				if (res.status === 200 && shouldRefresh) {
 					setIsLoading(true);
@@ -92,31 +92,49 @@ export function useSessionManager(initialSessionStr: string) {
 		[clearSession],
 	);
 
+	const lastClickTime = useRef<number | null>(null);
+	const lastVisibilityCheckTime = useRef<number | null>(null);
+	const intervalId = useRef<number | null>(null);
+
 	useEffect(() => {
 		if (!initialSession) return;
 
 		const now = () => Date.now();
 		const cooldown = REVALIDATE.ONE_MIN;
 
-		let lastClickTime: number | null = null;
-		let lastVisibilityTime: number | null = null;
+		const checkInterval = () => {
+			if (document.visibilityState === 'visible') {
+				if (intervalId.current === null) {
+					intervalId.current = window.setInterval(() => {
+						void checkSession(false);
+					}, REVALIDATE.FIVE_MIN);
+				}
+			} else {
+				if (intervalId.current !== null) {
+					clearInterval(intervalId.current);
+					intervalId.current = null;
+				}
+			}
+		};
 
 		const runVisibilityChangeCheck = () => {
-			const elapsed = lastVisibilityTime
-				? now() - lastVisibilityTime
+			const elapsed = lastVisibilityCheckTime.current
+				? now() - lastVisibilityCheckTime.current
 				: Number.POSITIVE_INFINITY;
 
 			if (elapsed >= cooldown) {
-				lastVisibilityTime = now();
+				lastVisibilityCheckTime.current = now();
 				void checkSession(true);
 			}
 		};
 
 		const runClickCheck = () => {
-			const elapsed = lastClickTime ? now() - lastClickTime : Number.POSITIVE_INFINITY;
+			const elapsed = lastClickTime.current
+				? now() - lastClickTime.current
+				: Number.POSITIVE_INFINITY;
 
 			if (elapsed >= cooldown) {
-				lastClickTime = now();
+				lastClickTime.current = now();
 				void checkSession(false);
 			}
 		};
@@ -125,6 +143,7 @@ export function useSessionManager(initialSessionStr: string) {
 			if (document.visibilityState === 'visible') {
 				runVisibilityChangeCheck();
 			}
+			checkInterval();
 		};
 
 		const handleClick = () => {
@@ -134,14 +153,12 @@ export function useSessionManager(initialSessionStr: string) {
 		document.addEventListener('visibilitychange', handleVisibilityChange);
 		document.addEventListener('click', handleClick);
 
-		const intervalId = setInterval(() => {
-			void checkSession(false);
-		}, REVALIDATE.FIVE_MIN);
+		checkInterval();
 
 		return () => {
 			document.removeEventListener('visibilitychange', handleVisibilityChange);
 			document.removeEventListener('click', handleClick);
-			clearInterval(intervalId);
+			if (intervalId.current !== null) clearInterval(intervalId.current);
 		};
 	}, [checkSession, initialSession]);
 

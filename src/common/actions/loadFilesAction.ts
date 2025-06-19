@@ -1,6 +1,6 @@
 'use client';
 
-import { LOGGER, prepareFormDataForFiles } from '@/lib';
+import { LOGGER, checkFormDataSize, prepareFormDataForFiles } from '@/lib';
 import { type LoadFileResponseModel, loadFile } from '@/services';
 import toast from 'react-hot-toast';
 import { createAction } from './createAction';
@@ -31,6 +31,12 @@ export async function loadFilesAction({ data, messages, onFinish }: Props): Prom
 	}
 
 	const formData = prepareFormDataForFiles(filesToUpload);
+
+	const isAvailableSize = checkFormDataSize(formData, 10);
+
+	if (!isAvailableSize) {
+		return [];
+	}
 
 	const action = createAction({
 		requestAction: loadFile,

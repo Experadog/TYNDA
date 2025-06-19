@@ -49,6 +49,7 @@ export enum URL_LOCAL_ENTITIES {
 	SESSION = '/session',
 	REFRESH = '/refresh',
 	CLEAR_SESSION = '/clear-session',
+	TRANSLATE = '/translate',
 }
 
 export const WEBSOCKET_API = 'wss://soyuz.kg/skgapi/v1/mes/chat/ws?token=';

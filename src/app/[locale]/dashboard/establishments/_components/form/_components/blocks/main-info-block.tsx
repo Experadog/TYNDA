@@ -46,6 +46,7 @@ const MainInfoBlock = ({ categoriesViewModel, schema }: Props) => {
 								}
 							/>
 						</div>,
+
 						<span>
 							{renderIconByValidationStatus(schema, [
 								'translates.en.name',
