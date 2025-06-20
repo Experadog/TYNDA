@@ -27,14 +27,10 @@ const AvatarUpdating = () => {
 
 		setPreview(previewURL);
 	};
+
 	const handleSave = async () => {
 		if (!file) return;
-
-		const formData = new FormData();
-		formData.append('files', file);
-
-		await onUpdateAvatar(formData);
-
+		await onUpdateAvatar([file]);
 		closeAvatarUpdating();
 		setPreview(null);
 		setFile(null);

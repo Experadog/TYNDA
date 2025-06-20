@@ -23,7 +23,7 @@ export function useProfileSettingsUseCase() {
 		avatar: user?.avatar || '',
 	};
 
-	const viewModel = useViewModel(['Validation', 'Toast', 'Shared']);
+	const viewModel = useViewModel(['Validation', 'Toast', 'Shared', 'CommonToast']);
 
 	const schema = createProfileSchema({
 		message: viewModel.Validation,
@@ -42,7 +42,7 @@ export function useProfileSettingsUseCase() {
 
 	const updateProfileAction = createAction({
 		requestAction: updateProfile,
-		onSuccess: () => revalidateByTags([URL_ENTITIES.USERS]),
+		onSuccess: () => revalidateByTags([URL_ENTITIES.PROFILE]),
 	});
 
 	const onImageChange = (file: File | null) => {
@@ -55,20 +55,19 @@ export function useProfileSettingsUseCase() {
 
 	const onSubmit = async (values: ProfileFormValues) => {
 		if (values.avatar && values.avatar instanceof File) {
-			const url = await loadFilesAction({
+			const res = await loadFilesAction({
 				data: [values.avatar],
-				messages: viewModel.Toast.LoadFile,
+				toastMessage: viewModel.Toast.LoadFile,
+				validationMessage: viewModel.CommonToast.too_large_image,
 			});
 
-			if (url.length) {
-				values.avatar = url[0];
-			}
-		}
+			await execute(updateProfileAction, { ...values, avatar: res[0] });
 
-		await execute(updateProfileAction, values);
-		schema.reset({
-			...values,
-		});
+			schema.reset({
+				...values,
+				avatar: res[0],
+			});
+		}
 	};
 
 	const states = { schema, avatar: typeof avatar === 'string' ? avatar : '' };

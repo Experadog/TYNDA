@@ -17,7 +17,7 @@ export function useSessionManager(initialSessionStr: string) {
 		}
 	}, [initialSessionStr]);
 
-	const [user, setUser] = useState<User | null>(() => initialSession?.user ?? null);
+	const [user, setUser] = useState<User | null>(initialSession?.user || null);
 	const [isLoading, setIsLoading] = useState(false);
 
 	const clearSession = useCallback(async () => {
@@ -161,6 +161,10 @@ export function useSessionManager(initialSessionStr: string) {
 			if (intervalId.current !== null) clearInterval(intervalId.current);
 		};
 	}, [checkSession, initialSession]);
+
+	useEffect(() => {
+		setUser(initialSession?.user || null);
+	}, [initialSession]);
 
 	return {
 		user,

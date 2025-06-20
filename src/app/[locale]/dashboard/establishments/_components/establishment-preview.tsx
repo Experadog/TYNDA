@@ -30,7 +30,7 @@ const EstablishmentPreview = ({ item }: { item?: EstablishmentDetailed }) => {
 					<DrawerTitle className="text-2xl">Просмотр</DrawerTitle>
 				</DrawerHeader>
 
-				<div className="w-full px-8 lg:px-5 py-4 m-auto overflow-y-scroll ">
+				<div className="w-full px-8 lg:px-5 py-4 m-auto overflow-y-scroll overflow-x-hidden ">
 					<div className="flex gap-5 lg:flex-col">
 						<div className="order-2 lg:order-1 flex flex-col gap-6 relative w-full">
 							<h2 className="text-4xl font-medium lg:text-2xl lg:font-semibold">
@@ -94,14 +94,16 @@ const EstablishmentPreview = ({ item }: { item?: EstablishmentDetailed }) => {
 								</div>
 							</div>
 
-							<div>
+							<div className="">
 								<h3 className="text-lg font-semibold uppercase lg:text-base">
 									{DetailEnterprise.hero.aboutEnterprise}
 								</h3>
 								<p
 									className={clsx(
 										'text-base lg:text-sm font-normal whitespace-pre-line',
-										isLongText && !shouldShowAllText && 'line-clamp-5',
+										isLongText && !shouldShowAllText
+											? 'line-clamp-3'
+											: 'line-clamp-none',
 									)}
 								>
 									{translates[locale].description}
@@ -120,7 +122,7 @@ const EstablishmentPreview = ({ item }: { item?: EstablishmentDetailed }) => {
 							</div>
 						</div>
 
-						<div className="order-1 lg:order-2 flex flex-col items-center gap-4   flex-shrink-0">
+						<div className="order-1 lg:order-2 flex flex-col items-center gap-4  flex-shrink-0">
 							<div className="w-full h-[520px] lg:w-full lg:h-[220px] relative rounded-[20px] overflow-hidden">
 								<Image
 									src={item.cover}

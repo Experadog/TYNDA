@@ -145,7 +145,9 @@ const Hero: FC<IProps> = ({ viewModel, item, categoriesViewModel }) => {
 						<p
 							className={clsx(
 								'text-base lg:text-sm font-normal whitespace-pre-line',
-								isLongText && !shouldShowAllText && 'line-clamp-5',
+								isLongText && !shouldShowAllText
+									? 'line-clamp-3'
+									: 'line-clamp-none',
 							)}
 						>
 							{description}

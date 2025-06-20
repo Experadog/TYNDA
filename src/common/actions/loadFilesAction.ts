@@ -1,17 +1,23 @@
 'use client';
 
 import { LOGGER, checkFormDataSize, prepareFormDataForFiles } from '@/lib';
-import { type LoadFileResponseModel, loadFile } from '@/services';
+import { loadFile } from '@/services';
 import toast from 'react-hot-toast';
+import { pushCommonToast } from '../toast/push-common-toast';
 import { createAction } from './createAction';
 
 type Props = {
 	data: (File | string)[];
-	messages: ViewModel['Toast']['LoadFile'];
-	onFinish?: (res: LoadFileResponseModel) => Promise<void>;
+
+	validationMessage: string;
+	toastMessage: ViewModel['Toast']['LoadFile'];
 };
 
-export async function loadFilesAction({ data, messages, onFinish }: Props): Promise<string[]> {
+export async function loadFilesAction({
+	data,
+	toastMessage,
+	validationMessage,
+}: Props): Promise<string[]> {
 	const filesToUpload: File[] = [];
 	const existingUrls: string[] = [];
 	const resultOrder: ('file' | 'url')[] = [];
@@ -35,20 +41,16 @@ export async function loadFilesAction({ data, messages, onFinish }: Props): Prom
 	const isAvailableSize = checkFormDataSize(formData, 10);
 
 	if (!isAvailableSize) {
+		pushCommonToast(validationMessage, 'error');
 		return [];
 	}
 
 	const action = createAction({
 		requestAction: loadFile,
-		onSuccess: onFinish,
 	});
 
 	try {
-		const uploadedUrls = await toast.promise(action(formData), {
-			loading: messages.loading,
-			success: messages.success,
-			error: messages.error,
-		});
+		const uploadedUrls = await toast.promise(action(formData), toastMessage);
 
 		const result: string[] = [];
 		let fileIndex = 0;
@@ -80,7 +82,6 @@ export async function loadFilesAction({ data, messages, onFinish }: Props): Prom
 				urlIndex++;
 			}
 		}
-
 		return result;
 	}
 }

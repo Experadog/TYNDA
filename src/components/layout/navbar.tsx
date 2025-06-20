@@ -51,18 +51,15 @@ const Navbar: FC<IProps> = () => {
 				className="flex items-center px-10 xs:px-5 py-5 gap-8 justify-between"
 			>
 				<div className="flex items-center gap-16">
-					<div className="w-[50px] h-[48px]">
-						<Link href={'/'}>
-							<Image
-								src={'/logo.svg'}
-								alt="Логотип"
-								width={50}
-								height={48}
-								priority
-								className="min-w-[50px] min-h-[48px]"
-							/>
-						</Link>
-					</div>
+					<Link href={'/'} className="w-[50px] h-[48px] relative">
+						<Image
+							src={'/logo.svg'}
+							alt="Логотип"
+							fill
+							priority
+							className="w-auto h-auto"
+						/>
+					</Link>
 
 					<nav
 						className={clsx(

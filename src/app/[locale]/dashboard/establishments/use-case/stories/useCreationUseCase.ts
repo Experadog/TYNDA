@@ -14,7 +14,6 @@ import {
 	type Params,
 	createAction,
 	loadFilesAction,
-	pushCommonToast,
 	revalidateByTags,
 	useAsyncAction,
 } from '@common';
@@ -22,6 +21,7 @@ import {
 type Props = {
 	viewModel: {
 		loadFile: ViewModel['Toast']['LoadFile'];
+		loadFileValidation: ViewModel['CommonToast']['too_large_image'];
 		creation: ViewModel['Toast']['EstablishmentCreation'];
 	};
 };
@@ -78,18 +78,14 @@ export function useCreationUseCase({ viewModel }: Props) {
 
 		const allFiles = [cover, ...images];
 
-		const res = await loadFilesAction({
+		const urls = await loadFilesAction({
 			data: allFiles,
-			messages: viewModel.loadFile,
+			toastMessage: viewModel.loadFile,
+			validationMessage: viewModel.loadFileValidation,
 		});
 
-		if (!res.length) {
-			pushCommonToast('Превышен вес картинок, макс 10Mb', 'error');
-			return;
-		}
-
-		const [uploadedCover, ...uploadedImages] = res;
 		const work_time = `${work_time_start}-${work_time_end}`;
+		const [uploadedCover, ...uploadedImages] = urls;
 
 		const commonRequestData: EstablishmentCreationRequestModel = {
 			...rest,

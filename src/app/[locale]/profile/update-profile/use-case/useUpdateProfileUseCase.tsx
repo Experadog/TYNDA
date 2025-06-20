@@ -102,7 +102,7 @@ export const UpdateProfileProvider: React.FC<{ children: ReactNode }> = ({ child
 			first_name: user?.first_name || '',
 			last_name: user?.last_name || '',
 			phone: phoneFormatter(user?.phone || ''),
-			avatar: '',
+			avatar: user?.avatar || '',
 		},
 	});
 
@@ -134,7 +134,9 @@ export const UpdateProfileProvider: React.FC<{ children: ReactNode }> = ({ child
 	const actions = {
 		updateProfileAction: createAction({
 			requestAction: updateProfile,
-			onSuccess: () => revalidateByTags([URL_ENTITIES.PROFILE]),
+			onSuccess: () => {
+				revalidateByTags([URL_ENTITIES.PROFILE]);
+			},
 		}),
 
 		phone: {

@@ -4,6 +4,7 @@ import { PAGES } from '@/lib';
 import clsx from 'clsx';
 import Image from 'next/image';
 import type { FC } from 'react';
+import Translate from '../animation/translate/translate';
 import { useFooterUseCase } from './use-cases/useFooterUseCase';
 
 const icons = [
@@ -26,30 +27,34 @@ const Footer: FC<IProps> = () => {
 	return (
 		<footer
 			id="footer"
-			className={clsx(
-				'bg-background_4 py-[60px] pl-[60px] lg:pt-20 lg:px-5 lg:pb-24',
-				className,
-			)}
+			className={clsx('bg-background_4 px-6 py-12 lg:px-4 lg:py-10', className)}
 		>
-			<div className="max-w-[1920px] m-auto flex flex-col lg:gap-[30px]">
-				<div className="flex justify-between gap-4 lg:flex-col lg:gap-[50px]">
-					<div className="flex flex-col gap-[25px] w-[433px] lg:w-auto">
-						<Image src={'/logo.svg'} alt="logo" width={120} height={90} />
+			<Translate
+				direction="up"
+				animateOnce={false}
+				duration={2}
+				className={'"max-w-screen-2xl mx-auto flex flex-col gap-10'}
+			>
+				<div className="flex justify-between flex-wrap gap-8 lg:flex-col lg:items-center lg:gap-10">
+					<div className="flex-shrink-0 self-center w-[120px] h-[90px] relative">
+						<Image src="/logo.svg" alt="Логотип" fill className="object-contain" />
 					</div>
-					<div className="flex gap-[50px] lg:flex-col">
+
+					{/* Меню */}
+					<div className="flex gap-16 flex-wrap justify-center text-center lg:flex-col lg:items-center">
 						{viewModel.footer.menu.map((section, sectionIndex) => (
-							<div key={section.title} className="flex flex-col gap-6 min-w-56">
-								<p className="uppercase text-[15px] font-medium opacity-60 whitespace-nowrap">
+							<div key={section.title} className="min-w-[140px] flex flex-col gap-4">
+								<p className="uppercase text-sm font-semibold text-foreground_1 tracking-widest">
 									{section.title}
 								</p>
-								<ul className="flex flex-col gap-[10px] font-normal text-base">
+								<ul className="flex flex-col gap-2 text-foreground_1 text-base font-normal">
 									{section.items.map((item, itemIndex) => (
 										<Link
 											key={item}
 											href={sectionUrls[sectionIndex][itemIndex]}
-											className="hover:text-yellow max-w-max"
+											className="hover:text-yellow transition-colors duration-200"
 										>
-											<li className="whitespace-nowrap">{item}</li>
+											<li>{item}</li>
 										</Link>
 									))}
 								</ul>
@@ -58,19 +63,25 @@ const Footer: FC<IProps> = () => {
 					</div>
 				</div>
 
-				<div className="flex items-center justify-between">
-					<div className="flex gap-[15px]">
+				<div className="flex justify-between items-center flex-wrap gap-4 border-t border-shade_gray pt-6">
+					<p className="text-sm text-foreground_1">
+						© {new Date().getFullYear()} Все права защищены
+					</p>
+					<div className="flex gap-4">
 						{icons.map((item) => (
-							<div
+							<Link
 								key={item.id}
-								className="bg-[#E9BC1B] rounded-[40px] w-10 h-10 flex items-center justify-center cursor-pointer transition duration-200 hover:scale-110 active:scale-90"
+								href={item.src || '#'}
+								target="_blank"
+								rel="noopener noreferrer"
+								className="w-10 h-10 bg-yellow rounded-full flex items-center justify-center hover:scale-110 active:scale-95 transition-transform"
 							>
 								<Image src={item.src} alt="social icon" width={20} height={20} />
-							</div>
+							</Link>
 						))}
 					</div>
 				</div>
-			</div>
+			</Translate>
 		</footer>
 	);
 };

@@ -24,6 +24,7 @@ const MoreRecsCard: FC<IProps> = ({ establishment, mainClassName = '' }) => {
 					alt="establishment image"
 					fill
 					priority
+					sizes="500px"
 					className="object-cover"
 				/>
 
