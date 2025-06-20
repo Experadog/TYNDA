@@ -12,7 +12,6 @@ import {
 	type EstablishmentFormValues,
 	createAction,
 	loadFilesAction,
-	pushCommonToast,
 	revalidateByTags,
 	useAsyncAction,
 } from '@common';
@@ -20,6 +19,7 @@ import {
 type Props = {
 	viewModel: {
 		loadFile: ViewModel['Toast']['LoadFile'];
+		loadFileValidation: ViewModel['CommonToast']['too_large_image'];
 		updating: ViewModel['Toast']['EstablishmentUpdating'];
 	};
 
@@ -40,13 +40,17 @@ export function useUpdatingUseCase({ viewModel, refetchPagination }: Props) {
 		requestAction: updateEstablishment,
 		onSuccess: async () => {
 			await revalidateByTags([
-				URL_ENTITIES.ESTABLISHMENT_ALL_ESTABLISHER,
 				URL_ENTITIES.ESTABLISHMENT_ALL_CLIENT,
 				URL_ENTITIES.ESTABLISHMENT_DETAIL,
+				URL_ENTITIES.ESTABLISHMENT_ALL_ESTABLISHER,
+				URL_ENTITIES.ESTABLISHMENT_ALL_ADMIN,
 			]);
 
-			router.push(PAGES.ESTABLISHMENT);
 			await refetchPagination();
+
+			setTimeout(() => {
+				router.push(PAGES.ESTABLISHMENT);
+			}, 300);
 		},
 	});
 
@@ -56,17 +60,13 @@ export function useUpdatingUseCase({ viewModel, refetchPagination }: Props) {
 
 		const allFiles = [cover, ...images];
 
-		const res = await loadFilesAction({
+		const urls = await loadFilesAction({
 			data: allFiles,
-			messages: viewModel.loadFile,
+			toastMessage: viewModel.loadFile,
+			validationMessage: viewModel.loadFileValidation,
 		});
 
-		if (!res.length) {
-			pushCommonToast('Суммарный размер файлов не должен превышать 10 МБ.', 'error');
-			return;
-		}
-
-		const [uploadedCover, ...uploadedImages] = res;
+		const [uploadedCover, ...uploadedImages] = urls;
 		const work_time = `${work_time_start}-${work_time_end}`;
 
 		const requestData: EstablishmentCreationRequestModel = {

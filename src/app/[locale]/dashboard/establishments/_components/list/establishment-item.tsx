@@ -23,7 +23,7 @@ const EstablishmentItem = ({ item, locale, viewModel, onDelete, isSuperUser }: P
 					priority
 					alt={item.id}
 					src={item.cover}
-					sizes="100vw"
+					sizes="260px"
 					fill
 					className="object-cover transition-transform duration-500 group-hover:scale-110"
 				/>

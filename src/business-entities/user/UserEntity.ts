@@ -16,7 +16,7 @@ export type User = {
 	created_time: string;
 	last_login_time: string;
 	role: UserRole;
-	avatar: string;
+	avatar: string | null;
 	card: Card;
 	cached_permission_groups: {
 		establishment: Partial<'crud'>;

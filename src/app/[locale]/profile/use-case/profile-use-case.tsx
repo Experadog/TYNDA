@@ -1,14 +1,10 @@
 'use client';
 
+import { useViewModel } from '@/i18n/getTranslate';
 import { useUser } from '@/providers/user/user-provider';
-import {
-	type ClientHistoryResponseModel,
-	type LoadFileRequestModel,
-	type LoadFileResponseModel,
-	loadFile,
-} from '@/services';
+import type { ClientHistoryResponseModel } from '@/services';
 import { getClientHistory } from '@/services/profile/profileService';
-import { createAction, useAsyncAction } from '@common';
+import { loadFilesAction } from '@common';
 import { type FC, type ReactNode, createContext, useContext, useState } from 'react';
 import { useUpdateProfileUseCase } from '../update-profile/use-case/useUpdateProfileUseCase';
 
@@ -21,7 +17,7 @@ interface ProfileContextType {
 		moveToNextClientHistory: () => Promise<void>;
 		openAvatarUpdating: () => void;
 		closeAvatarUpdating: () => void;
-		onUpdateAvatar: (data: LoadFileRequestModel) => Promise<void>;
+		onUpdateAvatar: (data: File[]) => Promise<void>;
 	};
 }
 
@@ -36,7 +32,10 @@ export const ProfileContextProvider: FC<ContextProps> = ({ children, clientHisto
 	const [clientHistory, setClientHistory] = useState(clientHistoryResponse);
 	const [isAvatarUpdating, setIsAvatarUpdating] = useState(false);
 
+	const { CommonToast, Toast } = useViewModel(['Toast', 'CommonToast']);
+
 	const { user } = useUser();
+
 	const {
 		actions: { onUpdateProfile },
 	} = useUpdateProfileUseCase();
@@ -44,29 +43,18 @@ export const ProfileContextProvider: FC<ContextProps> = ({ children, clientHisto
 	const openAvatarUpdating = () => setIsAvatarUpdating(true);
 	const closeAvatarUpdating = () => setIsAvatarUpdating(false);
 
-	const { execute: loadFileExecute } = useAsyncAction<
-		LoadFileResponseModel,
-		[LoadFileRequestModel]
-	>({
-		messages: {
-			error: 'Ошибка при попытке обновить фото профиля',
-			loading: 'Загрузка...',
-			success: 'Фото профиля успешно обновлено!',
-		},
-	});
+	const onUpdateAvatar = async (data: File[]) => {
+		const res = await loadFilesAction({
+			data,
+			toastMessage: Toast.LoadFile,
+			validationMessage: CommonToast.too_large_image,
+		});
 
-	const updateAvatarAction = createAction({
-		requestAction: loadFile,
-		onSuccess: (res) =>
-			onUpdateProfile({
-				last_name: user?.last_name,
-				first_name: user?.first_name,
-				avatar: res.data[0],
-			}),
-	});
-
-	const onUpdateAvatar = async (data: LoadFileRequestModel) => {
-		await loadFileExecute(updateAvatarAction, data);
+		onUpdateProfile({
+			avatar: res[0],
+			first_name: user?.first_name,
+			last_name: user?.last_name,
+		});
 	};
 
 	const moveToNextClientHistory = async () => {

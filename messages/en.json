@@ -203,6 +203,11 @@
 			"error": "Error while creating chat"
 		}
 	},
+
+	"CommonToast": {
+		"too_large_image": "The total file size must not exceed 10 MB"
+	},
+
 	"AllEnterprises": {
 		"hero": {
 			"home": "Home",

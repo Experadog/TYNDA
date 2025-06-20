@@ -30,6 +30,7 @@ const EstablishmentForm = ({ establishment }: Props) => {
 		viewModel: {
 			updating: viewModel.Toast.EstablishmentUpdating,
 			loadFile: viewModel.Toast.LoadFile,
+			loadFileValidation: viewModel.CommonToast.too_large_image,
 		},
 		refetchPagination: pagination.actions.refetchCurrentPage,
 	});
@@ -38,6 +39,7 @@ const EstablishmentForm = ({ establishment }: Props) => {
 		viewModel: {
 			creation: viewModel.Toast.EstablishmentCreation,
 			loadFile: viewModel.Toast.LoadFile,
+			loadFileValidation: viewModel.CommonToast.too_large_image,
 		},
 	});
 
@@ -95,7 +97,7 @@ const EstablishmentForm = ({ establishment }: Props) => {
 						<FooterBlock
 							isUpdatingMode={!!establishment?.id}
 							schema={schema}
-							item={establishment}
+							establishment={establishment}
 						/>
 					</BlockWrapper>
 				</form>

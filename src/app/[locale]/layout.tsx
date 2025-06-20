@@ -50,7 +50,7 @@ export const metadata: Metadata = {
 		card: 'summary_large_image',
 		title: 'Tynda.kg',
 		description:
-			'Tynda.kg — универсальная платформа для туризма и отдыха в Кыргызстане: туры, заведения, сервисы и развлечения для каждого.',
+			'Tynda.kg — универсальная платформа для туризма и отдыха в Кыргызской Республике: туры, заведения, сервисы и развлечения для каждого.',
 		images: ['/home/herobg.webp'],
 		creator: '@TyndaKG',
 	},

@@ -8,10 +8,10 @@ import EstablishmentPreview from '../../../establishment-preview';
 type Props = {
 	isUpdatingMode: boolean;
 	schema: EstablishmentSchema;
-	item?: EstablishmentDetailed;
+	establishment?: EstablishmentDetailed;
 };
 
-const FooterBlock = ({ isUpdatingMode, schema, item }: Props) => {
+const FooterBlock = ({ isUpdatingMode, schema, establishment }: Props) => {
 	const onReset = () => {
 		schema.reset();
 	};
@@ -27,7 +27,7 @@ const FooterBlock = ({ isUpdatingMode, schema, item }: Props) => {
 						Отменить редактирование
 					</Link>
 
-					<EstablishmentPreview item={item} />
+					<EstablishmentPreview item={establishment} />
 
 					<Button
 						disableAnimation

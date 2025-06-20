@@ -56,7 +56,11 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children, session })
 						onExit={{ direction: 'right', delay: 0.2 }}
 						className="fixed inset-0 flex flex-col gap-3 justify-center items-center z-[9999999] bg-background_6"
 					>
-						<Avatar src={'/logo.svg'} className="size-24 animate-pulse duration-500" />
+						<Avatar
+							src={'/logo.svg'}
+							size="large"
+							className="animate-pulse duration-500"
+						/>
 						<h3 className="text-foreground_1 text-2xl font-semibold">Tynda KG</h3>
 						<h4 className="text-foreground_2 text-md font-normal">
 							Проверка сессии...

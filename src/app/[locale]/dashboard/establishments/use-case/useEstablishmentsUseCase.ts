@@ -9,7 +9,7 @@ type Props = {
 };
 
 export function useEstablishmentUseCase({ establishments }: Props) {
-	const viewModel = useViewModel(['Validation', 'Toast', 'Shared']);
+	const viewModel = useViewModel(['Validation', 'Toast', 'Shared', 'CommonToast']);
 	const pagination = useRetrievalUseCase(establishments);
 
 	return { pagination, viewModel };

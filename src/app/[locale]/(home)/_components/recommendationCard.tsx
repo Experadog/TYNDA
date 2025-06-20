@@ -41,6 +41,7 @@ const RecommendationCard: FC<IProps> = ({ establishment }) => {
 					src={establishment?.cover}
 					alt="establishment image"
 					fill
+					sizes="300px"
 					priority
 					className="object-cover object-center"
 				/>

@@ -19,9 +19,9 @@ type Props = {
 };
 
 export function useStaffUpdatingUseCase({ onCloseModal, refetch }: Props) {
-	const viewModel = useViewModel(['Toast']);
+	const viewModel = useViewModel(['Toast', 'CommonToast']);
 	const { execute } = useAsyncAction<StaffUpdatingResponseModel, [StaffUpdatingRequestModel]>({
-		messages: viewModel.EstablishmentUpdating,
+		messages: viewModel.Toast.EstablishmentUpdating,
 	});
 
 	const action = createAction({
@@ -42,7 +42,8 @@ export function useStaffUpdatingUseCase({ onCloseModal, refetch }: Props) {
 		if (values.avatar && values.avatar instanceof File) {
 			const url = await loadFilesAction({
 				data: [values.avatar],
-				messages: viewModel.LoadFile,
+				toastMessage: viewModel.Toast.LoadFile,
+				validationMessage: viewModel.CommonToast.too_large_image,
 			});
 
 			if (url.length) {
