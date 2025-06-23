@@ -7,6 +7,7 @@ import type { FC, ReactNode } from 'react';
 import CacheRevalidate from './cache-revalidate/cache-revalidate';
 import { ChatWebSocketProvider } from './chat-webscoket/chat-webscoket-provider';
 import { LocaleProvider } from './locale/locale-provider';
+import NetworkStatusProvider from './network-status-provoder/network-status-provoder';
 import OAuthProvider from './oAuth/oAuth-provider';
 import { ThemeProvider } from './theme/theme-provider';
 import { ToastClientProvider } from './toast-provider/toast-provider';
@@ -24,25 +25,27 @@ const CollectedProviders: FC<IProps> = async ({ children }) => {
 
 	return (
 		<ErrorBoundary>
-			<ThemeProvider
-				attribute="class"
-				defaultTheme={'system'}
-				forcedTheme={theme}
-				enableSystem
-				theme={theme}
-			>
-				<OAuthProvider>
-					<LocaleProvider locale={locale}>
-						<UserProvider session={session}>
-							<ChatWebSocketProvider session={session}>
-								<ToastClientProvider theme={theme} />
-								<CacheRevalidate />
-								<TooltipProvider>{children}</TooltipProvider>
-							</ChatWebSocketProvider>
-						</UserProvider>
-					</LocaleProvider>
-				</OAuthProvider>
-			</ThemeProvider>
+			<NetworkStatusProvider>
+				<ThemeProvider
+					attribute="class"
+					defaultTheme={'system'}
+					forcedTheme={theme}
+					enableSystem
+					theme={theme}
+				>
+					<OAuthProvider>
+						<LocaleProvider locale={locale}>
+							<UserProvider session={session}>
+								<ChatWebSocketProvider session={session}>
+									<ToastClientProvider theme={theme} />
+									<CacheRevalidate />
+									<TooltipProvider>{children}</TooltipProvider>
+								</ChatWebSocketProvider>
+							</UserProvider>
+						</LocaleProvider>
+					</OAuthProvider>
+				</ThemeProvider>
+			</NetworkStatusProvider>
 		</ErrorBoundary>
 	);
 };
