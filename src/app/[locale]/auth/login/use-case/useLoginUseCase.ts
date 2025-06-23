@@ -5,7 +5,6 @@ import { useRouter } from '@/i18n/routing';
 import { PAGES, YANDEX_CLIENT_ID, createDynamicCallbackUrl } from '@/lib';
 import { useChatWebSocket } from '@/providers/chat-webscoket/chat-webscoket-provider';
 import { useLocale } from '@/providers/locale/locale-provider';
-import { useUser } from '@/providers/user/user-provider';
 import {
 	type GoogleLoginRequestModel,
 	type GoogleLoginResponseModel,
@@ -21,7 +20,6 @@ import { useGoogleLogin } from '@react-oauth/google';
 export const useLoginUseCase = () => {
 	const viewModel = useViewModel(['Toast', 'Login', 'Validation']);
 
-	const { setUser } = useUser();
 	const router = useRouter();
 	const { locale } = useLocale();
 	const { connectWebSocket } = useChatWebSocket();
@@ -42,11 +40,11 @@ export const useLoginUseCase = () => {
 
 	const navigate = (role: UserRole, isSuperUser: boolean) => {
 		if (isSuperUser || role === UserRole.ESTABLISHER || role === UserRole.ESTABLISHER_WORKER) {
-			router.push(PAGES.DASHBOARD);
+			router.replace(PAGES.DASHBOARD);
 			return;
 		}
 		if (role === UserRole.CLIENT) {
-			router.push(PAGES.PROFILE);
+			router.replace(PAGES.PROFILE);
 			return;
 		}
 
@@ -58,7 +56,6 @@ export const useLoginUseCase = () => {
 	const loginAction = createAction({
 		requestAction: login,
 		onSuccess: (response) => {
-			setUser(response.data.user);
 			navigate(response.data.user.role, response.data.user.is_superuser);
 		},
 	});
@@ -66,11 +63,10 @@ export const useLoginUseCase = () => {
 	const sendGoogleCodeAction = createAction({
 		requestAction: sendAndLoginByGoogle,
 		onSuccess: (response) => {
-			setUser(response.data.user);
 			navigate(response.data.user.role, response.data.user.is_superuser);
 		},
 		onError: () => {
-			router.push(PAGES.LOGIN);
+			router.replace(PAGES.LOGIN);
 		},
 	});
 

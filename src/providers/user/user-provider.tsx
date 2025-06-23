@@ -33,7 +33,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children, session })
 
 	const logoutAction = createAction({
 		requestAction: logout,
-		onSuccess: () => router.push(PAGES.LOGIN),
+		onSuccess: () => router.replace(PAGES.LOGIN),
 	});
 
 	const onLogout = async () => {

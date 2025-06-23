@@ -86,12 +86,9 @@ export function getSessionData(req: NextRequest): Session | null {
 	const sessionCookie = req.cookies.get(COOKIES.SESSION)?.value;
 	return sessionCookie ? decryptData(sessionCookie) : null;
 }
-
 export function isProtectedClientRoute(pathname: string): boolean {
-	const basePath = pathname.replace(/^\/(ru|kg|en)\//, '/') as PAGES;
-	return (
-		PROTECTED_CLIENT_ROUTES.includes(basePath) ||
-		PROTECTED_CLIENT_ROUTES.some((route) => basePath.includes(route))
+	return PROTECTED_CLIENT_ROUTES.some(
+		(route) => pathname.startsWith(route) || pathname.includes(route),
 	);
 }
 
@@ -168,7 +165,7 @@ export function handleAuthRedirection(
 		return NextResponse.redirect(redirectUrl);
 	}
 
-	if (isProtectedClientRoute(pathname) && !sessionData) {
+	if (isProtectedClientRoute(basePath) && !sessionData) {
 		const redirectUrl = new URL(`/${pathLocale}${PAGES.LOGIN}`, req.url);
 		return NextResponse.redirect(redirectUrl);
 	}

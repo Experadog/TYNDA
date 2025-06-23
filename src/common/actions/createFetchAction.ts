@@ -15,6 +15,14 @@ type Props = {
 	revalidateTags?: string[];
 };
 
+const returnEmptyDTO = <T>(params?: Params, text?: string) => {
+	if (params?.page || params?.size) {
+		return DTOEmptyCommonPagination(text) as T;
+	}
+
+	return DTOEmptyCommonResponse(text) as T;
+};
+
 const onError = async <T>(
 	pathWithPostfix: string,
 	params?: Params,
@@ -26,11 +34,7 @@ const onError = async <T>(
 		payload: JSON.stringify(params || {}),
 	});
 
-	if (params?.page || params?.size) {
-		return DTOEmptyCommonPagination(text) as T;
-	}
-
-	return DTOEmptyCommonResponse(text) as T;
+	return returnEmptyDTO(params, text);
 };
 
 export async function createFetchAction<T>({
@@ -62,12 +66,14 @@ export async function createFetchAction<T>({
 		if (shouldBeAuthorized) {
 			const session = await getSession();
 
-			if (session) {
-				headers.set(
-					'Cookie',
-					`access_token=${session.access_token}; refresh_token=${session.refresh_token}`,
-				);
+			if (!session) {
+				return returnEmptyDTO(params, 'Session not found...');
 			}
+
+			headers.set(
+				'Cookie',
+				`access_token=${session.access_token}; refresh_token=${session.refresh_token}`,
+			);
 		}
 
 		const response = await fetch(url.toString(), {

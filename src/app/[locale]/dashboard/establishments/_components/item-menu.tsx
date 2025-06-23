@@ -61,7 +61,7 @@ const ItemMenu = ({
 					asChild
 					disabled={isSuperUser}
 				>
-					<Link href={`${PAGES.ESTABLISHMENT}/${itemID}/${PAGES.STAFF}`}>
+					<Link href={`${PAGES.ESTABLISHMENT}/${itemID}${PAGES.STAFF}`}>
 						<Users2 />
 						Сотрудники
 					</Link>
@@ -72,7 +72,7 @@ const ItemMenu = ({
 					asChild
 					disabled={isSuperUser}
 				>
-					<Link href={`${PAGES.ESTABLISHMENT}/${itemID}/${PAGES.CHAT}`}>
+					<Link href={`${PAGES.ESTABLISHMENT}/${itemID}${PAGES.CHAT}`}>
 						<IoChatbubbleEllipsesOutline />
 						Чат
 					</Link>
