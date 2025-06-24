@@ -1,89 +1,19 @@
 'use client';
 
-import { useViewModel } from '@/i18n/getTranslate';
-import { usePathname } from '@/i18n/routing';
-import { PAGES } from '@/lib';
-import { createDynamicLabels } from '@/lib/helpers/createDynamicLabels';
-import { useLocale } from '@/providers/locale/locale-provider';
 import { useUser } from '@/providers/user/user-provider';
-import {
-	type ChatListItem,
-	type EstablishmentListItem,
-	type Role,
-	UserRole,
-} from '@business-entities';
-import { usePrepareBreadCrumbs } from '@common';
-import { ExtendedBreadCrumbs } from '@components';
-import { useMemo } from 'react';
-import { useChatContext } from '../chat/context/chat-context-provider';
-import { useEstablishmentContext } from '../establishments/use-case/establishment-context-provider';
-import { useRolesContext } from '../roles/context/roles-context-provider';
+import { UserRole } from '@business-entities';
+import AdminBreadCrumbs from './by-role/admin-breadCrumbs';
+import EstablisherBreadCrumbs from './by-role/establisher-breadCrumbs';
+import EstablishmentWorkerBreadCrumbs from './by-role/establishment-worker-breadCrumbs';
 
 const DashboardBreadcrumbs = () => {
-	const pathname = usePathname();
-	const viewModel = useViewModel(['Shared']);
-	const { locale } = useLocale();
-
 	const { user } = useUser();
 
-	const {
-		pagination: {
-			states: { data },
-		},
-	} = useEstablishmentContext();
+	if (user?.is_superuser) return <AdminBreadCrumbs />;
+	if (user?.role === UserRole.ESTABLISHMENT_WORKER) return <EstablishmentWorkerBreadCrumbs />;
+	if (user?.role === UserRole.ESTABLISHER) return <EstablisherBreadCrumbs />;
 
-	const {
-		states: { roles },
-	} = useRolesContext();
-
-	const { chatList, establishmentChats } = useChatContext();
-
-	const dynamicLabels = useMemo(() => {
-		return createDynamicLabels<[EstablishmentListItem, Role, ChatListItem]>({
-			async_pages: [
-				{
-					isAsyncData: true,
-					data: data || [],
-					path: PAGES.ESTABLISHMENT,
-					rules: ['id', `translates.${locale}.name`],
-				},
-
-				{
-					isAsyncData: true,
-					data: roles?.items || [],
-					path: PAGES.ROLES,
-					rules: ['id', `translates.${locale}.name`],
-				},
-
-				{
-					isAsyncData: true,
-					data: [...chatList.items, ...establishmentChats.items],
-					path: PAGES.DASHBOARD_CHAT,
-					rules: [
-						'id',
-						user?.role === UserRole.ESTABLISHER
-							? ['client.first_name', 'client.last_name']
-							: 'establishment.translates.ru.name',
-					],
-				},
-			],
-			static_pages: {
-				viewModel,
-				keys: ['permission_scopes'],
-			},
-		});
-	}, [data, roles?.items, chatList.items, locale, establishmentChats.items]);
-
-	const breadCrumbs = usePrepareBreadCrumbs({
-		pathname,
-		customHomePath: PAGES.DASHBOARD,
-		startIndex: 1,
-		dynamicLabels,
-	});
-
-	return (
-		<ExtendedBreadCrumbs paths={breadCrumbs.paths} home={breadCrumbs.home} hideSingle={true} />
-	);
+	return null;
 };
 
 export default DashboardBreadcrumbs;

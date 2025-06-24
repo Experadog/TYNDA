@@ -37,7 +37,7 @@ export async function POST() {
 		if (!res.ok) {
 			await clearSession();
 			await sendErrorToTelegram({
-				message: `Error in session updating, message: '${res.statusText}(${res.status})`,
+				message: `Error in session updating, message: '${res.statusText}(${res.status}) - POST`,
 				payload: `params: ${payloadForRefresh}`,
 			});
 			return new Response(response, successStatus);

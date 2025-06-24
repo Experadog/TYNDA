@@ -22,6 +22,7 @@ const RecommendationCard: FC<IProps> = ({ establishment }) => {
                     border border-transparent rounded-[15px] overflow-hidden
                     transition-all duration-300  hover:shadow-md
                     sm:flex sm:flex-col 
+					relative
 
                     lg:flex lg:flex-row lg:h-[140px] 
 
@@ -46,6 +47,18 @@ const RecommendationCard: FC<IProps> = ({ establishment }) => {
 					className="object-cover object-center"
 				/>
 			</div>
+
+			{establishment?.discount > 0 && (
+				<div
+					className="
+							absolute top-2 right-2 bg-orange text-white text-xs 
+							font-bold px-2 py-1 rounded-full shadow-lg flex items-center gap-1
+						"
+				>
+					<span>⭐</span>
+					<span>-{establishment.discount}%</span>
+				</div>
+			)}
 
 			<div
 				className="

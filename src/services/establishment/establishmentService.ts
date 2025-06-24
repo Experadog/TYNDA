@@ -35,19 +35,25 @@ class EstablishmentService {
 		return response;
 	}
 
-	static async getEstablishmentAll(params: Params) {
-		const isSuper = await isSuperUser();
-
+	static async getEstablishmentAllAdmin(params: Params) {
 		const response = await createFetchAction<GetEstablishmentAllClientResponseModel>({
-			endpoint: isSuper
-				? URL_ENTITIES.ESTABLISHMENT_ALL_ADMIN
-				: URL_ENTITIES.ESTABLISHMENT_ALL_ESTABLISHER,
+			endpoint: URL_ENTITIES.ESTABLISHMENT_ALL_ADMIN,
 			shouldBeAuthorized: true,
 			params,
-			revalidateTags: [
-				URL_ENTITIES.ESTABLISHMENT_ALL_ESTABLISHER,
-				URL_ENTITIES.ESTABLISHMENT_ALL_ADMIN,
-			],
+			revalidateTags: [URL_ENTITIES.ESTABLISHMENT_ALL_ADMIN],
+		});
+
+		return response;
+	}
+
+	static async getEstablishmentAllEstablisher(
+		params: Params,
+	): Promise<GetEstablishmentAllClientResponseModel> {
+		const response = await createFetchAction<GetEstablishmentAllClientResponseModel>({
+			endpoint: URL_ENTITIES.ESTABLISHMENT_ALL_ESTABLISHER,
+			shouldBeAuthorized: true,
+			params,
+			revalidateTags: [URL_ENTITIES.ESTABLISHMENT_ALL_ESTABLISHER],
 		});
 
 		return response;
@@ -114,7 +120,8 @@ export const {
 	getEstablishmentAllClient,
 	getEstablishmentDetail,
 	createEstablishment,
-	getEstablishmentAll,
+	getEstablishmentAllAdmin,
+	getEstablishmentAllEstablisher,
 	deleteEstablishment,
 	updateEstablishment,
 } = EstablishmentService;

@@ -2,15 +2,23 @@
 
 import { useRouter } from '@/i18n/routing';
 import { REVALIDATE, URL_LOCAL_ENTITIES, decryptData } from '@/lib';
-import type { Session, User } from '@business-entities';
+import type { EstablishmentDetailed, Session, User } from '@business-entities';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-export function useSessionManager(initialSessionStr: string) {
+export function useSessionManager(initialSessionStr: string, staff_establishment: string) {
 	const router = useRouter();
 
 	const initialSession = useMemo(() => {
 		try {
-			return decryptData<Session>(initialSessionStr);
+			const decryptedEstablishment = decryptData<EstablishmentDetailed>(staff_establishment);
+			const decryptedSession = decryptData<Session>(initialSessionStr);
+			if (!decryptedSession) return null;
+
+			const session: Session = {
+				...decryptedSession,
+				user: { ...decryptedSession?.user, staff_establishment: decryptedEstablishment },
+			};
+			return session;
 		} catch (err) {
 			console.error('Ошибка при расшифровке сессии:', err);
 			return null;

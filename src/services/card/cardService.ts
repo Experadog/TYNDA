@@ -2,9 +2,11 @@
 
 import { createFetchAction } from '@/common/actions/createFetchAction';
 import { URL_ENTITIES } from '@/lib';
-import type { Params } from '@common';
+import { AXIOS_PATCH, type Params } from '@common';
 import type {
 	CardListRetrievalResponseModel,
+	CardUpdatingRequestModel,
+	CardUpdatingResponseModel,
 	UserCardRetrievalResponseModel,
 } from './cardServiceTypes';
 
@@ -27,6 +29,19 @@ class CardService {
 
 		return response;
 	}
+
+	static async updateCard({
+		cardID,
+		payload,
+	}: CardUpdatingRequestModel): Promise<CardUpdatingResponseModel> {
+		const response = await AXIOS_PATCH<CardUpdatingResponseModel>({
+			url: URL_ENTITIES.CARD,
+			data: payload,
+			params: { id: cardID },
+		});
+
+		return response;
+	}
 }
 
-export const { getCardList, getUserCard } = CardService;
+export const { getCardList, getUserCard, updateCard } = CardService;

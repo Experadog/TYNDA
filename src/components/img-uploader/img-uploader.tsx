@@ -88,7 +88,7 @@ const ImgUploader = ({
 						</div>
 					</>
 				) : (
-					<div className="flex flex-col items-center text-center gap-1 bg-background_1">
+					<div className="flex flex-col items-center text-center gap-1 bg-transparent">
 						<UploadCloud className="w-6 h-6 text-yellow" />
 						<p className="text-xs">{label}</p>
 					</div>

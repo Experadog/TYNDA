@@ -1,4 +1,4 @@
-import CardView from './view/CardView';
+import CardView from './view/card-view';
 
 const Page = () => {
 	return <CardView />;

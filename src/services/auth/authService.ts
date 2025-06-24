@@ -2,7 +2,8 @@
 
 import { createFetchAction } from '@/common/actions/createFetchAction';
 import { URL_ENTITIES, isSuccessResponse } from '@/lib';
-import { AXIOS_POST, clearSession, setSession } from '@common';
+import type { Session } from '@business-entities';
+import { AXIOS_POST, clearSession, setSession, setStaffEstablishment } from '@common';
 import type {
 	AccountActivationRequestModel,
 	AccountActivationResponseModel,
@@ -24,7 +25,14 @@ class AuthService {
 		});
 
 		if (isSuccessResponse(response)) {
-			await setSession(response.data);
+			const {
+				user: { staff_establishment, ...rest },
+				...credentials
+			} = response.data;
+
+			const session: Session = { ...credentials, user: rest };
+			await setSession(session);
+			await setStaffEstablishment(credentials.refresh_token_expire_time, staff_establishment);
 		}
 
 		return response;

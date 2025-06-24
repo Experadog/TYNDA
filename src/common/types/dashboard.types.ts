@@ -15,13 +15,13 @@ export type PageSettings = {
 };
 
 export type CommonData = {
-	establishmentsResponse: GetEstablishmentAllClientResponseModel;
 	settingsData: PageSettings;
 };
 
 export type EstablisherData = CommonData & {
 	rolesResponse: GetRolesResponseModel;
 	chatResponse: ChatListRetrievalResponseModel;
+	establishmentsResponse: GetEstablishmentAllClientResponseModel;
 };
 
 export type SuperUserData = CommonData & {
@@ -31,6 +31,7 @@ export type SuperUserData = CommonData & {
 	tariffResponse: TariffListRetrievalResponseModel;
 	cardResponse: CardListRetrievalResponseModel;
 	establisherOnlyResponse: UsersRetrievalResponseModel;
+	establishmentsResponse: GetEstablishmentAllClientResponseModel;
 };
 
 export type EstablishmentWorkerData = CommonData;
@@ -38,4 +39,4 @@ export type EstablishmentWorkerData = CommonData;
 export type RoleResult =
 	| { roleType: 'superadmin'; data: SuperUserData }
 	| { roleType: 'establisher'; data: EstablisherData }
-	| { roleType: 'establisher_worker'; data: CommonData };
+	| { roleType: 'establishment_worker'; data: CommonData };

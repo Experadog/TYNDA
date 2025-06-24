@@ -46,7 +46,11 @@ export default async function middleware(req: NextRequest): Promise<NextResponse
 	response = updateLocaleCookiesIfNeeded(
 		req,
 		response,
-		Boolean(sessionData?.user.is_superuser || sessionData?.user.role === UserRole.ESTABLISHER),
+		Boolean(
+			sessionData?.user.is_superuser ||
+				sessionData?.user.role === UserRole.ESTABLISHER ||
+				sessionData?.user.role === UserRole.ESTABLISHMENT_WORKER,
+		),
 	);
 
 	const basePath = pathname.replace(/^\/(ru|kg|en)\//, '/') as PAGES;
@@ -61,6 +65,7 @@ export default async function middleware(req: NextRequest): Promise<NextResponse
 	}
 
 	const authRedirect = handleAuthRedirection(req, sessionData);
+
 	if (authRedirect) {
 		return authRedirect;
 	}

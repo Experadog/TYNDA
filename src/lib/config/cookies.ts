@@ -7,4 +7,5 @@ export enum COOKIES {
 	USER_SETTINGS = 'user_settings',
 	LAST_REVALIDATE_KEY = 'last-revalidate-key',
 	LAST_PROFILE_RETRIEVAL = 'profile-refresh-guard',
+	STAFF_ESTABLISHMENT = 'staff-establishment',
 }

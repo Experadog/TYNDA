@@ -1,3 +1,10 @@
+import type {
+	ChatListItem,
+	EstablishmentDetailed,
+	EstablishmentListItem,
+	Role,
+} from '@business-entities';
+
 export type NestedValue<T, P extends string> = P extends `${infer K}.${infer Rest}`
 	? K extends keyof T
 		? NestedValue<T[K], Rest>
@@ -34,3 +41,19 @@ export type AsyncPageRule<T> = {
 	path: string;
 	rules: [Path<T>, Path<T> | Path<T>[]];
 };
+
+export type AsyncAndStaticPages<Types extends unknown[]> = {
+	async_pages: {
+		[Index in keyof Types]: AsyncPageRule<Types[Index]>;
+	};
+	static_pages?: {
+		viewModel: ViewModel['Shared'];
+		keys: (keyof ViewModel['Shared'])[];
+	};
+};
+
+export type UsedAdminEntities = [EstablishmentListItem, Role, ChatListItem];
+export type UsedEstablisherEntities = [EstablishmentListItem, ChatListItem];
+export type UsedEstablisherWorkerEntities = [EstablishmentDetailed];
+
+export type UsedUnion = UsedAdminEntities | UsedEstablisherEntities | UsedEstablisherWorkerEntities;

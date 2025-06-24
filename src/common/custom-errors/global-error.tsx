@@ -1,5 +1,6 @@
 'use client';
 
+import { COOKIES } from '@/lib';
 import { Button, ImgMask, LoadingSpinner } from '@components';
 import { AlertTriangle } from 'lucide-react';
 import React, { type ReactNode } from 'react';
@@ -66,8 +67,23 @@ class ErrorBoundary extends React.Component<Props, State> {
 		}, 1000);
 	}
 
+	clearCookies(cookies: string[]) {
+		const expireDate = 'Thu, 01 Jan 1970 00:00:00 GMT';
+		for (const cookieName of cookies) {
+			document.cookie = `${cookieName}=; path=/; expires=${expireDate};`;
+		}
+	}
+
 	handleReset = () => {
+		this.clearCookies([
+			COOKIES.SESSION,
+			COOKIES.USER_SETTINGS,
+			COOKIES.LAST_PROFILE_RETRIEVAL,
+			COOKIES.LAST_REVALIDATE_KEY,
+			COOKIES.STAFF_ESTABLISHMENT,
+		]);
 		window.location.reload();
+		window.location.href = '/';
 	};
 
 	renderErrorLayout(
@@ -104,6 +120,10 @@ class ErrorBoundary extends React.Component<Props, State> {
 
 	override render() {
 		const { hasError, timer } = this.state;
+
+		if (process.env.NODE_ENV === 'development') {
+			return this.props.children;
+		}
 
 		if (hasError) {
 			return this.renderErrorLayout(

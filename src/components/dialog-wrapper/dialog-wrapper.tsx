@@ -48,7 +48,7 @@ const DialogWrapper = ({
 				{...prevent}
 				autoFocus={false}
 				className={clsx(
-					'bg-background_1 !border-none p-8 sm:p-10 rounded-2xl xs:max-w-[90%] focus:border-none',
+					'bg-background_2 max-w-[600px] !border-none p-8 sm:p-10 rounded-2xl xs:max-w-[90%] focus:border-none',
 					className,
 				)}
 			>

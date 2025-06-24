@@ -38,6 +38,7 @@ export enum PAGES {
 	SETTINGS = '/dashboard/settings',
 
 	ESTABLISHMENT = '/dashboard/establishments',
+	STAFF_ESTABLISHMENT = '/dashboard/staff-establishment',
 	ESTABLISHMENT_CREATION = '/dashboard/establishments/creation',
 
 	USERS = '/dashboard/users',
@@ -118,7 +119,7 @@ export const DASHBOARD_LINKS = {
 	],
 
 	establishment_worker: [
-		{ key: 'ESTABLISHMENT', link: PAGES.ESTABLISHMENT, icon: Building2 },
+		{ key: 'STAFF_ESTABLISHMENT', link: PAGES.STAFF_ESTABLISHMENT, icon: Building2 },
 		{ key: 'SETTINGS', link: PAGES.SETTINGS, icon: Settings },
 	],
 } as const;

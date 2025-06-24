@@ -52,7 +52,7 @@ export async function createExternalFetchAction<T>({
 		return data;
 	} catch (error) {
 		await sendErrorToTelegram({
-			message: `Error in ${pathWithPostfix}, message:${error}`,
+			message: `Error in ${pathWithPostfix}, message:${error} - GET`,
 			payload: JSON.stringify(params || {}),
 		});
 		LOGGER.error(error);

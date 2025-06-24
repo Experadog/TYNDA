@@ -25,7 +25,7 @@ class RolesService {
 			revalidateTags: [URL_ENTITIES.ROLES],
 		});
 		if (!isSuccessResponse(response)) {
-			return await forceRedirect(PAGES.ROLES);
+			return await forceRedirect(PAGES.DASHBOARD);
 		}
 
 		return response;

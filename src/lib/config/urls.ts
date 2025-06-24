@@ -25,6 +25,7 @@ export enum URL_ENTITIES {
 	TARIFF_ALL = '/biz/tariff/all',
 	USER_CARD = '/biz/card/user-card',
 	TARIFF = '/biz/tariff',
+	CARD = '/biz/card',
 
 	//base
 	LOAD_FILE = '/base/resources',

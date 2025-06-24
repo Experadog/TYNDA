@@ -39,10 +39,15 @@ export const useLoginUseCase = () => {
 	});
 
 	const navigate = (role: UserRole, isSuperUser: boolean) => {
-		if (isSuperUser || role === UserRole.ESTABLISHER || role === UserRole.ESTABLISHER_WORKER) {
+		if (
+			isSuperUser ||
+			role === UserRole.ESTABLISHER ||
+			role === UserRole.ESTABLISHMENT_WORKER
+		) {
 			router.replace(PAGES.DASHBOARD);
 			return;
 		}
+
 		if (role === UserRole.CLIENT) {
 			router.replace(PAGES.PROFILE);
 			return;

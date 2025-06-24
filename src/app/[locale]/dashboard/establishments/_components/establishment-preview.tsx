@@ -1,6 +1,6 @@
 import { useViewModel } from '@/i18n/getTranslate';
 import { Link } from '@/i18n/routing';
-import { SOCIAL_MEDIAS } from '@/lib';
+import { SOCIAL_MEDIAS, phoneFormatter, priceFormatter } from '@/lib';
 import { useLocale } from '@/providers/locale/locale-provider';
 import type { EstablishmentDetailed } from '@business-entities';
 import type { SocialMediaKey } from '@common';
@@ -8,9 +8,11 @@ import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from 
 import clsx from 'clsx';
 import Image from 'next/image';
 import { useState } from 'react';
+import { AiOutlineDollarCircle } from 'react-icons/ai';
 import { BsGeoAlt } from 'react-icons/bs';
 import { GoClock } from 'react-icons/go';
 import { LiaPhoneSolid } from 'react-icons/lia';
+import { RiDiscountPercentLine } from 'react-icons/ri';
 
 const EstablishmentPreview = ({ item }: { item?: EstablishmentDetailed }) => {
 	if (!item) return null;
@@ -37,41 +39,89 @@ const EstablishmentPreview = ({ item }: { item?: EstablishmentDetailed }) => {
 								{translates[locale].name}
 							</h2>
 
-							<p className="text-lg font-medium numeric lg:text-base">
-								<span className="mr-[10px] text-lg font-semibold">
+							<p className="text-base font-medium numeric">
+								<span className="mr-[10px] text-base font-semibold text-yellow">
 									{Shared.establishment_categories[item.category]}
 								</span>
 								{item.address}
 							</p>
+							<div className="flex flex-col gap-4 text-sm">
+								{item.address && (
+									<div className="flex items-start gap-3">
+										<BsGeoAlt className="size-5 mt-1 text-yellow shrink-0" />
+										<div className="flex flex-col">
+											<span className="font-medium sm:text-xs">
+												{DetailEnterprise.hero.address}:
+											</span>
+											<span className="opacity-70 sm:text-xs break-words">
+												{item.address}
+											</span>
+										</div>
+									</div>
+								)}
 
-							<div className="flex flex-col gap-4  rounded-[15px] text-sm p-3 bg-background_3 w-full">
-								<p className="flex items-start gap-3 numeric">
-									<BsGeoAlt className="size-5 text-yellow" />
-									<span className="font-medium sm:text-xs">
-										{DetailEnterprise.hero.address}:
-									</span>
-									<span className="opacity-70 sm:text-xs">{item.address}</span>
-								</p>
-								<p className="flex items-start gap-3 numeric">
-									<LiaPhoneSolid className="size-5 text-yellow" />
-									<span className="font-medium sm:text-xs">
-										{DetailEnterprise.hero.contacts}:
-									</span>
-									<span className="opacity-70 sm:text-xs">
-										{item.contacts.phone?.split(';').join('')}
-									</span>
-								</p>
-								<p className="flex items-start gap-3 numeric">
-									<GoClock className="size-5 text-yellow" />
-									<span className="font-medium sm:text-xs">
-										{DetailEnterprise.hero.workTime}:
-									</span>
-									<span className="opacity-70 sm:text-xs">
-										{item.work_time === '00:00-00:00' ? '24/7' : item.work_time}
-									</span>
-								</p>
+								{item.contacts.phone && (
+									<div className="flex items-start gap-3">
+										<LiaPhoneSolid className="size-5 mt-1 text-yellow shrink-0" />
+										<div className="flex flex-col">
+											<span className="font-medium sm:text-xs">
+												{DetailEnterprise.hero.contacts}:
+											</span>
+											<span className="opacity-70 sm:text-xs break-words">
+												{item.contacts.phone
+													.split(';')
+													.map((item) => phoneFormatter(item))
+													.join(', ')}
+											</span>
+										</div>
+									</div>
+								)}
 
-								<div className="flex flex-wrap items-center gap-2">
+								{item.work_time && (
+									<div className="flex items-start gap-3">
+										<GoClock className="size-5 mt-1 text-yellow shrink-0" />
+										<div className="flex flex-col">
+											<span className="font-medium sm:text-xs">
+												{DetailEnterprise.hero.workTime}:
+											</span>
+											<span className="opacity-70 sm:text-xs">
+												{item.work_time === '00:00-00:00'
+													? '24/7'
+													: item.work_time}
+											</span>
+										</div>
+									</div>
+								)}
+
+								{item.discount > 0 && (
+									<div className="flex items-start gap-3">
+										<RiDiscountPercentLine className="size-5 mt-1 text-yellow shrink-0" />
+										<div className="flex flex-col">
+											<span className="font-medium sm:text-xs">
+												{DetailEnterprise.hero.discount}:
+											</span>
+											<span className="opacity-70 sm:text-xs">
+												{item.discount}%
+											</span>
+										</div>
+									</div>
+								)}
+
+								{item.average_bill && (
+									<div className="flex items-start gap-3">
+										<AiOutlineDollarCircle className="size-5 mt-1 text-yellow shrink-0" />
+										<div className="flex flex-col">
+											<span className="font-medium sm:text-xs">
+												{DetailEnterprise.hero.average_bill}:
+											</span>
+											<span className="opacity-70 sm:text-xs">
+												{priceFormatter(item.average_bill, 'сом')}
+											</span>
+										</div>
+									</div>
+								)}
+
+								<div className="flex flex-wrap justify-end items-center gap-2">
 									{Object.entries(item.contacts).map(([key, value]) => {
 										const socialKey = key as SocialMediaKey;
 										if (!value || socialKey === 'phone') return null;
@@ -94,13 +144,16 @@ const EstablishmentPreview = ({ item }: { item?: EstablishmentDetailed }) => {
 								</div>
 							</div>
 
-							<div className="">
-								<h3 className="text-lg font-semibold uppercase lg:text-base">
+							<div className="flex flex-col gap-3">
+								<h3 className="text-lg font-semibold uppercase lg:text-base text-foreground_2">
 									{DetailEnterprise.hero.aboutEnterprise}
 								</h3>
+
+								<div className="w-full h-[1px] bg-foreground_2 rounded-md" />
+
 								<p
 									className={clsx(
-										'text-base lg:text-sm font-normal whitespace-pre-line',
+										'text-base lg:text-sm font-normal whitespace-pre-line text-foreground_2',
 										isLongText && !shouldShowAllText
 											? 'line-clamp-3'
 											: 'line-clamp-none',
@@ -112,7 +165,7 @@ const EstablishmentPreview = ({ item }: { item?: EstablishmentDetailed }) => {
 									<button
 										type="button"
 										onClick={() => setShouldShowAllText((prev) => !prev)}
-										className="mt-2 text-yellow font-medium hover:underline text-sm"
+										className="mt-2 text-yellow font-medium hover:underline text-sm self-start"
 									>
 										{shouldShowAllText
 											? DetailEnterprise.hero.hide_text
@@ -156,10 +209,10 @@ const EstablishmentPreview = ({ item }: { item?: EstablishmentDetailed }) => {
 							Фотографии
 						</h3>
 						<div className="grid grid-cols-5 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-2 gap-4">
-							{[item.cover, ...item.images].map((src) => (
+							{[item.cover, ...item.images].map((src, index) => (
 								<div
 									key={src}
-									className="relative w-full aspect-video rounded-lg overflow-hidden shadow-md cursor-pointer"
+									className="relative w-full aspect-video rounded-lg overflow-hidden shadow-md"
 								>
 									<Image
 										src={src}

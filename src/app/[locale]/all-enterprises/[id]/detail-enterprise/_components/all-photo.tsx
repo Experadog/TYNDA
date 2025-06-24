@@ -1,7 +1,7 @@
 'use client';
 import { Link } from '@/i18n/routing';
 import { PAGES } from '@/lib';
-import { Button, Slider } from '@components';
+import { Button, ImgViewer, Slider } from '@components';
 import Image from 'next/image';
 import type { FC } from 'react';
 import { LuChevronLeft, LuChevronRight } from 'react-icons/lu';
@@ -25,7 +25,7 @@ const AllPhoto: FC<IProps> = ({ imagesList, disableMap = false }) => {
 				<div className="relative">
 					{imagesList.length <= 4 ? (
 						<div className="grid grid-cols-4 gap-4  justify-items-center">
-							{imagesList.map((url) => (
+							{imagesList.map((url, index) => (
 								<div className="w-[290px] h-[208px] relative shrink-0" key={url}>
 									<Image
 										priority
@@ -34,6 +34,7 @@ const AllPhoto: FC<IProps> = ({ imagesList, disableMap = false }) => {
 										fill
 										className="rounded-[15px] object-cover"
 									/>
+									<ImgViewer initialIndex={index} images={imagesList} />
 								</div>
 							))}
 						</div>
@@ -49,7 +50,7 @@ const AllPhoto: FC<IProps> = ({ imagesList, disableMap = false }) => {
 									prevEl: '.category-slider-prev',
 								}}
 							>
-								{imagesList.map((url) => (
+								{imagesList.map((url, index) => (
 									<div className="w-[290px] h-[208px] relative" key={url}>
 										<Image
 											priority
@@ -58,6 +59,7 @@ const AllPhoto: FC<IProps> = ({ imagesList, disableMap = false }) => {
 											fill
 											className="rounded-[15px] object-cover"
 										/>
+										<ImgViewer initialIndex={index} images={imagesList} />
 									</div>
 								))}
 							</Slider>
@@ -87,14 +89,14 @@ const AllPhoto: FC<IProps> = ({ imagesList, disableMap = false }) => {
 				<Slider
 					key={'bottom-slider'}
 					loop
-					slidesPerView={3}
+					slidesPerView={2}
 					spacing={10}
 					navigation={{
 						nextEl: '.bottom-slider-next',
 						prevEl: '.bottom-slider-prev',
 					}}
 				>
-					{imagesList.map((url) => (
+					{imagesList.map((url, index) => (
 						<div className="w-full h-[130px] relative shrink-0" key={url}>
 							<Image
 								priority
@@ -103,6 +105,7 @@ const AllPhoto: FC<IProps> = ({ imagesList, disableMap = false }) => {
 								fill
 								className="rounded-[10px] object-cover"
 							/>
+							<ImgViewer initialIndex={index} images={imagesList} />
 						</div>
 					))}
 				</Slider>

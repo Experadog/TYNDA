@@ -7,6 +7,7 @@ export * from './types/shared.types';
 export * from './types/table.types';
 
 // Schemas
+export * from './schemas/card/card.schema';
 export * from './schemas/establishment/establishment.schema';
 export * from './schemas/login/login.schema';
 export * from './schemas/profile/credentials.schema';

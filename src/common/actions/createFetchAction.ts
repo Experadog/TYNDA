@@ -30,7 +30,7 @@ const onError = async <T>(
 	code?: number,
 ): Promise<T> => {
 	await sendErrorToTelegram({
-		message: `Error in ${pathWithPostfix}, message: '${text}(${code})`,
+		message: `Error in ${pathWithPostfix}, message: '${text}(${code}) - GET`,
 		payload: JSON.stringify(params || {}),
 	});
 

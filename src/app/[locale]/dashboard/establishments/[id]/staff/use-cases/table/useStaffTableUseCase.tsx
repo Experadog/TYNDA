@@ -1,6 +1,6 @@
 import { formatDate } from '@/lib';
 import type { Staff } from '@business-entities';
-import type { ColumnConfigs } from '@common';
+import { type ColumnConfigs, pushCommonToast } from '@common';
 import {
 	Avatar,
 	Button,
@@ -42,7 +42,15 @@ export function useStaffTableUseCase({ onOpenModal, onDelete }: Props) {
 			title: 'Почта',
 			render: (value) => (
 				<Tooltip>
-					<TooltipTrigger className="truncate w-full text-start">{value}</TooltipTrigger>
+					<TooltipTrigger
+						onClick={() => {
+							navigator.clipboard.writeText(value);
+							pushCommonToast('Скопировано!', 'success', { position: 'top-center' });
+						}}
+						className="truncate w-full text-start"
+					>
+						{value}
+					</TooltipTrigger>
 					<TooltipContent className="bg-background_1 font-semibold text-sm font-roboto">
 						{value}
 					</TooltipContent>

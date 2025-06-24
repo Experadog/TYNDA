@@ -33,7 +33,7 @@ const TariffActionModal = () => {
 			isOpen={isOpen}
 			action={selectedTariff ? 'update' : 'create'}
 			title={title}
-			disableSubmit={!schema.formState.isDirty || !schema.formState.isValid}
+			disableSubmit={!schema.formState.isDirty}
 			buttonForm="tariff-form"
 		>
 			<Form {...schema}>

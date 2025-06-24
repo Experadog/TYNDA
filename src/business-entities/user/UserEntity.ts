@@ -1,6 +1,7 @@
 import type { EntityStatus } from '@common';
 import type { Card } from '../card/CardEntity';
 import type { EstablishmentDetailed } from '../establishment/EstablishmentEntity';
+import type { PermissionManagerType } from '../roles/RolesEntity';
 
 export type User = {
 	id: string;
@@ -18,12 +19,8 @@ export type User = {
 	role: UserRole;
 	avatar: string | null;
 	card: Card;
-	cached_permission_groups: {
-		establishment: Partial<'crud'>;
-		user: Partial<'crud'>;
-		card: Partial<'crud'>;
-	};
-	staff_establishment: EstablishmentDetailed | null;
+	cached_permission_groups: PermissionManagerType;
+	staff_establishment?: EstablishmentDetailed | null;
 };
 
 export type UserListItem = {
@@ -43,7 +40,7 @@ export type UserListItem = {
 export enum UserRole {
 	CLIENT = 'client',
 	ESTABLISHER = 'establisher',
-	ESTABLISHER_WORKER = 'establishment_worker',
+	ESTABLISHMENT_WORKER = 'establishment_worker',
 }
 
 export type Credentials = {

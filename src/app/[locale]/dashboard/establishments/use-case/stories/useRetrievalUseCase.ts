@@ -1,12 +1,23 @@
-import { type GetEstablishmentAllClientResponseModel, getEstablishmentAll } from '@/services';
+import { useUser } from '@/providers/user/user-provider';
+import {
+	type GetEstablishmentAllClientResponseModel,
+	getEstablishmentAllAdmin,
+	getEstablishmentAllEstablisher,
+} from '@/services';
 import type { EstablishmentListItem } from '@business-entities';
 import { usePagination } from '@common';
 
 export function useRetrievalUseCase(data: GetEstablishmentAllClientResponseModel['data']) {
+	const { user } = useUser();
+
+	const isSuperAdmin = user?.is_superuser;
+
+	const fetchFn = isSuperAdmin ? getEstablishmentAllAdmin : getEstablishmentAllEstablisher;
+
 	const pagination = usePagination<EstablishmentListItem>({
 		initialData: data,
 		entity: 'establishment',
-		fetchFn: getEstablishmentAll,
+		fetchFn,
 	});
 
 	return pagination;

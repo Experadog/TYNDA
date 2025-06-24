@@ -7,8 +7,8 @@ import type { FC, ReactNode } from 'react';
 import CacheRevalidate from './cache-revalidate/cache-revalidate';
 import { ChatWebSocketProvider } from './chat-webscoket/chat-webscoket-provider';
 import { LocaleProvider } from './locale/locale-provider';
-import NetworkStatusProvider from './network-status-provoder/network-status-provoder';
 import OAuthProvider from './oAuth/oAuth-provider';
+import { PermissionProvider } from './permission-provider/permission-provider';
 import { ThemeProvider } from './theme/theme-provider';
 import { ToastClientProvider } from './toast-provider/toast-provider';
 import { UserProvider } from './user/user-provider';
@@ -22,30 +22,34 @@ const CollectedProviders: FC<IProps> = async ({ children }) => {
 	const locale = (cookieStore.get(COOKIES.NEXT_LOCALE)?.value || 'ru') as Locale;
 	const theme = cookieStore.get(COOKIES.THEME)?.value as Theme;
 	const session = cookieStore.get(COOKIES.SESSION)?.value || '';
+	const staff_establishment = cookieStore.get(COOKIES.STAFF_ESTABLISHMENT)?.value || '';
 
 	return (
 		<ErrorBoundary>
-			<NetworkStatusProvider>
-				<ThemeProvider
-					attribute="class"
-					defaultTheme={'system'}
-					forcedTheme={theme}
-					enableSystem
-					theme={theme}
-				>
-					<OAuthProvider>
-						<LocaleProvider locale={locale}>
-							<UserProvider session={session}>
+			<ThemeProvider
+				attribute="class"
+				defaultTheme={'system'}
+				forcedTheme={theme}
+				enableSystem
+				theme={theme}
+			>
+				<OAuthProvider>
+					<LocaleProvider locale={locale}>
+						<PermissionProvider session={session}>
+							<UserProvider
+								session={session}
+								staff_establishment={staff_establishment}
+							>
 								<ChatWebSocketProvider session={session}>
 									<ToastClientProvider theme={theme} />
 									<CacheRevalidate />
 									<TooltipProvider>{children}</TooltipProvider>
 								</ChatWebSocketProvider>
 							</UserProvider>
-						</LocaleProvider>
-					</OAuthProvider>
-				</ThemeProvider>
-			</NetworkStatusProvider>
+						</PermissionProvider>
+					</LocaleProvider>
+				</OAuthProvider>
+			</ThemeProvider>
 		</ErrorBoundary>
 	);
 };
