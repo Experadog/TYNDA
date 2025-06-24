@@ -90,7 +90,9 @@ export function usePagination<T>({
 	};
 
 	const refetchCurrentPage = async () => {
-		await fetchPage(page);
+		if (page !== 1) {
+			await fetchPage(page);
+		}
 	};
 
 	useEffect(() => {

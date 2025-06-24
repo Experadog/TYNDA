@@ -8,14 +8,15 @@ const DashboardMeetView = () => {
 
 	const isEstablisher = user?.role === UserRole.ESTABLISHER;
 	const isSuperAdmin = user?.is_superuser;
-	const isStaff = user?.role === UserRole.ESTABLISHER_WORKER;
+	const isStaff = user?.role === UserRole.ESTABLISHMENT_WORKER;
 
 	return (
 		<div className="w-full h-full flex flex-col gap-6">
 			<div>
 				<h2 className="text-3xl font-bold mb-2 text-foreground_1">
-					{user?.first_name}, Здравствуйте!
+					{user?.first_name ? `${user.first_name}, Здравствуйте!` : 'Здравствуйте!'}
 				</h2>
+
 				<p className="text-gray text-base">
 					Добро пожаловать в панель управления. <br /> Здесь вы можете гибко управлять
 					своим бизнесом, сотрудниками, разрешениями и настройками.

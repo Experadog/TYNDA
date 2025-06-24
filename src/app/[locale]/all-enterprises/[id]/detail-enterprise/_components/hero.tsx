@@ -2,20 +2,29 @@
 import type { EstablishmentDetailed } from '@/business-entities/establishment/EstablishmentEntity';
 import { BreadCrumbs } from '@/components/ui/breadCrumbs';
 import { Link, useRouter } from '@/i18n/routing';
-import { PAGES, SOCIAL_MEDIAS, URL_ENTITIES, getTranslateByKey } from '@/lib';
+import {
+	PAGES,
+	SOCIAL_MEDIAS,
+	URL_ENTITIES,
+	getTranslateByKey,
+	phoneFormatter,
+	priceFormatter,
+} from '@/lib';
 import { useChatWebSocket } from '@/providers/chat-webscoket/chat-webscoket-provider';
 import { useLocale } from '@/providers/locale/locale-provider';
 import { useUser } from '@/providers/user/user-provider';
 import { createChat } from '@/services';
 import { type SocialMediaKey, createAction, revalidateByTags } from '@common';
-import { Button, LoadingSpinner } from '@components';
+import { Button, ImgViewer, LoadingSpinner } from '@components';
 import clsx from 'clsx';
 import Image from 'next/image';
 import { type FC, useState } from 'react';
+import { AiOutlineDollarCircle } from 'react-icons/ai';
 import { BsGeoAlt } from 'react-icons/bs';
 import { GoClock } from 'react-icons/go';
 import { IoChatbubbleEllipsesOutline } from 'react-icons/io5';
 import { LiaPhoneSolid } from 'react-icons/lia';
+import { RiDiscountPercentLine } from 'react-icons/ri';
 
 interface IProps {
 	viewModel: ViewModel['DetailEnterprise'];
@@ -56,14 +65,14 @@ const Hero: FC<IProps> = ({ viewModel, item, categoriesViewModel }) => {
 	};
 
 	return (
-		<div className="mt-[50px] lg:mt-6 font-roboto">
+		<div className="mt-[50px] lg:mt-6">
 			<BreadCrumbs
 				home={viewModel.hero.home}
 				pageName={getTranslateByKey(locale, item.translates, 'name')}
 			/>
 
 			<div className="grid grid-cols-2 lg:grid-cols-1 items-start justify-between gap-7 mt-5">
-				<div className="order-2 lg:order-1 flex flex-col gap-6 relative">
+				<div className="order-2 lg:order-1 flex flex-col gap-3 relative">
 					<Button
 						className="shadow-none fixed right-6 z-[999] bottom-6 rounded-full size-12 lg:size-10"
 						variant={'yellow'}
@@ -77,45 +86,90 @@ const Hero: FC<IProps> = ({ viewModel, item, categoriesViewModel }) => {
 						)}
 					</Button>
 
-					<h2 className="text-4xl font-medium lg:text-2xl lg:font-semibold">
+					<h2 className="text-4xl font-medium lg:text-2xl lg:font-semibold font-roboto">
 						{getTranslateByKey(locale, item.translates, 'name')}
 					</h2>
 
-					<p className="text-lg font-medium numeric lg:text-base">
-						<span className="mr-[10px] text-lg font-semibold">
+					<p className="text-base font-medium numeric">
+						<span className="mr-[10px] text-base font-semibold text-yellow">
 							{categoriesViewModel[item.category]}
 						</span>
 						{item.address}
 					</p>
 
-					<div className="flex flex-col gap-4 p-5 lg:p-3 shadow-md rounded-[15px] bg-background_1 text-sm">
-						<p className="flex items-start gap-3 numeric">
-							<BsGeoAlt className="size-5 text-yellow" />
-							<span className="font-medium sm:text-xs">
-								{viewModel.hero.address}:
-							</span>
-							<span className="opacity-70 sm:text-xs">{item.address}</span>
-						</p>
-						<p className="flex items-start gap-3 numeric">
-							<LiaPhoneSolid className="size-5 text-yellow" />
-							<span className="font-medium sm:text-xs">
-								{viewModel.hero.contacts}:
-							</span>
-							<span className="opacity-70 sm:text-xs">
-								{item.contacts.phone?.split(';').join('')}
-							</span>
-						</p>
-						<p className="flex items-start gap-3 numeric">
-							<GoClock className="size-5 text-yellow" />
-							<span className="font-medium sm:text-xs">
-								{viewModel.hero.workTime}:
-							</span>
-							<span className="opacity-70 sm:text-xs">
-								{item.work_time === '00:00-00:00' ? '24/7' : item.work_time}
-							</span>
-						</p>
+					<div className="flex flex-col gap-4 text-sm">
+						{item.address && (
+							<div className="flex items-start gap-3">
+								<BsGeoAlt className="size-5 mt-1 text-yellow shrink-0" />
+								<div className="flex flex-col">
+									<span className="font-medium sm:text-xs">
+										{viewModel.hero.address}:
+									</span>
+									<span className="opacity-70 sm:text-xs break-words">
+										{item.address}
+									</span>
+								</div>
+							</div>
+						)}
 
-						<div className="flex flex-wrap items-center gap-2">
+						{item.contacts.phone && (
+							<div className="flex items-start gap-3">
+								<LiaPhoneSolid className="size-5 mt-1 text-yellow shrink-0" />
+								<div className="flex flex-col">
+									<span className="font-medium sm:text-xs">
+										{viewModel.hero.contacts}:
+									</span>
+									<span className="opacity-70 sm:text-xs break-words">
+										{item.contacts.phone
+											.split(';')
+											.map((item) => phoneFormatter(item))
+											.join(', ')}
+									</span>
+								</div>
+							</div>
+						)}
+
+						{item.work_time && (
+							<div className="flex items-start gap-3">
+								<GoClock className="size-5 mt-1 text-yellow shrink-0" />
+								<div className="flex flex-col">
+									<span className="font-medium sm:text-xs">
+										{viewModel.hero.workTime}:
+									</span>
+									<span className="opacity-70 sm:text-xs">
+										{item.work_time === '00:00-00:00' ? '24/7' : item.work_time}
+									</span>
+								</div>
+							</div>
+						)}
+
+						{item.discount > 0 && (
+							<div className="flex items-start gap-3">
+								<RiDiscountPercentLine className="size-5 mt-1 text-yellow shrink-0" />
+								<div className="flex flex-col">
+									<span className="font-medium sm:text-xs">
+										{viewModel.hero.discount}:
+									</span>
+									<span className="opacity-70 sm:text-xs">{item.discount}%</span>
+								</div>
+							</div>
+						)}
+
+						{item.average_bill && (
+							<div className="flex items-start gap-3">
+								<AiOutlineDollarCircle className="size-5 mt-1 text-yellow shrink-0" />
+								<div className="flex flex-col">
+									<span className="font-medium sm:text-xs">
+										{viewModel.hero.average_bill}:
+									</span>
+									<span className="opacity-70 sm:text-xs">
+										{priceFormatter(item.average_bill, 'сом')}
+									</span>
+								</div>
+							</div>
+						)}
+
+						<div className="flex flex-wrap justify-end items-center gap-2">
 							{Object.entries(item.contacts).map(([key, value]) => {
 								const socialKey = key as SocialMediaKey;
 								if (!value || socialKey === 'phone') return null;
@@ -138,13 +192,16 @@ const Hero: FC<IProps> = ({ viewModel, item, categoriesViewModel }) => {
 						</div>
 					</div>
 
-					<div>
-						<h3 className="text-lg font-semibold uppercase lg:text-base">
+					<div className="flex flex-col gap-3">
+						<h3 className="text-lg font-semibold uppercase lg:text-base text-foreground_2">
 							{viewModel.hero.aboutEnterprise}
 						</h3>
+
+						<div className="w-full h-[1px] bg-foreground_2 rounded-md" />
+
 						<p
 							className={clsx(
-								'text-base lg:text-sm font-normal whitespace-pre-line',
+								'text-base lg:text-sm font-normal whitespace-pre-line text-foreground_2',
 								isLongText && !shouldShowAllText
 									? 'line-clamp-3'
 									: 'line-clamp-none',
@@ -156,7 +213,7 @@ const Hero: FC<IProps> = ({ viewModel, item, categoriesViewModel }) => {
 							<button
 								type="button"
 								onClick={() => setShouldShowAllText((prev) => !prev)}
-								className="mt-2 text-yellow font-medium hover:underline text-sm"
+								className="mt-2 text-yellow font-medium hover:underline text-sm self-start"
 							>
 								{shouldShowAllText
 									? viewModel.hero.hide_text
@@ -175,10 +232,11 @@ const Hero: FC<IProps> = ({ viewModel, item, categoriesViewModel }) => {
 							fill
 							className="object-cover"
 						/>
+						<ImgViewer images={[item.cover, ...item.images]} />
 					</div>
 
 					<div className="grid grid-cols-3 items-center gap-4 lg:grid-cols-2 lg:gap-2 w-full">
-						{item.images.slice(0, 2).map((url) => (
+						{item.images.slice(0, 2).map((url, index) => (
 							<div
 								key={url}
 								className="w-[205px] h-[170px] lg:w-full lg:h-[120px] relative rounded-[10px] overflow-hidden"
@@ -189,6 +247,10 @@ const Hero: FC<IProps> = ({ viewModel, item, categoriesViewModel }) => {
 									alt="image"
 									fill
 									className="object-cover"
+								/>
+								<ImgViewer
+									images={[item.cover, ...item.images]}
+									initialIndex={index + 1}
 								/>
 							</div>
 						))}

@@ -32,3 +32,6 @@ export const passwordPatterns = (msg: string) =>
 		.regex(/[A-Z]/, msg)
 		.regex(/[0-9]/, msg)
 		.regex(/[^A-Za-z0-9]/, msg);
+
+export const isoDateSchema = (message: string) =>
+	z.string().refine((val) => !Number.isNaN(Date.parse(val)), { message });

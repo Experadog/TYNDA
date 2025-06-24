@@ -1,5 +1,6 @@
 'use client';
 
+import { phoneFormatter } from '@/lib';
 import { useChatWebSocket } from '@/providers/chat-webscoket/chat-webscoket-provider';
 import type { ChatScope, ChatType } from '@business-entities';
 import { useMemo, useState } from 'react';
@@ -53,7 +54,7 @@ const Chat = ({ chat, scope }: Props) => {
 					<p className="text-foreground_1">{name}</p>
 					<p className="text-gray text-xs">
 						{scope === 'establishment' ? (
-							chat.client.phone
+							phoneFormatter(chat.client.phone || '')
 						) : (
 							<EstablishmentCategoryComponent
 								category={chat.establishment.category}

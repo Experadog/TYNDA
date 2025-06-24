@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react';
 
-import type { GetEstablishmentAllClientResponseModel } from '@/services';
 import type {
 	EstablisherData,
 	EstablishmentWorkerData,
@@ -21,17 +20,12 @@ type ProviderProps<T> = {
 };
 
 type CommonProviderData = {
-	establishmentsResponse: GetEstablishmentAllClientResponseModel;
 	settingsData: PageSettings;
 };
 
 function CommonProviders({ data, children }: { data: CommonProviderData; children: ReactNode }) {
 	return (
-		<SettingsContextProvider settings={data.settingsData}>
-			<EstablishmentContextProvider establishments={data.establishmentsResponse}>
-				{children}
-			</EstablishmentContextProvider>
-		</SettingsContextProvider>
+		<SettingsContextProvider settings={data.settingsData}>{children}</SettingsContextProvider>
 	);
 }
 
@@ -41,14 +35,16 @@ export const roleContextMap = {
 			<CardContextProvider cardResponse={data.cardResponse?.data}>
 				<TariffContextProvider tariffsResponse={data.tariffResponse?.data}>
 					<CommonProviders data={data}>
-						<UsersContextProvider
-							allUsersResponse={data.allUsersResponse}
-							establisherOnlyResponse={data.establisherOnlyResponse}
-						>
-							<RolesContextProvider roles={data.rolesResponse}>
-								{children}
-							</RolesContextProvider>
-						</UsersContextProvider>
+						<EstablishmentContextProvider establishments={data.establishmentsResponse}>
+							<UsersContextProvider
+								allUsersResponse={data.allUsersResponse}
+								establisherOnlyResponse={data.establisherOnlyResponse}
+							>
+								<RolesContextProvider roles={data.rolesResponse}>
+									{children}
+								</RolesContextProvider>
+							</UsersContextProvider>
+						</EstablishmentContextProvider>
 					</CommonProviders>
 				</TariffContextProvider>
 			</CardContextProvider>
@@ -57,13 +53,17 @@ export const roleContextMap = {
 
 	establisher: ({ data, children }: ProviderProps<EstablisherData>) => (
 		<CommonProviders data={data}>
-			<ChatContextProvider chatResponse={data.chatResponse}>
-				<RolesContextProvider roles={data.rolesResponse}>{children}</RolesContextProvider>
-			</ChatContextProvider>
+			<EstablishmentContextProvider establishments={data.establishmentsResponse}>
+				<ChatContextProvider chatResponse={data.chatResponse}>
+					<RolesContextProvider roles={data.rolesResponse}>
+						{children}
+					</RolesContextProvider>
+				</ChatContextProvider>
+			</EstablishmentContextProvider>
 		</CommonProviders>
 	),
 
-	establisher_worker: ({ data, children }: ProviderProps<EstablishmentWorkerData>) => (
+	establishment_worker: ({ data, children }: ProviderProps<EstablishmentWorkerData>) => (
 		<CommonProviders data={data}>{children}</CommonProviders>
 	),
 } as const;

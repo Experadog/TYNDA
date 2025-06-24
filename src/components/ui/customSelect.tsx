@@ -149,7 +149,7 @@ const CustomSelect = <T extends FieldValues>({
 
 					<div className="flex justify-end w-full text-xs">
 						<FormMessage
-							className={clsx('text-error mt-2 numeric font-roboto', ErrorClassName)}
+							className={clsx('text-error pt-2 numeric font-roboto', ErrorClassName)}
 						/>
 					</div>
 				</FormItem>

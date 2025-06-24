@@ -1,8 +1,8 @@
 'use client';
 
-import TariffActionModal from '../components/modal/tariff-action-modal';
-import TariffDeletionModal from '../components/modal/tariff-deletion-modal';
-import TariffTable from '../components/table/tariff-table';
+import TariffActionModal from '../_components/modal/tariff-action-modal';
+import TariffDeletionModal from '../_components/modal/tariff-deletion-modal';
+import TariffTable from '../_components/table/tariff-table';
 
 const TariffView = () => {
 	return (

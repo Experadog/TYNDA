@@ -9,20 +9,23 @@ import { decryptData } from './decryptData';
 const PUBLIC_FILE = /\.(.*)$/;
 const PROTECTED_CLIENT_ROUTES = [PAGES.PROFILE, PAGES.DASHBOARD];
 
-const PROTECTED_ESTABLISHER_WORKER_ROUTES = [
-	PAGES.DASHBOARD_CHAT,
-	PAGES.ROLES,
-	PAGES.DASHBOARD_CARD,
-	PAGES.DASHBOARD_TARIFF,
-];
-const PROTECTED_ESTABLISHER_ROUTES = [
+const PROTECTED_ESTABLISHMENT_WORKER_ROUTES = [
 	PAGES.USERS,
 	PAGES.ROLES,
 	PAGES.DASHBOARD_CHAT,
 	PAGES.DASHBOARD_CARD,
 	PAGES.DASHBOARD_TARIFF,
+	PAGES.ESTABLISHMENT,
 ];
-const PROTECTED_SUPER_USER_ROUTES = [PAGES.STAFF];
+const PROTECTED_ESTABLISHER_ROUTES = [
+	PAGES.USERS,
+	PAGES.ROLES,
+	PAGES.STAFF_ESTABLISHMENT,
+	PAGES.DASHBOARD_CHAT,
+	PAGES.DASHBOARD_CARD,
+	PAGES.DASHBOARD_TARIFF,
+];
+const PROTECTED_SUPER_USER_ROUTES = [PAGES.STAFF, PAGES.STAFF_ESTABLISHMENT];
 
 export function isStaticOrApiRequest(pathname: string): boolean {
 	return (
@@ -86,12 +89,9 @@ export function getSessionData(req: NextRequest): Session | null {
 	const sessionCookie = req.cookies.get(COOKIES.SESSION)?.value;
 	return sessionCookie ? decryptData(sessionCookie) : null;
 }
-
 export function isProtectedClientRoute(pathname: string): boolean {
-	const basePath = pathname.replace(/^\/(ru|kg|en)\//, '/') as PAGES;
-	return (
-		PROTECTED_CLIENT_ROUTES.includes(basePath) ||
-		PROTECTED_CLIENT_ROUTES.some((route) => basePath.includes(route))
+	return PROTECTED_CLIENT_ROUTES.some(
+		(route) => pathname.startsWith(route) || pathname.includes(route),
 	);
 }
 
@@ -100,9 +100,11 @@ function dashboardRoleGuardian(basePath: string, isSuperUser: boolean, userRole:
 		basePath.startsWith(protectedPath) || basePath.includes(protectedPath);
 
 	const isEstablisher = userRole === UserRole.ESTABLISHER;
-	const isWorker = userRole === UserRole.ESTABLISHER_WORKER;
+	const isWorker = userRole === UserRole.ESTABLISHMENT_WORKER;
 
-	const isWorkerProtected = PROTECTED_ESTABLISHER_WORKER_ROUTES.some(checkIsProtectedRouteMatch);
+	const isWorkerProtected = PROTECTED_ESTABLISHMENT_WORKER_ROUTES.some(
+		checkIsProtectedRouteMatch,
+	);
 	const isEstablisherProtected = PROTECTED_ESTABLISHER_ROUTES.some(checkIsProtectedRouteMatch);
 	const isSuperUserProtected = PROTECTED_SUPER_USER_ROUTES.some(checkIsProtectedRouteMatch);
 
@@ -129,7 +131,7 @@ export function checkRoleAccess(
 	if (
 		(userRole && isSuperUser) ||
 		userRole === UserRole.ESTABLISHER ||
-		userRole === UserRole.ESTABLISHER_WORKER
+		userRole === UserRole.ESTABLISHMENT_WORKER
 	) {
 		if (basePath.includes(PAGES.DASHBOARD)) {
 			if (basePath === PAGES.DASHBOARD) return null;
@@ -168,7 +170,7 @@ export function handleAuthRedirection(
 		return NextResponse.redirect(redirectUrl);
 	}
 
-	if (isProtectedClientRoute(pathname) && !sessionData) {
+	if (isProtectedClientRoute(basePath) && !sessionData) {
 		const redirectUrl = new URL(`/${pathLocale}${PAGES.LOGIN}`, req.url);
 		return NextResponse.redirect(redirectUrl);
 	}

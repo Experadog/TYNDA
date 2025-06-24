@@ -39,3 +39,24 @@ export type Permission = {
 };
 
 export type RoleDetailed = Role & { permissions: Permission[] };
+
+// Local Permissions
+
+export type PermissionValue = Partial<'crud'>;
+
+export type PermissionManagerType = Partial<{
+	establishment: PermissionValue;
+	user: PermissionValue;
+	card: PermissionValue;
+}>;
+
+export type PermissionModule = 'establishment' | 'user' | 'card';
+
+export const PermissionActionMap = {
+	CREATE: 'c',
+	READ: 'r',
+	UPDATE: 'u',
+	DELETE: 'd',
+} as const;
+
+export type PermissionAction = keyof typeof PermissionActionMap;

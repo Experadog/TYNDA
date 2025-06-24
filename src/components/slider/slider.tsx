@@ -25,6 +25,9 @@ interface SliderProps {
 	page?: number;
 	rubberband?: boolean;
 	navigation?: boolean | NavigationOptions;
+	mode?: 'snap' | 'free' | 'free-snap';
+	fader?: boolean;
+	initial?: number;
 }
 
 // Плагин для навигации
@@ -52,11 +55,15 @@ const Slider: FC<SliderProps> = ({
 	classNameSlider,
 	onReachEnd,
 	total,
+	mode,
 	rubberband = true,
 	navigation = false,
+	fader,
+	initial = 0,
 }) => {
 	const [isLoaded, setIsLoaded] = useState(false);
 	const [number, setNumber] = useState(slidesPerView * 1.1);
+	const [opacities, setOpacities] = useState<number[]>([]);
 
 	// Добавляем плагины в зависимости от наличия навигации
 	const plugins = [];
@@ -66,7 +73,7 @@ const Slider: FC<SliderProps> = ({
 
 	const [sliderRef] = useKeenSlider(
 		{
-			mode: 'free',
+			mode: mode || 'free',
 			slides: {
 				perView: slidesPerView,
 				spacing,
@@ -75,9 +82,15 @@ const Slider: FC<SliderProps> = ({
 			loop,
 			drag: true,
 			rubberband,
+			initial,
 
 			created() {
 				setIsLoaded(true);
+			},
+
+			detailsChanged(s) {
+				const new_opacities = s.track.details.slides.map((slide) => slide.portion);
+				setOpacities(new_opacities);
 			},
 
 			async slideChanged(s) {
@@ -106,14 +119,22 @@ const Slider: FC<SliderProps> = ({
 		<div className="relative w-full">
 			<div
 				className={clsx(
-					`keen-slider transition-opacity duration-300 ${isLoaded ? 'opacity-100' : 'opacity-0'} sm:px-0`,
+					`keen-slider transition-opacity duration-300 ${isLoaded ? 'opacity-100' : 'opacity-0'} sm:px-0 `,
+					fader && 'fader',
 					classNameSlider,
 				)}
 				ref={sliderRef}
 			>
 				{[...children].map((child, index) => (
-					// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-					<div className={clsx('keen-slider__slide', classNameChildren)} key={index}>
+					<div
+						className={clsx(
+							fader ? 'fader__slide' : 'keen-slider__slide',
+							classNameChildren,
+						)}
+						style={{ opacity: fader ? opacities[index] : 'initial' }}
+						// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+						key={index}
+					>
 						{child}
 					</div>
 				))}

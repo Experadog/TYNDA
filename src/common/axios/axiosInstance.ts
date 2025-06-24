@@ -45,10 +45,26 @@ axiosInstance.interceptors.response.use(
 	async (error: AxiosError) => {
 		const { response } = error;
 		const data = response?.data as CommonResponse<null>;
+		const prettyParams = JSON.stringify(error?.config?.params, null, 2);
+
+		let prettyBody = error?.config?.data;
+		if (typeof prettyBody === 'string') {
+			try {
+				prettyBody = JSON.stringify(JSON.parse(prettyBody), null, 2);
+			} catch {}
+		}
+
+		const payload = `
+Params:
+${prettyParams || '{}'}
+
+Body:
+${prettyBody || '{}'}
+`.trim();
 
 		await sendErrorToTelegram({
-			message: `Error in ${response?.config.url}, message: '${data.msg}(${data.code})`,
-			payload: `params: ${JSON.stringify(error?.config?.params)}, body: ${JSON.stringify(error?.config?.data)}`,
+			message: `Error in ${response?.config.url}, message: '${data.msg}(${data.code}) - ${error.config?.method?.toUpperCase()}`,
+			payload,
 		});
 
 		LOGGER.error(`Error in ${response?.config.url}, message: '${data.msg}(${data.code})'`);

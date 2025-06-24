@@ -16,6 +16,7 @@ export async function sendErrorToTelegram(serializedError: SerializedError) {
 		const userEmail = session?.user.email || 'Не авторизован';
 
 		const timestamp = new Date().toLocaleString('ru-RU', {
+			timeZone: 'Asia/Bishkek',
 			hour12: false,
 			year: 'numeric',
 			month: '2-digit',
@@ -24,6 +25,7 @@ export async function sendErrorToTelegram(serializedError: SerializedError) {
 			minute: '2-digit',
 			second: '2-digit',
 		});
+
 		const message = `
 🚨 *Ошибка в приложении* 🚨
 

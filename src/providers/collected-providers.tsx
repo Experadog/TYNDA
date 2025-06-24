@@ -8,6 +8,7 @@ import CacheRevalidate from './cache-revalidate/cache-revalidate';
 import { ChatWebSocketProvider } from './chat-webscoket/chat-webscoket-provider';
 import { LocaleProvider } from './locale/locale-provider';
 import OAuthProvider from './oAuth/oAuth-provider';
+import { PermissionProvider } from './permission-provider/permission-provider';
 import { ThemeProvider } from './theme/theme-provider';
 import { ToastClientProvider } from './toast-provider/toast-provider';
 import { UserProvider } from './user/user-provider';
@@ -21,6 +22,7 @@ const CollectedProviders: FC<IProps> = async ({ children }) => {
 	const locale = (cookieStore.get(COOKIES.NEXT_LOCALE)?.value || 'ru') as Locale;
 	const theme = cookieStore.get(COOKIES.THEME)?.value as Theme;
 	const session = cookieStore.get(COOKIES.SESSION)?.value || '';
+	const staff_establishment = cookieStore.get(COOKIES.STAFF_ESTABLISHMENT)?.value || '';
 
 	return (
 		<ErrorBoundary>
@@ -33,13 +35,18 @@ const CollectedProviders: FC<IProps> = async ({ children }) => {
 			>
 				<OAuthProvider>
 					<LocaleProvider locale={locale}>
-						<UserProvider session={session}>
-							<ChatWebSocketProvider session={session}>
-								<ToastClientProvider theme={theme} />
-								<CacheRevalidate />
-								<TooltipProvider>{children}</TooltipProvider>
-							</ChatWebSocketProvider>
-						</UserProvider>
+						<PermissionProvider session={session}>
+							<UserProvider
+								session={session}
+								staff_establishment={staff_establishment}
+							>
+								<ChatWebSocketProvider session={session}>
+									<ToastClientProvider theme={theme} />
+									<CacheRevalidate />
+									<TooltipProvider>{children}</TooltipProvider>
+								</ChatWebSocketProvider>
+							</UserProvider>
+						</PermissionProvider>
 					</LocaleProvider>
 				</OAuthProvider>
 			</ThemeProvider>

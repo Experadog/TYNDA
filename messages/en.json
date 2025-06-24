@@ -121,7 +121,10 @@
 		"UpdateProfile": {
 			"loading": "Updating profile...",
 			"success": "Profile updated!",
-			"error": "Error updating profile"
+			"error": {
+				"422": "Please check the correctness of the entered data.",
+				"default": "An error occurred while trying to update the profile."
+			}
 		},
 		"UpdateCredentials": {
 			"loading": "Updating password...",
@@ -199,8 +202,13 @@
 
 		"ChatCreation": {
 			"loading": "Creating chat...",
-			"success": "Chat created successfully",
+			"success": "Chat created successfully!",
 			"error": "Error while creating chat"
+		},
+		"CardUpdating": {
+			"loading": "Updating the card...",
+			"success": "The card has been successfully updated!",
+			"error": "An error occurred while trying to update the card"
 		}
 	},
 
@@ -227,8 +235,10 @@
 			"address": "Address",
 			"contacts": "Contacts",
 			"workTime": "Working Hours",
+			"discount": "Discount for Tynda customers",
 			"aboutEnterprise": "About Business",
 			"button1": "Message",
+			"average_bill": "Average bill",
 			"button2": "Show on Map",
 			"social_media": "Social Media",
 			"hide_text": "Hide",
@@ -355,7 +365,8 @@
 		"lt_100": "Value must not exceed 100",
 		"create_or_select_establisher": "Create or select an owner",
 		"password_not_math": "Passwords do not match",
-		"invalid_coordinates": "Enter valid coordinate values"
+		"invalid_coordinates": "Enter valid coordinate values",
+		"invalid_date": "Invalid date format"
 	},
 	"Shared": {
 		"establishment_categories": {
@@ -402,7 +413,8 @@
 			"DISCOUNTS": "Discounts",
 			"CHAT": "Chat",
 			"DASHBOARD_TARIFF": "Tariffs",
-			"DASHBOARD_CARD": "Cards"
+			"DASHBOARD_CARD": "Cards",
+			"STAFF_ESTABLISHMENT": "Establishment"
 		},
 		"entity_status": {
 			"enable": "Active",

@@ -22,6 +22,7 @@ export { default as TableHeader } from './table/table-header';
 export { default as TableRowActions } from './table/table-row-actions';
 export { default as TableWrapper } from './table/table-wrapper';
 
+export { default as ImgViewer } from './img-viewer/img-viewer';
 export { default as TariffCard } from './tariff-card/tariff-card';
 export { default as ToggleLocale } from './toggle-locale/toggle-locale';
 export { default as ToggleTheme } from './toggle-theme/toggle-theme';
@@ -30,6 +31,7 @@ export { default as UnderDevelopment } from './under-development/under-developme
 //ui
 export * from './ui/button';
 export * from './ui/customAutoComplete';
+export * from './ui/customCalendar';
 export * from './ui/customFormField';
 export * from './ui/customInput';
 export * from './ui/customSelect';

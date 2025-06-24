@@ -1,20 +1,10 @@
-import type { AsyncPageRule } from '@common';
+import type { AsyncAndStaticPages } from '@common';
 import { getNestedValue } from './getNestedValue';
-
-export type Props<Types extends unknown[]> = {
-	async_pages: {
-		[Index in keyof Types]: AsyncPageRule<Types[Index]>;
-	};
-	static_pages?: {
-		viewModel: ViewModel['Shared'];
-		keys: (keyof ViewModel['Shared'])[];
-	};
-};
 
 export function createDynamicLabels<Types extends unknown[]>({
 	async_pages,
 	static_pages,
-}: Props<Types>): Record<string, string> {
+}: AsyncAndStaticPages<Types>): Record<string, string> {
 	const dynamicLabels: Record<string, string> = {};
 
 	for (const page of async_pages) {

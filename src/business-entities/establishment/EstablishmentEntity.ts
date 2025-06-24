@@ -50,7 +50,7 @@ export type EstablishmentListItem = {
 	id: string;
 	category: EstablishmentCategory;
 	status: EntityStatus;
-	discount: boolean;
+	discount: number;
 	cover: string;
 	average_bill: number;
 };

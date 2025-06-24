@@ -11,17 +11,21 @@ import {
 	revalidateByTags,
 	useAsyncAction,
 } from '@common';
+import { useEffect, useMemo } from 'react';
 import { useWatch } from 'react-hook-form';
 
 export function useProfileSettingsUseCase() {
 	const { user } = useUser();
 
-	const defaultValues = {
-		first_name: user?.first_name || '',
-		last_name: user?.last_name || '',
-		phone: user?.phone ?? undefined,
-		avatar: user?.avatar || '',
-	};
+	const defaultValues = useMemo(
+		() => ({
+			first_name: user?.first_name || '',
+			last_name: user?.last_name || '',
+			phone: user?.phone ?? undefined,
+			avatar: user?.avatar || undefined,
+		}),
+		[user],
+	);
 
 	const viewModel = useViewModel(['Validation', 'Toast', 'Shared', 'CommonToast']);
 
@@ -54,21 +58,28 @@ export function useProfileSettingsUseCase() {
 	};
 
 	const onSubmit = async (values: ProfileFormValues) => {
-		if (values.avatar && values.avatar instanceof File) {
-			const res = await loadFilesAction({
-				data: [values.avatar],
+		let avatar: string | File | null | undefined = values.avatar;
+
+		if (avatar && avatar instanceof File) {
+			const uploadedFiles = await loadFilesAction({
+				data: [avatar],
 				toastMessage: viewModel.Toast.LoadFile,
 				validationMessage: viewModel.CommonToast.too_large_image,
 			});
 
-			await execute(updateProfileAction, { ...values, avatar: res[0] });
-
-			schema.reset({
-				...values,
-				avatar: res[0],
-			});
+			avatar = uploadedFiles[0];
 		}
+
+		const payload: ProfileFormValues = { ...values, avatar };
+
+		await execute(updateProfileAction, payload);
 	};
+
+	useEffect(() => {
+		if (user) {
+			schema.reset(defaultValues);
+		}
+	}, [user, schema]);
 
 	const states = { schema, avatar: typeof avatar === 'string' ? avatar : '' };
 	const actions = { onSubmit, onImageChange, onReset };

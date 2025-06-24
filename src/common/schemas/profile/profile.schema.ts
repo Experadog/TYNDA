@@ -16,9 +16,23 @@ interface CreateProfileSchemaProps {
 
 export const profileFormShape = (messages: ViewModel['Validation']) => {
 	return z.object({
-		first_name: z.string().min(2, messages.required).optional(),
-		last_name: z.string().min(2, messages.required).optional(),
-		phone: z.string().optional(),
+		first_name: z.string().optional(),
+		last_name: z.string().optional(),
+		phone: z
+			.string()
+			.optional()
+			.transform((val) => {
+				if (!val) return val;
+
+				let cleaned = val.replace(/[^\d+]/g, '').trim();
+
+				if (cleaned.startsWith('+996')) {
+					cleaned = `+996${cleaned.slice(4, 13)}`;
+				}
+
+				return cleaned;
+			}),
+
 		avatar: z
 			.union([z.instanceof(File), z.string()])
 			.nullable()

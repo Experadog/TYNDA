@@ -1,5 +1,6 @@
 'use client';
 
+import { phoneFormatter } from '@/lib';
 import clsx from 'clsx';
 import {
 	type CSSProperties,
@@ -97,9 +98,13 @@ export const CustomFormField = <T extends FieldValues>({
 												e.currentTarget.blur();
 											}
 										}}
-										value={field.value ?? ''}
+										value={
+											type === 'tel' && typeof field.value === 'string'
+												? phoneFormatter(field.value)
+												: (field.value ?? '')
+										}
 										className={clsx(
-											'outline-none placeholder:text-placeholder placeholder:font-normal rounded-xl px-4 py-6 numeric border border-light_gray font-normal bg-input_bg text-foreground_1',
+											'outline-none placeholder:text-placeholder placeholder:font-normal rounded-xl px-4 py-[1.53rem] numeric border border-light_gray font-normal bg-input_bg text-foreground_1',
 											type === 'password' ? 'pr-10' : '',
 											InputClassName,
 											!showError &&

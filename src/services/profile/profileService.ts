@@ -62,8 +62,7 @@ class ProfileService {
 				user: {
 					...session.user,
 					...payload,
-					avatar:
-						typeof payload.avatar === 'string' ? payload.avatar : session.user.avatar,
+					avatar: typeof payload.avatar === 'string' ? payload.avatar : null,
 				},
 			};
 

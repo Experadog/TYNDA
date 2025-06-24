@@ -35,7 +35,7 @@ const Hero: FC<IProps> = ({ heroViewModel }) => {
 				</Translate>
 
 				<Translate direction="up" distance={60} animateOnce={false}>
-					<Link href={`/${PAGES.ENTERPRISES_ALL}`} className="group w-max relative flex">
+					<Link href={`/${PAGES.SERVICE}`} className="group w-max relative flex">
 						<Button
 							disableAnimation
 							variant="yellow"

@@ -21,9 +21,14 @@ const UserContext = createContext<UserContextType | null>(null);
 interface UserProviderProps {
 	children: ReactNode;
 	session: string;
+	staff_establishment: string;
 }
 
-export const UserProvider: React.FC<UserProviderProps> = ({ children, session }) => {
+export const UserProvider: React.FC<UserProviderProps> = ({
+	children,
+	session,
+	staff_establishment,
+}) => {
 	const { Logout } = useViewModel(['Toast']);
 	const router = useRouter();
 
@@ -33,14 +38,14 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children, session })
 
 	const logoutAction = createAction({
 		requestAction: logout,
-		onSuccess: () => router.push(PAGES.LOGIN),
+		onSuccess: () => router.replace(PAGES.LOGIN),
 	});
 
 	const onLogout = async () => {
 		await logoutExecute(logoutAction);
 	};
 
-	const { user, setUser, isLoading } = useSessionManager(session);
+	const { user, setUser, isLoading } = useSessionManager(session, staff_establishment);
 
 	return (
 		<UserContext.Provider value={{ user, setUser, onLogout }}>

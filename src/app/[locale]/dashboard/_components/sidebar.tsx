@@ -23,8 +23,8 @@ const Sidebar = () => {
 
 	const roleEnum = useMemo((): keyof typeof DASHBOARD_LINKS => {
 		switch (user?.role) {
-			case UserRole.ESTABLISHER_WORKER:
-				return UserRole.ESTABLISHER_WORKER;
+			case UserRole.ESTABLISHMENT_WORKER:
+				return UserRole.ESTABLISHMENT_WORKER;
 
 			case UserRole.ESTABLISHER:
 				return UserRole.ESTABLISHER;

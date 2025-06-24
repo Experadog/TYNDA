@@ -4,7 +4,8 @@ import { PAGES, PAGINATION } from '@/lib';
 import {
 	getAdminTariffList,
 	getCardList,
-	getEstablishmentAll,
+	getEstablishmentAllAdmin,
+	getEstablishmentAllEstablisher,
 	getRoles,
 	getUserChatList,
 	getUsers,
@@ -21,22 +22,19 @@ import {
 
 import { getSettings } from './settings';
 
-async function getCommonData(): Promise<Omit<CommonData, 'settingsData'>> {
-	const establishmentsResponse = await getEstablishmentAll(PAGINATION.establishment);
-	return { establishmentsResponse };
-}
-
 async function getEstablisherData(): Promise<Omit<EstablisherData, keyof CommonData>> {
-	const [rolesResponse, chatResponse] = await Promise.all([
+	const [establishmentsResponse, rolesResponse, chatResponse] = await Promise.all([
+		getEstablishmentAllEstablisher(PAGINATION.establishment),
 		getRoles(PAGINATION.role),
 		getUserChatList(PAGINATION.chat),
 	]);
 
-	return { rolesResponse, chatResponse };
+	return { rolesResponse, chatResponse, establishmentsResponse };
 }
 
 async function getSuperUserData(): Promise<Omit<SuperUserData, keyof CommonData>> {
 	const [
+		establishmentsResponse,
 		rolesResponse,
 		allUsersResponse,
 		chatResponse,
@@ -44,6 +42,7 @@ async function getSuperUserData(): Promise<Omit<SuperUserData, keyof CommonData>
 		cardResponse,
 		establisherOnlyResponse,
 	] = await Promise.all([
+		getEstablishmentAllAdmin(PAGINATION.establishment),
 		getRoles(PAGINATION.role),
 		getUsers(PAGINATION.user),
 		getUserChatList(PAGINATION.chat),
@@ -59,6 +58,7 @@ async function getSuperUserData(): Promise<Omit<SuperUserData, keyof CommonData>
 		tariffResponse,
 		cardResponse,
 		establisherOnlyResponse,
+		establishmentsResponse,
 	};
 }
 
@@ -69,11 +69,9 @@ export async function executeRoleRequests(): Promise<RoleResult> {
 
 	const { role, is_superuser } = session.user;
 
-	const commonWithoutSettings = await getCommonData();
 	const settingsData = await getSettings();
 
 	const common: CommonData = {
-		...commonWithoutSettings,
 		settingsData,
 	};
 
@@ -87,8 +85,8 @@ export async function executeRoleRequests(): Promise<RoleResult> {
 		return { roleType: 'establisher', data: { ...common, ...establisher } };
 	}
 
-	if (role === UserRole.ESTABLISHER_WORKER) {
-		return { roleType: 'establisher_worker', data: common };
+	if (role === UserRole.ESTABLISHMENT_WORKER) {
+		return { roleType: 'establishment_worker', data: { ...common } };
 	}
 
 	return forceRedirect(PAGES.LOGIN);

@@ -51,7 +51,11 @@ const Navbar: FC<IProps> = () => {
 				className="flex items-center px-10 xs:px-5 py-5 gap-8 justify-between"
 			>
 				<div className="flex items-center gap-16">
-					<Link href={'/'} className="w-[50px] h-[48px] relative">
+					<Link
+						href={'/'}
+						className="w-[50px] h-[48px] relative"
+						onClick={() => setIsMenuOpen(false)}
+					>
 						<Image
 							src={'/logo.svg'}
 							alt="Логотип"
