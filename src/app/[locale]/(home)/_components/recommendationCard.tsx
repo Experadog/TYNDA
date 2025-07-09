@@ -53,6 +53,7 @@ const RecommendationCard: FC<IProps> = ({ establishment }) => {
 					className="
 							absolute top-2 right-2 bg-orange text-white text-xs 
 							font-bold px-2 py-1 rounded-full shadow-lg flex items-center gap-1
+							sm:left-2 sm:right-full  sm:w-max
 						"
 				>
 					<span>⭐</span>

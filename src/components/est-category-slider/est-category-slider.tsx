@@ -2,46 +2,11 @@ import {
 	ESTABLISHMENTS_CATEGORIES,
 	type EstablishmentCategory,
 } from '@/business-entities/establishment/EstablishmentEntity';
+import { CATEGORIES_ICONS } from '@/lib';
+import type { UniversalListItem } from '@common';
 import { useMemo } from 'react';
-import type { IconType } from 'react-icons/lib';
-import {
-	LuBaby,
-	LuBadgePercent,
-	LuBus,
-	LuCake,
-	LuCalendar,
-	LuChevronLeft,
-	LuChevronRight,
-	LuHeartPulse,
-	LuHouse,
-	LuKeyRound,
-	LuLandmark,
-	LuMap,
-	LuMapPinned,
-	LuMountain,
-	LuRoute,
-	LuShoppingBag,
-	LuUtensils,
-} from 'react-icons/lu';
+import { LuChevronLeft, LuChevronRight } from 'react-icons/lu';
 import Slider from '../slider/slider';
-
-const icons = [
-	LuHouse,
-	LuUtensils,
-	LuKeyRound,
-	LuHeartPulse,
-	LuShoppingBag,
-	LuLandmark,
-	LuCalendar,
-	LuBaby,
-	LuMountain,
-	LuBadgePercent,
-	LuCake,
-	LuMap,
-	LuBus,
-	LuMapPinned,
-	LuRoute,
-];
 
 type Props = {
 	viewModel: ViewModel['Shared']['establishment_categories'];
@@ -51,12 +16,6 @@ type Props = {
 	selectedCategory: EstablishmentCategory | null;
 };
 
-type CategoryType = {
-	title: string;
-	icon: IconType;
-	value: EstablishmentCategory;
-};
-
 const EstCategorySlider = ({
 	viewModel,
 	slidesPerView,
@@ -64,10 +23,10 @@ const EstCategorySlider = ({
 	onSelect,
 	selectedCategory,
 }: Props) => {
-	const categories: CategoryType[] = useMemo(() => {
+	const categories: UniversalListItem<EstablishmentCategory>[] = useMemo(() => {
 		return Object.values(ESTABLISHMENTS_CATEGORIES).map((value, index) => ({
 			title: viewModel[value],
-			icon: icons[index],
+			icon: CATEGORIES_ICONS[index],
 			value,
 		}));
 	}, [viewModel]);

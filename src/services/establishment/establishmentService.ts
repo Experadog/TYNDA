@@ -12,23 +12,32 @@ import {
 } from '@common';
 import type {
 	EstablishmentAdminCreationRequestModel,
+	EstablishmentClientRetrievalResponseModel,
 	EstablishmentCreationRequestModel,
 	EstablishmentCreationResponseModel,
 	EstablishmentDeletionRequestModel,
+	EstablishmentMapRetrieval,
+	EstablishmentRetrievalDetailedResponseModel,
 	EstablishmentUpdatingRequestModel,
 	EstablishmentUpdatingResponseModel,
-	GetEstablishmentAllClientResponseModel,
-	GetEstablishmentDetailedResponseModel,
 } from './establishmentServiceTypes.ts';
 
 class EstablishmentService {
 	static async getEstablishmentAllClient(
 		params: Params,
-	): Promise<GetEstablishmentAllClientResponseModel> {
-		const response = await createFetchAction<GetEstablishmentAllClientResponseModel>({
+	): Promise<EstablishmentClientRetrievalResponseModel> {
+		const response = await createFetchAction<EstablishmentClientRetrievalResponseModel>({
 			endpoint: URL_ENTITIES.ESTABLISHMENT_ALL_CLIENT,
 			shouldBeAuthorized: false,
 			params,
+			body:
+				params?.lat && params?.lon
+					? JSON.stringify({
+							latitude: params?.lat,
+							longitude: params?.lon,
+						})
+					: undefined,
+			method: 'POST',
 			revalidateTags: [URL_ENTITIES.ESTABLISHMENT_ALL_CLIENT],
 		});
 
@@ -36,10 +45,11 @@ class EstablishmentService {
 	}
 
 	static async getEstablishmentAllAdmin(params: Params) {
-		const response = await createFetchAction<GetEstablishmentAllClientResponseModel>({
+		const response = await createFetchAction<EstablishmentClientRetrievalResponseModel>({
 			endpoint: URL_ENTITIES.ESTABLISHMENT_ALL_ADMIN,
 			shouldBeAuthorized: true,
 			params,
+			method: 'POST',
 			revalidateTags: [URL_ENTITIES.ESTABLISHMENT_ALL_ADMIN],
 		});
 
@@ -48,8 +58,8 @@ class EstablishmentService {
 
 	static async getEstablishmentAllEstablisher(
 		params: Params,
-	): Promise<GetEstablishmentAllClientResponseModel> {
-		const response = await createFetchAction<GetEstablishmentAllClientResponseModel>({
+	): Promise<EstablishmentClientRetrievalResponseModel> {
+		const response = await createFetchAction<EstablishmentClientRetrievalResponseModel>({
 			endpoint: URL_ENTITIES.ESTABLISHMENT_ALL_ESTABLISHER,
 			shouldBeAuthorized: true,
 			params,
@@ -62,8 +72,8 @@ class EstablishmentService {
 	static async getEstablishmentDetail(
 		id: string,
 		isDashboard = false,
-	): Promise<GetEstablishmentDetailedResponseModel> {
-		const response = await createFetchAction<GetEstablishmentDetailedResponseModel>({
+	): Promise<EstablishmentRetrievalDetailedResponseModel> {
+		const response = await createFetchAction<EstablishmentRetrievalDetailedResponseModel>({
 			endpoint: URL_ENTITIES.ESTABLISHMENT_DETAIL,
 			postfix: [id],
 			shouldBeAuthorized: false,
@@ -73,6 +83,8 @@ class EstablishmentService {
 		if (!isSuccessResponse(response)) {
 			await forceRedirect(isDashboard ? PAGES.DASHBOARD : PAGES.ENTERPRISES_ALL);
 		}
+
+		console.log(response.data.establishment.contacts);
 
 		return response;
 	}
@@ -84,6 +96,8 @@ class EstablishmentService {
 		const url = (await isSuperUser())
 			? URL_ENTITIES.ESTABLISHMENT_CREATION_ADMIN
 			: URL_ENTITIES.ESTABLISHMENT;
+
+		console.log(data, params);
 
 		const response = await AXIOS_POST<EstablishmentCreationResponseModel>({
 			url,
@@ -114,6 +128,26 @@ class EstablishmentService {
 
 		return response;
 	}
+
+	static async getEstablishmentAllMap(params?: Params): Promise<EstablishmentMapRetrieval> {
+		const response = await createFetchAction<EstablishmentMapRetrieval>({
+			endpoint: URL_ENTITIES.ESTABLISHMENT_ALL_MAP,
+			shouldBeAuthorized: false,
+			params,
+			body:
+				params?.lat && params?.lon
+					? JSON.stringify({
+							latitude: params?.lat,
+							longitude: params?.lon,
+						})
+					: undefined,
+
+			method: 'POST',
+			revalidateTags: [URL_ENTITIES.ESTABLISHMENT_ALL_MAP],
+		});
+
+		return response;
+	}
 }
 
 export const {
@@ -124,4 +158,5 @@ export const {
 	getEstablishmentAllEstablisher,
 	deleteEstablishment,
 	updateEstablishment,
+	getEstablishmentAllMap,
 } = EstablishmentService;

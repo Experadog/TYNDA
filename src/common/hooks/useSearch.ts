@@ -13,9 +13,10 @@ type Props<T> = {
 	entity: keyof typeof PAGINATION;
 	delayMs?: number;
 	initialData?: Paginated<T>;
+	keys?: Array<string | number | boolean | null | undefined>;
 };
 
-export function useSearch<T>({ searchFn, entity, delayMs, initialData }: Props<T>) {
+export function useSearch<T>({ searchFn, entity, delayMs, initialData, keys = [] }: Props<T>) {
 	const [searchValue, setSearchValue] = useState('');
 	const [data, setData] = useState<Paginated<T> | undefined>(initialData);
 	const [isLoading, setIsLoading] = useState(false);
@@ -64,11 +65,17 @@ export function useSearch<T>({ searchFn, entity, delayMs, initialData }: Props<T
 		}
 	}, [debouncedSearchValue]);
 
+	useEffect(() => {
+		setIsLoading(!initialData);
+		setData(initialData);
+	}, [JSON.stringify(keys)]);
+
 	return {
 		data,
 		isLoading,
 		searchValue,
 		onChange,
 		refetch,
+		debouncedSearchValue,
 	};
 }

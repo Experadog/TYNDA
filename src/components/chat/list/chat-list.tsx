@@ -1,4 +1,4 @@
-import type { GetEstablishmentAllClientResponseModel } from '@/services';
+import type { EstablishmentClientRetrievalResponseModel } from '@/services';
 import type { ChatListItem, ChatScope } from '@business-entities';
 import ChatCreationModal from '../chat-creation/chat-creation-modal';
 import ChatItem from './chat-item';
@@ -7,7 +7,7 @@ type Props = {
 	scope: ChatScope;
 	chats: ChatListItem[];
 	isCollapsed: boolean;
-	establishments?: GetEstablishmentAllClientResponseModel['data'];
+	establishments?: EstablishmentClientRetrievalResponseModel['data'];
 };
 const ChatList = ({ scope, chats, establishments }: Props) => {
 	const shouldRenderAddition = scope === 'dashboard' || scope === 'profile';

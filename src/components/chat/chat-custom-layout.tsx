@@ -1,6 +1,6 @@
 'use client';
 
-import type { GetEstablishmentAllClientResponseModel } from '@/services';
+import type { EstablishmentClientRetrievalResponseModel } from '@/services';
 import type { ChatListItem, ChatScope } from '@business-entities';
 import clsx from 'clsx';
 import { type ReactNode, useRef, useState } from 'react';
@@ -12,7 +12,7 @@ type Props = {
 	children: ReactNode;
 	scope: ChatScope;
 	chats: ChatListItem[];
-	establishments?: GetEstablishmentAllClientResponseModel['data'];
+	establishments?: EstablishmentClientRetrievalResponseModel['data'];
 };
 
 const ChatCustomLayout = ({ children, scope, chats, establishments }: Props) => {

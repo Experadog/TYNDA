@@ -2,7 +2,7 @@
 
 import {
 	type ChatListRetrievalResponseModel,
-	type GetEstablishmentAllClientResponseModel,
+	type EstablishmentClientRetrievalResponseModel,
 	getUserChatList,
 } from '@/services';
 import { usePagination } from '@common';
@@ -12,7 +12,7 @@ import type { ReactNode } from 'react';
 interface Props {
 	children: ReactNode;
 	chats: ChatListRetrievalResponseModel['data'];
-	establishments: GetEstablishmentAllClientResponseModel['data'];
+	establishments: EstablishmentClientRetrievalResponseModel['data'];
 }
 
 const ChatLayoutView = ({ children, chats, establishments }: Props) => {

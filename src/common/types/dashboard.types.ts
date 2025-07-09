@@ -1,7 +1,7 @@
 import type {
 	CardListRetrievalResponseModel,
 	ChatListRetrievalResponseModel,
-	GetEstablishmentAllClientResponseModel,
+	EstablishmentClientRetrievalResponseModel,
 	GetRolesResponseModel,
 	TariffListRetrievalResponseModel,
 	UsersRetrievalResponseModel,
@@ -21,7 +21,7 @@ export type CommonData = {
 export type EstablisherData = CommonData & {
 	rolesResponse: GetRolesResponseModel;
 	chatResponse: ChatListRetrievalResponseModel;
-	establishmentsResponse: GetEstablishmentAllClientResponseModel;
+	establishmentsResponse: EstablishmentClientRetrievalResponseModel;
 };
 
 export type SuperUserData = CommonData & {
@@ -31,7 +31,7 @@ export type SuperUserData = CommonData & {
 	tariffResponse: TariffListRetrievalResponseModel;
 	cardResponse: CardListRetrievalResponseModel;
 	establisherOnlyResponse: UsersRetrievalResponseModel;
-	establishmentsResponse: GetEstablishmentAllClientResponseModel;
+	establishmentsResponse: EstablishmentClientRetrievalResponseModel;
 };
 
 export type EstablishmentWorkerData = CommonData;

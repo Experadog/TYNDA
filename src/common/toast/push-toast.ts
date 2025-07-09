@@ -1,3 +1,4 @@
+import { isEmptyObject } from '@/lib';
 import toast from 'react-hot-toast';
 import type { ActionMessages } from '../types/messages.types';
 import type { CommonResponse } from '../types/responses.types';
@@ -5,11 +6,14 @@ import type { CommonResponse } from '../types/responses.types';
 export function pushToast<T>(
 	promise: Promise<CommonResponse<T>>,
 	options: ActionMessages,
+	isExternal?: boolean,
 ): Promise<T> {
 	return toast.promise(promise, {
 		loading: options.loading,
 
 		success: (res: CommonResponse<T>) => {
+			if (isExternal && !isEmptyObject(res)) return options.success;
+
 			if (res.code !== 200) {
 				throw new Error(String(res.code));
 			}

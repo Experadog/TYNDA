@@ -13,6 +13,8 @@ type Props = {
 	postfix?: (string | number)[];
 	revalidate?: boolean;
 	revalidateTags?: string[];
+	method?: 'GET' | 'POST' | 'PATCH';
+	body?: BodyInit;
 };
 
 const returnEmptyDTO = <T>(params?: Params, text?: string) => {
@@ -44,6 +46,8 @@ export async function createFetchAction<T>({
 	postfix = [],
 	revalidate = false,
 	revalidateTags,
+	method = 'GET',
+	body,
 }: Props): Promise<T> {
 	const cleanBaseUrl = API_URL?.replace(/\/$/, '');
 	const cleanEndpoint = endpoint.replace(/^\//, '');
@@ -76,11 +80,16 @@ export async function createFetchAction<T>({
 			);
 		}
 
+		if (body && typeof body === 'string') {
+			headers.set('Content-Type', 'application/json');
+		}
+
 		const response = await fetch(url.toString(), {
-			method: 'GET',
+			method,
 			cache: revalidate ? 'default' : 'force-cache',
 			headers,
-			next: { tags: revalidateTags },
+			body,
+			next: { tags: revalidateTags, revalidate: revalidate ? 0 : 300 },
 		});
 
 		const data: T = await response.json();
@@ -93,6 +102,11 @@ export async function createFetchAction<T>({
 		}
 
 		LOGGER.success(`Received data from: ${pathWithPostfix}`);
+
+		if (body) {
+			LOGGER.success(`Payload data : ${JSON.stringify(body, null, 2)}`);
+		}
+
 		return data;
 	} catch (error) {
 		LOGGER.error(error);

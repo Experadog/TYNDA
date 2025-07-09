@@ -9,8 +9,9 @@
 		--background-2: #f5f5f5;
 		--background-3: #f9f9f9;
 		--background-4: #f0f0f0;
-		--background-5: #323232;
+		--background-5: #ededed;
 		--background-6: white;
+		--background-7: white;
 
 		--foreground-1: #1c1c1c;
 		--foreground-2: #555555;
@@ -52,6 +53,7 @@
 		--background-4: #202124;
 		--background-5: #202124;
 		--background-6: #1c1c1c;
+		--background-7: #121212;
 
 		--foreground-1: white;
 		--foreground-2: #b3b3b3;
@@ -187,6 +189,10 @@ html {
 	min-height: calc(100vh - 88px);
 }
 
+.full-static-height {
+	height: calc(100vh - 88px);
+}
+
 .full-height-max {
 	max-height: calc(100vh - 88px);
 	min-height: calc(100vh - 88px);
@@ -196,21 +202,6 @@ html {
 /* Leaflet */
 .leaflet-control-attribution {
 	display: none;
-}
-
-.custom-marker-icon .custom-marker-inner {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 24px;
-	height: 24px;
-	font-size: 24px;
-	color: #ff0000;
-	transition: transform 0.2s ease;
-}
-
-.custom-marker-icon .custom-marker-inner:hover {
-	transform: scale(1.4);
 }
 
 .leaflet-popup-content-wrapper,
@@ -258,4 +249,27 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 
 input[type="time"]::-webkit-calendar-picker-indicator:hover {
 	filter: brightness(100%);
+}
+
+.leaflet-control-zoom,
+.leaflet-bar,
+.leaflet-control {
+	display: none;
+}
+
+.leaflet-popup-content,
+.leaflet-popup-content p {
+	margin: 0 !important;
+	padding: 0 !important;
+	border: none !important;
+}
+
+.leaflet-popup-content-wrapper {
+	border: 1px solid var(--light-gray);
+}
+
+.leaflet-popup-tip {
+	border-bottom: 1px solid var(--light-gray);
+	border-right: 1px solid var(--light-gray);
+	box-shadow: none !important;
 }

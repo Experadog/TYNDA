@@ -1,5 +1,6 @@
 import type { SupportedLanguages } from '@/i18n/routing';
-import type { SOCIAL_MEDIAS } from '@/lib';
+import type { REGIONS, SOCIAL_MEDIAS } from '@/lib';
+import type { IconType } from 'react-icons/lib';
 
 export type EntityStatus = 'enable' | 'disable';
 export enum EntityStatusEnum {
@@ -12,6 +13,7 @@ export type Translations<T> = {
 };
 
 export type SocialMediaKey = keyof typeof SOCIAL_MEDIAS;
+export type REGION_KEY = keyof typeof REGIONS;
 
 export type SocialMedia = {
 	title: SocialMediaKey;
@@ -22,3 +24,9 @@ export interface Crumb {
 	label: string;
 	href: string;
 }
+
+export type UniversalListItem<T> = {
+	title: string;
+	icon: IconType;
+	value: T;
+};

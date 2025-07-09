@@ -36,6 +36,7 @@ export enum URL_ENTITIES {
 	ESTABLISHMENT_ALL_ADMIN = '/org/establishment/all',
 	ESTABLISHMENT_DETAIL = '/org/establishment/detail',
 	ESTABLISHMENT_CREATION_ADMIN = '/org/establishment/admin',
+	ESTABLISHMENT_ALL_MAP = '/org/establishment/all-client-map',
 
 	ESTABLISHMENT = '/org/establishment',
 

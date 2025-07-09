@@ -1,11 +1,8 @@
 'use client';
-import { Link } from '@/i18n/routing';
-import { PAGES } from '@/lib';
-import { Button, ImgViewer, Slider } from '@components';
+import { ImgViewer, Slider } from '@components';
 import Image from 'next/image';
 import type { FC } from 'react';
 import { LuChevronLeft, LuChevronRight } from 'react-icons/lu';
-import { TbMapSearch } from 'react-icons/tb';
 import { useDetailEnterpriseUseCase } from '../use-cases/useDetailEnterpriseUseCase';
 
 interface IProps {
@@ -128,18 +125,6 @@ const AllPhoto: FC<IProps> = ({ imagesList, disableMap = false }) => {
 					<LuChevronRight className="w-6 h-6 text-yellow" />
 				</button>
 			</div>
-
-			{!disableMap && (
-				<Link href={`/${PAGES.BENEFITS_MAP}`}>
-					<Button
-						className="rounded-2xl h-14 bg-yellow text-white text-base font-semibold w-full items-center gap-[10px] hidden lg:flex"
-						variant={'yellow'}
-						disableAnimation
-					>
-						Показать на карте <TbMapSearch />
-					</Button>
-				</Link>
-			)}
 		</div>
 	);
 };

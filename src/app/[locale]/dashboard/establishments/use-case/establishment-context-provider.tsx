@@ -2,14 +2,14 @@
 import type { FC, ReactNode } from 'react';
 import { createContext, useContext } from 'react';
 
-import type { GetEstablishmentAllClientResponseModel } from '@/services';
+import type { EstablishmentClientRetrievalResponseModel } from '@/services';
 import {
 	type UseEstablishmentUseCaseType,
 	useEstablishmentUseCase,
 } from './useEstablishmentsUseCase';
 
 type Props = {
-	establishments: GetEstablishmentAllClientResponseModel;
+	establishments: EstablishmentClientRetrievalResponseModel;
 	children: ReactNode;
 };
 

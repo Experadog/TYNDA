@@ -58,14 +58,13 @@ const establishmentFormShape = (
 				shouldValidEst && !shouldValidEstID
 					? establisherSchema
 					: establisherSchema.partial().optional(),
-
 			contacts: z
 				.object(
 					Object.keys(SOCIAL_MEDIAS).reduce(
 						(acc, key) => {
 							if (key === 'phone') {
 								acc[key as keyof typeof SOCIAL_MEDIAS] = z
-									.string()
+									.array(z.string())
 									.nullable()
 									.optional();
 							} else {

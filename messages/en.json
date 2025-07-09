@@ -380,11 +380,23 @@
 			"for_family_vacations": "Family Leisure",
 			"ski_resorts": "Ski resorts",
 			"discount": "Discounts & Promotions",
-			"banquet_halls": "Banquet halls / Toykana",
+			"banquet_halls": "Banquet halls / Event halls",
 			"tourist_attractions_and_routes": "Tourist places and routes",
 			"transfer": "Transfer",
 			"tour_company": "Tour Companies",
 			"guides": "Guides"
+		},
+
+		"regions": {
+			"chui": "Chuy",
+			"talas": "Talas",
+			"naryn": "Naryn",
+			"issyk_kul": "Issyk-Kul",
+			"jalal_abad": "Jalal-Abad",
+			"osh": "Osh",
+			"batken": "Batken",
+			"bishkek": "Bishkek",
+			"osh_city": "Osh (city)"
 		},
 		"permission_scopes": {
 			"user": {
@@ -431,6 +443,14 @@
 			"establisher": "Owner",
 			"client": "Client",
 			"establishment_worker": "Employee"
+		},
+
+		"transport_type": {
+			"driving-car": "Car",
+			"cycling-regular": "Bicycle",
+			"foot-walking": "Walking",
+			"foot-hiking": "Hiking",
+			"driving-hgv": "Truck"
 		}
 	},
 	"UnderDevelopment": {

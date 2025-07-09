@@ -34,6 +34,7 @@ export default {
 				background_4: 'var(--background-4)',
 				background_5: 'var(--background-5)',
 				background_6: 'var(--background-6)',
+				background_7: 'var(--background-7)',
 
 				foreground_1: 'var(--foreground-1)',
 				foreground_2: 'var(--foreground-2)',

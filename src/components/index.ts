@@ -14,6 +14,8 @@ export { default as ImgMask } from './img-mask/img-mask';
 export { default as ImgUploader } from './img-uploader/img-uploader';
 export { default as InfinityScroll } from './infinity-scroll/infinity-scroll';
 export { default as Layout } from './layout/layout';
+// export { default as CustomEstablishmentMap } from './map/CustomEstablishmentMap';
+export { default as PhoneLink } from './phone-link/phone-link';
 export { default as Slider } from './slider/slider';
 export { default as Table } from './table/table';
 export { default as TableBody } from './table/table-body';
@@ -30,6 +32,7 @@ export { default as UnderDevelopment } from './under-development/under-developme
 
 //ui
 export * from './ui/button';
+export * from './ui/custom-checkbox';
 export * from './ui/customAutoComplete';
 export * from './ui/customCalendar';
 export * from './ui/customFormField';
@@ -38,6 +41,7 @@ export * from './ui/customSelect';
 export * from './ui/dialog';
 export * from './ui/drawer';
 export * from './ui/dropdown-menu';
+export * from './ui/dual-range-slider';
 export * from './ui/extendedBreadCrumbs';
 export * from './ui/form';
 export * from './ui/input';
@@ -47,4 +51,5 @@ export * from './ui/radio-group';
 export * from './ui/rating-stars';
 export * from './ui/skeleton';
 export * from './ui/switch';
+export * from './ui/toggle-group';
 export * from './ui/tooltip';

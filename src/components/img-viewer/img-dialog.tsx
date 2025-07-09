@@ -88,7 +88,7 @@ const ImgDialog = ({
 						>
 							{images.map((url) => (
 								<div
-									className=" w-screen h-screen min-w-96  max-w-[1200px] rounded-none"
+									className="w-screen h-screen min-w-96 max-w-[1200px] rounded-none"
 									key={url}
 								>
 									<Image

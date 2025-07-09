@@ -9,19 +9,23 @@ export function phoneFormatter(value?: string) {
 export function format(value: string) {
 	let digits = value.replace(/\D/g, '');
 
-	let formatted = '+996 ';
-
 	if (digits.startsWith('996')) {
 		digits = digits.slice(3);
 	}
 
-	if (digits.length > 0) {
-		formatted += `(${digits.substring(0, 3)}`;
+	if (digits.startsWith('0') && digits.length === 10) {
+		digits = digits.slice(1);
 	}
-	if (digits.length >= 4) {
+
+	let formatted = '+996';
+
+	if (digits.length >= 3) {
+		formatted += ` (${digits.substring(0, 3)}`;
+	}
+	if (digits.length >= 6) {
 		formatted += `) ${digits.substring(3, 6)}`;
 	}
-	if (digits.length >= 7) {
+	if (digits.length >= 9) {
 		formatted += ` ${digits.substring(6, 9)}`;
 	}
 

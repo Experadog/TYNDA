@@ -4,10 +4,13 @@ import type {
 	PermissionScopeKey,
 	UserRole,
 } from '@business-entities';
+import type { REGION_KEY } from './shared.types';
+
+export type SortVariant = 1 | -1;
 
 export type Params = {
 	page?: string;
-	size?: string;
+	size?: string | number;
 	email?: string;
 	code?: string;
 	role?: UserRole;
@@ -26,4 +29,13 @@ export type Params = {
 	user_id?: string;
 	search_name?: string;
 	card_type?: CardVariants;
+	lat?: number;
+	lon?: number;
+	region?: REGION_KEY;
+	has_discount?: boolean;
+	sort_by_discount?: SortVariant;
+	min_average_bill?: number;
+	max_average_bill?: number;
+	sort_by_average_bill?: SortVariant;
+	from_user_distance_in_meter?: number;
 };

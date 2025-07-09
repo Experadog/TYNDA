@@ -4,7 +4,7 @@ import { PAGES, URL_ENTITIES } from '@/lib';
 import { useChatWebSocket } from '@/providers/chat-webscoket/chat-webscoket-provider';
 import {
 	type ChatCreationResponseModel,
-	type GetEstablishmentAllClientResponseModel,
+	type EstablishmentClientRetrievalResponseModel,
 	createChat,
 	getEstablishmentAllClient,
 } from '@/services';
@@ -20,7 +20,7 @@ import {
 import { useState } from 'react';
 
 type Props = {
-	establishments?: GetEstablishmentAllClientResponseModel['data'];
+	establishments?: EstablishmentClientRetrievalResponseModel['data'];
 	scope: ChatScope;
 };
 

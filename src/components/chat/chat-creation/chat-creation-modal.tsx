@@ -5,14 +5,14 @@ import InfinityScroll from '@/components/infinity-scroll/infinity-scroll';
 import { Button } from '@/components/ui/button';
 import CustomInput from '@/components/ui/customInput';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
-import type { GetEstablishmentAllClientResponseModel } from '@/services';
+import type { EstablishmentClientRetrievalResponseModel } from '@/services';
 import type { ChatScope } from '@business-entities';
 import { Plus } from 'lucide-react';
 import EstablishmentChatItem from '../list/establishment-chat-item';
 import { useChatCreationUseCase } from './useChatCreationUseCase';
 
 type Props = {
-	establishments?: GetEstablishmentAllClientResponseModel['data'];
+	establishments?: EstablishmentClientRetrievalResponseModel['data'];
 	scope: ChatScope;
 };
 
