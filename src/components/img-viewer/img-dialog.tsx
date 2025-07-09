@@ -98,7 +98,7 @@ const ImgDialog = ({
 											e.stopPropagation();
 										}}
 										onLoad={() => setIsLoaded(true)}
-										loading="lazy"
+										loading="eager"
 										fill
 										className="object-contain"
 									/>
