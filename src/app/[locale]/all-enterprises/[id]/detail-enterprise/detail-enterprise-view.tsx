@@ -3,7 +3,10 @@
 import { useViewModel } from '@/i18n/getTranslate';
 
 import type { EstablishmentDetailed } from '@/business-entities/establishment/EstablishmentEntity';
-import { type GetEstablishmentAllClientResponseModel, getEstablishmentAllClient } from '@/services';
+import {
+	type EstablishmentClientRetrievalResponseModel,
+	getEstablishmentAllClient,
+} from '@/services';
 import { usePagination } from '@common';
 import { LoadingSpinner } from '@components';
 import dynamic from 'next/dynamic';
@@ -24,7 +27,7 @@ const CustomMap = dynamic(() => import('@/components/map/CustomMap'), {
 
 interface IProps {
 	item: EstablishmentDetailed;
-	data?: GetEstablishmentAllClientResponseModel['data'];
+	data?: EstablishmentClientRetrievalResponseModel['data'];
 }
 
 const DetailEnterpriseView: FC<IProps> = ({ item, data }) => {

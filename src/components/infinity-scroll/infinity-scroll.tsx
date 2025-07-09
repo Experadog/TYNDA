@@ -33,7 +33,7 @@ const InfinityScroll = <T,>({
 
 			const { scrollTop, scrollHeight, clientHeight } = container;
 
-			if (scrollTop + clientHeight >= scrollHeight - 100) {
+			if (scrollTop + clientHeight >= scrollHeight - 50) {
 				onLoadMore(args);
 			}
 		};
@@ -57,7 +57,6 @@ const InfinityScroll = <T,>({
 	return (
 		<div ref={containerRef} className={clsx('overflow-y-auto h-full', className)}>
 			{children}
-
 			{isLoading && loadingNode}
 		</div>
 	);

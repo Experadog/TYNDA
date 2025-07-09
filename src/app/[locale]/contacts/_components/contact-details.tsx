@@ -8,7 +8,7 @@ interface IProps {
 
 const contactsData = [
 	{ id: 0, description: 'Юсупа Абдрахманова, 119' },
-	{ id: 1, description: '+996 551 888 850' },
+	{ id: 1, description: '+996 (500) 445 744' },
 	{ id: 2, description: 'tyndatourism@gmail.com' },
 	{ id: 3, description: 'Иконка телеги' },
 	{ id: 4, description: 'ПН-СБ 09:00 - 18:00' },

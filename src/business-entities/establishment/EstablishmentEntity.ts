@@ -5,7 +5,8 @@ type EstablishmentTranslates = {
 	description: string;
 };
 
-type Contacts = Record<SocialMediaKey, string>;
+type Contacts = Omit<Record<SocialMediaKey, string>, 'phone'> & { phone: string[] };
+
 type Coordinates = { latitude: number; longitude: number };
 
 export type EstablishmentDetailed = {
@@ -74,3 +75,11 @@ export const ESTABLISHMENTS_CATEGORIES = {
 } as const;
 
 export type EstablishmentCategory = keyof typeof ESTABLISHMENTS_CATEGORIES;
+
+export type EstablishmentMap = {
+	translates: Translations<Pick<EstablishmentTranslates, 'name'>>;
+	id: string;
+	category: EstablishmentCategory;
+	coordinates: Coordinates;
+	is_favorite: boolean;
+};

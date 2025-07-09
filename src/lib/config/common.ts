@@ -1,3 +1,23 @@
+import {
+	LuBaby,
+	LuBadgePercent,
+	LuBus,
+	LuCake,
+	LuCalendar,
+	LuHeartPulse,
+	LuHouse,
+	LuKeyRound,
+	LuLandmark,
+	LuMap,
+	LuMapPinned,
+	LuMountain,
+	LuRoute,
+	LuShoppingBag,
+	LuUtensils,
+} from 'react-icons/lu';
+
+import { FaBicycle, FaCar, FaHiking, FaTruck, FaWalking } from 'react-icons/fa';
+
 export const CRYPTO_KEY = process.env.NEXT_PUBLIC_CRYPTO_KEY || '';
 
 export const TIMES = [
@@ -55,37 +75,48 @@ export const SOCIAL_MEDIAS = {
 	telegram: {
 		title: 'Telegram',
 		icon: '/sm/telegram.svg',
+		link: 'https://t.me/Tourismtynda',
 	},
+
 	whatsApp: {
 		title: 'WhatsApp',
 		icon: '/sm/whatsapp.svg',
+		link: 'https://wa.me/+996500445744',
 	},
 
 	instagram: {
 		title: 'Instagram',
 		icon: '/sm/instagram.svg',
+		link: 'https://www.instagram.com/tynda.tourism/',
 	},
 
 	facebook: {
 		title: 'Facebook',
 		icon: '/sm/facebook.svg',
+		link: 'https://www.facebook.com/profile.php?id=61577725615570&mibextid=ZbWKwL',
 	},
+
 	twitter: {
 		title: 'Twitter',
 		icon: '/sm/twitter.svg',
 	},
+
 	tiktok: {
 		title: 'TikTok',
 		icon: '/sm/tiktok.svg',
 	},
+
 	youtube: {
 		title: 'YouTube',
 		icon: '/sm/youtube.svg',
+		link: 'https://www.youtube.com',
 	},
+
 	vk: {
 		title: 'VK',
 		icon: '/sm/vk-white.svg',
 	},
+
 	linkedin: {
 		title: 'LinkedIn',
 		icon: '/sm/linkedin.svg',
@@ -112,3 +143,37 @@ export const REVALIDATE = {
 	ONE_HOUR: 60 * 60 * 1000,
 	THREE_MIN: 3 * 60 * 1000,
 };
+
+export const CATEGORIES_ICONS = [
+	LuHouse,
+	LuUtensils,
+	LuKeyRound,
+	LuHeartPulse,
+	LuShoppingBag,
+	LuLandmark,
+	LuCalendar,
+	LuBaby,
+	LuMountain,
+	LuBadgePercent,
+	LuCake,
+	LuMap,
+	LuBus,
+	LuMapPinned,
+	LuRoute,
+];
+
+export const TRANSPORT_TYPE_ICONS = [FaCar, FaBicycle, FaWalking, FaHiking, FaTruck];
+
+export const REGIONS = {
+	chui: 'chui',
+	talas: 'talas',
+	naryn: 'naryn',
+	issyk_kul: 'issyk_kul',
+	jalal_abad: 'jalal_abad',
+	osh: 'osh',
+	batken: 'batken',
+	bishkek: 'bishkek',
+	osh_city: 'osh_city',
+} as const;
+
+export const DISTANCES = [50, 300, 500, 1000, 5000, 10000, 100000, 500000] as const;

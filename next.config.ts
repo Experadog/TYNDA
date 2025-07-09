@@ -41,38 +41,40 @@ const nextConfig: NextConfig = {
 					{
 						key: 'Content-Security-Policy',
 						value: `
-    default-src 'self';
-    script-src 'self' 'unsafe-inline'
-      https://accounts.google.com
-      https://accounts.google.com/gsi/client
-      https://www.googletagmanager.com
-      https://www.google-analytics.com
-      https://va.vercel-scripts.com;
-    style-src 'self' 'unsafe-inline';
-    img-src 'self' blob: data:
-      https://soyuz.kg
-      https://a.tile.openstreetmap.org
-      https://b.tile.openstreetmap.org
-      https://c.tile.openstreetmap.org
-      https://tile.openstreetmap.org
-      https://unpkg.com;
-    font-src 'self';
-    connect-src 'self'
-      https://tile.openstreetmap.org
-      https://nominatim.openstreetmap.org
-      https://www.google-analytics.com
-      https://api.telegram.org
-      wss://soyuz.kg;
-    object-src 'none';
-    frame-ancestors 'none';
-  `
+  default-src 'self';
+  script-src 'self' 'unsafe-inline' https://accounts.google.com https://accounts.google.com/gsi/client https://www.googletagmanager.com https://www.google-analytics.com https://va.vercel-scripts.com;
+  style-src 'self' 'unsafe-inline';
+  img-src 'self' blob: data: 
+    https://soyuz.kg 
+    https://a.tile.openstreetmap.org 
+    https://b.tile.openstreetmap.org 
+    https://c.tile.openstreetmap.org 
+    https://tile.openstreetmap.org 
+    https://unpkg.com 
+    https://server.arcgisonline.com
+	https://a.tile.opentopomap.org
+	https://b.tile.opentopomap.org
+    https://tile.openstreetmap.de
+	https://c.tile.opentopomap.org;
+  font-src 'self';
+  connect-src 'self' 
+    https://tile.openstreetmap.org 
+    https://nominatim.openstreetmap.org 
+    https://www.google-analytics.com 
+    https://api.telegram.org 
+    wss://soyuz.kg 
+    https://router.project-osrm.org 
+    https://api.openrouteservice.org;
+  object-src 'none';
+  frame-ancestors 'none';
+`
 							.replace(/\s{2,}/g, ' ')
 							.trim(),
 					},
 
 					{
 						key: 'Permissions-Policy',
-						value: 'geolocation=(), microphone=(), camera=(), payment=()',
+						value: 'geolocation=(self), microphone=(), camera=(), payment=()',
 					},
 					{ key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
 					{ key: 'Cross-Origin-Resource-Policy', value: 'cross-origin' },

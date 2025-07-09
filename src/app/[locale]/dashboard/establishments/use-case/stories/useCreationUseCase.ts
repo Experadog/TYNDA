@@ -45,6 +45,7 @@ export function useCreationUseCase({ viewModel }: Props) {
 			await revalidateByTags([
 				URL_ENTITIES.ESTABLISHMENT_ALL_ESTABLISHER,
 				URL_ENTITIES.ESTABLISHMENT_ALL_CLIENT,
+				URL_ENTITIES.ESTABLISHMENT_ALL_ADMIN,
 				URL_ENTITIES.USERS,
 			]);
 			router.push(PAGES.ESTABLISHMENT);

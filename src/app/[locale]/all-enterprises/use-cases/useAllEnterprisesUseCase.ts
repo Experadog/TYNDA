@@ -1,10 +1,13 @@
 'use client';
 import { useViewModel } from '@/i18n/getTranslate';
-import { type GetEstablishmentAllClientResponseModel, getEstablishmentAllClient } from '@/services';
+import {
+	type EstablishmentClientRetrievalResponseModel,
+	getEstablishmentAllClient,
+} from '@/services';
 import { type Params, usePagination } from '@common';
 
 type Props = {
-	initialData: GetEstablishmentAllClientResponseModel['data'];
+	initialData: EstablishmentClientRetrievalResponseModel['data'];
 	params: Params;
 };
 

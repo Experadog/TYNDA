@@ -28,7 +28,7 @@ const Layout: FC<IProps> = ({ children }) => {
 			>
 				{children}
 			</div>
-			{!isDashboard && <Footer viewModel={viewModel.footer} />}
+			<Footer viewModel={viewModel.footer} />
 		</main>
 	);
 };

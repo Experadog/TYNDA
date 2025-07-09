@@ -1,8 +1,13 @@
+import type { OpenRouteAddressResponse, OpenRouteResponse } from './open-route/OpenRouteEntities';
+import type { OpenStreetDataItemType } from './openstreet-map/OpenstreetMapEntities';
+
+// Structured
 export type ExternalEntities = {
-	OpenStreetMapDataItem: {
-		display_name: string;
-		lat: string;
-		lon: string;
-		place_id: number;
-	};
+	OpenStreetMapDataItem: OpenStreetDataItemType;
+	Direction: OpenRouteResponse;
+	Address: OpenRouteAddressResponse;
 };
+
+// Common
+export * from './leaflet/LeafletEntities';
+export * from './open-route/OpenRouteEntities';

@@ -2,26 +2,20 @@
 import type { EstablishmentDetailed } from '@/business-entities/establishment/EstablishmentEntity';
 import { BreadCrumbs } from '@/components/ui/breadCrumbs';
 import { Link, useRouter } from '@/i18n/routing';
-import {
-	PAGES,
-	SOCIAL_MEDIAS,
-	URL_ENTITIES,
-	getTranslateByKey,
-	phoneFormatter,
-	priceFormatter,
-} from '@/lib';
+import { PAGES, SOCIAL_MEDIAS, URL_ENTITIES, getTranslateByKey, priceFormatter } from '@/lib';
 import { useChatWebSocket } from '@/providers/chat-webscoket/chat-webscoket-provider';
 import { useLocale } from '@/providers/locale/locale-provider';
 import { useUser } from '@/providers/user/user-provider';
 import { createChat } from '@/services';
 import { type SocialMediaKey, createAction, revalidateByTags } from '@common';
-import { Button, ImgViewer, LoadingSpinner } from '@components';
+import { Button, ImgViewer, LoadingSpinner, PhoneLink } from '@components';
 import clsx from 'clsx';
 import Image from 'next/image';
 import { type FC, useState } from 'react';
 import { AiOutlineDollarCircle } from 'react-icons/ai';
 import { BsGeoAlt } from 'react-icons/bs';
 import { GoClock } from 'react-icons/go';
+import { GrMapLocation } from 'react-icons/gr';
 import { IoChatbubbleEllipsesOutline } from 'react-icons/io5';
 import { LiaPhoneSolid } from 'react-icons/lia';
 import { RiDiscountPercentLine } from 'react-icons/ri';
@@ -64,6 +58,10 @@ const Hero: FC<IProps> = ({ viewModel, item, categoriesViewModel }) => {
 		await action({ establishment_id: item.id });
 	};
 
+	const onNavigateToMap = () => {
+		router.push({ pathname: `${PAGES.BENEFITS_MAP}`, query: { id: item.id } });
+	};
+
 	return (
 		<div className="mt-[50px] lg:mt-6">
 			<BreadCrumbs
@@ -73,18 +71,28 @@ const Hero: FC<IProps> = ({ viewModel, item, categoriesViewModel }) => {
 
 			<div className="grid grid-cols-2 lg:grid-cols-1 items-start justify-between gap-7 mt-5">
 				<div className="order-2 lg:order-1 flex flex-col gap-3 relative">
-					<Button
-						className="shadow-none fixed right-6 z-[999] bottom-6 rounded-full size-12 lg:size-10"
-						variant={'yellow'}
-						onClick={onCreateChat}
-						size={'icon'}
-					>
-						{isChatCreating ? (
-							<LoadingSpinner className="text-white" />
-						) : (
-							<IoChatbubbleEllipsesOutline className="text-white" />
-						)}
-					</Button>
+					<div className="fixed right-6 z-[999] bottom-6 flex flex-col gap-2">
+						<Button
+							className="shadow-none rounded-full size-12 lg:size-10"
+							variant={'yellow'}
+							onClick={onNavigateToMap}
+							size={'icon'}
+						>
+							<GrMapLocation className="text-white" />
+						</Button>
+						<Button
+							className="shadow-none rounded-full size-12 lg:size-10"
+							variant={'yellow'}
+							onClick={onCreateChat}
+							size={'icon'}
+						>
+							{isChatCreating ? (
+								<LoadingSpinner className="text-white" />
+							) : (
+								<IoChatbubbleEllipsesOutline className="text-white" />
+							)}
+						</Button>
+					</div>
 
 					<h2 className="text-4xl font-medium lg:text-2xl lg:font-semibold font-roboto">
 						{getTranslateByKey(locale, item.translates, 'name')}
@@ -119,12 +127,10 @@ const Hero: FC<IProps> = ({ viewModel, item, categoriesViewModel }) => {
 									<span className="font-medium sm:text-xs">
 										{viewModel.hero.contacts}:
 									</span>
-									<span className="opacity-70 sm:text-xs break-words">
-										{item.contacts.phone
-											.split(';')
-											.map((item) => phoneFormatter(item))
-											.join(', ')}
-									</span>
+									<PhoneLink
+										list={item.contacts.phone}
+										className="opacity-70 sm:text-xs break-words"
+									/>
 								</div>
 							</div>
 						)}
@@ -172,7 +178,7 @@ const Hero: FC<IProps> = ({ viewModel, item, categoriesViewModel }) => {
 						<div className="flex flex-wrap justify-end items-center gap-2">
 							{Object.entries(item.contacts).map(([key, value]) => {
 								const socialKey = key as SocialMediaKey;
-								if (!value || socialKey === 'phone') return null;
+								if (typeof value !== 'string') return null;
 								return (
 									<Link
 										key={socialKey}

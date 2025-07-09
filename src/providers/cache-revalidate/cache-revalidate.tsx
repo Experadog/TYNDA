@@ -1,112 +1,114 @@
-'use client';
+// 'use client';
 
-import { LOGGER, URL_ENTITIES, URL_LOCAL_ENTITIES, decryptData } from '@/lib';
-import { UserRole } from '@business-entities';
-import { revalidateByTags } from '@common';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { useUser } from '../user/user-provider';
+// import { LOGGER, URL_ENTITIES, URL_LOCAL_ENTITIES, decryptData } from '@/lib';
+// import { UserRole } from '@business-entities';
+// import { revalidateByTags } from '@common';
+// import { useEffect, useMemo, useRef, useState } from 'react';
+// import { useUser } from '../user/user-provider';
 
-type TagsMap = {
-	guest: URL_ENTITIES[];
-	[role: string]: URL_ENTITIES[];
-};
+// const TAGS_BY_ROLE = {
+// 	guest: [URL_ENTITIES.ESTABLISHMENT_ALL_CLIENT, URL_ENTITIES.ESTABLISHMENT_ALL_MAP],
+// 	superuser: [
+// 		URL_ENTITIES.ESTABLISHMENT_ALL_ADMIN,
+// 		URL_ENTITIES.USERS,
+// 		URL_ENTITIES.CHAT_MY,
+// 		URL_ENTITIES.TARIFF_ALL,
+// 		URL_ENTITIES.CHAT,
+// 		URL_ENTITIES.CARD_ALL,
+// 	],
+// 	establisher: [
+// 		URL_ENTITIES.ESTABLISHMENT_ALL_ESTABLISHER,
+// 		URL_ENTITIES.STAFF,
+// 		URL_ENTITIES.CHAT,
+// 	],
+// 	client: [
+// 		URL_ENTITIES.ESTABLISHMENT_ALL_CLIENT,
+// 		URL_ENTITIES.TARIFF_CLIENT_ALL,
+// 		URL_ENTITIES.CARD_HISTORY,
+// 		URL_ENTITIES.CHAT_MY,
+// 	],
+// } as const;
 
-const TAGS_BY_ROLE: TagsMap = {
-	guest: [URL_ENTITIES.ESTABLISHMENT_ALL_CLIENT],
-	superuser: [
-		URL_ENTITIES.ESTABLISHMENT_ALL_ADMIN,
-		URL_ENTITIES.USERS,
-		URL_ENTITIES.CHAT_MY,
-		URL_ENTITIES.TARIFF_ALL,
-		URL_ENTITIES.CHAT,
-		URL_ENTITIES.CARD_ALL,
-	],
-	establisher: [
-		URL_ENTITIES.ESTABLISHMENT_ALL_ESTABLISHER,
-		URL_ENTITIES.STAFF,
-		URL_ENTITIES.CHAT,
-	],
-	client: [
-		URL_ENTITIES.ESTABLISHMENT_ALL_CLIENT,
-		URL_ENTITIES.TARIFF_CLIENT_ALL,
-		URL_ENTITIES.CARD_HISTORY,
-		URL_ENTITIES.CHAT_MY,
-	],
-};
+// export default function CacheRevalidate() {
+// 	const { user } = useUser();
+// 	const [shouldRevalidate, setShouldRevalidate] = useState(false);
+// 	const hasRevalidated = useRef(false);
+// 	const isMounted = useRef(false);
 
-const CacheRevalidate = () => {
-	const { user } = useUser();
+// 	const revalidationTags = useMemo(() => {
+// 		const tags = new Set(TAGS_BY_ROLE.guest);
 
-	const [shouldRevalidate, setShouldRevalidate] = useState(false);
-	const hasRevalidated = useRef(false);
+// 		if (!user) return Array.from(tags);
 
-	const revalidationTags = useMemo(() => {
-		const guestTags = TAGS_BY_ROLE.guest || [];
+// 		if (user.is_superuser) {
+// 			TAGS_BY_ROLE.superuser.forEach((tag) => tags.add(tag));
+// 		} else {
+// 			switch (user.role) {
+// 				case UserRole.ESTABLISHER:
+// 					TAGS_BY_ROLE.establisher.forEach((tag) => tags.add(tag));
+// 					break;
+// 				case UserRole.CLIENT:
+// 					TAGS_BY_ROLE.client.forEach((tag) => tags.add(tag));
+// 					break;
+// 			}
+// 		}
 
-		if (!user) {
-			return guestTags;
-		}
+// 		return Array.from(tags);
+// 	}, [user]);
 
-		const roleTags: URL_ENTITIES[] = [];
+// 	// Check once on mount
+// 	useEffect(() => {
+// 		if (isMounted.current) return;
+// 		isMounted.current = true;
 
-		if (user.is_superuser) {
-			roleTags.push(...TAGS_BY_ROLE.superuser);
-		} else {
-			switch (user.role) {
-				case UserRole.ESTABLISHER:
-					roleTags.push(...(TAGS_BY_ROLE.establisher || []));
-					break;
-				case UserRole.CLIENT:
-					roleTags.push(...(TAGS_BY_ROLE.client || []));
-					break;
-				default:
-					break;
-			}
-		}
+// 		let cancelled = false;
 
-		const combined = [...guestTags, ...roleTags];
-		return Array.from(new Set(combined));
-	}, [user]);
+// 		const checkFlag = async () => {
+// 			try {
+// 				const res = await fetch(`/api${URL_LOCAL_ENTITIES.REVALIDATE}`);
+// 				const data = await res.text();
+// 				const decrypted = decryptData<{ shouldRevalidate: boolean }>(data);
+// 				const flag = decrypted?.shouldRevalidate ?? false;
 
-	useEffect(() => {
-		let cancelled = false;
+// 				if (!cancelled && flag) {
+// 					setShouldRevalidate(true);
+// 				}
+// 			} catch (err) {
+// 				LOGGER.error(`CacheRevalidate (initial): ${err}`);
+// 			}
+// 		};
 
-		const checkRevalidation = async () => {
-			try {
-				const res = await fetch(`/api${URL_LOCAL_ENTITIES.REVALIDATE}`);
-				const data = await res.text();
-				const decrypted = decryptData<{ shouldRevalidate: boolean }>(data);
-				if (!cancelled) {
-					setShouldRevalidate(decrypted?.shouldRevalidate ?? true);
-				}
-			} catch (err) {
-				LOGGER.error(`CacheRevalidate: failed to check revalidation flag: ${err}`);
-				if (!cancelled) {
-					setShouldRevalidate(false);
-				}
-			}
-		};
+// 		checkFlag();
+// 		return () => {
+// 			cancelled = true;
+// 		};
+// 	}, []);
 
-		checkRevalidation();
+// 	// Trigger revalidation once
+// 	useEffect(() => {
+// 		if (!shouldRevalidate || hasRevalidated.current) return;
 
-		return () => {
-			cancelled = true;
-		};
-	}, []);
+// 		hasRevalidated.current = true;
+// 		LOGGER.warning(`🔁 Revalidating tags: ${revalidationTags.join(', ')}`);
 
-	useEffect(() => {
-		if (shouldRevalidate && !hasRevalidated.current) {
-			hasRevalidated.current = true;
+// 		const revalidate = async (retries = 3) => {
+// 			try {
+// 				await revalidateByTags(revalidationTags);
+// 				LOGGER.success('✅ Tags successfully revalidated.');
+// 			} catch (err) {
+// 				LOGGER.error(`❌ Revalidate attempt failed: ${err}`);
 
-			LOGGER.warning(`CacheRevalidate: Revalidating tags: ${revalidationTags.join('; ')}`);
+// 				if (retries > 0) {
+// 					LOGGER.info(`🔁 Retrying (${retries})...`);
+// 					setTimeout(() => revalidate(retries - 1), 1000);
+// 				}
+// 			} finally {
+// 				setShouldRevalidate(false);
+// 			}
+// 		};
 
-			revalidateByTags(revalidationTags).catch((err) =>
-				LOGGER.error(`CacheRevalidate: revalidateByTags failed: ${err}`),
-			);
-		}
-	}, [shouldRevalidate, revalidationTags]);
+// 		revalidate();
+// 	}, [shouldRevalidate, revalidationTags]);
 
-	return null;
-};
-
-export default CacheRevalidate;
+// 	return null;
+// }

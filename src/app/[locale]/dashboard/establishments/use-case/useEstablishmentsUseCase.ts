@@ -1,11 +1,11 @@
 'use client';
 
 import { useViewModel } from '@/i18n/getTranslate';
-import type { GetEstablishmentAllClientResponseModel } from '@/services';
+import type { EstablishmentClientRetrievalResponseModel } from '@/services';
 import { useRetrievalUseCase } from './stories/useRetrievalUseCase';
 
 type Props = {
-	establishments: GetEstablishmentAllClientResponseModel['data'];
+	establishments: EstablishmentClientRetrievalResponseModel['data'];
 };
 
 export function useEstablishmentUseCase({ establishments }: Props) {

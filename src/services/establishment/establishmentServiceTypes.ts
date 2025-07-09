@@ -1,13 +1,14 @@
 import type {
 	EstablishmentDetailed,
 	EstablishmentListItem,
+	EstablishmentMap,
 } from '@/business-entities/establishment/EstablishmentEntity';
 import type { CommonResponse, EstablishmentFormValues, Paginated } from '@common';
 
-export type GetEstablishmentAllClientResponseModel = CommonResponse<
+export type EstablishmentClientRetrievalResponseModel = CommonResponse<
 	Paginated<EstablishmentListItem>
 >;
-export type GetEstablishmentDetailedResponseModel = CommonResponse<{
+export type EstablishmentRetrievalDetailedResponseModel = CommonResponse<{
 	establishment: EstablishmentDetailed;
 }>;
 
@@ -38,3 +39,5 @@ export type EstablishmentUpdatingRequestModel = {
 	id: string;
 };
 export type EstablishmentUpdatingResponseModel = CommonResponse<string>;
+
+export type EstablishmentMapRetrieval = CommonResponse<EstablishmentMap[]>;

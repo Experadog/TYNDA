@@ -1,20 +1,37 @@
 import { useViewModel } from '@/i18n/getTranslate';
 import { Link } from '@/i18n/routing';
-import { SOCIAL_MEDIAS, phoneFormatter, priceFormatter } from '@/lib';
+import { SOCIAL_MEDIAS, priceFormatter } from '@/lib';
 import { useLocale } from '@/providers/locale/locale-provider';
 import type { EstablishmentDetailed } from '@business-entities';
 import type { SocialMediaKey } from '@common';
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '@components';
+import {
+	Drawer,
+	DrawerContent,
+	DrawerHeader,
+	DrawerTitle,
+	DrawerTrigger,
+	PhoneLink,
+} from '@components';
 import clsx from 'clsx';
 import Image from 'next/image';
-import { useState } from 'react';
+import { type ReactNode, useState } from 'react';
 import { AiOutlineDollarCircle } from 'react-icons/ai';
 import { BsGeoAlt } from 'react-icons/bs';
 import { GoClock } from 'react-icons/go';
 import { LiaPhoneSolid } from 'react-icons/lia';
 import { RiDiscountPercentLine } from 'react-icons/ri';
 
-const EstablishmentPreview = ({ item }: { item?: EstablishmentDetailed }) => {
+const EstablishmentPreview = ({
+	item,
+	trigger,
+	height,
+	title = true,
+}: {
+	item?: EstablishmentDetailed;
+	trigger?: ReactNode;
+	height?: string;
+	title?: boolean;
+}) => {
 	if (!item) return null;
 
 	const { locale } = useLocale();
@@ -26,10 +43,22 @@ const EstablishmentPreview = ({ item }: { item?: EstablishmentDetailed }) => {
 
 	return (
 		<Drawer>
-			<DrawerTrigger className="text-yellow">Посмотреть</DrawerTrigger>
-			<DrawerContent className="bg-background_1 h-[90%]" style={{ border: 'none' }}>
-				<DrawerHeader className="justify-start border-b border-b-light_gray">
-					<DrawerTitle className="text-2xl">Просмотр</DrawerTitle>
+			{trigger || <DrawerTrigger className={'text-yellow'}>Посмотреть</DrawerTrigger>}
+
+			<DrawerContent
+				className={'bg-background_1 z-[999]'}
+				style={{ border: 'none', height: height || '90%' }}
+			>
+				<DrawerHeader
+					className={clsx(
+						'justify-start relative',
+						title ? 'border-b border-b-light_gray' : '',
+					)}
+				>
+					<DrawerTitle className={clsx('text-2xl', title ? 'block' : 'hidden')}>
+						Просмотр
+					</DrawerTitle>
+					<div className="w-[100px] h-1.5 bg-gray rounded-full absolute top-1 z-10 left-1/2 -translate-x-1/2" />
 				</DrawerHeader>
 
 				<div className="w-full px-8 lg:px-5 py-4 m-auto overflow-y-scroll overflow-x-hidden ">
@@ -60,22 +89,21 @@ const EstablishmentPreview = ({ item }: { item?: EstablishmentDetailed }) => {
 									</div>
 								)}
 
-								{item.contacts.phone && (
+								{item.contacts.phone ? (
 									<div className="flex items-start gap-3">
 										<LiaPhoneSolid className="size-5 mt-1 text-yellow shrink-0" />
 										<div className="flex flex-col">
 											<span className="font-medium sm:text-xs">
 												{DetailEnterprise.hero.contacts}:
 											</span>
-											<span className="opacity-70 sm:text-xs break-words">
-												{item.contacts.phone
-													.split(';')
-													.map((item) => phoneFormatter(item))
-													.join(', ')}
-											</span>
+
+											<PhoneLink
+												list={item.contacts.phone}
+												className="opacity-70 sm:text-xs break-words"
+											/>
 										</div>
 									</div>
-								)}
+								) : null}
 
 								{item.work_time && (
 									<div className="flex items-start gap-3">
@@ -124,7 +152,9 @@ const EstablishmentPreview = ({ item }: { item?: EstablishmentDetailed }) => {
 								<div className="flex flex-wrap justify-end items-center gap-2">
 									{Object.entries(item.contacts).map(([key, value]) => {
 										const socialKey = key as SocialMediaKey;
-										if (!value || socialKey === 'phone') return null;
+										if (socialKey === 'phone' || typeof value !== 'string')
+											return null;
+
 										return (
 											<Link
 												key={socialKey}
@@ -209,7 +239,7 @@ const EstablishmentPreview = ({ item }: { item?: EstablishmentDetailed }) => {
 							Фотографии
 						</h3>
 						<div className="grid grid-cols-5 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-2 gap-4">
-							{[item.cover, ...item.images].map((src, index) => (
+							{[item.cover, ...item.images].map((src) => (
 								<div
 									key={src}
 									className="relative w-full aspect-video rounded-lg overflow-hidden shadow-md"

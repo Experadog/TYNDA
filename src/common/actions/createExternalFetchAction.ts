@@ -1,12 +1,16 @@
 import { EXTERNAL_APIS, LOGGER } from '@/lib';
+import type { Method } from 'axios';
 import type { Params } from '../types/http.types';
 import { sendErrorToTelegram } from './sendUserErrorToTelegram';
 
 type Props = {
 	endpoint: string;
-	params?: Params;
+	params?: Params & Record<string, unknown>;
 	postfix?: (string | number)[];
 	baseURLKey: keyof typeof EXTERNAL_APIS;
+	additionalHeaders?: HeadersInit;
+	method?: Method;
+	body?: BodyInit;
 };
 
 export async function createExternalFetchAction<T>({
@@ -14,6 +18,9 @@ export async function createExternalFetchAction<T>({
 	params,
 	postfix = [],
 	baseURLKey,
+	additionalHeaders,
+	method = 'GET',
+	body,
 }: Props): Promise<T> {
 	const cleanBaseUrl = EXTERNAL_APIS[baseURLKey]?.replace(/\/$/, '');
 	const cleanEndpoint = endpoint.replace(/^\//, '');
@@ -29,12 +36,13 @@ export async function createExternalFetchAction<T>({
 		}
 	}
 
-	const headers: HeadersInit = {};
+	const headers: HeadersInit = { ...additionalHeaders };
 
 	try {
 		const response = await fetch(url.toString(), {
-			method: 'GET',
+			method,
 			headers,
+			body,
 			cache: 'no-store',
 		});
 

@@ -1,17 +1,11 @@
 'use client';
 import { Link, usePathname } from '@/i18n/routing';
-import { PAGES } from '@/lib';
+import { PAGES, SOCIAL_MEDIAS } from '@/lib';
 import clsx from 'clsx';
 import Image from 'next/image';
 import type { FC } from 'react';
 import Translate from '../animation/translate/translate';
 import { useFooterUseCase } from './use-cases/useFooterUseCase';
-
-const icons = [
-	{ id: 0, src: '/sm/telegram.svg', alt: 'telegram icon' },
-	{ id: 1, src: '/sm/whatsapp.svg', alt: 'whatsapp icon' },
-	{ id: 2, src: '/sm/instagram.svg', alt: 'instagram icon' },
-];
 
 interface IProps {
 	viewModel: ViewModel['Layout']['footer'];
@@ -21,8 +15,10 @@ const Footer: FC<IProps> = () => {
 	const { viewModel, sectionUrls } = useFooterUseCase();
 	const path = usePathname();
 
-	const className =
-		path.startsWith(PAGES.UPDATE_PROFILE) || path === PAGES.DASHBOARD ? 'hidden' : '';
+	const footer_hidden_pages = [PAGES.UPDATE_PROFILE, PAGES.DASHBOARD, PAGES.BENEFITS_MAP];
+
+	const isFooterHidden = footer_hidden_pages.some((hiddenPath) => path.startsWith(hiddenPath));
+	const className = isFooterHidden ? 'hidden' : '';
 
 	return (
 		<footer
@@ -68,17 +64,47 @@ const Footer: FC<IProps> = () => {
 						© {new Date().getFullYear()} Все права защищены
 					</p>
 					<div className="flex gap-4">
-						{icons.map((item) => (
-							<Link
-								key={item.id}
-								href={item.src || '#'}
-								target="_blank"
-								rel="noopener noreferrer"
-								className="w-10 h-10 bg-yellow rounded-full flex items-center justify-center hover:scale-110 active:scale-95 transition-transform"
-							>
-								<Image src={item.src} alt="social icon" width={20} height={20} />
-							</Link>
-						))}
+						<Link
+							href={SOCIAL_MEDIAS.telegram.link}
+							target="_blank"
+							rel="noopener noreferrer"
+							className="w-10 h-10 bg-yellow rounded-full flex items-center justify-center hover:scale-110 active:scale-95 transition-transform"
+						>
+							<Image
+								src={SOCIAL_MEDIAS.telegram.icon}
+								alt="social icon"
+								width={20}
+								height={20}
+							/>
+						</Link>
+
+						<Link
+							href={SOCIAL_MEDIAS.whatsApp.link}
+							target="_blank"
+							rel="noopener noreferrer"
+							className="w-10 h-10 bg-yellow rounded-full flex items-center justify-center hover:scale-110 active:scale-95 transition-transform"
+						>
+							<Image
+								src={SOCIAL_MEDIAS.whatsApp.icon}
+								alt="social icon"
+								width={20}
+								height={20}
+							/>
+						</Link>
+
+						<Link
+							href={SOCIAL_MEDIAS.instagram.link}
+							target="_blank"
+							rel="noopener noreferrer"
+							className="w-10 h-10 bg-yellow rounded-full flex items-center justify-center hover:scale-110 active:scale-95 transition-transform"
+						>
+							<Image
+								src={SOCIAL_MEDIAS.instagram.icon}
+								alt="social icon"
+								width={20}
+								height={20}
+							/>
+						</Link>
 					</div>
 				</div>
 			</Translate>

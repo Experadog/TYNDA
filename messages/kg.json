@@ -388,6 +388,18 @@
 			"tour_company": "Тур компаниялар",
 			"guides": "Гиддер"
 		},
+
+		"regions": {
+			"chui": "Чүй",
+			"talas": "Талас",
+			"naryn": "Нарын",
+			"issyk_kul": "Ысык-Көл",
+			"jalal_abad": "Жалал-Абад",
+			"osh": "Ош",
+			"batken": "Баткен",
+			"bishkek": "Бишкек",
+			"osh_city": "Ош (шаары)"
+		},
 		"permission_scopes": {
 			"user": {
 				"label": "Кызматкерлер",
@@ -433,6 +445,13 @@
 			"establisher": "Ээси",
 			"client": "Кардар",
 			"establishment_worker": "Кызматкер"
+		},
+		"transport_type": {
+			"driving-car": "Жеңил унаа",
+			"cycling-regular": "Велосипед",
+			"foot-walking": "Жөө жүрүү",
+			"foot-hiking": "Жөө жүрүш (поход)",
+			"driving-hgv": "Жүк ташуучу унаа"
 		}
 	},
 	"UnderDevelopment": {

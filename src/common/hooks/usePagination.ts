@@ -5,9 +5,9 @@ import { useEffect, useMemo, useState } from 'react';
 import type { Params } from '../types/http.types';
 import type { CommonResponse, Paginated } from '../types/responses.types';
 
-type FetchFunction<T> = (params: Params) => Promise<CommonResponse<Paginated<T>>>;
+export type FetchFunction<T> = (params: Params) => Promise<CommonResponse<Paginated<T>>>;
 
-type UsePaginationParams<T> = {
+export type UsePaginationParams<T> = {
 	initialData?: Paginated<T>;
 	fetchFn: FetchFunction<T>;
 	entity: keyof typeof PAGINATION;
@@ -149,6 +149,7 @@ export function usePagination<T>({
 		list: items,
 		total: initialData?.total || 0,
 		initialData,
+		keys,
 	};
 
 	const actions = {
@@ -160,4 +161,4 @@ export function usePagination<T>({
 	return { states, actions };
 }
 
-export type UsePaginationType = ReturnType<typeof usePagination>;
+export type UsePaginationType<T> = ReturnType<typeof usePagination<T>>;

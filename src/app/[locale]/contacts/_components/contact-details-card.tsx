@@ -41,7 +41,7 @@ const ContactDetailsCard: FC<IProps> = ({ description, id, contactDetails, index
 					<div className="flex items-center gap-5">
 						<Link
 							key={'telegram'}
-							href={'telegram'}
+							href={SOCIAL_MEDIAS.telegram.link}
 							target="_blank"
 							className="bg-yellow rounded-full p-2 hover:scale-105 transition-transform"
 						>
@@ -55,7 +55,7 @@ const ContactDetailsCard: FC<IProps> = ({ description, id, contactDetails, index
 						</Link>
 						<Link
 							key={'whatsApp'}
-							href={'whatsApp'}
+							href={SOCIAL_MEDIAS.whatsApp.link}
 							target="_blank"
 							className="bg-yellow rounded-full p-2 hover:scale-105 transition-transform"
 						>

@@ -188,6 +188,8 @@ export default async function RootLayout({
 
 				<NextIntlClientProvider>
 					<CollectedProviders>
+						{/* <CacheRevalidate /> */}
+
 						<Layout>{children}</Layout>
 						<SpeedInsights />
 					</CollectedProviders>

@@ -4,7 +4,6 @@ import { ErrorBoundary } from '@common';
 import { TooltipProvider } from '@components';
 import { cookies } from 'next/headers';
 import type { FC, ReactNode } from 'react';
-import CacheRevalidate from './cache-revalidate/cache-revalidate';
 import { ChatWebSocketProvider } from './chat-webscoket/chat-webscoket-provider';
 import { LocaleProvider } from './locale/locale-provider';
 import OAuthProvider from './oAuth/oAuth-provider';
@@ -42,7 +41,6 @@ const CollectedProviders: FC<IProps> = async ({ children }) => {
 							>
 								<ChatWebSocketProvider session={session}>
 									<ToastClientProvider theme={theme} />
-									<CacheRevalidate />
 									<TooltipProvider>{children}</TooltipProvider>
 								</ChatWebSocketProvider>
 							</UserProvider>

@@ -26,6 +26,7 @@ export function useDeletionUseCase({ viewModel }: Props) {
 			revalidateByTags([
 				URL_ENTITIES.ESTABLISHMENT_ALL_ESTABLISHER,
 				URL_ENTITIES.ESTABLISHMENT_ALL_CLIENT,
+				URL_ENTITIES.ESTABLISHMENT_ALL_ADMIN,
 				URL_ENTITIES.CHAT_MY,
 			]);
 			setDeletionID('');

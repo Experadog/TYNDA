@@ -3,12 +3,12 @@ import type { UsePaginationType } from '@common';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Button } from '../ui/button';
 
-type Props = {
-	pagination: UsePaginationType;
+type Props<T extends object> = {
+	pagination: UsePaginationType<T>;
 	colSpan: number;
 };
 
-const TableFooter = ({ pagination, colSpan }: Props) => {
+const TableFooter = <T extends object>({ pagination, colSpan }: Props<T>) => {
 	const { states, actions } = pagination;
 	const { list, allPages, currentPage, isLoading, isFirstPage, hasNextPage } = states;
 

@@ -4,12 +4,14 @@ export interface ActionFactoryOptions<TArgs extends unknown[], TResponse> {
 	requestAction: (...args: TArgs) => Promise<TResponse>;
 	onSuccess?: (response: TResponse) => void | Promise<void>;
 	onError?: (error: unknown) => void | Promise<void>;
+	customSuccessChecker?: (response: TResponse) => boolean;
 }
 
 export function createAction<TArgs extends unknown[], TResponse>({
 	requestAction,
 	onSuccess,
 	onError,
+	customSuccessChecker,
 }: ActionFactoryOptions<TArgs, TResponse>): (...args: TArgs) => Promise<TResponse> {
 	return async (...args: TArgs): Promise<TResponse> => {
 		try {
@@ -19,10 +21,14 @@ export function createAction<TArgs extends unknown[], TResponse>({
 				throw new Error('Empty response');
 			}
 
-			if (onSuccess && isSuccessResponse(response)) {
+			const isSuccess = customSuccessChecker
+				? customSuccessChecker(response)
+				: isSuccessResponse(response);
+
+			if (onSuccess && isSuccess) {
 				await onSuccess(response);
 			} else if (isCommonResponse(response)) {
-				if (onError) {
+				if (onError && !isSuccess) {
 					await onError(response);
 				}
 			} else {

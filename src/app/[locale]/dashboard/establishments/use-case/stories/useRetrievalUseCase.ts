@@ -1,13 +1,13 @@
 import { useUser } from '@/providers/user/user-provider';
 import {
-	type GetEstablishmentAllClientResponseModel,
+	type EstablishmentClientRetrievalResponseModel,
 	getEstablishmentAllAdmin,
 	getEstablishmentAllEstablisher,
 } from '@/services';
 import type { EstablishmentListItem } from '@business-entities';
 import { usePagination } from '@common';
 
-export function useRetrievalUseCase(data: GetEstablishmentAllClientResponseModel['data']) {
+export function useRetrievalUseCase(data: EstablishmentClientRetrievalResponseModel['data']) {
 	const { user } = useUser();
 
 	const isSuperAdmin = user?.is_superuser;
